@@ -28,7 +28,7 @@ public class Config extends Vigilant {
     public int SandNukerBlockPesTick = 1;
 
     @Property(type = PropertyType.DECIMAL_SLIDER, name = "Boost chance", description = "Boost chance",
-            category = "Crop Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
+            category = "Sand Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
     public float SandNukerBoostChance = 0.6f;
 
     @Property(type = PropertyType.SWITCH, name = "Better UP range", description = "Add +2 blocks to up nuker.",
