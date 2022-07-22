@@ -11,7 +11,7 @@ jobs:
           java-version: 8
           distribution: temurin
       - name: Build
-        run: ./gradlew build
+        run: chmod +x ./gradlew build
       - name: Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
