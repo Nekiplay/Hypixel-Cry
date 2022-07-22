@@ -1,4 +1,6 @@
 # Features
+### Commands:
+- /cry - Open settings menu
 ### Instant item use:
 - Rogue Sword
 - Wand of Healing
