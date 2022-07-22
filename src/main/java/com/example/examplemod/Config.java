@@ -15,7 +15,7 @@ public class Config extends Vigilant {
             category = "Crop Nuker", subcategory = "General")
     public boolean CropNukerReplanish = false;
 
-    @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max speed",
+    @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Crop Nuker", subcategory = "General", min = 1, max = 8)
     public int CropNukerBlockPesTick = 4;
 
@@ -23,7 +23,7 @@ public class Config extends Vigilant {
             category = "Crop Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
     public float CropNukerBoostChance = 0.6f;
 
-    @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max speed",
+    @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Sand Nuker", subcategory = "General", min = 1, max = 8)
     public int SandNukerBlockPesTick = 1;
 
