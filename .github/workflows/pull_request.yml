@@ -11,7 +11,7 @@ jobs:
           java-version: 8
           distribution: temurin
       - name: Build
-        run: ./gradlew build
+        run: chmod +x ./gradlew build
       - name: Upload artifacts
         uses: actions/upload-artifact@v2.2.4
         with:
