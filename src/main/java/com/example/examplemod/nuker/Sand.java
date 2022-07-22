@@ -51,7 +51,7 @@ public class Sand {
                         for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
                             BlockPos sand = getSand();
                             if (sand != null) {
-                                breakSand(sand);
+                                breakSand(sand); // Break block
                             }
                         }
                     }
