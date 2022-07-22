@@ -9,7 +9,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           java-version: 8
-          distribution: corretto
+          distribution: 'corretto'
       - name: Build
         run: ./gradlew build
       - name: Release
