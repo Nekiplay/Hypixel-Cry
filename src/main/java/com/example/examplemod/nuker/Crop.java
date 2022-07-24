@@ -154,6 +154,19 @@ public class Crop {
         return done;
     }
 
+    private boolean isMathHoe(String hoe) {
+        InventoryPlayer inventory = Main.mc.thePlayer.inventory;
+        ItemStack currentItem = inventory.getCurrentItem();
+        if (currentItem != null) {
+            if (currentItem.getItem() instanceof ItemHoe) {
+                if (currentItem.getTagCompound().getCompoundTag("display") != null) {
+                    return (currentItem.getTagCompound().getCompoundTag("display").getString("Name").contains(hoe));
+                }
+            }
+        }
+        return false;
+    }
+
     private BlockPos getNearblyCrop() {
         if (broken.size() > 40) {
             broken.clear();
@@ -172,20 +185,47 @@ public class Crop {
             Block block = blockState.getBlock();
             if (!broken.contains(blockPos)) {
                 if (block == Blocks.wheat) {
-                    if (isCropGrow(7, blockState)) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Wheat Hoe")) {
+                        if (isCropGrow(7, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        if (isCropGrow(7, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
                     }
                 } else if (block == Blocks.carrots) {
-                    if (isCropGrow(7, blockState)) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Carrot Hoe")) {
+                        if (isCropGrow(7, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                    else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        if (isCropGrow(7, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
                     }
                 } else if (block == Blocks.potatoes) {
-                    if (isCropGrow(7, blockState)) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Potato Hoe")) {
+                        if (isCropGrow(7, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                    else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        if (isCropGrow(7, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
                     }
                 } else if (block == Blocks.nether_wart) {
-                    if (isNetherWarsGrow(3, blockState)) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Nether Warts Hoe")) {
+                        if (isNetherWarsGrow(3, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                    else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        if (isNetherWarsGrow(3, blockState)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
                     }
                 }
             }

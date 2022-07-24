@@ -36,11 +36,9 @@ public class iteminfocommand extends CommandBase {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.thePlayer;
         ItemStack current = player.inventory.getCurrentItem();
-        if (current.hasDisplayName()) {
-            String name = current.getDisplayName();
-            sender.addChatMessage(new ChatComponentText(Integer.toString(player.inventory.currentItem)));
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(name), null);
-            sender.addChatMessage(new ChatComponentText(name));
+        if (current != null && current.hasDisplayName()) {
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(current.serializeNBT().toString()), null);
+            sender.addChatMessage(new ChatComponentText(current.serializeNBT().toString()));
         }
     }
 }

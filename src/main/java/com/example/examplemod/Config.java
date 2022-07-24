@@ -13,7 +13,11 @@ public class Config extends Vigilant {
 
     @Property(type = PropertyType.SWITCH, name = "Replanish support", description = "Better work replanish.",
             category = "Crop Nuker", subcategory = "General")
-    public boolean CropNukerReplanish = false;
+    public boolean CropNukerReplanish = true;
+
+    @Property(type = PropertyType.SWITCH, name = "Only mathematical hoe", description = "Breaks only plants that are intended for your hoe.",
+             category = "Crop Nuker", subcategory = "General")
+    public boolean CropNukerOnlyMathematicalHoe = false;
 
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Crop Nuker", subcategory = "General", min = 1, max = 8)
