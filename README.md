@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/35975332/180501567-bd7f5222-2bb4-4183-9df0-b0b1de656b87.png)
+![image](https://user-images.githubusercontent.com/35975332/180503502-636029fa-2a09-4968-91f5-05e14b6016d5.png)
 
 # Features
 ### Commands:
