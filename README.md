@@ -12,6 +12,7 @@
 - Crop Nuker
 - Sand Nuker
 - Ore Nuker
+- Foraging
 
 ### ESP:
 - Dark Monolith in Dwarden Mines
