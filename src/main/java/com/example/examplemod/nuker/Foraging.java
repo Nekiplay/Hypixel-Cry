@@ -3,15 +3,13 @@ package com.example.examplemod.nuker;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemSeeds;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
@@ -27,7 +25,7 @@ import java.util.ArrayList;
 
 import static com.example.examplemod.utils.Perlin2D.PerlinNoice;
 
-public class Sand {
+public class Foraging {
     private int shovel_tick = 0;
     private static BlockPos blockPos;
     public boolean work = false;
@@ -45,10 +43,10 @@ public class Sand {
                 InventoryPlayer inventory = Main.mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
+                if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
                     double noice = PerlinNoice(2);
-                    if (noice >= Main.configFile.SandNukerBoostChance) {
-                        for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
+                    if (noice >= Main.configFile.ForagingNukerBoostChance) {
+                        for (int i = 0; i < Main.configFile.ForagingNukerBlockPesTick; i++) {
                             BlockPos sand = getSand();
                             if (sand != null) {
                                 breakSand(sand); // Break block
@@ -63,7 +61,7 @@ public class Sand {
                         }
                     }
                 }
-                if (currentItem != null && currentItem.getItem() instanceof ItemSpade)
+                if (currentItem != null && currentItem.getItem() instanceof ItemAxe)
                 {
                     shovel_tick++;
                 }
@@ -84,10 +82,13 @@ public class Sand {
 
     private void breakSand(BlockPos pos) {
         Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
-        Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
         PlayerUtils.swingItem();
         broken.add(pos);
         blockPos = pos;
+    }
+
+    private boolean isBadLog(BlockPos pos) {
+        return false;
     }
 
     private BlockPos getSand() {
@@ -100,7 +101,7 @@ public class Sand {
         Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(vec3i), playerPos.subtract(vec3i));
         for (BlockPos blockPos : blocks) {
             IBlockState block = Main.mc.theWorld.getBlockState(blockPos);
-            if (block.getBlock() == Blocks.sand) {
+            if (block.getBlock() == Blocks.log || block.getBlock() == Blocks.log2) {
                 if (!broken.contains(blockPos)) {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
@@ -129,15 +130,15 @@ public class Sand {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.thePlayer;
         KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[5].isPressed()) {
+        if (keyBindings[6].isPressed()) {
             if (!work) {
                 work = true;
                 broken.clear();
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Sand nuker enabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Foraging nuker enabled"));
             }
             else {
                 work = false;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Sand nuker disabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Foraging nuker disabled"));
             }
         }
     }

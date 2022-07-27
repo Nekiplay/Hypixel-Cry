@@ -1,11 +1,13 @@
 package com.example.examplemod.macros;
 
+import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.FindHotbar;
 import com.example.examplemod.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -52,17 +54,23 @@ public class AspectoftheEnd {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.thePlayer;
         KeyBinding[] keyBindings = Main.keyBindings;
+        DataExtractor extractor = Main.getInstance().dataExtractor;
         if (keyBindings[2].isPressed()) {
-            FindHotbar findHotbar = new FindHotbar();
-            int slot = findHotbar.findSlotInHotbar("Aspect of the End");
-            if (slot != -1) {
-                rogueSlot = slot;
-                work = true;
+            if (extractor.getPlayerStats().Mp >= 50) {
+                FindHotbar findHotbar = new FindHotbar();
+                int slot = findHotbar.findSlotInHotbar("Aspect of the End");
+                if (slot != -1) {
+                    rogueSlot = slot;
+                    work = true;
+                } else {
+                    tick = 0;
+                    work = false;
+                    player.addChatMessage(new ChatComponentText("Aspect of the End not found"));
+                }
             }
-            else {
-                tick = 0;
-                work = false;
-                player.addChatMessage(new ChatComponentText("Aspect of the End not found"));
+            else
+            {
+                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
             }
         }
     }

@@ -26,16 +26,17 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event)
     {
-        keyBindings = new KeyBinding[6];
+        keyBindings = new KeyBinding[7];
 
 
-        keyBindings[0] = new KeyBinding("Rogue Sword", Keyboard.KEY_P, "Hypixel Macros");
-        keyBindings[1] = new KeyBinding("Wand of Healing", Keyboard.KEY_X, "Hypixel Macros");
-        keyBindings[2] = new KeyBinding("Aspect of the End", Keyboard.KEY_X, "Hypixel Macros");
+        keyBindings[0] = new KeyBinding("Rogue Sword", Keyboard.KEY_X, "Hypixel Cry | Macros");
+        keyBindings[1] = new KeyBinding("Wand of Healing", Keyboard.KEY_X, "Hypixel Cry | Macros");
+        keyBindings[2] = new KeyBinding("Aspect of the End", Keyboard.KEY_X, "Hypixel Cry | Macros");
 
-        keyBindings[3] = new KeyBinding("Ore nuker", Keyboard.KEY_X, "Hypixel Nuker");
-        keyBindings[4] = new KeyBinding("Crop nuker", Keyboard.KEY_X, "Hypixel Nuker");
-        keyBindings[5] = new KeyBinding("Sand nuker", Keyboard.KEY_X, "Hypixel Nuker");
+        keyBindings[3] = new KeyBinding("Ore nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
+        keyBindings[4] = new KeyBinding("Crop nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
+        keyBindings[5] = new KeyBinding("Sand nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
+        keyBindings[6] = new KeyBinding("Foraging nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
 
         for (KeyBinding keyBinding : keyBindings) {
             ClientRegistry.registerKeyBinding(keyBinding);

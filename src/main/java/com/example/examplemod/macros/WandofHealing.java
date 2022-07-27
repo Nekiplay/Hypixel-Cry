@@ -1,11 +1,13 @@
 package com.example.examplemod.macros;
 
+import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.FindHotbar;
 import com.example.examplemod.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -56,25 +58,57 @@ public class WandofHealing {
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[1].isPressed()) {
             FindHotbar findHotbar = new FindHotbar();
+            DataExtractor extractor = Main.getInstance().dataExtractor;
             int slot = findHotbar.findSlotInHotbar("Wand of Healing");
             int slot2 = findHotbar.findSlotInHotbar("Wand of Mending");
             int slot3 = findHotbar.findSlotInHotbar("Wand of Restoration");
-            if (slot != -1 || slot2 != -1 || slot3 != -1) {
-                if (slot3 != -1) {
-                    rogueSlot = slot3;
+            int slot4 = findHotbar.findSlotInHotbar("Wand of Atonement");
+            if (slot != -1 || slot2 != -1 || slot3 != -1 || slot4 != -1) {
+                if (slot4 != -1) {
+                    if (extractor.getPlayerStats().Mp >= 240) {
+                        rogueSlot = slot4;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
+                }
+                else if (slot3 != -1) {
+                    if (extractor.getPlayerStats().Mp >= 200) {
+                        rogueSlot = slot3;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
                 }
                 else if (slot2 != -1) {
-                    rogueSlot = slot2;
+                    if (extractor.getPlayerStats().Mp >= 100) {
+                        rogueSlot = slot2;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
                 }
                 else if (slot != -1) {
-                    rogueSlot = slot;
+                    if (extractor.getPlayerStats().Mp >= 60) {
+                        rogueSlot = slot;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
                 }
-                work = true;
             }
             else {
                 tick = 0;
                 work = false;
-                player.addChatMessage(new ChatComponentText("Wand of Healing not found"));
+                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Wand of Healing not found"));
             }
         }
     }
@@ -105,7 +139,7 @@ public class WandofHealing {
             else {
                 tick = 0;
                 work = false;
-                player.addChatMessage(new ChatComponentText("Wand of Healing not found"));
+                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Wand of Healing not found"));
             }
         }
     }

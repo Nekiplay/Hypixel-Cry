@@ -256,11 +256,11 @@ public class Crop {
                 work = true;
                 broken.clear();
                 farmlandsBad.clear();
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText("Crop nuker enabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Crop nuker enabled"));
             }
             else {
                 work = false;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText("Crop nuker disabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Crop nuker disabled"));
             }
         }
     }

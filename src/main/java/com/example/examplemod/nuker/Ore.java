@@ -157,11 +157,11 @@ public class Ore {
             if (!work) {
                 work = true;
                 broken.clear();
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + "Ore nuker enabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Ore nuker enabled"));
             }
             else {
                 work = false;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText("Ore nuker disabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Ore nuker disabled"));
             }
         }
     }

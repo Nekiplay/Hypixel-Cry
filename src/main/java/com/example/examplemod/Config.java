@@ -28,6 +28,14 @@ public class Config extends Vigilant {
     public float CropNukerBoostChance = 0.6f;
 
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
+            category = "Foraging Nuker", subcategory = "General", min = 1, max = 8)
+    public int ForagingNukerBlockPesTick = 4;
+
+    @Property(type = PropertyType.DECIMAL_SLIDER, name = "Boost chance", description = "Boost chance",
+            category = "Foraging Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
+    public float ForagingNukerBoostChance = 0.6f;
+
+    @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Sand Nuker", subcategory = "General", min = 1, max = 8)
     public int SandNukerBlockPesTick = 1;
 

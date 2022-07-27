@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -65,12 +66,12 @@ public class RogueSword {
                 } else {
                     tick = 0;
                     work = false;
-                    player.addChatMessage(new ChatComponentText("Rogue Sword not found"));
+                    player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Rogue Sword not found"));
                 }
             }
             else
             {
-                player.addChatMessage(new ChatComponentText("Not enough MP"));
+                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
             }
         }
     }
@@ -92,12 +93,12 @@ public class RogueSword {
                 } else {
                     tick = 0;
                     work = false;
-                    player.addChatMessage(new ChatComponentText("Rogue Sword not found"));
+                    player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Rogue Sword not found"));
                 }
             }
             else
             {
-                player.addChatMessage(new ChatComponentText("Not enough MP"));
+                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Not enough MP"));
             }
         }
     }
