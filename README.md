@@ -9,9 +9,9 @@
 - Aspect of the End
 
 ### Nuker's:
-- Crop Nuker
-- Sand Nuker
-- Ore Nuker
+- Crop
+- Sand
+- Ore
 - Foraging
 
 ### ESP:
