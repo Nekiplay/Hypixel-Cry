@@ -25,7 +25,7 @@ public class BlockInfo implements ICommand {
     public List<String> getCommandAliases() {
         return new ArrayList<>(Arrays.asList("bi"));
     }
-
+    //
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
 
