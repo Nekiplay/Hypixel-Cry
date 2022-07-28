@@ -159,7 +159,7 @@ public class Crop {
         ItemStack currentItem = inventory.getCurrentItem();
         if (currentItem != null) {
             if (currentItem.getItem() instanceof ItemHoe) {
-                if (currentItem.getTagCompound().getCompoundTag("display") != null) {
+                if (currentItem.getTagCompound() != null && currentItem.getTagCompound().getCompoundTag("display") != null) {
                     return (currentItem.getTagCompound().getCompoundTag("display").getString("Name").contains(hoe));
                 }
             }

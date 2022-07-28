@@ -1,6 +1,5 @@
 package com.example.examplemod;
 
-import com.example.examplemod.automacros.AutoRogueSword;
 import com.example.examplemod.esp.Dark_Monolith;
 import com.example.examplemod.macros.AspectoftheEnd;
 import com.example.examplemod.macros.RogueSword;
@@ -15,7 +14,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 public class MacrosRegister {
     public void register(FMLInitializationEvent event) {
         /* Macros */
-        MinecraftForge.EVENT_BUS.register(new AutoRogueSword());
         MinecraftForge.EVENT_BUS.register(new RogueSword());
         MinecraftForge.EVENT_BUS.register(new WandofHealing());
         MinecraftForge.EVENT_BUS.register(new AspectoftheEnd());

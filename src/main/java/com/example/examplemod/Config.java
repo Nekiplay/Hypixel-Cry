@@ -43,10 +43,6 @@ public class Config extends Vigilant {
             category = "Sand Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
     public float SandNukerBoostChance = 0.6f;
 
-    @Property(type = PropertyType.SWITCH, name = "Better UP range", description = "Add +2 blocks to up nuker.",
-            category = "Ore nuker", subcategory = "General")
-    public boolean BetterUP = false;
-
     @Property(type = PropertyType.SWITCH, name = "Instant", description = "Use instant mine.",
             category = "Ore nuker", subcategory = "General")
     public boolean Instant = false;
@@ -94,17 +90,8 @@ public class Config extends Vigilant {
             category = "Ore nuker", subcategory = "Blocks")
     public boolean Cobblestone = false;
 
-
-
-    @Property(type = PropertyType.SWITCH, name = "Auto Rogue Sword", description = "Auto use rogue sword.",
-            category = "Rogue Sword", subcategory = "General")
-    public boolean AutoRogueSword = false;
-    @Property(type = PropertyType.SLIDER, name = "Delay", description = "Seconds delay",
-            category = "Rogue Sword", subcategory = "General", min = 20, max = 120)
-    public int AutoRogueSwordDelay = 30;
-
     @Property(type = PropertyType.SWITCH, name = "Dark Monolith ESP", description = "Render Dragon Egg in Dwarden Mines",
-            category = "Dwarden Mines", subcategory = "General", min = 20, max = 120)
+            category = "ESP", subcategory = "Dwarden Mines", min = 20, max = 120)
     public boolean DwardenMinesDarkMonolithESP = true;
 
 

@@ -1,5 +1,6 @@
 package com.example.examplemod.nuker;
 
+import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.BlockUtils;
 import com.example.examplemod.utils.ExposedBlock;
@@ -95,13 +96,10 @@ public class Ore {
 
             Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
             ArrayList<Vec3> warts = new ArrayList<>();
-            double r = 6;
+            double r = 8;
             BlockPos playerPos = Main.mc.thePlayer.getPosition();
             playerPos = playerPos.add(0, 1, 0);
             Vec3i vec3i = new Vec3i(r, r, r);
-            if (Main.configFile.BetterUP) {
-                vec3i = new Vec3i(r, r + 2, r);
-            }
             Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(vec3i), playerPos.subtract(vec3i));
             for (BlockPos blockPos : blocks) {
                 Block block = Main.mc.theWorld.getBlockState(blockPos).getBlock();
@@ -151,7 +149,6 @@ public class Ore {
     public void onEvent(InputEvent.KeyInputEvent event)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayerSP player = mc.thePlayer;
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[3].isPressed()) {
             if (!work) {
