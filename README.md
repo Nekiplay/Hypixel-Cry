@@ -9,9 +9,10 @@
 - Aspect of the End
 
 ### Nuker's:
-- Crop Nuker
-- Sand Nuker
-- Ore Nuker
+- Crop
+- Sand
+- Ore
+- Foraging
 
 ### ESP:
 - Dark Monolith in Dwarden Mines
