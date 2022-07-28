@@ -1,5 +1,7 @@
 <div align="center">
 <br/><br/>
+	<a href="https://github.com/Nekiplay/Hypixel-Cry/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/Hypixel-Cry/total" alt="Downloads"/></a>
+	
   	<a href="https://discord.gg/T3HMzaWrKz"><img src="https://invidget.switchblade.xyz/T3HMzaWrKz" alt="Discord server"></a>
 	<br/><br/>
 
