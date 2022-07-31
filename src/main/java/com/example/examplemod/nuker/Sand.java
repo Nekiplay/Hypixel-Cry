@@ -32,6 +32,7 @@ public class Sand {
     private static BlockPos blockPos;
     public boolean work = false;
     private static final ArrayList<BlockPos> broken = new ArrayList<>();
+    private int boostTicks = 0;
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
@@ -46,21 +47,19 @@ public class Sand {
                 ItemStack currentItem = inventory.getCurrentItem();
 
                 if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
-                    double noice = PerlinNoice(2);
-                    if (noice >= Main.configFile.SandNukerBoostChance) {
+                    if (boostTicks > Main.configFile.SandNukerBoostTicks)
+                    {
                         for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
-                            BlockPos sand = getSand();
-                            if (sand != null) {
-                                breakSand(sand); // Break block
-                            }
+                            BlockPos near = getSand();
+                            breakSand(near);
                         }
+                        boostTicks = 0;
                     }
                     else
                     {
-                        BlockPos sand = getSand();
-                        if (sand != null) {
-                            breakSand(sand);
-                        }
+                        BlockPos near = getSand();
+                        breakSand(near);
+                        boostTicks++;
                     }
                 }
                 if (currentItem != null && currentItem.getItem() instanceof ItemSpade)
@@ -83,11 +82,13 @@ public class Sand {
     }
 
     private void breakSand(BlockPos pos) {
-        Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
-        Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
-        PlayerUtils.swingItem();
-        broken.add(pos);
-        blockPos = pos;
+        if (pos != null) {
+            Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
+            Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
+            PlayerUtils.swingItem();
+            broken.add(pos);
+            blockPos = pos;
+        }
     }
 
     private BlockPos getSand() {

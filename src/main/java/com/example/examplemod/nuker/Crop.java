@@ -47,17 +47,6 @@ public class Crop {
         return age == max_age;
     }
 
-    private BlockPos findEgg(BlockPos start, int range) {
-        Vec3i vec3i = new Vec3i(range, range, range);
-        Iterable<BlockPos> blocks = BlockPos.getAllInBox(start.add(vec3i), start.subtract(vec3i));
-        for (BlockPos block : blocks) {
-            IBlockState state = Main.mc.theWorld.getBlockState(block);
-            if (state != null && state.getBlock() == Blocks.dragon_egg) {
-                return block;
-            }
-        }
-        return null;
-    }
     private void breakCrop(BlockPos crop) {
         InventoryPlayer inventory = Main.mc.thePlayer.inventory;
         ItemStack currentItem = inventory.getCurrentItem();
@@ -78,6 +67,7 @@ public class Crop {
             hoeTick = 10;
         }
     }
+    private int boostTicks = 0;
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (Main.mc.thePlayer == null) {
@@ -88,19 +78,35 @@ public class Crop {
             InventoryPlayer inventory = Main.mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
             if (currentItem != null) {
-                if (currentItem.getItem() instanceof ItemHoe && hoeTick > 4) {
-                    double noice = PerlinNoice(2);
-                    if (noice >= Main.configFile.CropNukerBoostChance) {
+                if (currentItem.getItem() instanceof ItemHoe && hoeTick > 7) {
+                    if (boostTicks > Main.configFile.CropNukerBoostTicks)
+                    {
                         for (int i = 0; i < Main.configFile.CropNukerBlockPesTick; i++) {
                             BlockPos near = getNearblyCrop();
                             breakCrop(near);
                         }
+                        boostTicks = 0;
                     }
                     else
                     {
                         BlockPos near = getNearblyCrop();
                         breakCrop(near);
+                        boostTicks++;
                     }
+
+
+                    //double noice = PerlinNoice(2);
+                    //if (noice >= Main.configFile.CropNukerBoostChance) {
+                    //    for (int i = 0; i < Main.configFile.CropNukerBlockPesTick; i++) {
+                    //        BlockPos near = getNearblyCrop();
+                    //        breakCrop(near);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    BlockPos near = getNearblyCrop();
+                    //    breakCrop(near);
+                    //}
                 }
                 else if (currentItem.getItem() instanceof ItemSeeds || (currentItem.hasDisplayName() && currentItem.getDisplayName().contains("Seeds"))) {
                     farmlandsBad = getBadFarmLand();
@@ -140,7 +146,7 @@ public class Crop {
         List<BlockPos> done = new ArrayList<>();
         ArrayList<Block> blocks = new ArrayList<>();
         blocks.add(Blocks.farmland);
-        ArrayList<BlockPos> farmlands = BlockUtils.getNearestBlocks(blocks, 75);
+        ArrayList<BlockPos> farmlands = BlockUtils.getNearestBlocks(blocks, 15);
         for (BlockPos blockPos : farmlands) {
             Block block = Main.mc.theWorld.getBlockState(blockPos.up()).getBlock();
             if (block instanceof net.minecraftforge.common.IPlantable)
@@ -175,7 +181,7 @@ public class Crop {
         Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
         ArrayList<Vec3> warts = new ArrayList<>();
         double r = 6;
-        double r2 = 6;
+        double r2 = Main.configFile.CropNukerMaxYRange;
         BlockPos playerPos = Main.mc.thePlayer.getPosition();
         playerPos = playerPos.add(0, 1, 0);
         Vec3i vec3i = new Vec3i(r, r2, r);

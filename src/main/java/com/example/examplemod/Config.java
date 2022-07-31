@@ -23,25 +23,29 @@ public class Config extends Vigilant {
             category = "Crop Nuker", subcategory = "General", min = 1, max = 8)
     public int CropNukerBlockPesTick = 4;
 
-    @Property(type = PropertyType.DECIMAL_SLIDER, name = "Boost chance", description = "Boost chance",
-            category = "Crop Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
-    public float CropNukerBoostChance = 0.6f;
+    @Property(type = PropertyType.NUMBER, name = "Boos every ticks", description = "Boost delay",
+            category = "Crop Nuker", subcategory = "General", max = 999999999)
+    public int CropNukerBoostTicks = 13;
+
+    @Property(type = PropertyType.SLIDER, name = "Y Range", description = "Max Y range",
+            category = "Crop Nuker", subcategory = "General", min = 1, max = 5)
+    public int CropNukerMaxYRange = 5;
 
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Foraging Nuker", subcategory = "General", min = 1, max = 8)
     public int ForagingNukerBlockPesTick = 4;
 
-    @Property(type = PropertyType.DECIMAL_SLIDER, name = "Boost chance", description = "Boost chance",
-            category = "Foraging Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
-    public float ForagingNukerBoostChance = 0.6f;
+    @Property(type = PropertyType.NUMBER, name = "Boos every ticks", description = "Boost delay",
+            category = "Foraging Nuker", subcategory = "General", max = 999999999)
+    public int ForagingNukerBoostTicks = 13;
 
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Sand Nuker", subcategory = "General", min = 1, max = 8)
     public int SandNukerBlockPesTick = 1;
 
-    @Property(type = PropertyType.DECIMAL_SLIDER, name = "Boost chance", description = "Boost chance",
-            category = "Sand Nuker", subcategory = "General", minF = 0, maxF = 1, decimalPlaces = 1)
-    public float SandNukerBoostChance = 0.6f;
+    @Property(type = PropertyType.NUMBER, name = "Boos every ticks", description = "Boost delay",
+            category = "Sand Nuker", subcategory = "General", max = 999999999)
+    public int SandNukerBoostTicks = 13;
 
     @Property(type = PropertyType.SWITCH, name = "Instant", description = "Use instant mine.",
             category = "Ore nuker", subcategory = "General")
