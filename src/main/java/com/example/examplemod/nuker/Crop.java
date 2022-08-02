@@ -70,7 +70,7 @@ public class Crop {
         if (crop != null) {
             boolean valid = false;
             Block block2 = Main.mc.theWorld.getBlockState(crop).getBlock();
-            if (block2 != Blocks.melon_block || block2 != Blocks.pumpkin) {
+            if (block2 != Blocks.melon_block && block2 != Blocks.pumpkin) {
                 if (Main.mc.thePlayer.onGround) {
                     Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, crop, EnumFacing.DOWN));
                     PlayerUtils.swingItem();
