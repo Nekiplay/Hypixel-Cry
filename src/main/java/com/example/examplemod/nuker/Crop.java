@@ -103,7 +103,15 @@ public class Crop {
                     }
                     else {
                         if (block2 != Blocks.melon_block && block2 != Blocks.pumpkin && block2 != Blocks.cactus && block2 != Blocks.reeds) {
-                            Main.mc.theWorld.setBlockState(crop, block2.getDefaultState());
+
+                        }
+                        else
+                        {
+                            Block block3 = Main.mc.theWorld.getBlockState(crop.add(0, 1, 0)).getBlock();
+                            if (block3 == Blocks.cactus || block3 == Blocks.reeds) {
+                                Main.mc.theWorld.setBlockState(crop.add(0, 1, 0), Blocks.air.getDefaultState());
+                            }
+                            Main.mc.theWorld.setBlockState(crop, Blocks.air.getDefaultState());
                         }
                     }
                 }
