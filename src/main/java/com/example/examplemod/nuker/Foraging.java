@@ -80,11 +80,11 @@ public class Foraging {
     }
 
     private void breakSand(BlockPos pos) {
+        blockPos = pos;
         if (pos != null) {
             Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
             PlayerUtils.swingItem();
             broken.add(pos);
-            blockPos = pos;
         }
     }
 

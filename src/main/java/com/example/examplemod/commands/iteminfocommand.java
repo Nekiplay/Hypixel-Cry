@@ -1,5 +1,7 @@
 package com.example.examplemod.commands;
 
+import com.example.examplemod.DataInterpretation.DataExtractor;
+import com.example.examplemod.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandBase;
@@ -40,5 +42,7 @@ public class iteminfocommand extends CommandBase {
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(current.serializeNBT().toString()), null);
             sender.addChatMessage(new ChatComponentText(current.serializeNBT().toString()));
         }
+        DataExtractor extractor = Main.getInstance().dataExtractor;
+        sender.addChatMessage(new ChatComponentText(extractor.getScoreBoardData().Zone));
     }
 }

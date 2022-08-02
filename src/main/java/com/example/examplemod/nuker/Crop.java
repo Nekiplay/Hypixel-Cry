@@ -1,5 +1,6 @@
 package com.example.examplemod.nuker;
 
+import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.BlockUtils;
 import com.example.examplemod.utils.Perlin2D;
@@ -11,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
@@ -47,23 +49,65 @@ public class Crop {
         return age == max_age;
     }
 
+    private boolean isValidCactus(BlockPos cactus)
+    {
+        IBlockState sand = Main.mc.theWorld.getBlockState(new BlockPos(cactus.getX(), cactus.getY() - 2, cactus.getZ()));
+        if (sand.getBlock() == Blocks.sand) {
+            return true;
+        }
+        else
+        {
+            IBlockState air = Main.mc.theWorld.getBlockState(new BlockPos(cactus.getX(), cactus.getY() - 1, cactus.getZ()));
+            return air.getBlock() == Blocks.air;
+
+        }
+    }
+
     private void breakCrop(BlockPos crop) {
         InventoryPlayer inventory = Main.mc.thePlayer.inventory;
         ItemStack currentItem = inventory.getCurrentItem();
         breakCrop = crop;
         if (crop != null) {
-            Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, crop, EnumFacing.DOWN));
-            if (Main.configFile.CropNukerReplanish) {
+            boolean valid = false;
+            Block block2 = Main.mc.theWorld.getBlockState(crop).getBlock();
+            if (block2 != Blocks.melon_block || block2 != Blocks.pumpkin) {
+                if (Main.mc.thePlayer.onGround) {
+                    Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, crop, EnumFacing.DOWN));
+                    PlayerUtils.swingItem();
+                    broken.add(crop);
+                    valid = true;
+                }
+            }
+            else
+            {
+                Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, crop, EnumFacing.DOWN));
+                PlayerUtils.swingItem();
+                broken.add(crop);
+                valid = true;
+            }
+            if (Main.configFile.CropNukerReplanish && valid) {
                 if (currentItem.hasTagCompound()) {
                     NBTTagCompound lore = currentItem.getTagCompound().getCompoundTag("ExtraAttributes").getCompoundTag("enchantments");
                     if (lore != null && lore.hasKey("replenish")) {
-                        Block block2 = Main.mc.theWorld.getBlockState(crop).getBlock();
-                        Main.mc.theWorld.setBlockState(crop, block2.getDefaultState());
+                        if (block2 != Blocks.melon_block && block2 != Blocks.pumpkin && block2 != Blocks.cactus && block2 != Blocks.reeds) {
+                            Main.mc.theWorld.setBlockState(crop, block2.getDefaultState());
+                        }
+                        else
+                        {
+                            Block block3 = Main.mc.theWorld.getBlockState(crop.add(0, 1, 0)).getBlock();
+                            if (block3 == Blocks.cactus || block3 == Blocks.reeds) {
+                                Main.mc.theWorld.setBlockState(crop.add(0, 1, 0), Blocks.air.getDefaultState());
+                            }
+                            Main.mc.theWorld.setBlockState(crop, Blocks.air.getDefaultState());
+                        }
+                    }
+                    else {
+                        if (block2 != Blocks.melon_block && block2 != Blocks.pumpkin && block2 != Blocks.cactus && block2 != Blocks.reeds) {
+                            Main.mc.theWorld.setBlockState(crop, block2.getDefaultState());
+                        }
                     }
                 }
             }
-            PlayerUtils.swingItem();
-            broken.add(crop);
             hoeTick = 10;
         }
     }
@@ -78,7 +122,7 @@ public class Crop {
             InventoryPlayer inventory = Main.mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
             if (currentItem != null) {
-                if (currentItem.getItem() instanceof ItemHoe && hoeTick > 7) {
+                if ((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) && hoeTick > 7) {
                     if (boostTicks > Main.configFile.CropNukerBoostTicks)
                     {
                         for (int i = 0; i < Main.configFile.CropNukerBlockPesTick; i++) {
@@ -111,7 +155,7 @@ public class Crop {
                 else if (currentItem.getItem() instanceof ItemSeeds || (currentItem.hasDisplayName() && currentItem.getDisplayName().contains("Seeds"))) {
                     farmlandsBad = getBadFarmLand();
                 }
-                else if (currentItem.getItem() instanceof ItemHoe) {
+                else if (currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) {
                     hoeTick++;
                 }
                 else
@@ -164,10 +208,8 @@ public class Crop {
         InventoryPlayer inventory = Main.mc.thePlayer.inventory;
         ItemStack currentItem = inventory.getCurrentItem();
         if (currentItem != null) {
-            if (currentItem.getItem() instanceof ItemHoe) {
-                if (currentItem.getTagCompound() != null && currentItem.getTagCompound().getCompoundTag("display") != null) {
-                    return (currentItem.getTagCompound().getCompoundTag("display").getString("Name").contains(hoe));
-                }
+            if (currentItem.getTagCompound() != null && currentItem.getTagCompound().getCompoundTag("display") != null) {
+                return (currentItem.getTagCompound().getCompoundTag("display").getString("Name").contains(hoe));
             }
         }
         return false;
@@ -233,6 +275,36 @@ public class Crop {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
+                }
+                else if (block == Blocks.cactus) {
+                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Cactus Knife")) {
+                        if (isValidCactus(blockPos)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                    else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        if (isValidCactus(blockPos)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                }
+                else if (block == Blocks.reeds) {
+                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Sugar Cane Hoe")) {
+                        if (isValidCactus(blockPos)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                    else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        if (isValidCactus(blockPos)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                }
+                else if (block == Blocks.melon_block) {
+                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                }
+                else if (block == Blocks.pumpkin) {
+                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
             }
         }

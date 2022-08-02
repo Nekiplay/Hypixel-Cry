@@ -1,5 +1,6 @@
 package com.example.examplemod.nuker;
 
+import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
@@ -82,12 +83,28 @@ public class Sand {
     }
 
     private void breakSand(BlockPos pos) {
+        blockPos = pos;
         if (pos != null) {
             Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
-            Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
+            DataExtractor extractor = Main.getInstance().dataExtractor;
+            if (extractor.getScoreBoardData().Zone.contains("Your")) {
+                Main.mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
+            }
+            else {
+                Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
+            }
+
+            if (Main.mc.theWorld.getBlockState(pos.add(0, 3, 0)).getBlock() == Blocks.cactus) {
+                Main.mc.theWorld.setBlockState(pos.add(0, 3, 0), Blocks.air.getDefaultState());
+            }
+            if (Main.mc.theWorld.getBlockState(pos.add(0, 2, 0)).getBlock() == Blocks.cactus) {
+                Main.mc.theWorld.setBlockState(pos.add(0, 2, 0), Blocks.air.getDefaultState());
+            }
+            if (Main.mc.theWorld.getBlockState(pos.add(0, 1, 0)).getBlock() == Blocks.cactus) {
+                Main.mc.theWorld.setBlockState(pos.add(0, 1, 0), Blocks.air.getDefaultState());
+            }
             PlayerUtils.swingItem();
             broken.add(pos);
-            blockPos = pos;
         }
     }
 
