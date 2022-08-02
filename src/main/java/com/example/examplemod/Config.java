@@ -31,6 +31,10 @@ public class Config extends Vigilant {
             category = "Crop Nuker", subcategory = "General", min = 1, max = 5)
     public int CropNukerMaxYRange = 5;
 
+    @Property(type = PropertyType.SWITCH, name = "Remover", description = "Remove planted crops.",
+            category = "Crop Nuker", subcategory = "General")
+    public boolean CropNukerRemover = false;
+
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Foraging Nuker", subcategory = "General", min = 1, max = 8)
     public int ForagingNukerBlockPesTick = 4;

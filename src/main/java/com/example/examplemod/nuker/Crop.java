@@ -242,44 +242,44 @@ public class Crop {
             if (!broken.contains(blockPos)) {
                 if (block == Blocks.wheat) {
                     if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Wheat Hoe")) {
-                        if (isCropGrow(7, blockState)) {
+                        if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
-                        if (isCropGrow(7, blockState)) {
+                        if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 } else if (block == Blocks.carrots) {
                     if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Carrot Hoe")) {
-                        if (isCropGrow(7, blockState)) {
+                        if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                     else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
-                        if (isCropGrow(7, blockState)) {
+                        if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 } else if (block == Blocks.potatoes) {
                     if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Potato Hoe")) {
-                        if (isCropGrow(7, blockState)) {
+                        if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                     else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
-                        if (isCropGrow(7, blockState)) {
+                        if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 } else if (block == Blocks.nether_wart) {
                     if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Nether Warts Hoe")) {
-                        if (isNetherWarsGrow(3, blockState)) {
+                        if (isNetherWarsGrow(3, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                     else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
-                        if (isNetherWarsGrow(3, blockState)) {
+                        if (isNetherWarsGrow(3, blockState) || Main.configFile.CropNukerRemover) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
@@ -312,6 +312,12 @@ public class Crop {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
                 else if (block == Blocks.pumpkin) {
+                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                }
+                else if (block == Blocks.melon_stem && Main.configFile.CropNukerRemover) {
+                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                }
+                else if (block == Blocks.pumpkin_stem && Main.configFile.CropNukerRemover) {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
             }
