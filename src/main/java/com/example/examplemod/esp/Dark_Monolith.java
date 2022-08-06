@@ -5,6 +5,7 @@ import com.example.examplemod.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -15,6 +16,7 @@ import java.awt.*;
 
 public class Dark_Monolith {
     BlockPos egg = null;
+    boolean found = false;
 
 
     @SubscribeEvent
@@ -95,6 +97,14 @@ public class Dark_Monolith {
             else
             {
                 egg = null;
+            }
+
+            if (egg == null && found) {
+                found = false;
+            }
+            else if (egg != null && !found){
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\nPosition X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
+                found = true;
             }
         }
     }

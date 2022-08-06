@@ -4,15 +4,12 @@ import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
@@ -26,8 +23,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.example.examplemod.utils.Perlin2D.PerlinNoice;
-
 public class Sand {
     private int shovel_tick = 0;
     private static BlockPos blockPos;
@@ -37,7 +32,7 @@ public class Sand {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
-            if (broken.size() > 40) {
+            if (broken.size() > 5) {
                 broken.clear();
             }
 
@@ -119,6 +114,11 @@ public class Sand {
         for (BlockPos blockPos : blocks) {
             IBlockState block = Main.mc.theWorld.getBlockState(blockPos);
             if (block.getBlock() == Blocks.sand) {
+                if (!broken.contains(blockPos)) {
+                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                }
+            }
+            else if (block.getBlock() == Blocks.farmland) {
                 if (!broken.contains(blockPos)) {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }

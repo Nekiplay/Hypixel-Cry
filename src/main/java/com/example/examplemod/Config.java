@@ -15,7 +15,7 @@ public class Config extends Vigilant {
             category = "Crop Nuker", subcategory = "General")
     public boolean CropNukerReplanish = true;
 
-    @Property(type = PropertyType.SWITCH, name = "Only mathematical hoe", description = "Breaks only plants that are intended for your hoe.",
+    @Property(type = PropertyType.SWITCH, name = "Only mathematical hoe", description = "Breaks only plants that are intended for your hoe and dicer.",
              category = "Crop Nuker", subcategory = "General")
     public boolean CropNukerOnlyMathematicalHoe = false;
 
@@ -94,6 +94,7 @@ public class Config extends Vigilant {
     @Property(type = PropertyType.SWITCH, name = "Stone", description = "Mine stone instantly.",
             category = "Ore nuker", subcategory = "Blocks")
     public boolean Stone = false;
+
     @Property(type = PropertyType.SWITCH, name = "Cobblestone", description = "Mine cobblestone instantly.",
             category = "Ore nuker", subcategory = "Blocks")
     public boolean Cobblestone = false;
