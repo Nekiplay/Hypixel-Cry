@@ -34,6 +34,7 @@ public class Sand {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
             if (broken.size() > 5) {
                 broken.clear();
+                return;
             }
 
 

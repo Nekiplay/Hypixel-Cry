@@ -36,6 +36,7 @@ public class Foraging {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
             if (broken.size() > 40) {
                 broken.clear();
+                return;
             }
 
 

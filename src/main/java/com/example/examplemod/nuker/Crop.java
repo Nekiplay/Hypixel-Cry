@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.examplemod.utils.Perlin2D.PerlinNoice;
+import static net.minecraft.block.BlockDirectional.FACING;
 
 public class Crop {
     private BlockPos breakCrop;
@@ -80,8 +81,8 @@ public class Crop {
         breakCrop = crop;
         if (crop != null) {
             boolean valid = false;
-            Block block2 = Main.mc.theWorld.getBlockState(crop).getBlock();
-            if (block2 == Blocks.melon_block || block2 == Blocks.pumpkin) {
+            IBlockState block2 = Main.mc.theWorld.getBlockState(crop);
+            if (block2.getBlock() == Blocks.melon_block || block2.getBlock() == Blocks.pumpkin) {
                 if (Main.mc.thePlayer.onGround) {
                     Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, crop, EnumFacing.DOWN));
                     PlayerUtils.swingItem();
@@ -100,8 +101,13 @@ public class Crop {
                 if (currentItem.hasTagCompound()) {
                     NBTTagCompound lore = currentItem.getTagCompound().getCompoundTag("ExtraAttributes").getCompoundTag("enchantments");
                     if (lore != null && lore.hasKey("replenish")) {
-                        if (block2 != Blocks.melon_block && block2 != Blocks.pumpkin && block2 != Blocks.cactus && block2 != Blocks.reeds) {
-                            Main.mc.theWorld.setBlockState(crop, block2.getDefaultState());
+                        if (block2.getBlock() == Blocks.cocoa) {
+                            EnumFacing facing = block2.getValue(FACING);
+                            IBlockState newstate = block2.getBlock().getDefaultState();
+                            Main.mc.theWorld.setBlockState(crop, newstate.withProperty(FACING, facing));
+                        }
+                        else if (block2.getBlock() != Blocks.melon_block && block2.getBlock() != Blocks.pumpkin && block2.getBlock() != Blocks.cactus && block2.getBlock() != Blocks.reeds) {
+                            Main.mc.theWorld.setBlockState(crop, block2.getBlock().getDefaultState());
                         }
                         else
                         {
@@ -113,7 +119,7 @@ public class Crop {
                         }
                     }
                     else {
-                        if (block2 != Blocks.melon_block && block2 != Blocks.pumpkin && block2 != Blocks.cactus && block2 != Blocks.reeds) {
+                        if (block2.getBlock() != Blocks.melon_block && block2.getBlock() != Blocks.pumpkin && block2.getBlock() != Blocks.cactus && block2.getBlock() != Blocks.reeds) {
 
                         }
                         else
@@ -135,6 +141,7 @@ public class Crop {
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (Main.mc.thePlayer == null) {
             broken.clear();
+            return;
         }
         
         if (work && Main.mc.theWorld != null) {

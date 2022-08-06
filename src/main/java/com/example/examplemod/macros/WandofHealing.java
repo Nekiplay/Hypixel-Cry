@@ -35,9 +35,14 @@ public class WandofHealing {
                 int slot = findHotbar.findSlotInHotbar("Wand of Healing");
                 int slot2 = findHotbar.findSlotInHotbar("Wand of Mending");
                 int slot3 = findHotbar.findSlotInHotbar("Wand of Restoration");
-                if (slot == player.inventory.currentItem || slot2 == player.inventory.currentItem || slot3 == player.inventory.currentItem) {
+                int slot4 = findHotbar.findSlotInHotbar("Wand of Atonement");
+                if (slot == player.inventory.currentItem || slot2 == player.inventory.currentItem || slot3 == player.inventory.currentItem || slot4 == player.inventory.currentItem) {
                     mc.playerController.sendUseItem(player, mc.theWorld, player.inventory.getCurrentItem());
                     tick++;
+                }
+                else
+                {
+                    tick = 0;
                 }
             }
             else if (tick == 2) {
@@ -121,20 +126,52 @@ public class WandofHealing {
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[1].isPressed()) {
             FindHotbar findHotbar = new FindHotbar();
+            DataExtractor extractor = Main.getInstance().dataExtractor;
             int slot = findHotbar.findSlotInHotbar("Wand of Healing");
             int slot2 = findHotbar.findSlotInHotbar("Wand of Mending");
             int slot3 = findHotbar.findSlotInHotbar("Wand of Restoration");
-            if (slot != -1 || slot2 != -1 || slot3 != -1) {
-                if (slot3 != -1) {
-                    rogueSlot = slot3;
+            int slot4 = findHotbar.findSlotInHotbar("Wand of Atonement");
+            if (slot != -1 || slot2 != -1 || slot3 != -1 || slot4 != -1) {
+                if (slot4 != -1) {
+                    if (extractor.getPlayerStats().Mp >= 240) {
+                        rogueSlot = slot4;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
+                }
+                else if (slot3 != -1) {
+                    if (extractor.getPlayerStats().Mp >= 200) {
+                        rogueSlot = slot3;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
                 }
                 else if (slot2 != -1) {
-                    rogueSlot = slot2;
+                    if (extractor.getPlayerStats().Mp >= 100) {
+                        rogueSlot = slot2;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
                 }
                 else if (slot != -1) {
-                    rogueSlot = slot;
+                    if (extractor.getPlayerStats().Mp >= 60) {
+                        rogueSlot = slot;
+                        work = true;
+                    }
+                    else
+                    {
+                        player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                    }
                 }
-                work = true;
             }
             else {
                 tick = 0;
