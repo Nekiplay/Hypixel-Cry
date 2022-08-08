@@ -1,6 +1,7 @@
 package com.example.examplemod;
 
 import com.example.examplemod.DataInterpretation.DataExtractor;
+import com.example.examplemod.events.MillisecondEvent;
 import com.example.examplemod.proxy.CommonProxy;
 import com.example.examplemod.utils.world.TickRate;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Mod(modid = Main.MODID, version = Main.VERSION)
 
@@ -79,6 +84,11 @@ public class Main
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        LocalDateTime now = LocalDateTime.now();
+        Duration initialDelay = Duration.between(now, now);
+        long initialDelaySeconds = initialDelay.getSeconds();
+
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> MinecraftForge.EVENT_BUS.post(new MillisecondEvent()), initialDelaySeconds, 1, TimeUnit.MILLISECONDS);
         proxy.postInit(event);
     }
 

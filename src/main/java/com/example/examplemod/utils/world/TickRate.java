@@ -1,6 +1,6 @@
 package com.example.examplemod.utils.world;
 
-import com.example.examplemod.events.ReceivePacketEvent;
+import com.example.examplemod.events.PacketEvent;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -32,7 +32,7 @@ public class TickRate {
         return Math.max(min, Math.min(max, val));
     }
     @SubscribeEvent
-    public void onReceivePacket(ReceivePacketEvent event) {
+    public void onReceivePacket(PacketEvent.Recive event) {
         if (event.packet instanceof S03PacketTimeUpdate) {
             long now = System.currentTimeMillis();
             float timeElapsed = (float) (now - timeLastTimeUpdate) / 1000.0F;

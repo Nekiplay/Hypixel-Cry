@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import static com.example.examplemod.Main.keyBindings;
 
@@ -24,7 +25,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event)
     {
-        keyBindings = new KeyBinding[7];
+        keyBindings = new KeyBinding[8];
 
 
         keyBindings[0] = new KeyBinding("Rogue Sword", Keyboard.KEY_X, "Hypixel Cry | Macros");
@@ -35,6 +36,8 @@ public class ClientProxy extends CommonProxy {
         keyBindings[4] = new KeyBinding("Crop nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
         keyBindings[5] = new KeyBinding("Sand nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
         keyBindings[6] = new KeyBinding("Foraging nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
+
+        keyBindings[7] = new KeyBinding("Auto Clicker", Keyboard.KEY_X, "Hypixel Cry | Macros");
 
         for (KeyBinding keyBinding : keyBindings) {
             ClientRegistry.registerKeyBinding(keyBinding);

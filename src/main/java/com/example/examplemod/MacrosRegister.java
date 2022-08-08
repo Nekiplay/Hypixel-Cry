@@ -1,7 +1,9 @@
 package com.example.examplemod;
 
+import com.example.examplemod.auto.NoFall;
 import com.example.examplemod.esp.Dark_Monolith;
 import com.example.examplemod.macros.AspectoftheEnd;
+import com.example.examplemod.macros.AutoClicker;
 import com.example.examplemod.macros.RogueSword;
 import com.example.examplemod.macros.WandofHealing;
 import com.example.examplemod.nuker.Crop;
@@ -26,5 +28,8 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new Ore());
         MinecraftForge.EVENT_BUS.register(new Crop());
         MinecraftForge.EVENT_BUS.register(new Sand());
+
+        MinecraftForge.EVENT_BUS.register(new NoFall());
+        MinecraftForge.EVENT_BUS.register(new AutoClicker());
     }
 }
