@@ -6,6 +6,8 @@ import com.example.examplemod.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -26,24 +28,11 @@ public class RogueSword {
         if (work) {
             Minecraft mc = Minecraft.getMinecraft();
             EntityPlayerSP player = mc.thePlayer;
-            if (tick == 0) {
-                last_slot = player.inventory.currentItem;
-                player.inventory.currentItem = rogueSlot;
-                tick++;
-            }
-            else if (tick == 1) {
-                FindHotbar findHotbar = new FindHotbar();
-                int slot = findHotbar.findSlotInHotbar("Rogue Sword");
-                if (slot == player.inventory.currentItem) {
-                    mc.playerController.sendUseItem(player, mc.theWorld, player.inventory.getCurrentItem());
-                    tick++;
-                }
-            }
-            else if (tick == 2) {
-                player.inventory.currentItem = last_slot;
-                work = false;
-                tick = 0;
-            }
+            last_slot = player.inventory.currentItem;
+            mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(rogueSlot));
+            mc.getNetHandler().getNetworkManager().sendPacket(new C08PacketPlayerBlockPlacement(player.inventory.getCurrentItem()));
+            mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
+            work = false;
         }
     }
 

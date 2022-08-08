@@ -6,8 +6,12 @@ import com.example.examplemod.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -17,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AspectoftheEnd {
     private int last_slot = 0;
-    private int tick = 0;
+    private int tick = 12;
     private int rogueSlot = -1;
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
@@ -25,23 +29,19 @@ public class AspectoftheEnd {
         if (work) {
             Minecraft mc = Minecraft.getMinecraft();
             EntityPlayerSP player = mc.thePlayer;
-            if (tick == 0) {
+            if (tick >= 12 && rogueSlot != -1 && Main.keyBindings[2].isKeyDown()) {
                 last_slot = player.inventory.currentItem;
-                player.inventory.currentItem = rogueSlot;
+                mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(rogueSlot));
+                mc.getNetHandler().getNetworkManager().sendPacket(new C08PacketPlayerBlockPlacement(player.inventory.getCurrentItem()));
+                mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
+                tick = 0;
+            }
+            else if (tick < 12 && rogueSlot != -1 && Main.keyBindings[2].isKeyDown()) {
                 tick++;
             }
-            else if (tick == 1) {
-                FindHotbar findHotbar = new FindHotbar();
-                int slot = findHotbar.findSlotInHotbar("Aspect of the End");
-                if (slot == player.inventory.currentItem) {
-                    mc.playerController.sendUseItem(player, mc.theWorld, player.inventory.getCurrentItem());
-                    tick++;
-                }
-            }
-            else if (tick == 2) {
-                player.inventory.currentItem = last_slot;
-                work = false;
-                tick = 0;
+            else
+            {
+                tick = 12;
             }
         }
     }
@@ -70,6 +70,7 @@ public class AspectoftheEnd {
             }
             else
             {
+                rogueSlot = -1;
                 player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Not enough MP"));
             }
         }
