@@ -8,5 +8,7 @@
     "MixinNetworkManager",
     "MixinMinecraft"
   ],
-  "client": []
+  "client": [
+    "MixinFMLHandShake"
+  ]
 }
