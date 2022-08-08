@@ -65,12 +65,12 @@ public class AspectoftheEnd {
                 } else {
                     tick = 0;
                     work = false;
-                    player.addChatMessage(new ChatComponentText("Aspect of the End not found"));
+                    player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Aspect of the End not found"));
                 }
             }
             else
             {
-                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED +  "Not enough MP"));
+                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Not enough MP"));
             }
         }
     }
@@ -91,7 +91,7 @@ public class AspectoftheEnd {
             else {
                 tick = 0;
                 work = false;
-                player.addChatMessage(new ChatComponentText("Aspect of the End not found"));
+                player.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Aspect of the End not found"));
             }
         }
     }

@@ -325,36 +325,38 @@ public class DataExtractor {
      */
 
     private void ProcessScoreBoardData() {
-        try {
-            scoreBoardData.ExtraInfo.clear();
+        if (Main.mc.thePlayer != null) {
+            try {
+                scoreBoardData.ExtraInfo.clear();
 
-            int size = scoreBoardLines.size() - 1;
+                int size = scoreBoardLines.size() - 1;
 
-            isInTheCatacombs = false;
+                isInTheCatacombs = false;
 
-            for (int i = 0;i < scoreBoardLines.size();i++){
-                if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size-i).toLowerCase(),clearedName)) {
-                    isInTheCatacombs = true;
+                for (int i = 0; i < scoreBoardLines.size(); i++) {
+                    if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size - i).toLowerCase(), clearedName)) {
+                        isInTheCatacombs = true;
+                    }
+                    if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size - i).toLowerCase(), combatZoneName) && !scoreBoardLines.get(size - i).toLowerCase().contains("to")) {
+                        isInTheCatacombs = true;
+                    }
                 }
-                if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size-i).toLowerCase(),combatZoneName) && !scoreBoardLines.get(size-i).toLowerCase().contains("to")) {
-                    isInTheCatacombs = true;
+
+                ScoreboardParser(scoreBoardData, scoreBoardLines);
+
+                scoreBoardData.ExtraInfo.add(" ");
+
+                alreadyShowedScrErr = false;
+                lastDate = scoreBoardData.Date;
+                lastZone = scoreBoardData.Zone;
+                lastHour = scoreBoardData.Hour;
+            } catch (Exception err) {
+                if (!alreadyShowedScrErr) {
+                    ApecUtils.showMessage("[\u00A72Apec\u00A7f] There was an error processing scoreboard data!");
+                    alreadyShowedScrErr = true;
                 }
+                err.printStackTrace();
             }
-
-            ScoreboardParser(scoreBoardData, scoreBoardLines);
-
-            scoreBoardData.ExtraInfo.add(" ");
-
-            alreadyShowedScrErr = false;
-            lastDate = scoreBoardData.Date;
-            lastZone = scoreBoardData.Zone;
-            lastHour = scoreBoardData.Hour;
-        } catch (Exception err) {
-            if (!alreadyShowedScrErr) {
-                ApecUtils.showMessage("[\u00A72Apec\u00A7f] There was an error processing scoreboard data!");
-                alreadyShowedScrErr = true;
-            }
-            err.printStackTrace();
         }
     }
 

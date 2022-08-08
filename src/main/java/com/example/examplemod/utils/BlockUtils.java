@@ -14,10 +14,9 @@ public class BlockUtils {
     public static ArrayList<BlockPos> getNearestBlocks(ArrayList<Block> blocks, double range)
     {
         ArrayList<BlockPos> blocks2 = new ArrayList<>();
-        double r = 6;
         BlockPos playerPos = Main.mc.thePlayer.getPosition();
         playerPos = playerPos.add(0, 1, 0);
-        Vec3i vec3i = new Vec3i(r, r, r);
+        Vec3i vec3i = new Vec3i(range, range, range);
         Iterable<BlockPos> blocks3 = BlockPos.getAllInBox(playerPos.add(vec3i), playerPos.subtract(vec3i));
         for (BlockPos block2 : blocks3) {
             Block block3 = Main.mc.theWorld.getBlockState(block2).getBlock();

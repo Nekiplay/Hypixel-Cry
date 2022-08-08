@@ -11,6 +11,10 @@ import java.util.Comparator;
 public class Config extends Vigilant {
     public static Config INSTANCE = new Config();
 
+    @Property(type = PropertyType.SWITCH, name = "Test", description = "Test.",
+            category = "Test", subcategory = "Test")
+    public boolean Test = true;
+
     @Property(type = PropertyType.SWITCH, name = "Replanish support", description = "Better work replanish.",
             category = "Crop Nuker", subcategory = "General")
     public boolean CropNukerReplanish = true;

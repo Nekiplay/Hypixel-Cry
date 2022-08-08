@@ -2,13 +2,13 @@ package com.example.examplemod;
 
 import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.proxy.CommonProxy;
+import com.example.examplemod.utils.world.TickRate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -40,8 +40,8 @@ public class Main
 
     public DataExtractor dataExtractor = new DataExtractor();
 
-    public static final String MODID = "examplemod";
-    public static final String VERSION = "1.0";
+    public static final String MODID = "hypixelcry";
+    public static final String VERSION = "1.1";
 
     public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
 
@@ -72,6 +72,7 @@ public class Main
     {
         MinecraftForge.EVENT_BUS.register(dataExtractor);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);
         proxy.init(event);
     }
 

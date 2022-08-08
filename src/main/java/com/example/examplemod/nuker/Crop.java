@@ -6,6 +6,7 @@ import com.example.examplemod.utils.BlockUtils;
 import com.example.examplemod.utils.Perlin2D;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
+import com.example.examplemod.utils.world.TickRate;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -76,6 +77,9 @@ public class Crop {
     }
 
     private void breakCrop(BlockPos crop) {
+        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1) {
+            return;
+        }
         InventoryPlayer inventory = Main.mc.thePlayer.inventory;
         ItemStack currentItem = inventory.getCurrentItem();
         breakCrop = crop;

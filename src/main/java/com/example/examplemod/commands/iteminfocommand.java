@@ -2,6 +2,7 @@ package com.example.examplemod.commands;
 
 import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.Main;
+import com.example.examplemod.utils.world.TickRate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandBase;
