@@ -1,6 +1,7 @@
 package com.example.examplemod.proxy;
 
 import com.example.examplemod.MacrosRegister;
+import com.example.examplemod.commands.BlockInfo;
 import com.example.examplemod.commands.OpenSettings;
 import com.example.examplemod.commands.TPS;
 import com.example.examplemod.commands.iteminfocommand;
@@ -46,6 +47,8 @@ public class ClientProxy extends CommonProxy {
         new MacrosRegister().register(event);
 
         ClientCommandHandler.instance.registerCommand(new TPS());
+        ClientCommandHandler.instance.registerCommand(new BlockInfo());
+
         ClientCommandHandler.instance.registerCommand(new iteminfocommand());
         ClientCommandHandler.instance.registerCommand(new OpenSettings());
         super.init(event);

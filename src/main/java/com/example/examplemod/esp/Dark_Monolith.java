@@ -103,7 +103,7 @@ public class Dark_Monolith {
                 found = false;
             }
             else if (egg != null && !found){
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\nPosition X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\n" + Main.prefix + EnumChatFormatting.DARK_PURPLE + "Position X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
                 found = true;
             }
         }

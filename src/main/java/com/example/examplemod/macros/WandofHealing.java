@@ -28,9 +28,13 @@ public class WandofHealing {
             Minecraft mc = Minecraft.getMinecraft();
             EntityPlayerSP player = mc.thePlayer;
             last_slot = player.inventory.currentItem;
-            mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(rogueSlot));
+            if (rogueSlot != player.inventory.currentItem) {
+                mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(rogueSlot));
+            }
             mc.getNetHandler().getNetworkManager().sendPacket(new C08PacketPlayerBlockPlacement(player.inventory.getCurrentItem()));
-            mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
+            if (rogueSlot != player.inventory.currentItem) {
+                mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
+            }
             work = false;
         }
     }

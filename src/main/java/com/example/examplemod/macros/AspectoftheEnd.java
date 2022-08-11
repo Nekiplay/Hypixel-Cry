@@ -31,9 +31,13 @@ public class AspectoftheEnd {
             EntityPlayerSP player = mc.thePlayer;
             if (tick >= 12 && rogueSlot != -1 && Main.keyBindings[2].isKeyDown()) {
                 last_slot = player.inventory.currentItem;
-                mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(rogueSlot));
+                if (rogueSlot != player.inventory.currentItem) {
+                    mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(rogueSlot));
+                }
                 mc.getNetHandler().getNetworkManager().sendPacket(new C08PacketPlayerBlockPlacement(player.inventory.getCurrentItem()));
-                mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
+                if (rogueSlot != player.inventory.currentItem) {
+                    mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
+                }
                 tick = 0;
             }
             else if (tick < 12 && rogueSlot != -1 && Main.keyBindings[2].isKeyDown()) {

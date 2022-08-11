@@ -35,6 +35,10 @@ public class Config extends Vigilant {
             category = "Crop Nuker", subcategory = "General")
     public boolean CropNukerRemover = false;
 
+    @Property(type = PropertyType.SWITCH, name = "TPS Check", description = "Dont break if server lag.",
+            category = "Crop Nuker", subcategory = "General")
+    public boolean CropLagGuard = true;
+
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Foraging Nuker", subcategory = "General", min = 1, max = 8)
     public int ForagingNukerBlockPesTick = 4;

@@ -3,7 +3,6 @@ package com.example.examplemod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 
 public class FindHotbar {
 

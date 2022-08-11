@@ -6,7 +6,8 @@
   "refmap": "mixins.hypixelcry.refmap.json",
   "mixins": [
     "MixinNetworkManager",
-    "MixinMinecraft"
+    "MixinMinecraft",
+    "MixinPlayerControllerMP"
   ],
   "client": [
     "MixinFMLHandShake"

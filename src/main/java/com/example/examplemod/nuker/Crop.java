@@ -77,7 +77,7 @@ public class Crop {
     }
 
     private void breakCrop(BlockPos crop) {
-        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1) {
+        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.CropLagGuard) {
             return;
         }
         InventoryPlayer inventory = Main.mc.thePlayer.inventory;

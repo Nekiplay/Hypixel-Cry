@@ -10,7 +10,6 @@ import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion(ForgeVersion.mcVersion)
 public class FMLLoadingPlugin implements IFMLLoadingPlugin {
-
     @Override
     public String[] getASMTransformerClass() {
         return new String[0];
