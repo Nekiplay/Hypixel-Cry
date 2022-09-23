@@ -1,7 +1,9 @@
 package com.example.examplemod.nuker;
 
 import com.example.examplemod.DataInterpretation.DataExtractor;
+import com.example.examplemod.FindHotbar;
 import com.example.examplemod.Main;
+import com.example.examplemod.utils.ExposedBlock;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;
@@ -10,9 +12,11 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.*;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 
 public class Sand {
     private int shovel_tick = 0;
+    private int ground_tick = 0;
     private static BlockPos blockPos;
     public boolean work = false;
     private static final ArrayList<BlockPos> broken = new ArrayList<>();
@@ -38,35 +43,50 @@ public class Sand {
             }
 
 
-            if (Main.mc.thePlayer.onGround)
+            if (Main.mc.thePlayer.onGround && ground_tick > 4)
             {
                 InventoryPlayer inventory = Main.mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
-                    if (boostTicks > Main.configFile.SandNukerBoostTicks)
-                    {
+                if (!Main.configFile.SandGhostShovel) {
+                    if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
+                        if (boostTicks > Main.configFile.SandNukerBoostTicks) {
+                            for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
+                                BlockPos near = getSand();
+                                breakSand(near);
+                            }
+                            boostTicks = 0;
+                        } else {
+                            BlockPos near = getSand();
+                            breakSand(near);
+                            boostTicks++;
+                        }
+                    }
+                    if (currentItem != null && currentItem.getItem() instanceof ItemSpade) {
+                        shovel_tick++;
+                    } else {
+                        shovel_tick = 0;
+                    }
+                }
+                else {
+                    if (boostTicks > Main.configFile.SandNukerBoostTicks) {
                         for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
                             BlockPos near = getSand();
                             breakSand(near);
                         }
                         boostTicks = 0;
-                    }
-                    else
-                    {
+                    } else {
                         BlockPos near = getSand();
                         breakSand(near);
                         boostTicks++;
                     }
                 }
-                if (currentItem != null && currentItem.getItem() instanceof ItemSpade)
-                {
-                    shovel_tick++;
-                }
-                else
-                {
-                    shovel_tick = 0;
-                }
+            }
+            else if (Main.mc.thePlayer.onGround) {
+                ground_tick++;
+            }
+            else if (!Main.mc.thePlayer.onGround) {
+                ground_tick = 0;
             }
         }
     }
@@ -81,12 +101,23 @@ public class Sand {
     private void breakSand(BlockPos pos) {
         blockPos = pos;
         if (pos != null) {
-            Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
+            int last_slot = Main.mc.thePlayer.inventory.currentItem;
+            if (Main.configFile.SandGhostShovel) {
+                FindHotbar findHotbar = new FindHotbar();
+                int shovel_slot = findHotbar.findSlotInHotbar(Items.golden_shovel);
+                if (shovel_slot == -1)
+                    shovel_slot = findHotbar.findSlotInHotbar(Items.diamond_shovel);
+                if (shovel_slot != -1)
+                    Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(shovel_slot));
+            }
+            Main.mc.getNetHandler().getNetworkManager().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
+            if (Main.configFile.SandGhostShovel) {
+                Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
+            }
             DataExtractor extractor = Main.getInstance().dataExtractor;
             if (extractor.getScoreBoardData().Zone.contains("Your")) {
                 Main.mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
-            }
-            else {
+            } else {
                 Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
             }
 
@@ -102,6 +133,10 @@ public class Sand {
             PlayerUtils.swingItem();
             broken.add(pos);
         }
+        else
+        {
+            PlayerUtils.swingItem();
+        }
     }
 
     private BlockPos getSand() {
@@ -113,15 +148,26 @@ public class Sand {
         Vec3i vec3i = new Vec3i(r, r, r);
         Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(vec3i), playerPos.subtract(vec3i));
         for (BlockPos blockPos : blocks) {
+            ExposedBlock exposedBlock = new ExposedBlock(blockPos);
             IBlockState block = Main.mc.theWorld.getBlockState(blockPos);
             if (block.getBlock() == Blocks.sand) {
                 if (!broken.contains(blockPos)) {
-                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    if (Main.configFile.SandExposed && exposedBlock.IsExposed()) {
+                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    }
+                    else if (Main.configFile.SandNotExposed && exposedBlock.IsNotExposed()) {
+                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    }
                 }
             }
             else if (block.getBlock() == Blocks.farmland) {
                 if (!broken.contains(blockPos)) {
-                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    if (Main.configFile.SandExposed && exposedBlock.IsExposed()) {
+                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    }
+                    else if (Main.configFile.SandNotExposed && exposedBlock.IsNotExposed()) {
+                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    }
                 }
             }
         }

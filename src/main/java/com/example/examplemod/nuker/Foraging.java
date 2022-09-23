@@ -27,6 +27,7 @@ import static com.example.examplemod.utils.Perlin2D.PerlinNoice;
 
 public class Foraging {
     private int shovel_tick = 0;
+    private int ground_tick = 0;
     private static BlockPos blockPos;
     public boolean work = false;
     private static final ArrayList<BlockPos> broken = new ArrayList<>();
@@ -40,7 +41,7 @@ public class Foraging {
             }
 
 
-            if (Main.mc.thePlayer.onGround)
+            if (Main.mc.thePlayer.onGround && ground_tick > 4)
             {
                 InventoryPlayer inventory = Main.mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
@@ -69,6 +70,12 @@ public class Foraging {
                 {
                     shovel_tick = 0;
                 }
+            }
+            else if (Main.mc.thePlayer.onGround) {
+                ground_tick++;
+            }
+            else if (!Main.mc.thePlayer.onGround) {
+                ground_tick = 0;
             }
         }
     }

@@ -17,15 +17,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinPlayerControllerMP {
     @Inject(method = "windowClick", at = @At("HEAD"))
     private void windowClick(int windowId, int slotId, int mouseButtonClicked, int mode, EntityPlayer playerIn, CallbackInfoReturnable<ItemStack> cir) {
-        if (MinecraftForge.EVENT_BUS.post(new WindowClick(windowId, slotId, mouseButtonClicked, mode, playerIn))) {
-            cir.cancel();
+        WindowClick windowClick = new WindowClick(windowId, slotId, mouseButtonClicked, mode, playerIn);
+        MinecraftForge.EVENT_BUS.post(windowClick);
+        if (windowClick.isCancelable()) {
+            if (cir.isCancellable() && !cir.isCancelled() && !windowClick.isCanceled())
+                cir.cancel();
         }
     }
 
     @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
     private void attackEntity(EntityPlayer playerIn, Entity targetEntity, CallbackInfo ci) {
-        if (MinecraftForge.EVENT_BUS.post(new AttackEntity(playerIn, targetEntity))) {
-            ci.cancel();
+        AttackEntity attackEntity = new AttackEntity(playerIn, targetEntity);
+        MinecraftForge.EVENT_BUS.post(attackEntity);
+        if (attackEntity.isCancelable()) {
+            if (ci.isCancellable() && !ci.isCancelled() && attackEntity.isCanceled())
+                ci.cancel();
         }
     }
 }

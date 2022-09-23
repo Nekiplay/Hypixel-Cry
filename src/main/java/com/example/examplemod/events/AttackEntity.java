@@ -2,9 +2,11 @@ package com.example.examplemod.events;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-public class AttackEntity extends Event {
+@Cancelable
+public class AttackEntity extends Event  {
     public EntityPlayer player;
     public Entity attacked;
 

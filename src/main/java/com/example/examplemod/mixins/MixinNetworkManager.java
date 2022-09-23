@@ -14,14 +14,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinNetworkManager {
     @Inject(method = "sendPacket(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
     private void onSendPacket(Packet<?> packet, CallbackInfo callbackInfo) {
-        if (MinecraftForge.EVENT_BUS.post(new PacketEvent.Send(packet))) {
+        PacketEvent.Send send = new PacketEvent.Send(packet);
+        MinecraftForge.EVENT_BUS.post(send);
+        if (send.isCanceled())
             callbackInfo.cancel();
-        }
     }
     @Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true)
     private void onReceivePacket(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
-        if (MinecraftForge.EVENT_BUS.post(new PacketEvent.Recive(packet))) {
+        PacketEvent.Recive recive = new PacketEvent.Recive(packet);
+        MinecraftForge.EVENT_BUS.post(recive);
+        if (recive.isCanceled())
             ci.cancel();
-        }
     }
 }

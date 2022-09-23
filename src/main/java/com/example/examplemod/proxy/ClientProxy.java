@@ -1,10 +1,7 @@
 package com.example.examplemod.proxy;
 
 import com.example.examplemod.MacrosRegister;
-import com.example.examplemod.commands.BlockInfo;
-import com.example.examplemod.commands.OpenSettings;
-import com.example.examplemod.commands.TPS;
-import com.example.examplemod.commands.iteminfocommand;
+import com.example.examplemod.commands.*;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -46,6 +43,7 @@ public class ClientProxy extends CommonProxy {
 
         new MacrosRegister().register(event);
 
+        ClientCommandHandler.instance.registerCommand(new SetAngle());
         ClientCommandHandler.instance.registerCommand(new TPS());
         ClientCommandHandler.instance.registerCommand(new BlockInfo());
 

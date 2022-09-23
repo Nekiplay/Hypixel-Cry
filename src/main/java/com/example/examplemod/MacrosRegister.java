@@ -1,5 +1,6 @@
 package com.example.examplemod;
 
+import com.example.examplemod.auto.HideAttack;
 import com.example.examplemod.auto.NoFall;
 import com.example.examplemod.esp.Dark_Monolith;
 import com.example.examplemod.macros.AspectoftheEnd;
@@ -29,6 +30,7 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new Crop());
         MinecraftForge.EVENT_BUS.register(new Sand());
 
+        MinecraftForge.EVENT_BUS.register(new HideAttack());
         MinecraftForge.EVENT_BUS.register(new NoFall());
         MinecraftForge.EVENT_BUS.register(new AutoClicker());
     }

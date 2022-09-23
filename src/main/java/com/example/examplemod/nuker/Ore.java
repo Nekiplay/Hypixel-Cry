@@ -34,39 +34,39 @@ public class Ore {
         if (work) {
             ores.clear();
 
-            if (Main.configFile.Coal) {
+            if (Main.configFile.OreCoal) {
                 ores.add(Blocks.coal_ore);
                 ores.add(Blocks.coal_block);
             }
-            if (Main.configFile.Iron) {
+            if (Main.configFile.OreIron) {
                 ores.add(Blocks.iron_ore);
                 ores.add(Blocks.iron_block);
             }
-            if (Main.configFile.Gold) {
+            if (Main.configFile.OreGold) {
                 ores.add(Blocks.gold_ore);
                 ores.add(Blocks.gold_block);
             }
-            if (Main.configFile.Diamond) {
+            if (Main.configFile.OreDiamond) {
                 ores.add(Blocks.diamond_ore);
                 ores.add(Blocks.diamond_block);
             }
-            if (Main.configFile.Emerald) {
+            if (Main.configFile.OreEmerald) {
                 ores.add(Blocks.emerald_ore);
                 ores.add(Blocks.emerald_block);
             }
-            if (Main.configFile.Redstone) {
+            if (Main.configFile.OreRedstone) {
                 ores.add(Blocks.lit_redstone_ore);
                 ores.add(Blocks.redstone_ore);
                 ores.add(Blocks.redstone_block);
             }
-            if (Main.configFile.Lapis) {
+            if (Main.configFile.OreLapis) {
                 ores.add(Blocks.lapis_ore);
                 ores.add(Blocks.lapis_block);
             }
-            if (Main.configFile.Stone) {
+            if (Main.configFile.OreStone) {
                 ores.add(Blocks.stone);
             }
-            if (Main.configFile.Cobblestone) {
+            if (Main.configFile.OreCobblestone) {
                 ores.add(Blocks.cobblestone);
             }
 
@@ -106,10 +106,10 @@ public class Ore {
                 if (block != Blocks.bedrock && block != Blocks.air && ores.contains(block)) {
                     if (!broken.contains(blockPos)) {
                         ExposedBlock exposedBlock = new ExposedBlock(blockPos);
-                        if (Main.configFile.Exposed && exposedBlock.IsExposed()) {
+                        if (Main.configFile.OreExposed && exposedBlock.IsExposed()) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
-                        else if (Main.configFile.NotExposed && exposedBlock.IsNotExposed()) {
+                        else if (Main.configFile.OreNotExposed && exposedBlock.IsNotExposed()) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
@@ -135,7 +135,7 @@ public class Ore {
                     damage = damageReset;
                     broken.add(near);
                 }
-                if (!Main.configFile.Instant) {
+                if (!Main.configFile.OreInstant) {
                     currentDamage++;
                 }
             }
@@ -148,7 +148,6 @@ public class Ore {
     @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(InputEvent.KeyInputEvent event)
     {
-        Minecraft mc = Minecraft.getMinecraft();
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[3].isPressed()) {
             if (!work) {
