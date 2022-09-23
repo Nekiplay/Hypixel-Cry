@@ -28,36 +28,40 @@ public class AutoClicker {
             if(System.currentTimeMillis() - lastClickTime < (long) 40 + PerlinNoice(15) - 1) return;
             try {
                 Robot bot = new Robot();
-                switch (Main.mc.objectMouseOver.typeOfHit)
-                {
-                    case ENTITY:
-                        bot.mousePress(InputEvent.BUTTON1_MASK);
-                        bot.mouseRelease(InputEvent.BUTTON1_MASK);
-                        lastClickTime = System.currentTimeMillis();
-                        break;
-                    case MISS:
-                        bot.mousePress(InputEvent.BUTTON1_MASK);
-                        bot.mouseRelease(InputEvent.BUTTON1_MASK);
-                        lastClickTime = System.currentTimeMillis();
-                        break;
-                    case BLOCK:
-                        if (Main.mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemBlock) {
-                            bot.mousePress(InputEvent.BUTTON2_MASK);
-                            bot.mouseRelease(InputEvent.BUTTON2_MASK);
-                            lastClickTime = System.currentTimeMillis();
-                        }
-                        else
-                        {
+                if (Main.mc.objectMouseOver == null) {
+                    bot.mousePress(InputEvent.BUTTON1_MASK);
+                    bot.mouseRelease(InputEvent.BUTTON1_MASK);
+                    lastClickTime = System.currentTimeMillis();
+                }
+                else {
+                    switch (Main.mc.objectMouseOver.typeOfHit) {
+                        case ENTITY:
                             bot.mousePress(InputEvent.BUTTON1_MASK);
                             bot.mouseRelease(InputEvent.BUTTON1_MASK);
                             lastClickTime = System.currentTimeMillis();
-                        }
-                        break;
-                    default:
-                        bot.mousePress(InputEvent.BUTTON1_MASK);
-                        bot.mouseRelease(InputEvent.BUTTON1_MASK);
-                        lastClickTime = System.currentTimeMillis();
-                        break;
+                            break;
+                        case MISS:
+                            bot.mousePress(InputEvent.BUTTON1_MASK);
+                            bot.mouseRelease(InputEvent.BUTTON1_MASK);
+                            lastClickTime = System.currentTimeMillis();
+                            break;
+                        case BLOCK:
+                            if (Main.mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBlock) {
+                                bot.mousePress(InputEvent.BUTTON2_MASK);
+                                bot.mouseRelease(InputEvent.BUTTON2_MASK);
+                                lastClickTime = System.currentTimeMillis();
+                            } else {
+                                bot.mousePress(InputEvent.BUTTON1_MASK);
+                                bot.mouseRelease(InputEvent.BUTTON1_MASK);
+                                lastClickTime = System.currentTimeMillis();
+                            }
+                            break;
+                        default:
+                            bot.mousePress(InputEvent.BUTTON1_MASK);
+                            bot.mouseRelease(InputEvent.BUTTON1_MASK);
+                            lastClickTime = System.currentTimeMillis();
+                            break;
+                    }
                 }
             }
             catch (AWTException ignore) { }
