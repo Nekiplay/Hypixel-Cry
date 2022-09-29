@@ -7,27 +7,39 @@ import net.minecraft.item.ItemStack;
 
 public class FindHotbar {
     public int findSlotInHotbar(Item stack) {
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayerSP player = mc.thePlayer;
+        if (stack != null) {
+            Minecraft mc = Minecraft.getMinecraft();
+            EntityPlayerSP player = mc.thePlayer;
 
-        ItemStack stack36 = player.inventory.getStackInSlot(0);
-        ItemStack stack37 = player.inventory.getStackInSlot(1);
-        ItemStack stack38 = player.inventory.getStackInSlot(2);
-        ItemStack stack39 = player.inventory.getStackInSlot(3);
-        ItemStack stack40 = player.inventory.getStackInSlot(4);
-        ItemStack stack41 = player.inventory.getStackInSlot(5);
-        ItemStack stack42 = player.inventory.getStackInSlot(6);
-        ItemStack stack43 = player.inventory.getStackInSlot(7);
-        ItemStack stack44 = player.inventory.getStackInSlot(8);
-        if (stack36.getItem() == stack) { return 0; }
-        else if (stack37.getItem() == stack) { return 1; }
-        else if (stack38.getItem() == stack) { return 2; }
-        else if (stack39.getItem() == stack) { return 3; }
-        else if (stack40.getItem() == stack) { return 4; }
-        else if (stack41.getItem() == stack) { return 5; }
-        else if (stack42.getItem() == stack) { return 6; }
-        else if (stack43.getItem() == stack) { return 7; }
-        else if (stack44.getItem() == stack) { return 8; }
+            ItemStack stack36 = player.inventory.getStackInSlot(0);
+            ItemStack stack37 = player.inventory.getStackInSlot(1);
+            ItemStack stack38 = player.inventory.getStackInSlot(2);
+            ItemStack stack39 = player.inventory.getStackInSlot(3);
+            ItemStack stack40 = player.inventory.getStackInSlot(4);
+            ItemStack stack41 = player.inventory.getStackInSlot(5);
+            ItemStack stack42 = player.inventory.getStackInSlot(6);
+            ItemStack stack43 = player.inventory.getStackInSlot(7);
+            ItemStack stack44 = player.inventory.getStackInSlot(8);
+            if (stack36 != null && stack36.getItem() == stack) {
+                return 0;
+            } else if (stack37 != null && stack37.getItem() == stack) {
+                return 1;
+            } else if (stack38 != null && stack38.getItem() == stack) {
+                return 2;
+            } else if (stack39 != null && stack39.getItem() == stack) {
+                return 3;
+            } else if (stack40 != null && stack40.getItem() == stack) {
+                return 4;
+            } else if (stack41 != null && stack41.getItem() == stack) {
+                return 5;
+            } else if (stack42 != null && stack42.getItem() == stack) {
+                return 6;
+            } else if (stack43 != null && stack43.getItem() == stack) {
+                return 7;
+            } else if (stack44 != null && stack44.getItem() == stack) {
+                return 8;
+            }
+        }
         return 0;
     }
     public int findSlotInHotbar(ItemStack stack) {

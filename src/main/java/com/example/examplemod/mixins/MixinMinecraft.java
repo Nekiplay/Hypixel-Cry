@@ -15,11 +15,5 @@ public class MixinMinecraft {
     @Inject(method = "startGame", at = @At("HEAD"))
     private void preinit(CallbackInfo ci) {
         System.out.println("Hypixel Cry Mixin: Preinit");
-    }
-    @Inject(method = "startGame", at = @At("HEAD"))
-    private void clickMouse(CallbackInfo ci) {
-        if (MinecraftForge.EVENT_BUS.post(new LeftClick())) {
-            ci.cancel();
-        }
-    }
+    }   
 }

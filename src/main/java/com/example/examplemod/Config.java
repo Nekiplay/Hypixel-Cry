@@ -119,13 +119,11 @@ public class Config extends Vigilant {
     public boolean DwardenMinesDarkMonolithESP = true;
 
     @Property(type = PropertyType.SWITCH, name = "Hide Attack", description = "Ghost switch weapon to hand",
-            category = "Exploits", subcategory = "Enable")
+            category = "Exploits", subcategory = "Hide Attack")
     public boolean HideAttack = true;
     @Property(type = PropertyType.SLIDER, name = "Weapon slot", description = "Weapon hotbar slot",
-            category = "Exploits", subcategory = "Enable", min = 0, max = 8)
+            category = "Exploits", subcategory = "Hide Attack", min = 0, max = 8)
     public int HideAttackWeaponSlot = 0;
-
-
 
     public Config() {
         super(new File("./config/hypixelcry/config.toml"), "HypixelCry", new JVMAnnotationPropertyCollector(), new ConfigSorting());

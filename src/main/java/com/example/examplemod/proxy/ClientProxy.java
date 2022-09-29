@@ -43,6 +43,7 @@ public class ClientProxy extends CommonProxy {
 
         new MacrosRegister().register(event);
 
+        ClientCommandHandler.instance.registerCommand(new RemoteControl());
         ClientCommandHandler.instance.registerCommand(new SetAngle());
         ClientCommandHandler.instance.registerCommand(new TPS());
         ClientCommandHandler.instance.registerCommand(new BlockInfo());

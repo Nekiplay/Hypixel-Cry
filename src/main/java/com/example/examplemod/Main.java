@@ -3,6 +3,7 @@ package com.example.examplemod;
 import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.events.MillisecondEvent;
 import com.example.examplemod.proxy.CommonProxy;
+import com.example.examplemod.remotecontrol.RemoteServer;
 import com.example.examplemod.utils.world.TickRate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -49,6 +50,8 @@ public class Main
     public static final String VERSION = "1.1";
 
     public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
+    public static final String serverprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server" + EnumChatFormatting.GRAY + "] ";
+    public static final String servermsgprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server Message" + EnumChatFormatting.GRAY + "] ";
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

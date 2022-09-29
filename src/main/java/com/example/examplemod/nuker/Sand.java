@@ -150,6 +150,8 @@ public class Sand {
         for (BlockPos blockPos : blocks) {
             ExposedBlock exposedBlock = new ExposedBlock(blockPos);
             IBlockState block = Main.mc.theWorld.getBlockState(blockPos);
+            DataExtractor extractor = Main.getInstance().dataExtractor;
+            //Shepherd
             if (block.getBlock() == Blocks.sand) {
                 if (!broken.contains(blockPos)) {
                     if (Main.configFile.SandExposed && exposedBlock.IsExposed()) {
@@ -160,7 +162,7 @@ public class Sand {
                     }
                 }
             }
-            else if (block.getBlock() == Blocks.farmland) {
+            else if (block.getBlock() == Blocks.farmland && !extractor.getScoreBoardData().Zone.contains("Shepherd")) {
                 if (!broken.contains(blockPos)) {
                     if (Main.configFile.SandExposed && exposedBlock.IsExposed()) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
