@@ -42,9 +42,12 @@ public class AutoClicker {
         if (Main.keyBindings[7].isKeyDown() && Main.mc.thePlayer != null)
         {
             if (System.currentTimeMillis() - lastClickTime > (long) 40 + PerlinNoice(15) - 1) {
-                lastClickTime = System.currentTimeMillis();
-                MinecraftAccessor mc = (MinecraftAccessor) Main.mc;
-                mc.clickMouse();
+                try {
+                    lastClickTime = System.currentTimeMillis();
+                    MinecraftAccessor mc = (MinecraftAccessor) Main.mc;
+                    mc.clickMouse();
+                }
+                catch (Exception ignore) { }
             }
             //bot.mousePress(InputEvent.BUTTON1_MASK);
             //bot.mouseRelease(InputEvent.BUTTON1_MASK);
