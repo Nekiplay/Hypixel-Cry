@@ -14,6 +14,7 @@
 # Features
 ### Commands:
 - /cry - Open settings menu
+- /remotecontrol - For TCP macros
 ### Instant item use:
 - Rogue Sword
 - Wand of Healing
