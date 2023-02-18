@@ -69,6 +69,9 @@ public class Ore {
             if (Main.configFile.OreCobblestone) {
                 ores.add(Blocks.cobblestone);
             }
+            if (Main.configFile.OreIce) {
+                ores.add(Blocks.ice);
+            }
 
             if(currentDamage > damage) {
                 currentDamage = 0;
