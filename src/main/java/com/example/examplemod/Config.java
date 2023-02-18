@@ -114,6 +114,10 @@ public class Config extends Vigilant {
             category = "Ore nuker", subcategory = "Blocks")
     public boolean OreCobblestone = false;
 
+    @Property(type = PropertyType.SWITCH, name = "Ice", description = "Mine ice instantly.",
+            category = "Ore nuker", subcategory = "Blocks")
+    public boolean OreIce = false;
+
     @Property(type = PropertyType.SWITCH, name = "Dark Monolith ESP", description = "Render Dragon Egg in Dwarden Mines",
             category = "ESP", subcategory = "Dwarden Mines", min = 20, max = 120)
     public boolean DwardenMinesDarkMonolithESP = true;
