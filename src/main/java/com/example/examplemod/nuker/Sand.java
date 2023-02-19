@@ -1,11 +1,13 @@
 package com.example.examplemod.nuker;
 
+import akka.actor.dsl.Inbox;
 import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.FindHotbar;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.ExposedBlock;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
+import com.example.examplemod.utils.world.TickRate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -27,40 +29,36 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Sand {
+public class Sand extends GeneralNuker {
     private int shovel_tick = 0;
-    private int ground_tick = 0;
     private static BlockPos blockPos;
     public boolean work = false;
     private static final ArrayList<BlockPos> broken = new ArrayList<>();
     private int boostTicks = 0;
+    private GeneralMiner generalMiner = new GeneralMiner();
+    public Sand() {
+        addBlockToBreak(Blocks.sand);
+    }
+
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
-            if (broken.size() > 5) {
-                broken.clear();
+            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.GeneralNukerTPSGuard) {
                 return;
             }
+            if (broken.size() > 5) {
+                broken.clear();
+            }
 
-
-            if (Main.mc.thePlayer.onGround && ground_tick > 4)
-            {
+            if (generalMiner.AllowInstantMining()) {
                 InventoryPlayer inventory = Main.mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
+                Main.configFile.ChangeExposedMode(this, Main.configFile.SandExposedMode);
+
                 if (!Main.configFile.SandGhostShovel) {
                     if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
-                        if (boostTicks > Main.configFile.SandNukerBoostTicks) {
-                            for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
-                                BlockPos near = getSand();
-                                breakSand(near);
-                            }
-                            boostTicks = 0;
-                        } else {
-                            BlockPos near = getSand();
-                            breakSand(near);
-                            boostTicks++;
-                        }
+                        BoostAlgorithm();
                     }
                     if (currentItem != null && currentItem.getItem() instanceof ItemSpade) {
                         shovel_tick++;
@@ -69,28 +67,24 @@ public class Sand {
                     }
                 }
                 else {
-                    if (boostTicks > Main.configFile.SandNukerBoostTicks) {
-                        for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
-                            BlockPos near = getSand();
-                            breakSand(near);
-                        }
-                        boostTicks = 0;
-                    } else {
-                        BlockPos near = getSand();
-                        breakSand(near);
-                        boostTicks++;
-                    }
+                    BoostAlgorithm();
                 }
-            }
-            else if (Main.mc.thePlayer.onGround) {
-                ground_tick++;
-            }
-            else if (!Main.mc.thePlayer.onGround) {
-                ground_tick = 0;
             }
         }
     }
-
+    private void BoostAlgorithm() {
+        if (boostTicks > Main.configFile.SandNukerBoostTicks) {
+            for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
+                BlockPos near = getClosestBlock(getBlocks());
+                breakSand(near);
+            }
+            boostTicks = 0;
+        } else {
+            BlockPos near = getClosestBlock(getBlocks());
+            breakSand(near);
+            boostTicks++;
+        }
+    }
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
@@ -139,56 +133,7 @@ public class Sand {
         }
     }
 
-    private BlockPos getSand() {
-        Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
-        ArrayList<Vec3> warts = new ArrayList<>();
-        double r = 6;
-        BlockPos playerPos = Main.mc.thePlayer.getPosition();
-        playerPos = playerPos.add(0, 1, 0);
-        Vec3i vec3i = new Vec3i(r, r, r);
-        Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(vec3i), playerPos.subtract(vec3i));
-        for (BlockPos blockPos : blocks) {
-            ExposedBlock exposedBlock = new ExposedBlock(blockPos);
-            IBlockState block = Main.mc.theWorld.getBlockState(blockPos);
-            DataExtractor extractor = Main.getInstance().dataExtractor;
-            //Shepherd
-            if (block.getBlock() == Blocks.sand) {
-                if (!broken.contains(blockPos)) {
-                    if (Main.configFile.SandExposed && exposedBlock.IsExposed()) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    }
-                    else if (Main.configFile.SandNotExposed && exposedBlock.IsNotExposed()) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    }
-                }
-            }
-            else if (block.getBlock() == Blocks.farmland && !extractor.getScoreBoardData().Zone.contains("Shepherd")) {
-                if (!broken.contains(blockPos)) {
-                    if (Main.configFile.SandExposed && exposedBlock.IsExposed()) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    }
-                    else if (Main.configFile.SandNotExposed && exposedBlock.IsNotExposed()) {
-                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    }
-                }
-            }
-        }
 
-
-        double smallest = 9999;
-        Vec3 closest = null;
-        for (Vec3 wart : warts) {
-            double dist = wart.distanceTo(playerVec);
-            if (dist < smallest) {
-                smallest = dist;
-                closest = wart;
-            }
-        }
-        if (closest != null && smallest < 5) {
-            return new BlockPos(closest.xCoord, closest.yCoord, closest.zCoord);
-        }
-        return null;
-    }
 
     @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(InputEvent.KeyInputEvent event)

@@ -1,5 +1,6 @@
 package com.example.examplemod;
 
+import com.example.examplemod.nuker.GeneralNuker;
 import gg.essential.vigilance.Vigilant;
 import gg.essential.vigilance.data.*;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,10 @@ import java.util.Comparator;
 
 public class Config extends Vigilant {
     public static Config INSTANCE = new Config();
+
+    @Property(type = PropertyType.SWITCH, name = "TPS Check", description = "Dont break if server lag.",
+            category = "General nuker", subcategory = "General")
+    public boolean GeneralNukerTPSGuard = true;
 
     @Property(type = PropertyType.SWITCH, name = "Replanish support", description = "Better work replanish.",
             category = "Crop nuker", subcategory = "General")
@@ -35,10 +40,6 @@ public class Config extends Vigilant {
             category = "Crop nuker", subcategory = "General")
     public boolean CropNukerRemover = false;
 
-    @Property(type = PropertyType.SWITCH, name = "TPS Check", description = "Dont break if server lag.",
-            category = "Crop nuker", subcategory = "General")
-    public boolean CropLagGuard = true;
-
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Foraging nuker", subcategory = "General", min = 1, max = 8)
     public int ForagingNukerBlockPesTick = 4;
@@ -46,77 +47,71 @@ public class Config extends Vigilant {
     @Property(type = PropertyType.NUMBER, name = "Boos every ticks", description = "Boost delay",
             category = "Foraging nuker", subcategory = "General", max = 999999999)
     public int ForagingNukerBoostTicks = 13;
+    @Property(type = PropertyType.SWITCH, name = "Ghost Axe", description = "Ghost switch axe to hand.",
+            category = "Foraging nuker", subcategory = "General")
+    public boolean ForagingNukerGhostAxe = false;
+
 
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Sand nuker", subcategory = "General", min = 1, max = 8)
-    public int SandNukerBlockPesTick = 1;
+    public int SandNukerBlockPesTick = 4;
 
     @Property(type = PropertyType.NUMBER, name = "Boos every ticks", description = "Boost delay",
             category = "Sand nuker", subcategory = "General", max = 999999999)
     public int SandNukerBoostTicks = 13;
-    @Property(type = PropertyType.SWITCH, name = "Exposed", description = "Mine blocks if block contact air.",
-            category = "Sand nuker", subcategory = "General")
-    public boolean SandExposed = false;
-
-    @Property(type = PropertyType.SWITCH, name = "Not Exposed", description = "Mine blocks if block not contact air.",
-            category = "Sand nuker", subcategory = "General")
-    public boolean SandNotExposed = false;
+    @Property(type = PropertyType.SELECTOR, name = "Find mode", description = "Exposed mode",
+            category = "Sand nuker", subcategory = "General", options = {"Hidden", "Visible", "All"})
+    public int SandExposedMode = 2;
     @Property(type = PropertyType.SWITCH, name = "Ghost Shovel", description = "Ghost switch shovel to hand.",
             category = "Sand nuker", subcategory = "General")
     public boolean SandGhostShovel = false;
 
+    @Property(type = PropertyType.SELECTOR, name = "Break mode", description = "Mining mode",
+            category = "Ore nuker", subcategory = "General", options = {"Default", "Instant"})
+    public int OreNukerMode = 0;
 
-    @Property(type = PropertyType.SWITCH, name = "Instant", description = "Use instant mine.",
-            category = "Ore nuker", subcategory = "General")
-    public boolean OreInstant = false;
-
-    @Property(type = PropertyType.SWITCH, name = "Exposed", description = "Mine blocks if block contact air.",
-            category = "Ore nuker", subcategory = "General")
-    public boolean OreExposed = false;
-
-    @Property(type = PropertyType.SWITCH, name = "Not Exposed", description = "Mine blocks if block not contact air.",
-            category = "Ore nuker", subcategory = "General")
-    public boolean OreNotExposed = false;
-
+    @Property(type = PropertyType.SELECTOR, name = "Find mode", description = "Exposed mode",
+            category = "Ore nuker", subcategory = "General", options = {"Hidden", "Visible", "All"})
+    public int OreNukerExposedMode = 2;
     @Property(type = PropertyType.SWITCH, name = "Coal", description = "Mine coal ore and coal block.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreCoal = true;
+    public boolean OreNukerCoal = true;
 
     @Property(type = PropertyType.SWITCH, name = "Iron", description = "Mine iron ore and iron block.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreIron = true;
+    public boolean OreNukerIron = true;
 
     @Property(type = PropertyType.SWITCH, name = "Gold", description = "Mine gold ore and gold block.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreGold = true;
+    public boolean OreNukerGold = true;
 
     @Property(type = PropertyType.SWITCH, name = "Lapis", description = "Mine lapis ore and lapis block.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreLapis = true;
+    public boolean OreNukerLapis = true;
 
     @Property(type = PropertyType.SWITCH, name = "Redstone", description = "Mine redstone ore and redstone block.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreRedstone = true;
+    public boolean OreNukerRedstone = true;
 
     @Property(type = PropertyType.SWITCH, name = "Emerald", description = "Mine emerald ore and emerald block.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreEmerald = true;
+    public boolean OreNukerEmerald = true;
 
     @Property(type = PropertyType.SWITCH, name = "Diamond", description = "Mine diamond ore and diamond block.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreDiamond = true;
+    public boolean OreNukerDiamond = true;
 
     @Property(type = PropertyType.SWITCH, name = "Stone", description = "Mine stone instantly.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreStone = false;
+    public boolean OreNukerStone = false;
 
     @Property(type = PropertyType.SWITCH, name = "Cobblestone", description = "Mine cobblestone instantly.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreCobblestone = false;
+    public boolean OreNukerCobblestone = false;
 
     @Property(type = PropertyType.SWITCH, name = "Ice", description = "Mine ice instantly.",
             category = "Ore nuker", subcategory = "Blocks")
-    public boolean OreIce = false;
+    public boolean OreNukerIce = false;
 
     @Property(type = PropertyType.SWITCH, name = "Dark Monolith ESP", description = "Render Dragon Egg in Dwarden Mines",
             category = "ESP", subcategory = "Dwarden Mines", min = 20, max = 120)
@@ -148,5 +143,23 @@ public class Config extends Vigilant {
                 }
             };
         }
+    }
+
+    public void ChangeExposedMode(GeneralNuker nuker, int index) {
+        boolean exposed = false;
+        boolean notexposed = false;
+        switch (index) {
+            case 0:
+                notexposed = true;
+                break;
+            case 1:
+                notexposed = true;
+                break;
+            case 2:
+                notexposed = true;
+                exposed = true;
+                break;
+        }
+        nuker.changeExposedConfig(exposed, notexposed);
     }
 }

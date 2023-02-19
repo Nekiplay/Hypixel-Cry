@@ -77,7 +77,7 @@ public class Crop {
     }
 
     private void breakCrop(BlockPos crop) {
-        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.CropLagGuard) {
+        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.GeneralNukerTPSGuard) {
             return;
         }
         InventoryPlayer inventory = Main.mc.thePlayer.inventory;
@@ -152,7 +152,7 @@ public class Crop {
             InventoryPlayer inventory = Main.mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
             if (currentItem != null) {
-                if ((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) && hoeTick > 7) {
+                if (((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) && hoeTick > 7) || Main.configFile.CropNukerRemover) {
                     if (boostTicks > Main.configFile.CropNukerBoostTicks)
                     {
                         for (int i = 0; i < Main.configFile.CropNukerBlockPesTick; i++) {

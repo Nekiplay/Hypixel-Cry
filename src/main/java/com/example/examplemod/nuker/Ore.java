@@ -1,77 +1,73 @@
 package com.example.examplemod.nuker;
 
-import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.Main;
-import com.example.examplemod.utils.BlockUtils;
-import com.example.examplemod.utils.ExposedBlock;
+import com.example.examplemod.events.world.BlockUpdateEvent;
 import com.example.examplemod.utils.PlayerUtils;
-import net.minecraft.block.Block;
+import com.example.examplemod.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.*;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.ArrayList;
+import java.awt.*;
 
-public class Ore {
+public class Ore extends GeneralNuker {
     private static BlockPos blockPos;
     private static int currentDamage;
     public boolean work = false;
-    private static final ArrayList<BlockPos> broken = new ArrayList<>();
-
-    private final ArrayList<Block> ores = new ArrayList<>();
     private int damage = 10;
     private final int damageReset = 10;
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (work) {
-            ores.clear();
+        if (work && Main.mc.theWorld != null && Main.mc.thePlayer != null) {
+            clearBlocksToBreak();
 
-            if (Main.configFile.OreCoal) {
-                ores.add(Blocks.coal_ore);
-                ores.add(Blocks.coal_block);
+            if (Main.configFile.OreNukerCoal) {
+                addBlockToBreak(Blocks.coal_ore);
+                addBlockToBreak(Blocks.coal_block);
             }
-            if (Main.configFile.OreIron) {
-                ores.add(Blocks.iron_ore);
-                ores.add(Blocks.iron_block);
+            if (Main.configFile.OreNukerIron) {
+                addBlockToBreak(Blocks.iron_ore);
+                addBlockToBreak(Blocks.iron_block);
             }
-            if (Main.configFile.OreGold) {
-                ores.add(Blocks.gold_ore);
-                ores.add(Blocks.gold_block);
+            if (Main.configFile.OreNukerGold) {
+                addBlockToBreak(Blocks.gold_ore);
+                addBlockToBreak(Blocks.gold_block);
             }
-            if (Main.configFile.OreDiamond) {
-                ores.add(Blocks.diamond_ore);
-                ores.add(Blocks.diamond_block);
+            if (Main.configFile.OreNukerDiamond) {
+                addBlockToBreak(Blocks.diamond_ore);
+                addBlockToBreak(Blocks.diamond_block);
             }
-            if (Main.configFile.OreEmerald) {
-                ores.add(Blocks.emerald_ore);
-                ores.add(Blocks.emerald_block);
+            if (Main.configFile.OreNukerEmerald) {
+                addBlockToBreak(Blocks.emerald_ore);
+                addBlockToBreak(Blocks.emerald_block);
             }
-            if (Main.configFile.OreRedstone) {
-                ores.add(Blocks.lit_redstone_ore);
-                ores.add(Blocks.redstone_ore);
-                ores.add(Blocks.redstone_block);
+            if (Main.configFile.OreNukerRedstone) {
+                addBlockToBreak(Blocks.lit_redstone_ore);
+                addBlockToBreak(Blocks.redstone_ore);
+                addBlockToBreak(Blocks.redstone_block);
             }
-            if (Main.configFile.OreLapis) {
-                ores.add(Blocks.lapis_ore);
-                ores.add(Blocks.lapis_block);
+            if (Main.configFile.OreNukerLapis) {
+                addBlockToBreak(Blocks.lapis_ore);
+                addBlockToBreak(Blocks.lapis_block);
             }
-            if (Main.configFile.OreStone) {
-                ores.add(Blocks.stone);
+            if (Main.configFile.OreNukerStone) {
+                addBlockToBreak(Blocks.stone);
             }
-            if (Main.configFile.OreCobblestone) {
-                ores.add(Blocks.cobblestone);
+            if (Main.configFile.OreNukerCobblestone) {
+                addBlockToBreak(Blocks.cobblestone);
             }
-            if (Main.configFile.OreIce) {
-                ores.add(Blocks.ice);
+            if (Main.configFile.OreNukerIce) {
+                addBlockToBreak(Blocks.ice);
             }
+
+            Main.configFile.ChangeExposedMode(this, Main.configFile.OreNukerExposedMode);
 
             if(currentDamage > damage) {
                 currentDamage = 0;
@@ -80,71 +76,63 @@ public class Ore {
             if (!Main.mc.thePlayer.onGround && currentDamage != 0) {
                 damage += 1;
             }
-            if(broken.size() > 10) {
-                broken.clear();
-            }
-            if(blockPos != null && Main.mc.theWorld != null) {
+            if(blockPos != null) {
                 IBlockState blockState = Main.mc.theWorld.getBlockState(blockPos);
-                if (blockState.getBlock() == Blocks.bedrock || blockState.getBlock() == Blocks.air || !ores.contains(blockState.getBlock())) {
+                Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
+                Vec3 vec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                if (playerVec.distanceTo(vec) > 12) {
                     currentDamage = 0;
                     damage = damageReset;
-                    broken.clear();
+                    blockPos = null;
+                }
+                else if (blockState.getBlock() == Blocks.bedrock || blockState.getBlock() == Blocks.air || !isBlockToBreak(blockState.getBlock())) {
+                    currentDamage = 0;
+                    damage = damageReset;
+                    blockPos = null;
                 }
             }
             else{
                 currentDamage = 0;
                 damage = damageReset;
-                broken.clear();
-            }
-
-            Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
-            ArrayList<Vec3> warts = new ArrayList<>();
-            double r = 8;
-            BlockPos playerPos = Main.mc.thePlayer.getPosition();
-            playerPos = playerPos.add(0, 1, 0);
-            Vec3i vec3i = new Vec3i(r, r, r);
-            Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(vec3i), playerPos.subtract(vec3i));
-            for (BlockPos blockPos : blocks) {
-                Block block = Main.mc.theWorld.getBlockState(blockPos).getBlock();
-                if (block != Blocks.bedrock && block != Blocks.air && ores.contains(block)) {
-                    if (!broken.contains(blockPos)) {
-                        ExposedBlock exposedBlock = new ExposedBlock(blockPos);
-                        if (Main.configFile.OreExposed && exposedBlock.IsExposed()) {
-                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        }
-                        else if (Main.configFile.OreNotExposed && exposedBlock.IsNotExposed()) {
-                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        }
-                    }
-                }
             }
 
 
-            double smallest = 9999;
-            Vec3 closest = null;
-            for (Vec3 wart : warts) {
-                double dist = wart.distanceTo(playerVec);
-                if (dist < smallest) {
-                    smallest = dist;
-                    closest = wart;
-                }
-            }
-            if (closest != null && smallest < 5) {
-                BlockPos near = new BlockPos(closest.xCoord, closest.yCoord, closest.zCoord);
-                if (currentDamage == 0) {
+            if (currentDamage == 0) {
+                BlockPos near = getClosestBlock(getBlocks());
+                if (near != null) {
                     blockPos = near;
                     Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, blockPos, EnumFacing.DOWN));
                     PlayerUtils.swingItem();
                     damage = damageReset;
-                    broken.add(near);
                 }
-                if (!Main.configFile.OreInstant) {
-                    currentDamage++;
-                }
+            }
+            if (Main.configFile.OreNukerMode == 0) {
+                currentDamage++;
             }
         }
         else {
             damage = damageReset;
+        }
+    }
+    @SubscribeEvent
+    public void onRender(RenderWorldLastEvent event) {
+        if (work && blockPos != null) {
+            RenderUtils.drawBlockBox(blockPos, new Color(255, 255, 255), 1, event.partialTicks);
+        }
+    }
+    @SubscribeEvent
+    public void onBlockUpdate(BlockUpdateEvent event) {
+        if (work) {
+            if (isBlockToBreak(event.oldState.getBlock()) && Main.mc.thePlayer != null) {
+                Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
+                Vec3 vec = new Vec3(event.pos.getX(), event.pos.getY(), event.pos.getZ());
+                if (playerVec.distanceTo(vec) <= 12) {
+                    Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, event.pos, EnumFacing.DOWN));
+                    currentDamage = 0;
+                    damage = damageReset;
+                    blockPos = null;
+                }
+            }
         }
     }
 
@@ -155,11 +143,12 @@ public class Ore {
         if (keyBindings[3].isPressed()) {
             if (!work) {
                 work = true;
-                broken.clear();
+                blockPos = null;
                 Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Ore nuker enabled"));
             }
             else {
                 work = false;
+                blockPos = null;
                 Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Ore nuker disabled"));
             }
         }
