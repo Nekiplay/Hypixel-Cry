@@ -123,7 +123,7 @@ public class Ore extends GeneralNuker {
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
         if (work) {
-            if (isBlockToBreak(event.oldState.getBlock()) && Main.mc.thePlayer != null) {
+            if (isBlockToBreak(event.oldState.getBlock()) && !isBlockToBreak(event.newState.getBlock()) && Main.mc.thePlayer != null) {
                 Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
                 Vec3 vec = new Vec3(event.pos.getX(), event.pos.getY(), event.pos.getZ());
                 if (playerVec.distanceTo(vec) <= 12) {
