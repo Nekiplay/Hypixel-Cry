@@ -14,7 +14,7 @@
 # Features
 ### Commands:
 - /cry - Open settings menu
-- /remotecontrol - For TCP macros
+- /remotecontrol - For TCP macros ([Example](https://github.com/Nekiplay/Hypixel-Cry-Macro-Client-Example))
 ### Instant item use:
 - Rogue Sword
 - Wand of Healing
