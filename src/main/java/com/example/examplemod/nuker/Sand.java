@@ -127,10 +127,6 @@ public class Sand extends GeneralNuker {
             PlayerUtils.swingItem();
             broken.add(pos);
         }
-        else
-        {
-            PlayerUtils.swingItem();
-        }
     }
 
 
