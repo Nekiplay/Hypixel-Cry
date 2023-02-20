@@ -25,6 +25,9 @@
 - Sand
 - Ore
 - Foraging
+- Mithril
 
 ### ESP:
 - Dark Monolith in Dwarden Mines
+- Glowing Mushroom
+- Treasure Hunter
