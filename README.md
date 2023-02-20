@@ -5,11 +5,12 @@
 	<br>
 	<a href="https://github.com/Nekiplay/Hypixel-Cry/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/Hypixel-Cry/total" alt="Downloads"/></a>
 	<br/><br/>
+
   	<a href="https://discord.gg/NUCqxgxAnk"><img src="https://invidget.switchblade.xyz/NUCqxgxAnk" alt="Discord server"></a>
 	<br/><br/>
 </div>
 
-![image](https://user-images.githubusercontent.com/35975332/180503502-636029fa-2a09-4968-91f5-05e14b6016d5.png)
+![image](https://user-images.githubusercontent.com/35975332/220020555-ac0d6d83-8312-4faf-a37a-e18200e51a62.png)
 
 # Features
 ### Commands:
