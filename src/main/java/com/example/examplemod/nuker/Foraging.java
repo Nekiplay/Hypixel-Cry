@@ -6,6 +6,7 @@ import com.example.examplemod.events.world.BlockUpdateEvent;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
 import com.example.examplemod.utils.world.TickRate;
+import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -37,9 +38,12 @@ public class Foraging extends GeneralNuker {
     private static final ArrayList<BlockPos> broken = new ArrayList<>();
     private int boostTicks = 0;
     private GeneralMiner generalMiner = new GeneralMiner();
-    public Foraging() {
-        addBlockToBreak(Blocks.log);
-        addBlockToBreak(Blocks.log2);
+    @Override
+    public boolean isBlockToBreak(IBlockState state) {
+        if(state.getBlock() == Blocks.log || state.getBlock() == Blocks.log2) {
+            return true;
+        }
+        return false;
     }
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {

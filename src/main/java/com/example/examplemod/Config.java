@@ -13,9 +13,10 @@ public class Config extends Vigilant {
     public static Config INSTANCE = new Config();
 
     @Property(type = PropertyType.SWITCH, name = "TPS Check", description = "Dont break if server lag.",
-            category = "General nuker", subcategory = "General")
+            category = "General", subcategory = "Nuker's")
     public boolean GeneralNukerTPSGuard = true;
 
+    //region Crop Nuker
     @Property(type = PropertyType.SWITCH, name = "Replanish support", description = "Better work replanish.",
             category = "Crop nuker", subcategory = "General")
     public boolean CropNukerReplanish = true;
@@ -39,7 +40,9 @@ public class Config extends Vigilant {
     @Property(type = PropertyType.SWITCH, name = "Remover", description = "Remove planted crops.",
             category = "Crop nuker", subcategory = "General")
     public boolean CropNukerRemover = false;
+    //endregion
 
+    //region Foraging Nuker
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Foraging nuker", subcategory = "General", min = 1, max = 8)
     public int ForagingNukerBlockPesTick = 4;
@@ -50,8 +53,9 @@ public class Config extends Vigilant {
     @Property(type = PropertyType.SWITCH, name = "Ghost Axe", description = "Ghost switch axe to hand.",
             category = "Foraging nuker", subcategory = "General")
     public boolean ForagingNukerGhostAxe = false;
+    //endregion
 
-
+    //region Sand Nuker
     @Property(type = PropertyType.SLIDER, name = "Max boost", description = "Boost max block per tick speed",
             category = "Sand nuker", subcategory = "General", min = 1, max = 8)
     public int SandNukerBlockPesTick = 4;
@@ -65,7 +69,9 @@ public class Config extends Vigilant {
     @Property(type = PropertyType.SWITCH, name = "Ghost Shovel", description = "Ghost switch shovel to hand.",
             category = "Sand nuker", subcategory = "General")
     public boolean SandGhostShovel = false;
+    //endregion
 
+    //region Ore Nuker
     @Property(type = PropertyType.SELECTOR, name = "Break mode", description = "Mining mode",
             category = "Ore nuker", subcategory = "General", options = {"Default", "Instant"})
     public int OreNukerMode = 0;
@@ -112,10 +118,23 @@ public class Config extends Vigilant {
     @Property(type = PropertyType.SWITCH, name = "Ice", description = "Mine ice instantly.",
             category = "Ore nuker", subcategory = "Blocks")
     public boolean OreNukerIce = false;
+    //endregion
 
+    //region Mithril Nuker
+    @Property(type = PropertyType.SELECTOR, name = "Find mode", description = "Exposed mode",
+            category = "Mithril nuker", subcategory = "General", options = {"Hidden", "Visible", "All"})
+    public int MithrilNukerExposedMode = 2;
+
+    @Property(type = PropertyType.SWITCH, name = "Skip Titanium", description = "Mithril nuker will ignore titanium",
+            category = "Mithril nuker", subcategory = "General")
+    public boolean MithrilNukerIgnoreTitanium = false;
+    //endregion
+
+    //region Dwarden Mines ESP
     @Property(type = PropertyType.SWITCH, name = "Dark Monolith ESP", description = "Render Dragon Egg in Dwarden Mines",
             category = "ESP", subcategory = "Dwarden Mines", min = 20, max = 120)
     public boolean DwardenMinesDarkMonolithESP = true;
+    //endregion
 
     @Property(type = PropertyType.SWITCH, name = "Hide Attack", description = "Ghost switch weapon to hand",
             category = "Exploits", subcategory = "Hide Attack")

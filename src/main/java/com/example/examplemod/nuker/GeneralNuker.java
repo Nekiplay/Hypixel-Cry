@@ -3,6 +3,7 @@ package com.example.examplemod.nuker;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.ExposedBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
@@ -13,25 +14,15 @@ import java.util.ArrayList;
 public class GeneralNuker {
     private boolean isExposed = true;
     private boolean isNotExposed = true;
-    private final ArrayList<Block> mining_blocks = new ArrayList<>();
 
     public void changeExposedConfig(boolean isExposed, boolean isNotExposed) {
         this.isExposed = isExposed;
         this.isNotExposed = isNotExposed;
     }
-    public boolean isBlockToBreak(Block block) {
-        return mining_blocks.contains(block);
-    }
-    public void clearBlocksToBreak() {
-        mining_blocks.clear();
-    }
-    public void addBlockToBreak(Block block) {
-        mining_blocks.add(block);
+    public boolean isBlockToBreak(IBlockState blockState) {
+        return false;
     }
 
-    public void removeBlockToBreak(Block block) {
-        mining_blocks.add(block);
-    }
     private double horizontal_distance = 5.4;
     private double vertical_distance = 7.5;
     public void SetDistance(double horizontal, double vertical) {
@@ -45,8 +36,8 @@ public class GeneralNuker {
         playerPos = playerPos.add(0, 0, 0);
         Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(r, vertical_distance + 1, r), playerPos.subtract(new Vec3i(r, vertical_distance + 1, r)));
         for (BlockPos blockPos : blocks) {
-            Block block = Main.mc.theWorld.getBlockState(blockPos).getBlock();
-            if (block != Blocks.bedrock && block != Blocks.air && mining_blocks.contains(block)) {
+            IBlockState block = Main.mc.theWorld.getBlockState(blockPos);
+            if (block.getBlock() != Blocks.air && isBlockToBreak(block)) {
                 ExposedBlock exposedBlock = new ExposedBlock(blockPos);
                 if (isExposed && exposedBlock.IsExposed()) {
                     temp.add(blockPos);

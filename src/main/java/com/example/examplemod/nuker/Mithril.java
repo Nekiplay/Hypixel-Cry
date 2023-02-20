@@ -4,7 +4,6 @@ import com.example.examplemod.Main;
 import com.example.examplemod.events.world.BlockUpdateEvent;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.settings.KeyBinding;
@@ -19,51 +18,33 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
 
-public class Ore extends GeneralNuker {
+public class Mithril extends GeneralNuker {
     private static BlockPos blockPos;
     private static int currentDamage;
     public boolean work = false;
-    private int damage = 10;
-    private final int damageReset = 10;
+    private int damage = 120;
+    private final int damageReset = 120;
+
     @Override
     public boolean isBlockToBreak(IBlockState state) {
-        Block block = state.getBlock();
-        if ((block.equals(Blocks.coal_ore) || block.equals(Blocks.coal_block)) &&  Main.configFile.OreNukerCoal) {
+        if(state.getBlock() == Blocks.prismarine) {
             return true;
-        }
-        else if ((block.equals(Blocks.iron_ore) || block.equals(Blocks.iron_block)) &&  Main.configFile.OreNukerIron) {
+        } else if(state.getBlock() == Blocks.wool) {
             return true;
-        }
-        else if ((block.equals(Blocks.gold_ore) || block.equals(Blocks.gold_block)) &&  Main.configFile.OreNukerGold) {
+        } else if(state.getBlock() == Blocks.stained_hardened_clay) {
             return true;
-        }
-        else if ((block.equals(Blocks.diamond_ore) || block.equals(Blocks.diamond_block)) &&  Main.configFile.OreNukerDiamond) {
+        } else if(!Main.configFile.MithrilNukerIgnoreTitanium && state.getBlock() == Blocks.stone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.DIORITE_SMOOTH) {
             return true;
-        }
-        else if ((block.equals(Blocks.emerald_ore) || block.equals(Blocks.emerald_block)) &&  Main.configFile.OreNukerEmerald) {
-            return true;
-        }
-        else if ((block.equals(Blocks.lit_redstone_ore) || block.equals(Blocks.redstone_ore) || block.equals(Blocks.redstone_block)) &&  Main.configFile.OreNukerRedstone) {
-            return true;
-        }
-        else if ((block.equals(Blocks.lapis_ore) || block.equals(Blocks.lapis_block)) &&  Main.configFile.OreNukerLapis) {
-            return true;
-        }
-        else if ((block.equals(Blocks.stone)) &&  Main.configFile.OreNukerStone) {
-            return true;
-        }
-        else if ((block.equals(Blocks.cobblestone)) &&  Main.configFile.OreNukerCobblestone) {
-            return true;
-        }
-        else if ((block.equals(Blocks.ice)) &&  Main.configFile.OreNukerIce) {
+        } else if(state.getBlock() == Blocks.gold_block) {
             return true;
         }
         return false;
     }
+
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Main.mc.theWorld != null && Main.mc.thePlayer != null) {
-            Main.configFile.ChangeExposedMode(this, Main.configFile.OreNukerExposedMode);
+            Main.configFile.ChangeExposedMode(this, Main.configFile.MithrilNukerExposedMode);
 
             if(currentDamage > damage) {
                 currentDamage = 0;
@@ -113,7 +94,7 @@ public class Ore extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, new Color(255, 255, 255), 1, event.partialTicks);
+            RenderUtils.drawBlockBox(blockPos, new Color(145, 145, 255), 1, event.partialTicks);
         }
     }
     @SubscribeEvent
@@ -136,20 +117,20 @@ public class Ore extends GeneralNuker {
     public void onEvent(InputEvent.KeyInputEvent event)
     {
         KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[3].isPressed()) {
+        if (keyBindings[8].isPressed()) {
             if (!work) {
                 work = true;
                 currentDamage = 0;
                 damage = damageReset;
                 blockPos = null;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Ore nuker enabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Mithril nuker enabled"));
             }
             else {
                 work = false;
                 currentDamage = 0;
                 damage = damageReset;
                 blockPos = null;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Ore nuker disabled"));
+                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Mithril nuker disabled"));
             }
         }
     }

@@ -8,6 +8,7 @@ import com.example.examplemod.utils.ExposedBlock;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
 import com.example.examplemod.utils.world.TickRate;
+import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -36,8 +37,13 @@ public class Sand extends GeneralNuker {
     private static final ArrayList<BlockPos> broken = new ArrayList<>();
     private int boostTicks = 0;
     private GeneralMiner generalMiner = new GeneralMiner();
-    public Sand() {
-        addBlockToBreak(Blocks.sand);
+
+    @Override
+    public boolean isBlockToBreak(IBlockState state) {
+        if(state.getBlock() == Blocks.sand) {
+            return true;
+        }
+        return false;
     }
 
     @SubscribeEvent

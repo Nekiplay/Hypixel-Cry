@@ -37,6 +37,8 @@ public class ClientProxy extends CommonProxy {
 
         keyBindings[7] = new KeyBinding("Auto Clicker", Keyboard.KEY_X, "Hypixel Cry | Macros");
 
+        keyBindings[8] = new KeyBinding("Mithril nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
+
         for (KeyBinding keyBinding : keyBindings) {
             ClientRegistry.registerKeyBinding(keyBinding);
         }
