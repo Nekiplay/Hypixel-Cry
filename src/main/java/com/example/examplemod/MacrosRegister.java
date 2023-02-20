@@ -3,6 +3,8 @@ package com.example.examplemod;
 import com.example.examplemod.auto.HideAttack;
 import com.example.examplemod.auto.RemoteAccess;
 import com.example.examplemod.esp.Dark_Monolith;
+import com.example.examplemod.esp.Glowing_Mushroom;
+import com.example.examplemod.esp.Treasure_Hunter;
 import com.example.examplemod.macros.AspectoftheEnd;
 import com.example.examplemod.macros.AutoClicker;
 import com.example.examplemod.macros.RogueSword;
@@ -19,7 +21,9 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new AspectoftheEnd());
 
         /* ESP */
+        MinecraftForge.EVENT_BUS.register(new Treasure_Hunter());
         MinecraftForge.EVENT_BUS.register(new Dark_Monolith());
+        MinecraftForge.EVENT_BUS.register(new Glowing_Mushroom());
 
         /* Nuker */
         MinecraftForge.EVENT_BUS.register(new Mithril());

@@ -698,7 +698,6 @@ public class RenderUtils {
 
     public static void drawNametag(String str, double X, double Y, double Z, float partialTicks) {
         GlStateManager.alphaFunc(516, 0.1F);
-
         GlStateManager.pushMatrix();
 
         Entity viewer = Main.mc.getRenderViewEntity();
@@ -722,13 +721,12 @@ public class RenderUtils {
 
         drawNametag(str);
 
-        GlStateManager.rotate(-Main.mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(Main.mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-viewer.rotationYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(viewer.rotationPitch, 1.0F, 0.0F, 0.0F);
         GlStateManager.translate(0, -0.25f, 0);
-        GlStateManager.rotate(-Main.mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(Main.mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-viewer.rotationPitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(viewer.rotationYaw, 0.0F, 1.0F, 0.0F);
         GlStateManager.popMatrix();
-
         GlStateManager.disableLighting();
     }
 

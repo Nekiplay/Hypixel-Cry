@@ -9,4 +9,8 @@ public class BlockUpdateEvent extends Event {
     public BlockPos pos;
     public IBlockState oldState;
     public IBlockState newState;
+
+    public BlockUpdateEvent(BlockPos pos) {
+        this.pos = pos;
+    }
 }

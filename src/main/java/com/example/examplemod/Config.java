@@ -130,10 +130,22 @@ public class Config extends Vigilant {
     public boolean MithrilNukerIgnoreTitanium = false;
     //endregion
 
-    //region Dwarden Mines ESP
+    //region Dark Monolith ESP
     @Property(type = PropertyType.SWITCH, name = "Dark Monolith ESP", description = "Render Dragon Egg in Dwarden Mines",
             category = "ESP", subcategory = "Dwarden Mines", min = 20, max = 120)
     public boolean DwardenMinesDarkMonolithESP = true;
+    //endregion
+
+    //region Glowing Mushroom ESP
+    @Property(type = PropertyType.SWITCH, name = "Glowing Mushroom ESP", description = "Render Glowing mushrooms",
+            category = "ESP", subcategory = "Glowing Mushroom Island", min = 20, max = 120)
+    public boolean GlowingMushroomESP = true;
+    //endregion
+
+    //region Treasure Hunter ESP
+    @Property(type = PropertyType.SWITCH, name = "Treasure Hunter ESP", description = "Render Treasure location",
+            category = "ESP", subcategory = "Glowing Mushroom Island", min = 20, max = 120)
+    public boolean TreasureHunterESP = true;
     //endregion
 
     @Property(type = PropertyType.SWITCH, name = "Hide Attack", description = "Ghost switch weapon to hand",
