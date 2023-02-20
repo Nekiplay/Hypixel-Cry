@@ -23,7 +23,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event)
     {
-        keyBindings = new KeyBinding[8];
+        keyBindings = new KeyBinding[9];
 
 
         keyBindings[0] = new KeyBinding("Rogue Sword", Keyboard.KEY_X, "Hypixel Cry | Macros");
