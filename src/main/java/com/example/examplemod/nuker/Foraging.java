@@ -39,9 +39,11 @@ public class Foraging extends GeneralNuker {
     private int boostTicks = 0;
     private GeneralMiner generalMiner = new GeneralMiner();
     @Override
-    public boolean isBlockToBreak(IBlockState state) {
-        if(state.getBlock() == Blocks.log || state.getBlock() == Blocks.log2) {
-            return true;
+    public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
+        if (!broken.contains(pos)) {
+            if (state.getBlock() == Blocks.log || state.getBlock() == Blocks.log2) {
+                return true;
+            }
         }
         return false;
     }
@@ -51,7 +53,7 @@ public class Foraging extends GeneralNuker {
             if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.GeneralNukerTPSGuard) {
                 return;
             }
-            if (broken.size() > 40) {
+            if (broken.size() > 20) {
                 broken.clear();
             }
 

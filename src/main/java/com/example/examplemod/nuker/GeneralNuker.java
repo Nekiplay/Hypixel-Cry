@@ -19,7 +19,7 @@ public class GeneralNuker {
         this.isExposed = isExposed;
         this.isNotExposed = isNotExposed;
     }
-    public boolean isBlockToBreak(IBlockState blockState) {
+    public boolean isBlockToBreak(IBlockState blockState, BlockPos pos) {
         return false;
     }
 
@@ -37,7 +37,7 @@ public class GeneralNuker {
         Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(r, vertical_distance + 1, r), playerPos.subtract(new Vec3i(r, vertical_distance + 1, r)));
         for (BlockPos blockPos : blocks) {
             IBlockState block = Main.mc.theWorld.getBlockState(blockPos);
-            if (block.getBlock() != Blocks.air && isBlockToBreak(block)) {
+            if (block.getBlock() != Blocks.air && isBlockToBreak(block, blockPos)) {
                 ExposedBlock exposedBlock = new ExposedBlock(blockPos);
                 if (isExposed && exposedBlock.IsExposed()) {
                     temp.add(blockPos);

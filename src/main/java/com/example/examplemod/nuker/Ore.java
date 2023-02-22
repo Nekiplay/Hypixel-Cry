@@ -26,7 +26,7 @@ public class Ore extends GeneralNuker {
     private int damage = 80;
     private final int damageReset = 80;
     @Override
-    public boolean isBlockToBreak(IBlockState state) {
+    public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
         Block block = state.getBlock();
         if ((block.equals(Blocks.coal_ore) || block.equals(Blocks.coal_block)) &&  Main.configFile.OreNukerCoal) {
             return true;
@@ -81,7 +81,7 @@ public class Ore extends GeneralNuker {
                     damage = damageReset;
                     blockPos = null;
                 }
-                else if (blockState.getBlock() == Blocks.bedrock || blockState.getBlock() == Blocks.air || !isBlockToBreak(blockState)) {
+                else if (blockState.getBlock() == Blocks.bedrock || blockState.getBlock() == Blocks.air || !isBlockToBreak(blockState, blockPos)) {
                     currentDamage = 0;
                     damage = damageReset;
                     blockPos = null;
@@ -119,7 +119,7 @@ public class Ore extends GeneralNuker {
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
         if (work) {
-            if (isBlockToBreak(event.oldState) && !isBlockToBreak(event.newState) && Main.mc.thePlayer != null) {
+            if (isBlockToBreak(event.oldState, event.pos) && !isBlockToBreak(event.newState, event.pos) && Main.mc.thePlayer != null) {
                 Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
                 Vec3 vec = new Vec3(event.pos.getX(), event.pos.getY(), event.pos.getZ());
                 if (playerVec.distanceTo(vec) <= 12) {

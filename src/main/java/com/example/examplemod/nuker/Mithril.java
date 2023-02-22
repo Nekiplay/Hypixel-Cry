@@ -26,7 +26,7 @@ public class Mithril extends GeneralNuker {
     private final int damageReset = 120;
 
     @Override
-    public boolean isBlockToBreak(IBlockState state) {
+    public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
         if(state.getBlock() == Blocks.prismarine) {
             return true;
         } else if(state.getBlock() == Blocks.wool) {
@@ -62,7 +62,7 @@ public class Mithril extends GeneralNuker {
                     damage = damageReset;
                     blockPos = null;
                 }
-                else if (blockState.getBlock() == Blocks.bedrock || blockState.getBlock() == Blocks.air || !isBlockToBreak(blockState)) {
+                else if (blockState.getBlock() == Blocks.bedrock || blockState.getBlock() == Blocks.air || !isBlockToBreak(blockState, blockPos)) {
                     currentDamage = 0;
                     damage = damageReset;
                     blockPos = null;
@@ -100,7 +100,7 @@ public class Mithril extends GeneralNuker {
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
         if (work) {
-            if (isBlockToBreak(event.oldState) && !isBlockToBreak(event.newState) && Main.mc.thePlayer != null) {
+            if (isBlockToBreak(event.oldState, event.pos) && !isBlockToBreak(event.newState, event.pos) && Main.mc.thePlayer != null) {
                 Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
                 Vec3 vec = new Vec3(event.pos.getX(), event.pos.getY(), event.pos.getZ());
                 if (playerVec.distanceTo(vec) <= 12) {

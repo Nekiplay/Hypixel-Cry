@@ -115,9 +115,17 @@ public class Config extends Vigilant {
             category = "Ore nuker", subcategory = "Blocks")
     public boolean OreNukerCobblestone = false;
 
-    @Property(type = PropertyType.SWITCH, name = "Ice", description = "Mine ice instantly.",
+    @Property(type = PropertyType.SWITCH, name = "EndStone", description = "Mine endstone.",
+            category = "Ore nuker", subcategory = "Blocks")
+    public boolean OreNukerEndstone = false;
+
+    @Property(type = PropertyType.SWITCH, name = "Ice", description = "Mine ice.",
             category = "Ore nuker", subcategory = "Blocks")
     public boolean OreNukerIce = false;
+
+    @Property(type = PropertyType.SWITCH, name = "Obsidian", description = "Mine Obsidian.",
+            category = "Ore nuker", subcategory = "Blocks")
+    public boolean OreNukerObsidian = false;
     //endregion
 
     //region Mithril Nuker

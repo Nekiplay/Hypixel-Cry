@@ -39,7 +39,7 @@ public class Sand extends GeneralNuker {
     private GeneralMiner generalMiner = new GeneralMiner();
 
     @Override
-    public boolean isBlockToBreak(IBlockState state) {
+    public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
         if(state.getBlock() == Blocks.sand) {
             return true;
         }
