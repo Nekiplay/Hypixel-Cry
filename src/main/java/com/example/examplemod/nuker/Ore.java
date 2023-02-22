@@ -23,8 +23,8 @@ public class Ore extends GeneralNuker {
     private static BlockPos blockPos;
     private static int currentDamage;
     public boolean work = false;
-    private int damage = 10;
-    private final int damageReset = 10;
+    private int damage = 80;
+    private final int damageReset = 80;
     @Override
     public boolean isBlockToBreak(IBlockState state) {
         Block block = state.getBlock();
