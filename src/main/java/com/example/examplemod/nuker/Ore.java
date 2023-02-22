@@ -58,6 +58,12 @@ public class Ore extends GeneralNuker {
         else if ((block.equals(Blocks.ice)) &&  Main.configFile.OreNukerIce) {
             return true;
         }
+        else if ((block.equals(Blocks.obsidian)) &&  Main.configFile.OreNukerObsidian) {
+            return true;
+        }
+        else if ((block.equals(Blocks.end_stone)) &&  Main.configFile.OreNukerEndstone) {
+            return true;
+        }
         return false;
     }
     @SubscribeEvent
