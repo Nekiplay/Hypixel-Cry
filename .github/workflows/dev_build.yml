@@ -18,6 +18,6 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           automatic_release_tag: "latest-1.8.9"
           prerelease: true
-          title: "1.8.9 Forge Build"
+          title: "1.8.9 Forge Build | v1.7"
           files: |
             ./build/libs/*.jar
