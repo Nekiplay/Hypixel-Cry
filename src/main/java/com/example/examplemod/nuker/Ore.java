@@ -5,7 +5,6 @@ import com.example.examplemod.events.world.BlockUpdateEvent;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.Blocks;
@@ -28,40 +27,40 @@ public class Ore extends GeneralNuker {
     @Override
     public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
         Block block = state.getBlock();
-        if ((block.equals(Blocks.coal_ore) || block.equals(Blocks.coal_block)) &&  Main.configFile.OreNukerCoal) {
+        if ((block.equals(Blocks.coal_ore) || block.equals(Blocks.coal_block)) &&  Main.myConfigFile.OreNukerCoal) {
             return true;
         }
-        else if ((block.equals(Blocks.iron_ore) || block.equals(Blocks.iron_block)) &&  Main.configFile.OreNukerIron) {
+        else if ((block.equals(Blocks.iron_ore) || block.equals(Blocks.iron_block)) &&  Main.myConfigFile.OreNukerIron) {
             return true;
         }
-        else if ((block.equals(Blocks.gold_ore) || block.equals(Blocks.gold_block)) &&  Main.configFile.OreNukerGold) {
+        else if ((block.equals(Blocks.gold_ore) || block.equals(Blocks.gold_block)) &&  Main.myConfigFile.OreNukerGold) {
             return true;
         }
-        else if ((block.equals(Blocks.diamond_ore) || block.equals(Blocks.diamond_block)) &&  Main.configFile.OreNukerDiamond) {
+        else if ((block.equals(Blocks.diamond_ore) || block.equals(Blocks.diamond_block)) &&  Main.myConfigFile.OreNukerDiamond) {
             return true;
         }
-        else if ((block.equals(Blocks.emerald_ore) || block.equals(Blocks.emerald_block)) &&  Main.configFile.OreNukerEmerald) {
+        else if ((block.equals(Blocks.emerald_ore) || block.equals(Blocks.emerald_block)) &&  Main.myConfigFile.OreNukerEmerald) {
             return true;
         }
-        else if ((block.equals(Blocks.lit_redstone_ore) || block.equals(Blocks.redstone_ore) || block.equals(Blocks.redstone_block)) &&  Main.configFile.OreNukerRedstone) {
+        else if ((block.equals(Blocks.lit_redstone_ore) || block.equals(Blocks.redstone_ore) || block.equals(Blocks.redstone_block)) &&  Main.myConfigFile.OreNukerRedstone) {
             return true;
         }
-        else if ((block.equals(Blocks.lapis_ore) || block.equals(Blocks.lapis_block)) &&  Main.configFile.OreNukerLapis) {
+        else if ((block.equals(Blocks.lapis_ore) || block.equals(Blocks.lapis_block)) &&  Main.myConfigFile.OreNukerLapis) {
             return true;
         }
-        else if ((block.equals(Blocks.stone)) &&  Main.configFile.OreNukerStone) {
+        //else if ((block.equals(Blocks.stone)) &&  Main.myConfigFile.OreNukerStone) {
+            //    return true;
+            //}
+        else if ((block.equals(Blocks.cobblestone)) &&  Main.myConfigFile.OreNukerCobblestone) {
             return true;
         }
-        else if ((block.equals(Blocks.cobblestone)) &&  Main.configFile.OreNukerCobblestone) {
+        else if ((block.equals(Blocks.ice)) &&  Main.myConfigFile.OreNukerIce) {
             return true;
         }
-        else if ((block.equals(Blocks.ice)) &&  Main.configFile.OreNukerIce) {
+        else if ((block.equals(Blocks.obsidian)) &&  Main.myConfigFile.OreNukerObsidian) {
             return true;
         }
-        else if ((block.equals(Blocks.obsidian)) &&  Main.configFile.OreNukerObsidian) {
-            return true;
-        }
-        else if ((block.equals(Blocks.end_stone)) &&  Main.configFile.OreNukerEndstone) {
+        else if ((block.equals(Blocks.end_stone)) &&  Main.myConfigFile.OreNukerEndstone) {
             return true;
         }
         return false;
@@ -69,7 +68,7 @@ public class Ore extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Main.mc.theWorld != null && Main.mc.thePlayer != null) {
-            Main.configFile.ChangeExposedMode(this, Main.configFile.OreNukerExposedMode);
+            Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.OreNukerExposedMode);
 
             if(currentDamage > damage) {
                 currentDamage = 0;
@@ -108,7 +107,7 @@ public class Ore extends GeneralNuker {
                     damage = damageReset;
                 }
             }
-            if (Main.configFile.OreNukerMode == 0) {
+            if (Main.myConfigFile.OreNukerMode == 0) {
                 currentDamage++;
             }
         }

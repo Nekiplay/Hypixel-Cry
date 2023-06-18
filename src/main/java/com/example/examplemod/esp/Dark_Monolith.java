@@ -1,5 +1,6 @@
 package com.example.examplemod.esp;
 
+import cc.polyfrost.oneconfig.utils.Notifications;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +22,7 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (Main.mc.theWorld != null && Main.configFile.DwardenMinesDarkMonolithESP) {
+        if (Main.mc.theWorld != null && Main.myConfigFile != null && Main.myConfigFile.DwardenMinesDarkMonolithESP) {
             BlockPos pos1 = new BlockPos(-15, 236, -92);
             BlockPos pos2 = new BlockPos(49, 202, -162);
             BlockPos pos3 = new BlockPos(56, 214, -25);
@@ -103,7 +104,8 @@ public class Dark_Monolith {
                 found = false;
             }
             else if (egg != null && !found){
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\n" + Main.prefix + EnumChatFormatting.DARK_PURPLE + "Position X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
+                Notifications.INSTANCE.send("Dark Monolith", "X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ(), 60);
+                //Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\n" + Main.prefix + EnumChatFormatting.DARK_PURPLE + "Position X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
                 found = true;
             }
         }
@@ -123,7 +125,7 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (egg != null && Main.configFile.DwardenMinesDarkMonolithESP)
+        if (Main.myConfigFile != null && egg != null && Main.myConfigFile.DwardenMinesDarkMonolithESP)
         {
             RenderUtils.drawBlockBox(egg, new Color(66, 0, 0), 1, event.partialTicks);
             RenderUtils.drawNametag(EnumChatFormatting.DARK_PURPLE.toString() + "Dark Monolith", egg.getX() + 0.5, egg.getY() + 1.5, egg.getZ() + 0.5, event.partialTicks);

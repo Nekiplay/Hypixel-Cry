@@ -1,14 +1,11 @@
 package com.example.examplemod.nuker;
 
-import akka.actor.dsl.Inbox;
 import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.FindHotbar;
 import com.example.examplemod.Main;
-import com.example.examplemod.utils.ExposedBlock;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
 import com.example.examplemod.utils.world.TickRate;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -49,7 +46,7 @@ public class Sand extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
-            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.GeneralNukerTPSGuard) {
+            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.myConfigFile.GeneralNukerTPSGuard) {
                 return;
             }
             if (broken.size() > 5) {
@@ -60,9 +57,9 @@ public class Sand extends GeneralNuker {
                 InventoryPlayer inventory = Main.mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                Main.configFile.ChangeExposedMode(this, Main.configFile.SandExposedMode);
+                Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.SandExposedMode);
 
-                if (!Main.configFile.SandGhostShovel) {
+                if (!Main.myConfigFile.SandGhostShovel) {
                     if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
                         BoostAlgorithm();
                     }
@@ -79,8 +76,8 @@ public class Sand extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.configFile.SandNukerBoostTicks) {
-            for (int i = 0; i < Main.configFile.SandNukerBlockPesTick; i++) {
+        if (boostTicks > Main.myConfigFile.SandNukerBoostTicks) {
+            for (int i = 0; i < Main.myConfigFile.SandNukerBlockPesTick; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
@@ -102,7 +99,7 @@ public class Sand extends GeneralNuker {
         blockPos = pos;
         if (pos != null) {
             int last_slot = Main.mc.thePlayer.inventory.currentItem;
-            if (Main.configFile.SandGhostShovel) {
+            if (Main.myConfigFile.SandGhostShovel) {
                 FindHotbar findHotbar = new FindHotbar();
                 int shovel_slot = findHotbar.findSlotInHotbar(Items.golden_shovel);
                 if (shovel_slot == -1)
@@ -111,7 +108,7 @@ public class Sand extends GeneralNuker {
                     Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(shovel_slot));
             }
             Main.mc.getNetHandler().getNetworkManager().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
-            if (Main.configFile.SandGhostShovel) {
+            if (Main.myConfigFile.SandGhostShovel) {
                 Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
             }
             DataExtractor extractor = Main.getInstance().dataExtractor;

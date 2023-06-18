@@ -1,12 +1,14 @@
 package com.example.examplemod;
 
+import cc.polyfrost.oneconfig.events.event.InitializationEvent;
+import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
 import com.example.examplemod.DataInterpretation.DataExtractor;
+import com.example.examplemod.config.MyConfig;
+import com.example.examplemod.config.pages.OreNukerBlocks;
 import com.example.examplemod.events.MillisecondEvent;
 import com.example.examplemod.proxy.CommonProxy;
-import com.example.examplemod.remotecontrol.RemoteServer;
 import com.example.examplemod.utils.world.TickRate;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -15,11 +17,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
@@ -36,9 +34,7 @@ public class Main
 
     public static final Minecraft mc = Minecraft.getMinecraft();
 
-    public static File configPath = null;
-    public static GuiScreen display = null;
-    public static Config configFile = Config.INSTANCE;
+    public static MyConfig myConfigFile;
 
     public static KeyBinding[] keyBindings;
     @SidedProxy(clientSide = "com.example.examplemod.proxy.ClientProxy")
@@ -51,28 +47,18 @@ public class Main
 
     public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
     public static final String serverprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server" + EnumChatFormatting.GRAY + "] ";
-    public static final String servermsgprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server Message" + EnumChatFormatting.GRAY + "] ";
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        try {
-            File directory = new File(event.getModConfigurationDirectory(), "hypixelcry");
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-            File directory2 = new File(directory, "config.toml");
-            configPath = directory2;
-            if (!directory2.exists()) {
-                directory2.createNewFile();
-            }
-        }
-        catch (IOException ignored) {
-
-        }
+        myConfigFile = new MyConfig();
         instance = this;
-        configFile.initialize();
         System.setProperty("java.awt.headless", "false");
         proxy.preInit(event);
+    }
+
+    @Subscribe
+    public void onInit(InitializationEvent event) {
+        //myConfigFile = new MyConfig();
     }
 
     @Mod.EventHandler
@@ -87,24 +73,12 @@ public class Main
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        OreNukerBlocks.loadItems();
         LocalDateTime now = LocalDateTime.now();
         Duration initialDelay = Duration.between(now, now);
         long initialDelaySeconds = initialDelay.getSeconds();
 
         Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> MinecraftForge.EVENT_BUS.post(new MillisecondEvent()), initialDelaySeconds, 1, TimeUnit.MILLISECONDS);
         proxy.postInit(event);
-    }
-
-    @SubscribeEvent
-    public void tick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) return;
-        if (display != null) {
-            try {
-                mc.displayGuiScreen(display);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            display = null;
-        }
     }
 }

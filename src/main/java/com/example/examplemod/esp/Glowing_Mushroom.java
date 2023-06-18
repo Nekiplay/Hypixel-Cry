@@ -7,8 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -50,7 +48,7 @@ public class Glowing_Mushroom {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.configFile.GlowingMushroomESP) {
+        if (Main.myConfigFile != null && Main.myConfigFile.GlowingMushroomESP) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos) pos_object;
                 RenderUtils.drawBlockBox(pos, new Color(126, 180, 65), 1, event.partialTicks);

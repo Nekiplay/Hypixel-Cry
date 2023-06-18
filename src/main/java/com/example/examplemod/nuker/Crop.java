@@ -1,9 +1,7 @@
 package com.example.examplemod.nuker;
 
-import com.example.examplemod.DataInterpretation.DataExtractor;
 import com.example.examplemod.Main;
 import com.example.examplemod.utils.BlockUtils;
-import com.example.examplemod.utils.Perlin2D;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
 import com.example.examplemod.utils.world.TickRate;
@@ -18,7 +16,6 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.*;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -31,7 +28,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.examplemod.utils.Perlin2D.PerlinNoice;
 import static net.minecraft.block.BlockDirectional.FACING;
 
 public class Crop {
@@ -77,7 +73,7 @@ public class Crop {
     }
 
     private void breakCrop(BlockPos crop) {
-        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.GeneralNukerTPSGuard) {
+        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.myConfigFile.GeneralNukerTPSGuard) {
             return;
         }
         InventoryPlayer inventory = Main.mc.thePlayer.inventory;
@@ -101,7 +97,7 @@ public class Crop {
                 broken.add(crop);
                 valid = true;
             }
-            if (Main.configFile.CropNukerReplanish && valid) {
+            if (Main.myConfigFile.CropNukerReplanish && valid) {
                 if (currentItem.hasTagCompound()) {
                     NBTTagCompound lore = currentItem.getTagCompound().getCompoundTag("ExtraAttributes").getCompoundTag("enchantments");
                     if (lore != null && lore.hasKey("replenish")) {
@@ -152,10 +148,10 @@ public class Crop {
             InventoryPlayer inventory = Main.mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
             if (currentItem != null) {
-                if (((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) && hoeTick > 7) || Main.configFile.CropNukerRemover) {
-                    if (boostTicks > Main.configFile.CropNukerBoostTicks)
+                if (((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) && hoeTick > 7) || Main.myConfigFile.CropNukerRemover) {
+                    if (boostTicks > Main.myConfigFile.CropNukerBoostTicks)
                     {
-                        for (int i = 0; i < Main.configFile.CropNukerBlockPesTick; i++) {
+                        for (int i = 0; i < Main.myConfigFile.CropNukerBlockPesTick; i++) {
                             BlockPos near = getNearblyCrop();
                             breakCrop(near);
                         }
@@ -239,7 +235,7 @@ public class Crop {
         Vec3 playerVec = Main.mc.thePlayer.getPositionVector();
         ArrayList<Vec3> warts = new ArrayList<>();
         double r = 6;
-        double r2 = Main.configFile.CropNukerMaxYRange;
+        double r2 = Main.myConfigFile.CropNukerMaxYRange;
         BlockPos playerPos = Main.mc.thePlayer.getPosition();
         playerPos = playerPos.add(0, 1, 0);
         Vec3i vec3i = new Vec3i(r, r2, r);
@@ -249,86 +245,86 @@ public class Crop {
             Block block = blockState.getBlock();
             if (!broken.contains(blockPos)) {
                 if (block == Blocks.wheat) {
-                    if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
-                        if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Wheat Hoe")) {
+                    if (isCropGrow(7, blockState) || Main.myConfigFile.CropNukerRemover) {
+                        if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Wheat Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.carrots) {
-                    if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
-                        if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Carrot Hoe")) {
+                    if (isCropGrow(7, blockState) || Main.myConfigFile.CropNukerRemover) {
+                        if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Carrot Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.potatoes) {
-                    if (isCropGrow(7, blockState) || Main.configFile.CropNukerRemover) {
-                        if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Potato Hoe")) {
+                    if (isCropGrow(7, blockState) || Main.myConfigFile.CropNukerRemover) {
+                        if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Potato Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.nether_wart) {
-                    if (isNetherWarsGrow(3, blockState) || Main.configFile.CropNukerRemover) {
-                        if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Nether Warts Hoe")) {
+                    if (isNetherWarsGrow(3, blockState) || Main.myConfigFile.CropNukerRemover) {
+                        if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Nether Warts Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.cactus) {
                     if (isValidCactus(blockPos)) {
-                        if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Cactus Knife")) {
+                        if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Cactus Knife")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.reeds) {
                     if (isValidReeds(blockPos)) {
-                        if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Sugar Cane Hoe")) {
+                        if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Sugar Cane Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.melon_block) {
-                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Melon Dicer")) {
+                    if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Melon Dicer")) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                    } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                     }
                 }
                 else if (block == Blocks.pumpkin) {
-                    if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Pumpkin Dicer")) {
+                    if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Pumpkin Dicer")) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                    } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                     }
                 }
                 else if (block == Blocks.cocoa) {
-                    if (isCocoaGrow(2, blockState) || Main.configFile.CropNukerRemover) {
-                        if (Main.configFile.CropNukerOnlyMathematicalHoe && isMathHoe("Coco Chopper")) {
+                    if (isCocoaGrow(2, blockState) || Main.myConfigFile.CropNukerRemover) {
+                        if (Main.myConfigFile.CropNukerOnlyMathematicalHoe && isMathHoe("Coco Chopper")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.configFile.CropNukerOnlyMathematicalHoe) {
+                        } else if (!Main.myConfigFile.CropNukerOnlyMathematicalHoe) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
-                else if (block == Blocks.melon_stem && Main.configFile.CropNukerRemover) {
+                else if (block == Blocks.melon_stem && Main.myConfigFile.CropNukerRemover) {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
-                else if (block == Blocks.pumpkin_stem && Main.configFile.CropNukerRemover) {
+                else if (block == Blocks.pumpkin_stem && Main.myConfigFile.CropNukerRemover) {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
             }

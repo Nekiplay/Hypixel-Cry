@@ -28,7 +28,7 @@ public class OpenSettings implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        Main.display = Main.configFile.gui();
+        Main.myConfigFile.openGui();
     }
 
     @Override

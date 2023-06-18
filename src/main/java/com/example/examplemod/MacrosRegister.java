@@ -31,6 +31,7 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new Ore());
         MinecraftForge.EVENT_BUS.register(new Crop());
         MinecraftForge.EVENT_BUS.register(new Sand());
+        MinecraftForge.EVENT_BUS.register(new GardenMiner());
 
         MinecraftForge.EVENT_BUS.register(new RemoteAccess());
         MinecraftForge.EVENT_BUS.register(new HideAttack());

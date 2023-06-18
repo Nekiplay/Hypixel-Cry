@@ -33,7 +33,7 @@ public class Mithril extends GeneralNuker {
             return true;
         } else if(state.getBlock() == Blocks.stained_hardened_clay) {
             return true;
-        } else if(!Main.configFile.MithrilNukerIgnoreTitanium && state.getBlock() == Blocks.stone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.DIORITE_SMOOTH) {
+        } else if(!Main.myConfigFile.MithrilNukerIgnoreTitanium && state.getBlock() == Blocks.stone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.DIORITE_SMOOTH) {
             return true;
         } else if(state.getBlock() == Blocks.gold_block) {
             return true;
@@ -44,7 +44,7 @@ public class Mithril extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Main.mc.theWorld != null && Main.mc.thePlayer != null) {
-            Main.configFile.ChangeExposedMode(this, Main.configFile.MithrilNukerExposedMode);
+            Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.MithrilNukerExposedMode);
 
             if(currentDamage > damage) {
                 currentDamage = 0;
@@ -83,7 +83,7 @@ public class Mithril extends GeneralNuker {
                     damage = damageReset;
                 }
             }
-            if (Main.configFile.OreNukerMode == 0) {
+            if (Main.myConfigFile.OreNukerMode == 0) {
                 currentDamage++;
             }
         }
@@ -117,7 +117,7 @@ public class Mithril extends GeneralNuker {
     public void onEvent(InputEvent.KeyInputEvent event)
     {
         KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[8].isPressed()) {
+        if (keyBindings[9].isPressed()) {
             if (!work) {
                 work = true;
                 currentDamage = 0;

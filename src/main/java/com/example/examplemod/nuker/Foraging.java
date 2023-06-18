@@ -2,11 +2,9 @@ package com.example.examplemod.nuker;
 
 import com.example.examplemod.FindHotbar;
 import com.example.examplemod.Main;
-import com.example.examplemod.events.world.BlockUpdateEvent;
 import com.example.examplemod.utils.PlayerUtils;
 import com.example.examplemod.utils.RenderUtils;
 import com.example.examplemod.utils.world.TickRate;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -15,7 +13,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
@@ -28,8 +25,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
-
-import static com.example.examplemod.utils.Perlin2D.PerlinNoice;
 
 public class Foraging extends GeneralNuker {
     private int shovel_tick = 0;
@@ -50,7 +45,7 @@ public class Foraging extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
-            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.configFile.GeneralNukerTPSGuard) {
+            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.myConfigFile.GeneralNukerTPSGuard) {
                 return;
             }
             if (broken.size() > 20) {
@@ -61,7 +56,7 @@ public class Foraging extends GeneralNuker {
                 InventoryPlayer inventory = Main.mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                if (!Main.configFile.ForagingNukerGhostAxe) {
+                if (!Main.myConfigFile.ForagingNukerGhostAxe) {
                     if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
                         BoostAlgorithm();
                     }
@@ -78,8 +73,8 @@ public class Foraging extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.configFile.ForagingNukerBoostTicks) {
-            for (int i = 0; i < Main.configFile.ForagingNukerBlockPesTick; i++) {
+        if (boostTicks > Main.myConfigFile.ForagingNukerBoostTicks) {
+            for (int i = 0; i < Main.myConfigFile.ForagingNukerBlockPesTick; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
@@ -101,7 +96,7 @@ public class Foraging extends GeneralNuker {
         blockPos = pos;
         if (pos != null) {
             int last_slot = Main.mc.thePlayer.inventory.currentItem;
-            if (Main.configFile.ForagingNukerGhostAxe) {
+            if (Main.myConfigFile.ForagingNukerGhostAxe) {
                 FindHotbar findHotbar = new FindHotbar();
                 int shovel_slot = findHotbar.findSlotInHotbar(Items.golden_axe);
                 if (shovel_slot != -1)
@@ -111,7 +106,7 @@ public class Foraging extends GeneralNuker {
             Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
             PlayerUtils.swingItem();
 
-            if (Main.configFile.ForagingNukerGhostAxe) {
+            if (Main.myConfigFile.ForagingNukerGhostAxe) {
                 Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
             }
 

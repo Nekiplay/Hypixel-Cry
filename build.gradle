@@ -59,6 +59,7 @@ repositories {
     maven { url "https://repo.spongepowered.org/repository/maven-public/" }
     maven { url "https://repo.sk1er.club/repository/maven-public" }
     maven { url "https://repo.sk1er.club/repository/maven-releases/" }
+    maven { url 'https://repo.polyfrost.cc/releases' }
 }
 
 
@@ -70,6 +71,9 @@ dependencies {
     compile("org.spongepowered:mixin:0.7.11-SNAPSHOT")
     annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
     implementation('org.spongepowered:mixin:0.7.11-SNAPSHOT')
+
+    compileOnly('cc.polyfrost:oneconfig-1.8.9-forge:0.2.0-alpha+') // Should not be included in jar
+    compile('cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta+') // Should be included in jar
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -109,12 +113,14 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest.attributes(
+
             "FMLCorePluginContainsFMLMod": true,
             "FMLCorePlugin": "com.example.examplemod.FMLLoadingPlugin",
             "ForceLoadAsMod": true,
             "MixinConfigs": "mixins.hypixelcry.json",
             "ModSide": "CLIENT",
-            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "TweakClass": "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker",
+            //"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0"
     )
 }

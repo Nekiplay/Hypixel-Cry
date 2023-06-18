@@ -39,7 +39,7 @@ public class AutoClicker {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void TickEvent(MillisecondEvent event) {
-        if (Main.keyBindings[7].isKeyDown() && Main.mc.thePlayer != null)
+        if (Main.keyBindings[8].isKeyDown() && Main.mc.thePlayer != null)
         {
             if (System.currentTimeMillis() - lastClickTime > (long) 40 + PerlinNoice(15) - 1) {
                 try {

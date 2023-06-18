@@ -76,7 +76,7 @@ public class Treasure_Hunter {
     }
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.configFile.TreasureHunterESP && pos != null) {
+        if (Main.myConfigFile != null && Main.myConfigFile.TreasureHunterESP && pos != null) {
             RenderUtils.drawNametag(EnumChatFormatting.GREEN.toString() + "Treasure", pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, event.partialTicks);
             RenderUtils.drawBlockBox(pos, new Color(10, 180, 65), 1, event.partialTicks);
         }
