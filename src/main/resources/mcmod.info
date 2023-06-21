@@ -1,13 +1,13 @@
 [{
   "modid": "hypixelcry",
   "name": "Hypixel Cry",
-  "description": "Example placeholder mod.",
+  "description": "Hypixel SkyBlock Utility Mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "https://github.com/Nekiplay/Hypixel-Cry",
   "updateUrl": "https://github.com/Nekiplay/Hypixel-Cry/releases",
   "authorList": ["Neki_play"],
-  "credits": "The Forge and FML guys, for making this example",
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

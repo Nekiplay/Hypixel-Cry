@@ -2,16 +2,17 @@
   "required": true,
   "minVersion": "0.6",
   "compatibilityLevel": "JAVA_8",
-  "package": "com.example.examplemod.mixins",
+  "package": "com.nekiplay.hypixelcry.mixins",
   "refmap": "mixins.hypixelcry.refmap.json",
   "mixins": [
-    "MixinNetworkManager",
-    "MixinMinecraft",
     "MinecraftAccessor",
+    "MixinMinecraft",
+    "MixinNetworkManager",
     "MixinPlayerControllerMP",
     "MixinWorld"
   ],
   "client": [
-    "MixinFMLHandShake"
+    "MixinFMLHandShake",
+    "render.MixinEntityRenderer"
   ]
 }
