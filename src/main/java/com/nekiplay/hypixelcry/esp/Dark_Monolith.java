@@ -130,7 +130,9 @@ public class Dark_Monolith {
         if (myConfigFile != null && egg != null && myConfigFile.darkMonolithMainPage.DwardenMinesDarkMonolithESP)
         {
             RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.Color.toJavaColor(), 1, event.partialTicks);
-            RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.darkMonolithMainPage.TextColor) + "Dark Monolith", egg.getX() + 0.5, egg.getY() + 1.5, egg.getZ() + 0.5, event.partialTicks);
+            if (myConfigFile.darkMonolithMainPage.Text) {
+                RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.darkMonolithMainPage.TextColor) + "Dark Monolith", egg.getX() + 0.5, egg.getY() + 1.5, egg.getZ() + 0.5, event.partialTicks);
+            }
             if (myConfigFile.darkMonolithMainPage.Tracer) {
                 RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
             }

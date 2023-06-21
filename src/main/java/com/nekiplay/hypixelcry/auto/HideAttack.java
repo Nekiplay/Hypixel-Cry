@@ -3,6 +3,7 @@ package com.nekiplay.hypixelcry.auto;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.events.AttackEntity;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
@@ -17,6 +18,12 @@ public class HideAttack {
     public void onAttackEntity(AttackEntity event)
     {
         if (event != null && myConfigFile != null && myConfigFile.hideAttackMainPage.HideAttack && event.attacked != null && Main.mc.thePlayer != null && Main.mc.thePlayer.inventory != null && Main.mc.getNetHandler().getNetworkManager() != null) {
+            if (event.attacked.hurtResistantTime > myConfigFile.hideAttackMainPage.MaximumHurtTime && myConfigFile.hideAttackMainPage.CheckHurtTime) return;
+            if (event.attacked instanceof EntityLiving) {
+                EntityLiving entityLiving = (EntityLiving) event.attacked;
+                if (entityLiving.getHealth() <= 0) return;
+                if (entityLiving.isDead) return;
+            }
             if (!event.isCanceled()) {
                 event.setCanceled(true);
             }

@@ -11,6 +11,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.awt.*;
 import java.util.Random;
 
+import static com.nekiplay.hypixelcry.Main.myConfigFile;
+
 public class AutoClicker {
     private Robot bot;
 
@@ -35,7 +37,7 @@ public class AutoClicker {
     public void TickEvent(MillisecondEvent event) {
         if (Main.keyBindings[8].isKeyDown() && Main.mc.thePlayer != null)
         {
-            if (System.currentTimeMillis() - lastClickTime > (long) 40 + PerlinNoice(15) - 1) {
+            if (System.currentTimeMillis() - lastClickTime > (long) 1000 / myConfigFile.autoClickerMainPage.CPS + PerlinNoice(15) - 1) {
                 try {
                     lastClickTime = System.currentTimeMillis();
                     MinecraftAccessor mc = (MinecraftAccessor) Main.mc;

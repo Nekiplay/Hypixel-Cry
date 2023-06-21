@@ -24,6 +24,15 @@ public class TreasureHunterMainPage {
             subcategory = "Colors"
     )
     public OneColor treasureColor = new OneColor(255, 192, 92);
+
+    @Checkbox(
+            name = "Text",
+            description = "Render Text to location",
+            category = "Treasure Hunter",
+            subcategory = "Visuals"
+    )
+    public boolean Text = true;
+
     @Checkbox(
             name = "Tracer",
             description = "Render Tracer to location",

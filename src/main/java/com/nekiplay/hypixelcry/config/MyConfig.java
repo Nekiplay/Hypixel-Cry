@@ -6,6 +6,7 @@ import cc.polyfrost.oneconfig.config.annotations.Number;
 import cc.polyfrost.oneconfig.config.data.Mod;
 import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.config.data.PageLocation;
+import com.nekiplay.hypixelcry.config.pages.combat.AutoClickerMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.HideAttackMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.DarkMonolithMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.GlowingMushroomMainPage;
@@ -132,6 +133,14 @@ public class MyConfig extends Config {
     )
     public TreasureHunterMainPage treasureHunterMainPage = new TreasureHunterMainPage();
     //endregion
+
+    @Page(
+            name = "AutoClicker",
+            category = "Combat",
+            subcategory = "General",
+            location = PageLocation.BOTTOM
+    )
+    public AutoClickerMainPage autoClickerMainPage = new AutoClickerMainPage();
 
     @Page(
             name = "HideAttack",

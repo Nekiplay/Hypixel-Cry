@@ -109,7 +109,9 @@ public class Treasure_Hunter {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP && pos != null) {
-            RenderUtils.renderWaypointText(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Treasure", pos, event.partialTicks);
+            if (myConfigFile.treasureHunterMainPage.Text) {
+                RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Treasure", pos, event.partialTicks);
+            }
             RenderUtils.drawBlockBox(pos, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
             if (myConfigFile.treasureHunterMainPage.Tracer) {
                 RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
@@ -117,7 +119,9 @@ public class Treasure_Hunter {
         }
         else if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP) {
             for (BlockPos posibleTreasure: allPositions) {
-                RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Possible treasure", posibleTreasure, event.partialTicks);
+                if (myConfigFile.treasureHunterMainPage.Text) {
+                    RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Possible treasure", posibleTreasure, event.partialTicks);
+                }
                 RenderUtils.drawBlockBox(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
                 if (myConfigFile.treasureHunterMainPage.Tracer) {
                     RenderUtils.drawTracer(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
