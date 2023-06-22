@@ -24,8 +24,8 @@ public class Mithril extends GeneralNuker {
     private static BlockPos blockPos;
     private static int currentDamage;
     public boolean work = false;
-    private int damage = 120;
-    private final int damageReset = 120;
+    private int damage = 220;
+    private final int damageReset = 220;
 
     @Override
     public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
@@ -97,7 +97,10 @@ public class Mithril extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, new Color(145, 145, 255), 1, event.partialTicks);
+            RenderUtils.drawBlockBox(blockPos, myConfigFile.mithrilMainPage.Color.toJavaColor(), 1, event.partialTicks);
+            if (myConfigFile.mithrilMainPage.Tracer) {
+                RenderUtils.drawTracer(blockPos, myConfigFile.mithrilMainPage.Color.toJavaColor(), 1, event.partialTicks);
+            }
         }
     }
     @SubscribeEvent

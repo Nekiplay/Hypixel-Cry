@@ -91,7 +91,10 @@ public class Foraging extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, Main.myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
+            RenderUtils.drawBlockBox(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (myConfigFile.foragingMainPage.Tracer) {
+                RenderUtils.drawTracer(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
+            }
         }
     }
 

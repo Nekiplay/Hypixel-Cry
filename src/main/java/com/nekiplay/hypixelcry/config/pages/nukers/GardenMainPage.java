@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.config.pages.nukers;
 
+import cc.polyfrost.oneconfig.config.annotations.Checkbox;
 import cc.polyfrost.oneconfig.config.annotations.Color;
 import cc.polyfrost.oneconfig.config.annotations.Info;
 import cc.polyfrost.oneconfig.config.annotations.Slider;
@@ -35,6 +36,14 @@ public class GardenMainPage {
             subcategory = "General"
     )
     public int GardenNukerBoostTicks = 13;
+
+    @Checkbox(
+            name = "Tracer",
+            description = "Render Tracer to break location",
+            category = "Garden nuker",
+            subcategory = "Visuals"
+    )
+    public boolean Tracer = true;
 
     @Color(
             name = "Break block color",

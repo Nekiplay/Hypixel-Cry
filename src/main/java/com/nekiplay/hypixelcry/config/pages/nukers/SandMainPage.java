@@ -58,6 +58,14 @@ public class SandMainPage {
     )
     public boolean SandGhostShovel = false;
 
+    @Checkbox(
+            name = "Tracer",
+            description = "Render Tracer to break location",
+            category = "Sand nuker",
+            subcategory = "Visuals"
+    )
+    public boolean Tracer = true;
+
     @Color(
             name = "Break block color",
             description = "The color of the block that is currently breaking",

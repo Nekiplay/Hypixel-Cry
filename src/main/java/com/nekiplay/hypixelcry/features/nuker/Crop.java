@@ -198,30 +198,57 @@ public class Crop {
                 } else if (breakCrop != null && currentItem.getItem() instanceof ItemHoe) {
                     if (breakBlock == Blocks.wheat) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.wheatColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.wheatColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else if (breakBlock == Blocks.carrots) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else if (breakBlock == Blocks.reeds) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.reedsColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.reedsColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else if (breakBlock == Blocks.cactus) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.cactusColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.cactusColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else if (breakBlock == Blocks.melon_block || breakBlock == Blocks.melon_stem) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.melonColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.melonColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else if (breakBlock == Blocks.pumpkin || breakBlock == Blocks.pumpkin_stem) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.pumpkinColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.pumpkinColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else if (breakBlock == Blocks.cocoa) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.cocoaColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.cocoaColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else if (breakBlock == Blocks.nether_wart) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.netherWartsColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.netherWartsColor.toJavaColor(), 1, event.partialTicks);
+                        }
                     }
                     else {
                         RenderUtils.drawBlockBox(breakCrop, new Color(45, 165, 45), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, new Color(45, 165, 45), 1, event.partialTicks);
+                        }
                     }
                 }
             }

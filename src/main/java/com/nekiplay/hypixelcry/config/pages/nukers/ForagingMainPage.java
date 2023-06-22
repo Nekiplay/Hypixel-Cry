@@ -51,6 +51,13 @@ public class ForagingMainPage {
             subcategory = "General"
     )
     public boolean ForagingNukerGhostAxe = false;
+    @Checkbox(
+            name = "Tracer",
+            description = "Render Tracer to break location",
+            category = "Foraging nuker",
+            subcategory = "Visuals"
+    )
+    public boolean Tracer = true;
 
     @Color(
             name = "Break block color",

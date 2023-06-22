@@ -93,6 +93,9 @@ public class GardenMiner extends GeneralNuker {
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
             RenderUtils.drawBlockBox(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (myConfigFile.gardenMainPage.Tracer) {
+                RenderUtils.drawTracer(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
+            }
         }
     }
 

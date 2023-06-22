@@ -69,6 +69,14 @@ public class CropMainPage {
     )
     public boolean CropNukerRemover = false;
 
+    @Checkbox(
+            name = "Tracer",
+            description = "Render Tracer to break location",
+            category = "Crop nuker",
+            subcategory = "Visuals"
+    )
+    public boolean Tracer = true;
+
     @Color(
             name = "Wheat color",
             description = "The color of the wheat",

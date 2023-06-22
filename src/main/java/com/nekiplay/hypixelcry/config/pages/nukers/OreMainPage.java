@@ -129,6 +129,14 @@ public class OreMainPage {
     )
     public boolean OreNukerIce = false;
 
+    @Checkbox(
+            name = "Tracer",
+            description = "Render Tracer to break location",
+            category = "Ore nuker",
+            subcategory = "Visuals"
+    )
+    public boolean Tracer = true;
+
     @Color(
             name = "Coal color",
             description = "The color of the coal block and coal ore",
