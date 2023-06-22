@@ -31,7 +31,7 @@ plugins {
 }
 */
 
-version = "1.0"
+version = "1.9"
 group= "com.nekiplay.hypixelcry" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "HypixelCry"
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8

@@ -2,17 +2,20 @@ package com.nekiplay.hypixelcry.config;
 
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.*;
-import cc.polyfrost.oneconfig.config.annotations.Number;
 import cc.polyfrost.oneconfig.config.data.Mod;
 import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.config.data.PageLocation;
+import cc.polyfrost.oneconfig.gui.GuiNotifications;
+import cc.polyfrost.oneconfig.renderer.asset.Icon;
+import cc.polyfrost.oneconfig.utils.Notifications;
 import com.nekiplay.hypixelcry.config.pages.combat.AutoClickerMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.HideAttackMainPage;
+import com.nekiplay.hypixelcry.config.pages.combat.ReachMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.DarkMonolithMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.GlowingMushroomMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.TreasureHunterMainPage;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
-import com.nekiplay.hypixelcry.nuker.GeneralNuker;
+import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
 
 import java.io.IOException;
 
@@ -135,6 +138,15 @@ public class MyConfig extends Config {
     //endregion
 
     @Page(
+            name = "Reach",
+            category = "Combat",
+            subcategory = "General",
+            location = PageLocation.BOTTOM
+    )
+    public ReachMainPage reachMainPage = new ReachMainPage();
+
+
+    @Page(
             name = "AutoClicker",
             category = "Combat",
             subcategory = "General",
@@ -158,6 +170,21 @@ public class MyConfig extends Config {
     )
     Runnable runnable = () -> {    // using a lambda to create the runnable interface.
         String url_open ="https://t.me/nekiplay";
+        try {
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    };
+
+    @Button(
+            name = "GitHub",
+            text = "Open",
+            category = "About",
+            subcategory = "Author"
+    )
+    Runnable runnableGitHub = () -> {    // using a lambda to create the runnable interface.
+        String url_open ="https://github.com/Nekiplay";
         try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
         } catch (IOException e) {

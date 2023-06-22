@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.macros;
+package com.nekiplay.hypixelcry.features.macros;
 
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.FindHotbar;

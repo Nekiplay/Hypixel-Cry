@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.nuker;
+package com.nekiplay.hypixelcry.features.nuker;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
@@ -15,8 +15,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import java.awt.*;
 
 import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;

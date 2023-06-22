@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.auto;
+package com.nekiplay.hypixelcry.features.combat;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.events.AttackEntity;

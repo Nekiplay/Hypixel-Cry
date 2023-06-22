@@ -1,17 +1,18 @@
-package com.nekiplay.hypixelcry.esp;
+package com.nekiplay.hypixelcry.features.esp;
 
+import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.events.render.Render3D;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
@@ -81,52 +82,68 @@ public class Treasure_Hunter {
     private static final ArrayList<BlockPos> allPositions = new ArrayList<BlockPos>(){{
         add(new BlockPos(209,42,-522));
         add(new BlockPos(307,72,-554));
-        add(new BlockPos(295,85,-561));
+        add(new BlockPos(295,86,-561));
         add(new BlockPos(170,76,-375));
         add(new BlockPos(143,77,-401));
-        add(new BlockPos(392,84,-366));
-        add(new BlockPos(118,65,-408));
+        add(new BlockPos(392,83,-366));
+        add(new BlockPos(118,63,-408));
         add(new BlockPos(339,82,-388));
         add(new BlockPos(238,56,-405));
         add(new BlockPos(317,101,-472));
         add(new BlockPos(189,77,-465));
         add(new BlockPos(254,100,-570));
-        add(new BlockPos(309,73,-553));
+        add(new BlockPos(309,72,-553));
         add(new BlockPos(357,82,-324));
         add(new BlockPos(283,76,-363));
-        add(new BlockPos(306,105,-490));
+        add(new BlockPos(306,104,-490));
         add(new BlockPos(181,93,-542));
-        add(new BlockPos(155,90,-593));
-        add(new BlockPos(94,65,-450));
+        add(new BlockPos(155,89,-593));
+        add(new BlockPos(94,64,-450));
         add(new BlockPos(142,70,-448));
         add(new BlockPos(258,70,-491));
-        add(new BlockPos(297,87,-562));
+        add(new BlockPos(297,86,-562));
         add(new BlockPos(181,46,-452));
         add(new BlockPos(225,54,-501));
         add(new BlockPos(261,179,-561));
 
     }};
+    private boolean allowRender = false;
+    @SubscribeEvent
+    public void OnTick(TickEvent.ClientTickEvent event) {
+        DataExtractor extractor = Main.getInstance().dataExtractor;
+        String zone = extractor.getScoreBoardData().Zone;
+        if (zone.contains("Archeologist") || zone.contains("Mushroom") || zone.contains("Oasis") || zone.contains("Shepherd") || zone.contains("Desert Settlement")) {
+            allowRender = true;
+        }
+        else {
+            allowRender = false;
+        }
+    }
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP && pos != null) {
-            if (myConfigFile.treasureHunterMainPage.Text) {
-                RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Treasure", pos, event.partialTicks);
-            }
-            RenderUtils.drawBlockBox(pos, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.treasureHunterMainPage.Tracer) {
-                RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
-            }
-        }
-        else if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP) {
-            for (BlockPos posibleTreasure: allPositions) {
+
+        if (allowRender) {
+            if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP && pos != null) {
                 if (myConfigFile.treasureHunterMainPage.Text) {
-                    RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Possible treasure", posibleTreasure, event.partialTicks);
+                    RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Treasure", pos, event.partialTicks);
                 }
-                RenderUtils.drawBlockBox(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
+                RenderUtils.drawBlockBox(pos, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
                 if (myConfigFile.treasureHunterMainPage.Tracer) {
-                    RenderUtils.drawTracer(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+                    RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+                }
+            }
+            else if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP) {
+                for (BlockPos posibleTreasure: allPositions) {
+                    if (myConfigFile.treasureHunterMainPage.Text) {
+                        RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Possible treasure", posibleTreasure, event.partialTicks);
+                    }
+                    RenderUtils.drawBlockBox(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
+                    if (myConfigFile.treasureHunterMainPage.Tracer) {
+                        RenderUtils.drawTracer(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+                    }
                 }
             }
         }
+
     }
 }

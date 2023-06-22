@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.nuker;
+package com.nekiplay.hypixelcry.features.nuker;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.ExposedBlock;

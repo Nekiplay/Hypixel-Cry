@@ -13,4 +13,15 @@ public class AutoClickerMainPage {
             subcategory = "General"
     )
     public int CPS = 16;
+
+    @Slider(
+            name = "Randomization",
+            step = 1,
+            max = 128,
+            min = 0,
+            description = "Click Per Second",
+            category = "AutoClicker",
+            subcategory = "General"
+    )
+    public int Randomization = 64;
 }

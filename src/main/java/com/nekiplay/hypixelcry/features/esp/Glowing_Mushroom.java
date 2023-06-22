@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.esp;
+package com.nekiplay.hypixelcry.features.esp;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.events.world.SpawnParticleEvent;
@@ -12,7 +12,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.myConfigFile;

@@ -25,7 +25,7 @@ public class DarkMonolithMainPage {
     @Checkbox(
             name = "Text",
             description = "Render Text to location",
-            category = "Treasure Hunter",
+            category = "Dwarden Mines",
             subcategory = "Visuals"
     )
     public boolean Text = true;

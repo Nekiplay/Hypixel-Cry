@@ -1,16 +1,16 @@
 package com.nekiplay.hypixelcry;
 
-import com.nekiplay.hypixelcry.auto.HideAttack;
+import com.nekiplay.hypixelcry.features.combat.HideAttack;
 import com.nekiplay.hypixelcry.auto.RemoteAccess;
 import com.nekiplay.hypixelcry.config.CustomRenderer;
-import com.nekiplay.hypixelcry.esp.Dark_Monolith;
-import com.nekiplay.hypixelcry.esp.Glowing_Mushroom;
-import com.nekiplay.hypixelcry.esp.Treasure_Hunter;
-import com.nekiplay.hypixelcry.macros.AspectoftheEnd;
-import com.nekiplay.hypixelcry.macros.AutoClicker;
-import com.nekiplay.hypixelcry.macros.RogueSword;
-import com.nekiplay.hypixelcry.macros.WandofHealing;
-import com.nekiplay.hypixelcry.nuker.*;
+import com.nekiplay.hypixelcry.features.esp.Dark_Monolith;
+import com.nekiplay.hypixelcry.features.esp.Glowing_Mushroom;
+import com.nekiplay.hypixelcry.features.esp.Treasure_Hunter;
+import com.nekiplay.hypixelcry.features.macros.AspectoftheEnd;
+import com.nekiplay.hypixelcry.features.combat.AutoClicker;
+import com.nekiplay.hypixelcry.features.macros.RogueSword;
+import com.nekiplay.hypixelcry.features.macros.WandofHealing;
+import com.nekiplay.hypixelcry.features.nuker.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 

@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.hud;
+package com.nekiplay.hypixelcry.features.hud;
 
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.HUD;

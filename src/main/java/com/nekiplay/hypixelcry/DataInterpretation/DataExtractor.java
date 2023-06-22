@@ -354,7 +354,6 @@ public class DataExtractor {
                 ApecUtils.showMessage("[\u00A72Apec\u00A7f] There was an error processing scoreboard data!");
                 alreadyShowedScrErr = true;
             }
-            err.printStackTrace();
         }
     }
 

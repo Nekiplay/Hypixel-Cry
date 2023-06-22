@@ -3,8 +3,8 @@ package com.nekiplay.hypixelcry;
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.config.MyConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
-import com.nekiplay.hypixelcry.hud.TPSHud;
-import com.nekiplay.hypixelcry.hud.TimeSinceLastTickHud;
+import com.nekiplay.hypixelcry.features.hud.TPSHud;
+import com.nekiplay.hypixelcry.features.hud.TimeSinceLastTickHud;
 import com.nekiplay.hypixelcry.proxy.CommonProxy;
 import com.nekiplay.hypixelcry.utils.world.TickRate;
 import net.minecraft.client.Minecraft;
@@ -42,7 +42,7 @@ public class Main
     public DataExtractor dataExtractor = new DataExtractor();
 
     public static final String MODID = "hypixelcry";
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.9";
 
     public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
     public static final String serverprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server" + EnumChatFormatting.GRAY + "] ";

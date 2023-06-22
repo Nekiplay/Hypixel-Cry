@@ -1,5 +1,7 @@
-package com.nekiplay.hypixelcry.esp;
+package com.nekiplay.hypixelcry.features.esp;
 
+import cc.polyfrost.oneconfig.gui.GuiNotifications;
+import cc.polyfrost.oneconfig.renderer.asset.Icon;
 import cc.polyfrost.oneconfig.utils.Notifications;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
@@ -11,9 +13,6 @@ import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import java.awt.*;
-import java.util.Arrays;
 
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
@@ -106,7 +105,7 @@ public class Dark_Monolith {
                 found = false;
             }
             else if (egg != null && !found){
-                Notifications.INSTANCE.send("Dark Monolith", "X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ(), 60);
+                Notifications.INSTANCE.send("Dark Monolith", "X: " + egg.getX() + "\nY: " + egg.getY() + "\nZ: " + egg.getZ(), new Icon("/assets/hypixelcry/icons/items/globe.png"), 1000 * 30);
                 //Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\n" + Main.prefix + EnumChatFormatting.DARK_PURPLE + "Position X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
                 found = true;
             }
