@@ -5,7 +5,7 @@
 	<br>
 	<a href="https://github.com/Nekiplay/Hypixel-Cry/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/Hypixel-Cry/total" alt="Downloads"/></a>
 	<br/><br/>
-  	<a href="https://discord.gg/NUCqxgxAnk"><img src="https://invidget.switchblade.xyz/NUCqxgxAnk" alt="Discord server"></a>
+  	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/suport/help-guilded-brightgreen" alt="Guilded"/></a>
 	<br/><br/>
 </div>
 
