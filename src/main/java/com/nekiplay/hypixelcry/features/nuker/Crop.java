@@ -291,8 +291,8 @@ public class Crop {
 
         Vec3 playerVec = mc.thePlayer.getPositionVector();
         ArrayList<Vec3> warts = new ArrayList<>();
-        double r = 6;
-        double r2 = 5;
+        double r = 5;
+        double r2 = 4.5;
         BlockPos playerPos = mc.thePlayer.getPosition();
         playerPos = playerPos.add(0, 1, 0);
         Vec3i vec3i = new Vec3i(r, r2, r);
