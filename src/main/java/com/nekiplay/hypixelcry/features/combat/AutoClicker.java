@@ -16,15 +16,6 @@ import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class AutoClicker {
-    private Robot bot;
-
-    public AutoClicker() {
-        try {
-            bot = new Robot();
-        } catch (AWTException ignore) {
-        }
-    }
-
     private long lastClickTime = 0;
 
     public static int PerlinNoice(int multiply) {
@@ -49,8 +40,6 @@ public class AutoClicker {
                 }
                 catch (Exception ignore) { }
             }
-            //bot.mousePress(InputEvent.BUTTON1_MASK);
-            //bot.mouseRelease(InputEvent.BUTTON1_MASK);
         }
     }
 }

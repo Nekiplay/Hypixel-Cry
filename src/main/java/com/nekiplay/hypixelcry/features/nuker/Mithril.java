@@ -77,7 +77,7 @@ public class Mithril extends GeneralNuker {
 
 
             if (currentDamage == 0) {
-                SetDistance(myConfigFile.MaximumNukerVericalDistance, myConfigFile.MaximumNukerVericalDistance);
+                SetDistance(myConfigFile.mithrilMainPage.MaximumNukerHorizontalDistance, myConfigFile.mithrilMainPage.MaximumNukerVericalDistance);
                 BlockPos near = getClosestBlock(getBlocks());
                 if (near != null) {
                     blockPos = near;

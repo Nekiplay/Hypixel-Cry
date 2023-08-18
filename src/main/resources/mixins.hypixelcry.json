@@ -6,7 +6,6 @@
   "refmap": "mixins.hypixelcry.refmap.json",
   "mixins": [
     "MinecraftAccessor",
-    "MixinMinecraft",
     "MixinNetworkManager",
     "MixinPlayerControllerMP",
     "MixinWorld"

@@ -5,14 +5,13 @@ import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.data.Mod;
 import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.config.data.PageLocation;
-import cc.polyfrost.oneconfig.gui.GuiNotifications;
-import cc.polyfrost.oneconfig.renderer.asset.Icon;
-import cc.polyfrost.oneconfig.utils.Notifications;
-import com.nekiplay.hypixelcry.config.pages.combat.AutoClickerMainPage;
-import com.nekiplay.hypixelcry.config.pages.combat.HideAttackMainPage;
-import com.nekiplay.hypixelcry.config.pages.combat.ReachMainPage;
+import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPage;
+import com.nekiplay.hypixelcry.config.pages.combat.hideattack.HideAttackMainPage;
+import com.nekiplay.hypixelcry.config.pages.combat.noclickdelay.NoClickDelayMainPage;
+import com.nekiplay.hypixelcry.config.pages.combat.reach.ReachMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.DarkMonolithMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.GlowingMushroomMainPage;
+import com.nekiplay.hypixelcry.config.pages.esp.JerryGiftsMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.TreasureHunterMainPage;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
 import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
@@ -28,25 +27,6 @@ public class MyConfig extends Config {
             subcategory = "Nuker's"
     )
     public boolean GeneralNukerTPSGuard = true;
-    @Slider(
-            name = "Horizontal distance",
-            description = "Maximum horizontal distance",
-            category = "World",
-            subcategory = "Nuker's",
-            max = 5.4f,
-            min = 1f
-    )
-    public float MaximumNukerHorizontalDistance = 5.4f;
-
-    @Slider(
-            name = "Verical distance",
-            description = "Maximum vertical distance",
-            category = "World",
-            subcategory = "Nuker's",
-            max = 7.5f,
-            min = 1f
-    )
-    public float MaximumNukerVericalDistance = 7.5f;
 
     @Page(
             name = "Garden Nuker",
@@ -99,7 +79,7 @@ public class MyConfig extends Config {
 
     //region Mithril Nuker
     @Page(
-            name = "Mithril",
+            name = "Mithril Nuker",
             category = "World",
             subcategory = "Nuker's",
             location = PageLocation.BOTTOM
@@ -135,8 +115,23 @@ public class MyConfig extends Config {
             location = PageLocation.BOTTOM
     )
     public TreasureHunterMainPage treasureHunterMainPage = new TreasureHunterMainPage();
+
+    @Page(
+            name = "Gifts",
+            category = "ESP",
+            subcategory = "Jerry's Workshop",
+            location = PageLocation.BOTTOM
+    )
+    public JerryGiftsMainPage jerryGiftsMainPage = new JerryGiftsMainPage();
     //endregion
 
+    @Page(
+            name = "No Click Delay",
+            category = "Combat",
+            subcategory = "General",
+            location = PageLocation.BOTTOM
+    )
+    public NoClickDelayMainPage noClickDelayMainPage = new NoClickDelayMainPage();
     @Page(
             name = "Reach",
             category = "Combat",

@@ -23,6 +23,27 @@ public class CropMainPage {
 
     )
     public static boolean ignored2; // Useless. Java limitations with @annotation.
+
+    @Slider(
+            name = "Horizontal distance",
+            description = "Maximum horizontal distance",
+            category = "Crop nuker",
+            subcategory = "General",
+            max = 5.4f,
+            min = 1f
+    )
+    public float MaximumNukerHorizontalDistance = 4f;
+
+    @Slider(
+            name = "Verical distance",
+            description = "Maximum vertical distance",
+            category = "Crop nuker",
+            subcategory = "General",
+            max = 7.5f,
+            min = 1f
+    )
+    public float MaximumNukerVericalDistance = 3f;
+
     @Checkbox(
             name = "Replanish support",
             description = "Better work replanish",
@@ -147,4 +168,12 @@ public class CropMainPage {
             subcategory = "Colors"
     )
     public OneColor netherWartsColor = new OneColor(117, 0, 18);
+
+    @Color(
+            name = "Mushroom color",
+            description = "The color of the mushroom",
+            category = "Crop nuker",
+            subcategory = "Colors"
+    )
+    public OneColor mushRoomColor = new OneColor(117, 0, 18);
 }

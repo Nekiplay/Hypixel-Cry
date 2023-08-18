@@ -1,15 +1,12 @@
 package com.nekiplay.hypixelcry.mixins.render;
 
-import cc.polyfrost.oneconfig.events.EventManager;
 import com.google.common.base.Predicates;
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.pages.combat.ReachMainPage;
-import com.nekiplay.hypixelcry.events.EntityMove;
+import com.nekiplay.hypixelcry.config.pages.combat.reach.ReachMainPage;
 import com.nekiplay.hypixelcry.events.render.Render3D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.util.*;

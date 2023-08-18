@@ -16,6 +16,25 @@ public class GardenMainPage {
     )
     public static boolean ignored; // Useless. Java limitations with @annotation.
     @Slider(
+            name = "Horizontal distance",
+            description = "Maximum horizontal distance",
+            category = "Garden nuker",
+            subcategory = "General",
+            max = 5.4f,
+            min = 1f
+    )
+    public float MaximumNukerHorizontalDistance = 5.4f;
+
+    @Slider(
+            name = "Verical distance",
+            description = "Maximum vertical distance",
+            category = "Garden nuker",
+            subcategory = "General",
+            max = 7.5f,
+            min = 1f
+    )
+    public float MaximumNukerVericalDistance = 7.5f;
+    @Slider(
             name = "Max boost",
             step = 1,
             min = 1.0F,

@@ -101,7 +101,7 @@ public class Ore extends GeneralNuker {
 
 
             if (currentDamage == 0) {
-                SetDistance(myConfigFile.MaximumNukerVericalDistance, myConfigFile.MaximumNukerVericalDistance);
+                SetDistance(myConfigFile.oreMainPage.MaximumNukerHorizontalDistance, myConfigFile.oreMainPage.MaximumNukerVericalDistance);
                 BlockPos near = getClosestBlock(getBlocks());
                 if (near != null) {
                     blockPos = near;

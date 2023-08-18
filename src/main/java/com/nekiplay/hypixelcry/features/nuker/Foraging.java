@@ -57,7 +57,7 @@ public class Foraging extends GeneralNuker {
                 InventoryPlayer inventory = Main.mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                SetDistance(myConfigFile.MaximumNukerVericalDistance, myConfigFile.MaximumNukerVericalDistance);
+                SetDistance(myConfigFile.foragingMainPage.MaximumNukerHorizontalDistance, myConfigFile.foragingMainPage.MaximumNukerVericalDistance);
 
                 if (!Main.myConfigFile.foragingMainPage.ForagingNukerGhostAxe) {
                     if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {

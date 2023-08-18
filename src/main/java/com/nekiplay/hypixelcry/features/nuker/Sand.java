@@ -41,6 +41,9 @@ public class Sand extends GeneralNuker {
         if(state.getBlock() == Blocks.sand) {
             return true;
         }
+        else if(state.getBlock() == Blocks.mycelium) {
+            return true;
+        }
         return false;
     }
 
@@ -59,7 +62,7 @@ public class Sand extends GeneralNuker {
                 ItemStack currentItem = inventory.getCurrentItem();
 
                 Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.sandMainPage.SandExposedMode);
-                SetDistance(myConfigFile.MaximumNukerVericalDistance, myConfigFile.MaximumNukerVericalDistance);
+                SetDistance(myConfigFile.sandMainPage.MaximumNukerHorizontalDistance, myConfigFile.sandMainPage.MaximumNukerVericalDistance);
                 if (!Main.myConfigFile.sandMainPage.SandGhostShovel) {
                     if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
                         BoostAlgorithm();
@@ -93,6 +96,9 @@ public class Sand extends GeneralNuker {
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
             RenderUtils.drawBlockBox(blockPos, Main.myConfigFile.sandMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (myConfigFile.sandMainPage.Tracer) {
+                RenderUtils.drawTracer(blockPos, Main.myConfigFile.sandMainPage.color.toJavaColor(), 1, event.partialTicks);
+            }
         }
     }
 

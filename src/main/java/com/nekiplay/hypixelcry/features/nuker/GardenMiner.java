@@ -60,7 +60,7 @@ public class GardenMiner extends GeneralNuker {
             if (broken.size() > 20) {
                 broken.clear();
             }
-            SetDistance(myConfigFile.MaximumNukerVericalDistance, myConfigFile.MaximumNukerVericalDistance);
+            SetDistance(myConfigFile.gardenMainPage.MaximumNukerHorizontalDistance, myConfigFile.gardenMainPage.MaximumNukerVericalDistance);
 
             InventoryPlayer inventory = mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();

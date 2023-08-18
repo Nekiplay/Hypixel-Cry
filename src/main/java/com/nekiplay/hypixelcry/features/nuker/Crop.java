@@ -168,9 +168,6 @@ public class Crop {
                         boostTicks++;
                     }
                 }
-                else if (currentItem.getItem() instanceof ItemSeeds || (currentItem.hasDisplayName() && currentItem.getDisplayName().contains("Seeds"))) {
-                    farmlandsBad = getBadFarmLand();
-                }
                 else if (currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) {
                     hoeTick++;
                 }
@@ -206,6 +203,12 @@ public class Crop {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
                         if (myConfigFile.cropMainPage.Tracer) {
                             RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
+                        }
+                    }
+                    else if (breakBlock == Blocks.potatoes) {
+                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.potatoesColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.potatoesColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.reeds) {
@@ -244,6 +247,12 @@ public class Crop {
                             RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.netherWartsColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
+                    else if (breakBlock == Blocks.brown_mushroom || breakBlock == Blocks.red_mushroom) {
+                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.mushRoomColor.toJavaColor(), 1, event.partialTicks);
+                        if (myConfigFile.cropMainPage.Tracer) {
+                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.mushRoomColor.toJavaColor(), 1, event.partialTicks);
+                        }
+                    }
                     else {
                         RenderUtils.drawBlockBox(breakCrop, new Color(45, 165, 45), 1, event.partialTicks);
                         if (myConfigFile.cropMainPage.Tracer) {
@@ -253,24 +262,6 @@ public class Crop {
                 }
             }
         }
-    }
-
-    private List<BlockPos> getBadFarmLand() {
-        List<BlockPos> done = new ArrayList<>();
-        ArrayList<Block> blocks = new ArrayList<>();
-        blocks.add(Blocks.farmland);
-        ArrayList<BlockPos> farmlands = BlockUtils.getNearestBlocks(blocks, 15);
-        for (BlockPos blockPos : farmlands) {
-            Block block = mc.theWorld.getBlockState(blockPos.up()).getBlock();
-            if (block instanceof net.minecraftforge.common.IPlantable)
-            {
-            }
-            else
-            {
-                done.add(new BlockPos(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-            }
-        }
-        return done;
     }
 
     private boolean isMathHoe(String hoe) {
@@ -291,8 +282,8 @@ public class Crop {
 
         Vec3 playerVec = mc.thePlayer.getPositionVector();
         ArrayList<Vec3> warts = new ArrayList<>();
-        double r = 6;
-        double r2 = 5;
+        double r = myConfigFile.cropMainPage.MaximumNukerHorizontalDistance;
+        double r2 = myConfigFile.cropMainPage.MaximumNukerVericalDistance;
         BlockPos playerPos = mc.thePlayer.getPosition();
         playerPos = playerPos.add(0, 1, 0);
         Vec3i vec3i = new Vec3i(r, r2, r);
@@ -368,6 +359,9 @@ public class Crop {
                     } else if (!Main.myConfigFile.cropMainPage.CropNukerOnlyMathematicalHoe) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                     }
+                }
+                else if (block == Blocks.red_mushroom || block == Blocks.brown_mushroom) {
+                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
                 else if (block == Blocks.cocoa) {
                     if (isCocoaGrow(2, blockState) || Main.myConfigFile.cropMainPage.CropNukerRemover) {

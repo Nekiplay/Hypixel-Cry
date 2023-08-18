@@ -1,11 +1,11 @@
-package com.nekiplay.hypixelcry.config.pages.combat;
+package com.nekiplay.hypixelcry.config.pages.combat.hideattack;
 
 import cc.polyfrost.oneconfig.config.annotations.Checkbox;
 import cc.polyfrost.oneconfig.config.annotations.Slider;
 
 public class HideAttackMainPage {
     @Checkbox(
-            name = "Hide Attack",
+            name = "Enabled",
             description = "Ghost switch weapon to hand",
             category = "Hide Attack",
             subcategory = "General"

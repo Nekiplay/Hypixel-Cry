@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.config.pages.combat;
+package com.nekiplay.hypixelcry.config.pages.combat.autoclicker;
 
 import cc.polyfrost.oneconfig.config.annotations.Slider;
 

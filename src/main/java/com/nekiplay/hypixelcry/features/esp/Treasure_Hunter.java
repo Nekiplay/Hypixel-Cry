@@ -112,7 +112,7 @@ public class Treasure_Hunter {
     public void OnTick(TickEvent.ClientTickEvent event) {
         DataExtractor extractor = Main.getInstance().dataExtractor;
         String zone = extractor.getScoreBoardData().Zone;
-        if (zone.contains("Archeologist") || zone.contains("Mushroom") || zone.contains("Oasis") || zone.contains("Shepherd") || zone.contains("Settlement")) {
+        if (zone.contains("Archeologist") || zone.contains("Mushroom") || zone.contains("Oasis") || zone.contains("Shepherd") || zone.contains("Desert") || zone.contains("Site")) {
             allowRender = true;
         }
         else {
