@@ -4,10 +4,7 @@ import com.nekiplay.hypixelcry.features.combat.HideAttack;
 import com.nekiplay.hypixelcry.auto.RemoteAccess;
 import com.nekiplay.hypixelcry.config.CustomRenderer;
 import com.nekiplay.hypixelcry.features.combat.NoClickDelay;
-import com.nekiplay.hypixelcry.features.esp.Dark_Monolith;
-import com.nekiplay.hypixelcry.features.esp.Gifts;
-import com.nekiplay.hypixelcry.features.esp.Glowing_Mushroom;
-import com.nekiplay.hypixelcry.features.esp.Treasure_Hunter;
+import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.macros.AspectoftheEnd;
 import com.nekiplay.hypixelcry.features.combat.AutoClicker;
 import com.nekiplay.hypixelcry.features.macros.RogueSword;
@@ -30,6 +27,7 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new Treasure_Hunter());
         MinecraftForge.EVENT_BUS.register(new Dark_Monolith());
         MinecraftForge.EVENT_BUS.register(new Glowing_Mushroom());
+        MinecraftForge.EVENT_BUS.register(new PeltMobEsp());
         MinecraftForge.EVENT_BUS.register(new Gifts());
 
         /* Nuker */

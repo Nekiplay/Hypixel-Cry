@@ -1,6 +1,5 @@
 package com.nekiplay.hypixelcry.features.esp;
 
-import cc.polyfrost.oneconfig.gui.GuiNotifications;
 import cc.polyfrost.oneconfig.renderer.asset.Icon;
 import cc.polyfrost.oneconfig.utils.Notifications;
 import com.nekiplay.hypixelcry.Main;
@@ -39,20 +38,20 @@ public class Dark_Monolith {
             BlockPos pos13 = new BlockPos(-91, 221, -53);
             BlockPos pos14 = new BlockPos(-64, 206, -63);
 
-            BlockPos egg1 = findEgg(pos1, 5);
-            BlockPos egg2 = findEgg(pos2, 5);
-            BlockPos egg3 = findEgg(pos3, 5);
-            BlockPos egg4 = findEgg(pos4, 5);
-            BlockPos egg5 = findEgg(pos5, 5);
-            BlockPos egg6 = findEgg(pos6, 5);
-            BlockPos egg7 = findEgg(pos7, 5);
-            BlockPos egg8 = findEgg(pos8, 5);
-            BlockPos egg9 = findEgg(pos9, 5);
-            BlockPos egg10 = findEgg(pos10, 5);
-            BlockPos egg11 = findEgg(pos11, 5);
-            BlockPos egg12 = findEgg(pos12, 5);
-            BlockPos egg13 = findEgg(pos13, 5);
-            BlockPos egg14 = findEgg(pos14, 5);
+            BlockPos egg1 = findEgg(pos1);
+            BlockPos egg2 = findEgg(pos2);
+            BlockPos egg3 = findEgg(pos3);
+            BlockPos egg4 = findEgg(pos4);
+            BlockPos egg5 = findEgg(pos5);
+            BlockPos egg6 = findEgg(pos6);
+            BlockPos egg7 = findEgg(pos7);
+            BlockPos egg8 = findEgg(pos8);
+            BlockPos egg9 = findEgg(pos9);
+            BlockPos egg10 = findEgg(pos10);
+            BlockPos egg11 = findEgg(pos11);
+            BlockPos egg12 = findEgg(pos12);
+            BlockPos egg13 = findEgg(pos13);
+            BlockPos egg14 = findEgg(pos14);
 
             if (egg1 != null) {
                 egg = egg1;
@@ -105,15 +104,15 @@ public class Dark_Monolith {
                 found = false;
             }
             else if (egg != null && !found){
-                Notifications.INSTANCE.send("Dark Monolith", "X: " + egg.getX() + "\nY: " + egg.getY() + "\nZ: " + egg.getZ(), new Icon("/assets/hypixelcry/icons/items/globe.png"), 1000 * 30);
+                Notifications.INSTANCE.send("Dark Monolith", "X: " + egg.getX() + "\nY: " + egg.getY() + "\nZ: " + egg.getZ(), new Icon("/assets/hypixelcry/icons/items/globe.png"), 1000 * 5);
                 //Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\n" + Main.prefix + EnumChatFormatting.DARK_PURPLE + "Position X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
                 found = true;
             }
         }
     }
 
-    private BlockPos findEgg(BlockPos start, int range) {
-        Vec3i vec3i = new Vec3i(range, range, range);
+    private BlockPos findEgg(BlockPos start) {
+        Vec3i vec3i = new Vec3i(5, 5, 5);
         Iterable<BlockPos> blocks = BlockPos.getAllInBox(start.add(vec3i), start.subtract(vec3i));
         for (BlockPos block : blocks) {
             IBlockState state = Main.mc.theWorld.getBlockState(block);

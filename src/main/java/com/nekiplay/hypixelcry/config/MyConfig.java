@@ -9,10 +9,7 @@ import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPa
 import com.nekiplay.hypixelcry.config.pages.combat.hideattack.HideAttackMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.noclickdelay.NoClickDelayMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.reach.ReachMainPage;
-import com.nekiplay.hypixelcry.config.pages.esp.DarkMonolithMainPage;
-import com.nekiplay.hypixelcry.config.pages.esp.GlowingMushroomMainPage;
-import com.nekiplay.hypixelcry.config.pages.esp.JerryGiftsMainPage;
-import com.nekiplay.hypixelcry.config.pages.esp.TreasureHunterMainPage;
+import com.nekiplay.hypixelcry.config.pages.esp.*;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
 import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
 
@@ -115,6 +112,14 @@ public class MyConfig extends Config {
             location = PageLocation.BOTTOM
     )
     public TreasureHunterMainPage treasureHunterMainPage = new TreasureHunterMainPage();
+
+    @Page(
+            name = "Pelt mobs",
+            category = "ESP",
+            subcategory = "Glowing Mushroom Island",
+            location = PageLocation.BOTTOM
+    )
+    public PeltMobMainPage peltMobMainPage = new PeltMobMainPage();
 
     @Page(
             name = "Gifts",

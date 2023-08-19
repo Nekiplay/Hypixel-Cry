@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.lwjgl.opengl.Display;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -42,7 +43,7 @@ public class Main
     public DataExtractor dataExtractor = new DataExtractor();
 
     public static final String MODID = "hypixelcry";
-    public static final String VERSION = "1.9";
+    public static final String VERSION = "2.0";
 
     public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
     public static final String serverprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server" + EnumChatFormatting.GRAY + "] ";
@@ -61,6 +62,7 @@ public class Main
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
+        Display.setTitle("Minecraft 1.8.9 | Hypixel Cry v" + VERSION);
         MinecraftForge.EVENT_BUS.register(dataExtractor);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);

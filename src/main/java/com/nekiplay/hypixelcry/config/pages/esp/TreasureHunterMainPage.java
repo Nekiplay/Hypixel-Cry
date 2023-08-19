@@ -40,6 +40,13 @@ public class TreasureHunterMainPage {
             subcategory = "Visuals"
     )
     public boolean Tracer = true;
+    @Checkbox(
+            name = "All locations",
+            description = "Render all locations if dont know trasure location",
+            category = "Treasure Hunter",
+            subcategory = "Visuals"
+    )
+    public boolean AllLocations = true;
 
     @Color(
             name = "Tracer Treasure color",

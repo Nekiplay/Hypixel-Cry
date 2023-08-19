@@ -6,15 +6,18 @@ import com.nekiplay.hypixelcry.utils.ApecUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Treasure_Hunter {
@@ -27,13 +30,13 @@ public class Treasure_Hunter {
         }
         else if (nocodes.contains("NPC") && nocodes.contains("Treasure Hunter"))
         {
-            if (nocodes.contains("In the Mushroom Gorge where blue meets the ceiling and the floor, you will find what you are looking for"))
+            if (nocodes.contains("In the Mushroom Gorge where blue meets the ceiling and floor, you will find what you are looking for"))
                 pos = allPositions.get(0);
             else if (nocodes.contains("There is likely a treasure under the wooden bridge in the oasis"))
                 pos = allPositions.get(1);
             else if (nocodes.contains("I saw some treasure next to a house in the gorge"))
                 pos = allPositions.get(2);
-            else if (nocodes.contains("I seem to recall something near the well in the village"))
+            else if (nocodes.contains("I seem to recall seeing something near the well in the village"))
                 pos = allPositions.get(3);
             else if (nocodes.contains("I saw some treasure by a cow skull near the village"))
                 pos = allPositions.get(4);
@@ -41,11 +44,11 @@ public class Treasure_Hunter {
                 pos = allPositions.get(5);
             else if (nocodes.contains("I remember there was a stone pillar made only of cobblestone in the oasis, could be something there"))
                 pos = allPositions.get(6);
-            else if (nocodes.contains("There was a hay stack with a crop greener than usual around it, I think there is something there"))
+            else if (nocodes.contains("There was a haystack with a crop greener than usual around it, I think there is something near there"))
                 pos = allPositions.get(7);
             else if (nocodes.contains("Some dirt was kicked up by the water pool in the overgrown Mushroom Cave. Have a look over there"))
                 pos = allPositions.get(8);
-            else if (nocodes.contains("There are some small ruins out in the desert, might want to check it out"))
+            else if (nocodes.contains("There are some small ruins out in the desert, might want to check them out"))
                 pos = allPositions.get(9);
             else if (nocodes.contains("I was at the upper oasis today, I recall seeing something on the cobblestone stepping stones"))
                 pos = allPositions.get(10);
@@ -75,8 +78,9 @@ public class Treasure_Hunter {
                 pos = allPositions.get(22);
             else if (nocodes.contains("There are some old stone structures in the Mushroom Gorge, give them a look"))
                 pos = allPositions.get(23);
-            else if (nocodes.contains("Theres this guy who collects animals to experiment on, I think I saw something near his house"))
+            else if (nocodes.contains("There's this guy who collects animals to experiment on, I think I saw something near his house"))
                 pos = allPositions.get(24);
+
         }
     }
     private static final ArrayList<BlockPos> allPositions = new ArrayList<BlockPos>(){{
@@ -84,7 +88,7 @@ public class Treasure_Hunter {
         add(new BlockPos(307,72,-554));
         add(new BlockPos(295,86,-561));
         add(new BlockPos(170,76,-375));
-        add(new BlockPos(143,77,-401));
+        add(new BlockPos(143,76,-401));
         add(new BlockPos(392,83,-366));
         add(new BlockPos(118,63,-408));
         add(new BlockPos(339,82,-388));
@@ -94,7 +98,7 @@ public class Treasure_Hunter {
         add(new BlockPos(254,100,-570));
         add(new BlockPos(309,72,-553));
         add(new BlockPos(357,82,-324));
-        add(new BlockPos(283,76,-363));
+        add(new BlockPos(283,75,-363));
         add(new BlockPos(306,104,-490));
         add(new BlockPos(181,93,-542));
         add(new BlockPos(155,89,-593));
@@ -105,7 +109,6 @@ public class Treasure_Hunter {
         add(new BlockPos(181,46,-452));
         add(new BlockPos(225,54,-501));
         add(new BlockPos(261,179,-561));
-
     }};
     private boolean allowRender = false;
     @SubscribeEvent
@@ -117,6 +120,12 @@ public class Treasure_Hunter {
         }
         else {
             allowRender = false;
+        }
+    }
+    @SubscribeEvent
+    public void onBreakBlock(BlockEvent.BreakEvent event) {
+        if (allPositions.contains(event.pos)) {
+            mc.thePlayer.addChatComponentMessage(new ChatComponentText("Breaking"));
         }
     }
     @SubscribeEvent
@@ -132,7 +141,7 @@ public class Treasure_Hunter {
                     RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
-            else if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP) {
+            else if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP && myConfigFile.treasureHunterMainPage.AllLocations) {
                 for (BlockPos posibleTreasure: allPositions) {
                     if (myConfigFile.treasureHunterMainPage.Text) {
                         RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Possible treasure", posibleTreasure, event.partialTicks);
