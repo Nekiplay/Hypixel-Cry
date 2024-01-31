@@ -13,7 +13,7 @@ import java.util.List;
 public class OpenSettings implements ICommand {
     @Override
     public String getCommandName() {
-        return "cry";
+        return "addon";
     }
 
     @Override
@@ -23,7 +23,7 @@ public class OpenSettings implements ICommand {
 
     @Override
     public List<String> getCommandAliases() {
-        return new ArrayList<>(Arrays.asList("hypixelcry", "nekiplay", "hc"));
+        return new ArrayList<>(Arrays.asList("hypixeladdon", "nekiplay", "hc"));
     }
 
     @Override
