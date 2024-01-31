@@ -30,7 +30,7 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new PeltMobEsp());
         MinecraftForge.EVENT_BUS.register(new Gifts());
 
-        MinecraftForge.EVENT_BUS.register(new RemoteAccess());
+        //MinecraftForge.EVENT_BUS.register(new RemoteAccess());
         //MinecraftForge.EVENT_BUS.register(new HideAttack());
         //MinecraftForge.EVENT_BUS.register(new AutoClicker());
         //MinecraftForge.EVENT_BUS.register(new NoClickDelay());
