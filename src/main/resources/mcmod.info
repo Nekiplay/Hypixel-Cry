@@ -1,6 +1,6 @@
 [{
-  "modid": "hypixelcry",
-  "name": "Hypixel Cry",
+  "modid": "hypixeladdon",
+  "name": "Hypixel Addon",
   "description": "Hypixel SkyBlock Utility Mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",
