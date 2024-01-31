@@ -30,14 +30,6 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new PeltMobEsp());
         MinecraftForge.EVENT_BUS.register(new Gifts());
 
-        /* Nuker */
-        MinecraftForge.EVENT_BUS.register(new Mithril());
-        MinecraftForge.EVENT_BUS.register(new Foraging());
-        MinecraftForge.EVENT_BUS.register(new Ore());
-        MinecraftForge.EVENT_BUS.register(new Crop());
-        MinecraftForge.EVENT_BUS.register(new Sand());
-        MinecraftForge.EVENT_BUS.register(new GardenMiner());
-
         MinecraftForge.EVENT_BUS.register(new RemoteAccess());
         MinecraftForge.EVENT_BUS.register(new HideAttack());
         MinecraftForge.EVENT_BUS.register(new AutoClicker());
