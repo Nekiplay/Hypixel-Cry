@@ -20,10 +20,11 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new CustomRenderer());
 
         /* Macros */
-        MinecraftForge.EVENT_BUS.register(new RogueSword());
-        MinecraftForge.EVENT_BUS.register(new WandofHealing());
-        MinecraftForge.EVENT_BUS.register(new AspectoftheEnd());
+        //MinecraftForge.EVENT_BUS.register(new RogueSword());
+        //MinecraftForge.EVENT_BUS.register(new WandofHealing());
+        //MinecraftForge.EVENT_BUS.register(new AspectoftheEnd());
         MinecraftForge.EVENT_BUS.register(new TestMacro());
+        MinecraftForge.EVENT_BUS.register(new AutoClicker());
 
         MinecraftForge.EVENT_BUS.register(new Crop());
         MinecraftForge.EVENT_BUS.register(new Foraging());
