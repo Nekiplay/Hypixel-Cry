@@ -19,6 +19,6 @@ public class MixinFMLHandShake {
 
     @Inject(method = "<init>(Ljava/util/List;)V", at = @At("RETURN"))
     private void removeRGA(List<ModContainer> modList, CallbackInfo ci) {
-        if(!Main.mc.isIntegratedServerRunning()) modTags.remove(Main.MODID);
+        //if(!Main.mc.isIntegratedServerRunning()) modTags.remove(Main.MODID);
     }
 }

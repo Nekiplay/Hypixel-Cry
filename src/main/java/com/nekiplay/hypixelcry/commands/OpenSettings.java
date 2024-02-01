@@ -23,7 +23,7 @@ public class OpenSettings implements ICommand {
 
     @Override
     public List<String> getCommandAliases() {
-        return new ArrayList<>(Arrays.asList("hypixeladdon", "nekiplay", "hc"));
+        return new ArrayList<>(Arrays.asList("hypixeladdon"));
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event)
     {
-        keyBindings = new KeyBinding[10];
+        keyBindings = new KeyBinding[11];
 
 
         keyBindings[0] = new KeyBinding("Rogue Sword", Keyboard.KEY_X, "Hypixel Cry | Macros");
@@ -39,18 +39,15 @@ public class ClientProxy extends CommonProxy {
 
         keyBindings[9] = new KeyBinding("Mithril nuker", Keyboard.KEY_X, "Hypixel Cry | Nuker");
 
+        keyBindings[10] = new KeyBinding("Test Macro", Keyboard.KEY_X, "Hypixel Cry | Macros");
+
         for (KeyBinding keyBinding : keyBindings) {
             ClientRegistry.registerKeyBinding(keyBinding);
         }
 
         new MacrosRegister().register(event);
-
-        ClientCommandHandler.instance.registerCommand(new RemoteControl());
         ClientCommandHandler.instance.registerCommand(new SetAngle());
         ClientCommandHandler.instance.registerCommand(new TPS());
-        ClientCommandHandler.instance.registerCommand(new BlockInfo());
-
-        ClientCommandHandler.instance.registerCommand(new iteminfocommand());
         ClientCommandHandler.instance.registerCommand(new OpenSettings());
         super.init(event);
     }

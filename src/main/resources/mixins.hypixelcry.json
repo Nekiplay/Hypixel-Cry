@@ -7,11 +7,9 @@
   "mixins": [
     "MinecraftAccessor",
     "MixinNetworkManager",
-    "MixinPlayerControllerMP",
     "MixinWorld"
   ],
   "client": [
-    "MixinFMLHandShake",
-    "render.MixinEntityRenderer"
+    "MixinFMLHandShake"
   ]
 }

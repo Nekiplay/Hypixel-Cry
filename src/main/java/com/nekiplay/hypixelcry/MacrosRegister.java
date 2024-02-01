@@ -8,6 +8,7 @@ import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.macros.AspectoftheEnd;
 import com.nekiplay.hypixelcry.features.combat.AutoClicker;
 import com.nekiplay.hypixelcry.features.macros.RogueSword;
+import com.nekiplay.hypixelcry.features.macros.TestMacro;
 import com.nekiplay.hypixelcry.features.macros.WandofHealing;
 import com.nekiplay.hypixelcry.features.nuker.*;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +23,15 @@ public class MacrosRegister {
         MinecraftForge.EVENT_BUS.register(new RogueSword());
         MinecraftForge.EVENT_BUS.register(new WandofHealing());
         MinecraftForge.EVENT_BUS.register(new AspectoftheEnd());
+        MinecraftForge.EVENT_BUS.register(new TestMacro());
+
+        MinecraftForge.EVENT_BUS.register(new Crop());
+        MinecraftForge.EVENT_BUS.register(new Foraging());
+        MinecraftForge.EVENT_BUS.register(new GardenMiner());
+        MinecraftForge.EVENT_BUS.register(new Mithril());
+        MinecraftForge.EVENT_BUS.register(new Ore());
+        MinecraftForge.EVENT_BUS.register(new Sand());
+
 
         /* ESP */
         MinecraftForge.EVENT_BUS.register(new Treasure_Hunter());
