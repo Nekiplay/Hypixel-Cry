@@ -361,7 +361,7 @@ public class Crop {
                     }
                 }
                 else if (block == Blocks.red_mushroom || block == Blocks.brown_mushroom) {
-                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    warts.add(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
                 }
                 else if (block == Blocks.cocoa) {
                     if (isCocoaGrow(2, blockState) || Main.myConfigFile.cropMainPage.CropNukerRemover) {
