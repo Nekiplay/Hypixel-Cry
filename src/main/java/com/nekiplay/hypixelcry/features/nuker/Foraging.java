@@ -59,11 +59,7 @@ public class Foraging extends GeneralNuker {
 
                 SetDistance(myConfigFile.foragingMainPage.MaximumNukerHorizontalDistance, myConfigFile.foragingMainPage.MaximumNukerVericalDistance);
 
-                if (!Main.myConfigFile.foragingMainPage.ForagingNukerGhostAxe) {
-                    if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
-                        BoostAlgorithm();
-                    }
-                } else {
+                if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
                     BoostAlgorithm();
                 }
 
@@ -101,20 +97,8 @@ public class Foraging extends GeneralNuker {
     private void breakSand(BlockPos pos) {
         blockPos = pos;
         if (pos != null) {
-            int last_slot = Main.mc.thePlayer.inventory.currentItem;
-            if (Main.myConfigFile.foragingMainPage.ForagingNukerGhostAxe) {
-                FindHotbar findHotbar = new FindHotbar();
-                int shovel_slot = findHotbar.findSlotInHotbar(Items.golden_axe);
-                if (shovel_slot != -1)
-                    Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(shovel_slot));
-            }
-
             Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
             PlayerUtils.swingItem();
-
-            if (Main.myConfigFile.foragingMainPage.ForagingNukerGhostAxe) {
-                Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
-            }
 
             broken.add(pos);
         }

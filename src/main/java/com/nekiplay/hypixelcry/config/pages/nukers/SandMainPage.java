@@ -70,14 +70,6 @@ public class SandMainPage {
     public int SandExposedMode = 2;
 
     @Checkbox(
-            name = "Ghost Shovel",
-            description = "Ghost switch shovel to hand",
-            category = "Sand nuker",
-            subcategory = "General"
-    )
-    public boolean SandGhostShovel = false;
-
-    @Checkbox(
             name = "Tracer",
             description = "Render Tracer to break location",
             category = "Sand nuker",

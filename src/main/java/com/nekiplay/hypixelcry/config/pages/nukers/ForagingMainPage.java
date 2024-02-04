@@ -62,14 +62,6 @@ public class ForagingMainPage {
             subcategory = "General"
     )
     public int ForagingNukerBoostTicks = 13;
-
-    @Checkbox(
-            name = "Ghost Axe",
-            description = "Ghost switch axe to hand",
-            category = "Foraging nuker",
-            subcategory = "General"
-    )
-    public boolean ForagingNukerGhostAxe = false;
     @Checkbox(
             name = "Tracer",
             description = "Render Tracer to break location",

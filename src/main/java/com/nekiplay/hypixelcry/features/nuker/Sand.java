@@ -63,18 +63,13 @@ public class Sand extends GeneralNuker {
 
                 Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.sandMainPage.SandExposedMode);
                 SetDistance(myConfigFile.sandMainPage.MaximumNukerHorizontalDistance, myConfigFile.sandMainPage.MaximumNukerVericalDistance);
-                if (!Main.myConfigFile.sandMainPage.SandGhostShovel) {
-                    if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
-                        BoostAlgorithm();
-                    }
-                    if (currentItem != null && currentItem.getItem() instanceof ItemSpade) {
-                        shovel_tick++;
-                    } else {
-                        shovel_tick = 0;
-                    }
-                }
-                else {
+                if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
                     BoostAlgorithm();
+                }
+                if (currentItem != null && currentItem.getItem() instanceof ItemSpade) {
+                    shovel_tick++;
+                } else {
+                    shovel_tick = 0;
                 }
             }
         }
@@ -106,20 +101,6 @@ public class Sand extends GeneralNuker {
         blockPos = pos;
         if (pos != null) {
             int last_slot = Main.mc.thePlayer.inventory.currentItem;
-            if (Main.myConfigFile.sandMainPage.SandGhostShovel) {
-                FindHotbar findHotbar = new FindHotbar();
-                int shovel_slot = findHotbar.findSlotInHotbar(Items.golden_shovel);
-                if (shovel_slot == -1)
-                    shovel_slot = findHotbar.findSlotInHotbar(Items.diamond_shovel);
-                if (shovel_slot == -1)
-                    shovel_slot = findHotbar.findSlotInHotbar(Items.iron_shovel);
-                if (shovel_slot != -1)
-                    Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(shovel_slot));
-            }
-            Main.mc.getNetHandler().getNetworkManager().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
-            if (Main.myConfigFile.sandMainPage.SandGhostShovel) {
-                Main.mc.getNetHandler().getNetworkManager().sendPacket(new C09PacketHeldItemChange(last_slot));
-            }
             DataExtractor extractor = Main.getInstance().dataExtractor;
             if (extractor.getScoreBoardData().Zone.contains("Your")) {
                 Main.mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
