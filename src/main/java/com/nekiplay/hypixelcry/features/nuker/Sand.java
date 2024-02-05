@@ -107,7 +107,7 @@ public class Sand extends GeneralNuker {
             } else {
                 Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
             }
-
+			Main.mc.getNetHandler().getNetworkManager().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
             if (Main.mc.theWorld.getBlockState(pos.add(0, 3, 0)).getBlock() == Blocks.cactus) {
                 Main.mc.theWorld.setBlockState(pos.add(0, 3, 0), Blocks.air.getDefaultState());
             }
