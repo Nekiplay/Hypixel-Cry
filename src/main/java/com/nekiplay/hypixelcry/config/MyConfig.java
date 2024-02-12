@@ -5,30 +5,41 @@ import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.data.Mod;
 import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.config.data.PageLocation;
+import com.nekiplay.hypixelcry.FeatureRegister;
 import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.hideattack.HideAttackMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.noclickdelay.NoClickDelayMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.reach.ReachMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.*;
+import com.nekiplay.hypixelcry.config.pages.macros.AutoToolMacrosMainPage;
+import com.nekiplay.hypixelcry.config.pages.macros.RogueSwordMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
 import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
 
 import java.io.IOException;
 
+import static com.nekiplay.hypixelcry.Main.features;
+
 
 public class MyConfig extends Config {
+    public transient static final String GENERAL = "General";
+    public transient static final String WORLD = "World";
+    public transient static final String NUKER = "Nuker's";
+    public transient static final String ESP = "ESP";
+    public transient static final String MACROS = "Macros";
+    public transient static final String COMBAT = "Combat";
     @Checkbox(
             name = "TPS Check",
             description = "Dont break if server lag.",
-            category = "World",
-            subcategory = "Nuker's"
+            category = WORLD,
+            subcategory = NUKER
     )
     public boolean GeneralNukerTPSGuard = true;
 
     @Page(
             name = "Garden Nuker",
-            category = "World",
-            subcategory = "Nuker's",
+            category = WORLD,
+            subcategory = NUKER,
             location = PageLocation.BOTTOM
     )
     public GardenMainPage gardenMainPage = new GardenMainPage();
@@ -36,8 +47,8 @@ public class MyConfig extends Config {
 
     @Page(
             name = "Crop Nuker",
-            category = "World",
-            subcategory = "Nuker's",
+            category = WORLD,
+            subcategory = NUKER,
             location = PageLocation.BOTTOM
     )
     public CropMainPage cropMainPage = new CropMainPage();
@@ -47,8 +58,8 @@ public class MyConfig extends Config {
     //region Foraging Nuker
     @Page(
             name = "Foraging Nuker",
-            category = "World",
-            subcategory = "Nuker's",
+            category = WORLD,
+            subcategory = NUKER,
             location = PageLocation.BOTTOM
     )
     public ForagingMainPage foragingMainPage = new ForagingMainPage();
@@ -57,8 +68,8 @@ public class MyConfig extends Config {
     //region Sand Nuker
     @Page(
             name = "Sand Nuker",
-            category = "World",
-            subcategory = "Nuker's",
+            category = WORLD,
+            subcategory = NUKER,
             location = PageLocation.BOTTOM
     )
     public SandMainPage sandMainPage = new SandMainPage();
@@ -67,8 +78,8 @@ public class MyConfig extends Config {
     //region Ore Nuker
     @Page(
             name = "Ore Nuker",
-            category = "World",
-            subcategory = "Nuker's",
+            category = WORLD,
+            subcategory = NUKER,
             location = PageLocation.BOTTOM
     )
     public OreMainPage oreMainPage = new OreMainPage();
@@ -77,17 +88,40 @@ public class MyConfig extends Config {
     //region Mithril Nuker
     @Page(
             name = "Mithril Nuker",
-            category = "World",
-            subcategory = "Nuker's",
+            category = WORLD,
+            subcategory = NUKER,
             location = PageLocation.BOTTOM
     )
     public MithrilMainPage mithrilMainPage = new MithrilMainPage();
     //endregion
 
+    @Page(
+            name = "Rogue Sword",
+            category = MACROS,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public RogueSwordMacrosMainPage rogueSwordMacrosMainPage = new RogueSwordMacrosMainPage();
+    @Page(
+            name = "Auto Tool",
+            category = MACROS,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public AutoToolMacrosMainPage autoToolMacrosMainPage = new AutoToolMacrosMainPage();
+
     //region Dark Monolith ESP
     @Page(
+            name = "Chest ESP",
+            category = ESP,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public ChestESPMainPage chestESPMainPage = new ChestESPMainPage();
+
+    @Page(
             name = "Dark Monolith",
-            category = "ESP",
+            category = ESP,
             subcategory = "Dwarden Mines",
             location = PageLocation.BOTTOM
     )
@@ -97,7 +131,7 @@ public class MyConfig extends Config {
     //region Glowing Mushroom ESP
     @Page(
             name = "Glowing Mushroom",
-            category = "ESP",
+            category = ESP,
             subcategory = "Glowing Mushroom Island",
             location = PageLocation.BOTTOM
     )
@@ -107,7 +141,7 @@ public class MyConfig extends Config {
     //region Treasure Hunter ESP
     @Page(
             name = "Treasure Hunter",
-            category = "ESP",
+            category = ESP,
             subcategory = "Glowing Mushroom Island",
             location = PageLocation.BOTTOM
     )
@@ -115,7 +149,7 @@ public class MyConfig extends Config {
 
     @Page(
             name = "Pelt mobs",
-            category = "ESP",
+            category = ESP,
             subcategory = "Glowing Mushroom Island",
             location = PageLocation.BOTTOM
     )
@@ -123,7 +157,7 @@ public class MyConfig extends Config {
 
     @Page(
             name = "Gifts",
-            category = "ESP",
+            category = ESP,
             subcategory = "Jerry's Workshop",
             location = PageLocation.BOTTOM
     )
@@ -132,15 +166,15 @@ public class MyConfig extends Config {
 
     @Page(
             name = "No Click Delay",
-            category = "Combat",
-            subcategory = "General",
+            category = COMBAT,
+            subcategory = GENERAL,
             location = PageLocation.BOTTOM
     )
     public NoClickDelayMainPage noClickDelayMainPage = new NoClickDelayMainPage();
     @Page(
             name = "Reach",
-            category = "Combat",
-            subcategory = "General",
+            category = COMBAT,
+            subcategory = GENERAL,
             location = PageLocation.BOTTOM
     )
     public ReachMainPage reachMainPage = new ReachMainPage();
@@ -148,15 +182,15 @@ public class MyConfig extends Config {
 
     @Page(
             name = "AutoClicker",
-            category = "Combat",
-            subcategory = "General",
+            category = COMBAT,
+            subcategory = GENERAL,
             location = PageLocation.BOTTOM
     )
     public AutoClickerMainPage autoClickerMainPage = new AutoClickerMainPage();
 
     @Page(
             name = "HideAttack",
-            category = "Combat",
+            category = COMBAT,
             subcategory = "Exploits",
             location = PageLocation.BOTTOM
     )
@@ -194,8 +228,17 @@ public class MyConfig extends Config {
 
 
     public MyConfig() {
-        super(new Mod("Hypixel Cry", ModType.SKYBLOCK), "hypixelcry/hypixelcry.json");
+        super(new Mod("Hypixel Cry", ModType.SKYBLOCK, "/assets/hypixelcry/logo.png"), "hypixelcry/hypixelcry.json");
         initialize();
+
+        registerKeyBind(rogueSwordMacrosMainPage.toggleMacro, () -> FeatureRegister.rogueSwordMacros.enable());
+
+        registerKeyBind(cropMainPage.toggleMacro, () -> FeatureRegister.cropNuker.enable());
+        registerKeyBind(foragingMainPage.toggleMacro, () -> FeatureRegister.foragingNuker.enable());
+        registerKeyBind(gardenMainPage.toggleMacro, () -> FeatureRegister.gardenNuker.enable());
+        registerKeyBind(mithrilMainPage.toggleMacro, () -> FeatureRegister.mithrilNuker.enable());
+        registerKeyBind(oreMainPage.toggleMacro, () -> FeatureRegister.oreNuker.enable());
+        registerKeyBind(sandMainPage.toggleMacro, () -> FeatureRegister.sandNuker.enable());
     }
 
 

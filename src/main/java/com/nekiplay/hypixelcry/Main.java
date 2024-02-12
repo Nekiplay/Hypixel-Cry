@@ -36,14 +36,15 @@ public class Main
 
     public static MyConfig myConfigFile;
 
-    public static KeyBinding[] keyBindings;
+    public static FeatureRegister features = new FeatureRegister();
+
     @SidedProxy(clientSide = "com.nekiplay.hypixelcry.proxy.ClientProxy")
     public static CommonProxy proxy;
 
     public DataExtractor dataExtractor = new DataExtractor();
 
     public static final String MODID = "AntiCheat";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.0.1";
 
     public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
     public static final String serverprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server" + EnumChatFormatting.GRAY + "] ";
@@ -62,7 +63,7 @@ public class Main
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        Display.setTitle("Minecraft 1.8.9 | AntiCheat " + VERSION);
+        Display.setTitle("Minecraft 1.8.9 | Hypixel Cry " + VERSION);
         MinecraftForge.EVENT_BUS.register(dataExtractor);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);

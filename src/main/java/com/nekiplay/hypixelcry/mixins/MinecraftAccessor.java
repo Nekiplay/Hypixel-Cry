@@ -15,4 +15,7 @@ public interface MinecraftAccessor {
 
     @Invoker("clickMouse")
     void clickMouse();
+
+    @Invoker("rightClickMouse")
+    void rightClickMouse();
 }

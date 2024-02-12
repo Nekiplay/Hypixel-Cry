@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Foraging extends GeneralNuker {
@@ -54,7 +55,7 @@ public class Foraging extends GeneralNuker {
             }
 
             if (generalMiner.AllowInstantMining()) {
-                InventoryPlayer inventory = Main.mc.thePlayer.inventory;
+                InventoryPlayer inventory = mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
                 SetDistance(myConfigFile.foragingMainPage.MaximumNukerHorizontalDistance, myConfigFile.foragingMainPage.MaximumNukerVericalDistance);
@@ -97,7 +98,7 @@ public class Foraging extends GeneralNuker {
     private void breakSand(BlockPos pos) {
         blockPos = pos;
         if (pos != null) {
-            Main.mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
+            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
             PlayerUtils.swingItem();
 
             broken.add(pos);
@@ -108,21 +109,20 @@ public class Foraging extends GeneralNuker {
         return false;
     }
 
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+    public void enable() {
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayerSP player = mc.thePlayer;
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[6].isPressed()) {
-            if (!work) {
-                work = true;
-                broken.clear();
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Foraging nuker enabled"));
-            }
-            else {
-                work = false;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Foraging nuker disabled"));
+        if (mc != null) {
+            EntityPlayerSP player = mc.thePlayer;
+            if (player != null) {
+                if (!work) {
+                    work = true;
+                    broken.clear();
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Foraging nuker enabled"));
+                }
+                else {
+                    work = false;
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Foraging nuker disabled"));
+                }
             }
         }
     }

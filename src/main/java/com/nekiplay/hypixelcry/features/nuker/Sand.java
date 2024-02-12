@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Sand extends GeneralNuker {
@@ -58,7 +59,7 @@ public class Sand extends GeneralNuker {
             }
 
             if (generalMiner.AllowInstantMining()) {
-                InventoryPlayer inventory = Main.mc.thePlayer.inventory;
+                InventoryPlayer inventory = mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
                 Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.sandMainPage.SandExposedMode);
@@ -100,22 +101,22 @@ public class Sand extends GeneralNuker {
     private void breakSand(BlockPos pos) {
         blockPos = pos;
         if (pos != null) {
-            int last_slot = Main.mc.thePlayer.inventory.currentItem;
+            int last_slot = mc.thePlayer.inventory.currentItem;
             DataExtractor extractor = Main.getInstance().dataExtractor;
             if (extractor.getScoreBoardData().Zone.contains("Your")) {
-                Main.mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
+                mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
             } else {
-                Main.mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
+                mc.theWorld.setBlockState(pos, Blocks.sandstone.getDefaultState());
             }
-			Main.mc.getNetHandler().getNetworkManager().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
-            if (Main.mc.theWorld.getBlockState(pos.add(0, 3, 0)).getBlock() == Blocks.cactus) {
-                Main.mc.theWorld.setBlockState(pos.add(0, 3, 0), Blocks.air.getDefaultState());
+			mc.getNetHandler().getNetworkManager().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
+            if (mc.theWorld.getBlockState(pos.add(0, 3, 0)).getBlock() == Blocks.cactus) {
+                mc.theWorld.setBlockState(pos.add(0, 3, 0), Blocks.air.getDefaultState());
             }
-            if (Main.mc.theWorld.getBlockState(pos.add(0, 2, 0)).getBlock() == Blocks.cactus) {
-                Main.mc.theWorld.setBlockState(pos.add(0, 2, 0), Blocks.air.getDefaultState());
+            if (mc.theWorld.getBlockState(pos.add(0, 2, 0)).getBlock() == Blocks.cactus) {
+                mc.theWorld.setBlockState(pos.add(0, 2, 0), Blocks.air.getDefaultState());
             }
-            if (Main.mc.theWorld.getBlockState(pos.add(0, 1, 0)).getBlock() == Blocks.cactus) {
-                Main.mc.theWorld.setBlockState(pos.add(0, 1, 0), Blocks.air.getDefaultState());
+            if (mc.theWorld.getBlockState(pos.add(0, 1, 0)).getBlock() == Blocks.cactus) {
+                mc.theWorld.setBlockState(pos.add(0, 1, 0), Blocks.air.getDefaultState());
             }
             PlayerUtils.swingItem();
             broken.add(pos);
@@ -123,22 +124,19 @@ public class Sand extends GeneralNuker {
     }
 
 
-
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+    public void enable() {
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayerSP player = mc.thePlayer;
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[5].isPressed()) {
-            if (!work) {
-                work = true;
-                broken.clear();
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Sand nuker enabled"));
-            }
-            else {
-                work = false;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Sand nuker disabled"));
+        if (mc != null) {
+            EntityPlayerSP player = mc.thePlayer;
+            if (player != null) {
+                if (!work) {
+                    work = true;
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Sand nuker enabled"));
+                }
+                else {
+                    work = false;
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Sand nuker disabled"));
+                }
             }
         }
     }

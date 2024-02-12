@@ -6,6 +6,7 @@ import com.nekiplay.hypixelcry.utils.RenderUtils;
 import com.nekiplay.hypixelcry.utils.world.TickRate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -115,19 +116,20 @@ public class GardenMiner extends GeneralNuker {
         return false;
     }
 
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[7].isPressed()) {
-            if (!work) {
-                work = true;
-                broken.clear();
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Garden nuker enabled"));
-            }
-            else {
-                work = false;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Garden nuker disabled"));
+    public void enable() {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc != null) {
+            EntityPlayerSP player = mc.thePlayer;
+            if (player != null) {
+                if (!work) {
+                    work = true;
+                    broken.clear();
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Garden nuker enabled"));
+                }
+                else {
+                    work = false;
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Garden nuker disabled"));
+                }
             }
         }
     }

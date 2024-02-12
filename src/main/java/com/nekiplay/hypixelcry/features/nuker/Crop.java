@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.features.nuker;
 
+import com.nekiplay.hypixelcry.FindHotbar;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.BlockUtils;
 import com.nekiplay.hypixelcry.utils.PlayerUtils;
@@ -8,6 +9,7 @@ import com.nekiplay.hypixelcry.utils.world.TickRate;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -396,21 +398,21 @@ public class Crop {
         }
         return null;
     }
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+    public void enable() {
         Minecraft mc = Minecraft.getMinecraft();
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[4].isPressed()) {
-            if (!work) {
-                work = true;
-                broken.clear();
-                farmlandsBad.clear();
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Crop nuker enabled"));
-            }
-            else {
-                work = false;
-                Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Crop nuker disabled"));
+        if (mc != null) {
+            EntityPlayerSP player = mc.thePlayer;
+            if (player != null) {
+                if (!work) {
+                    work = true;
+                    broken.clear();
+                    farmlandsBad.clear();
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Crop nuker enabled"));
+                }
+                else {
+                    work = false;
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Crop nuker disabled"));
+                }
             }
         }
     }

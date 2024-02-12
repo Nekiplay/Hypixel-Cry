@@ -6,6 +6,8 @@ import com.nekiplay.hypixelcry.utils.PlayerUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
@@ -212,24 +214,19 @@ public class Ore extends GeneralNuker {
         }
     }
 
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[3].isPressed()) {
-            if (!work) {
-                work = true;
-                currentDamage = 0;
-                damage = damageReset;
-                blockPos = null;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Ore nuker enabled"));
-            }
-            else {
-                work = false;
-                currentDamage = 0;
-                damage = damageReset;
-                blockPos = null;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Ore nuker disabled"));
+    public void enable() {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc != null) {
+            EntityPlayerSP player = mc.thePlayer;
+            if (player != null) {
+                if (!work) {
+                    work = true;
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Ore nuker enabled"));
+                }
+                else {
+                    work = false;
+                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Ore nuker disabled"));
+                }
             }
         }
     }

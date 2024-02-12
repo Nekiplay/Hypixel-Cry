@@ -72,7 +72,58 @@ public class RenderUtils {
 
         glEndList();
     }
+    public static void drawText(String str, double X, double Y, double Z, float scale, Color color) {
+        float lScale = scale;
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
 
+        double renderPosX = X - Minecraft.getMinecraft().getRenderManager().viewerPosX;
+        double renderPosY = Y - Minecraft.getMinecraft().getRenderManager().viewerPosY;
+        double renderPosZ = Z - Minecraft.getMinecraft().getRenderManager().viewerPosZ;
+
+        double distance = Math.sqrt(renderPosX * renderPosX + renderPosY * renderPosY + renderPosZ * renderPosZ);
+        double multiplier = Math.max(distance / 150f, 0.1f);
+        lScale *= 0.45f * multiplier;
+
+        float xMultiplier = Minecraft.getMinecraft().gameSettings.thirdPersonView == 2 ? -1 : 1;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(renderPosX, renderPosY, renderPosZ);
+        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        GlStateManager.rotate(-renderManager.playerViewY, 0, 1, 0);
+        GlStateManager.rotate(renderManager.playerViewX * xMultiplier, 1, 0, 0);
+        GlStateManager.scale(-lScale, -lScale, lScale);
+        GlStateManager.disableLighting();
+        GlStateManager.depthMask(false);
+        GlStateManager.disableDepth();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+
+        int textWidth = fontRenderer.getStringWidth(StringUtils.stripControlCodes((str)));
+
+        float j = textWidth / 2f;
+        GlStateManager.disableTexture2D();
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        GlStateManager.color(0, 0, 0, 0.5f);
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(-j - 1, -1, 0).endVertex();
+        worldrenderer.pos(-j - 1, 8, 0).endVertex();
+        worldrenderer.pos(j + 1, 8, 0).endVertex();
+        worldrenderer.pos(j + 1, -1, 0).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+
+        glColor(color);
+
+        fontRenderer.drawString(str, -textWidth / 2, 0, 553648127);
+        GlStateManager.depthMask(true);
+        fontRenderer.drawString(str, -textWidth / 2, 0, -1);
+
+        GlStateManager.enableDepth();
+        GlStateManager.enableBlend();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
+    }
     public static void drawBlockBox(final BlockPos blockPos, final Color color, final int width, float partialTicks) {
         if(width == 0) return;
         final RenderManager renderManager = mc.getRenderManager();

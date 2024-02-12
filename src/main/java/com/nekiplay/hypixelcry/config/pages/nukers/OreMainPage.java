@@ -2,10 +2,11 @@ package com.nekiplay.hypixelcry.config.pages.nukers;
 
 import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
+import cc.polyfrost.oneconfig.config.core.OneKeyBind;
 import cc.polyfrost.oneconfig.config.data.InfoType;
+import org.lwjgl.input.Keyboard;
 
 public class OreMainPage {
-
     @Info(
             text = "This nuker not recommended for AFK",
             type = InfoType.WARNING,
@@ -13,6 +14,12 @@ public class OreMainPage {
             subcategory = "General"
     )
     public static boolean ignored2; // Useless. Java limitations with @annotation.
+    @KeyBind(
+            name = "KeyBind", category = "Ore nuker", subcategory = "General",
+            description = "Toggles the macro on/off", size = 2
+    )
+    public OneKeyBind toggleMacro = new OneKeyBind(Keyboard.KEY_NONE);
+
     @Slider(
             name = "Horizontal distance",
             description = "Maximum horizontal distance",

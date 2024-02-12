@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class NoClickDelay {
@@ -16,7 +17,7 @@ public class NoClickDelay {
     public void TickEvent(TickEvent.ClientTickEvent event) {
         if (myConfigFile != null && myConfigFile.noClickDelayMainPage.enabled) {
             try {
-                MinecraftAccessor mca = (MinecraftAccessor) Main.mc;
+                MinecraftAccessor mca = (MinecraftAccessor) mc;
                 mca.setLeftClickDelay(0);
             }
             catch (Exception ignore) { }

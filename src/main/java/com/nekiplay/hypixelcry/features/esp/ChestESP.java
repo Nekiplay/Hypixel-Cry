@@ -1,0 +1,44 @@
+package com.nekiplay.hypixelcry.features.esp;
+
+import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.MyConfig;
+import com.nekiplay.hypixelcry.utils.RenderUtils;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+import java.util.ArrayList;
+
+import static com.nekiplay.hypixelcry.Main.myConfigFile;
+
+public class ChestESP {
+    private static final ArrayList<BlockPos> collected = new ArrayList<BlockPos>();
+    private static final ArrayList<BlockPos> locations = new ArrayList<BlockPos>();
+    @SubscribeEvent
+    public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
+        if (Main.mc.theWorld != null && myConfigFile != null && myConfigFile.chestESPMainPage.EnableESP) {
+            locations.clear();
+            for (TileEntity tileEntity : Main.mc.theWorld.loadedTileEntityList) {
+                if (tileEntity instanceof TileEntityChest) {
+                    locations.add(tileEntity.getPos());
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRender(RenderWorldLastEvent event) {
+        if (myConfigFile != null && myConfigFile.chestESPMainPage.EnableESP)
+        {
+            for (BlockPos pos: locations) {
+                if (!collected.contains(pos)) {
+                    RenderUtils.drawText("Chest", pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.8f, myConfigFile.chestESPMainPage.Color.toJavaColor());
+                    RenderUtils.drawBlockBox(pos, myConfigFile.chestESPMainPage.Color.toJavaColor(), 1, event.partialTicks);
+                }
+            }
+        }
+    }
+}

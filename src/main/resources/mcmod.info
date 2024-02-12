@@ -1,6 +1,6 @@
 [{
   "modid": "AntiCheat",
-  "name": "AntiCheat",
+  "name": "Hypixel Cry",
   "description": "Hypixel SkyBlock AntiCheat.",
   "version": "${version}",
   "mcversion": "${mcversion}",
@@ -8,7 +8,7 @@
   "updateUrl": "",
   "authorList": ["AntiCheat"],
   "credits": "",
-  "logoFile": "",
+  "logoFile": "assets/hypixelcry/logo.png",
   "screenshots": [],
   "dependencies": []
 }]
