@@ -7,12 +7,11 @@ import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.config.data.PageLocation;
 import com.nekiplay.hypixelcry.FeatureRegister;
 import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPage;
-import com.nekiplay.hypixelcry.config.pages.combat.hideattack.HideAttackMainPage;
 import com.nekiplay.hypixelcry.config.pages.combat.noclickdelay.NoClickDelayMainPage;
-import com.nekiplay.hypixelcry.config.pages.combat.reach.ReachMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.*;
 import com.nekiplay.hypixelcry.config.pages.macros.AutoToolMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.macros.RogueSwordMacrosMainPage;
+import com.nekiplay.hypixelcry.config.pages.macros.WandOfHealingMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
 import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
 
@@ -102,6 +101,14 @@ public class MyConfig extends Config {
             location = PageLocation.BOTTOM
     )
     public RogueSwordMacrosMainPage rogueSwordMacrosMainPage = new RogueSwordMacrosMainPage();
+
+    @Page(
+            name = "Wand Of Healing",
+            category = MACROS,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public WandOfHealingMacrosMainPage wandOfHealingMacrosMainPage = new WandOfHealingMacrosMainPage();
     @Page(
             name = "Auto Tool",
             category = MACROS,
@@ -118,6 +125,14 @@ public class MyConfig extends Config {
             location = PageLocation.BOTTOM
     )
     public ChestESPMainPage chestESPMainPage = new ChestESPMainPage();
+
+    @Page(
+            name = "Resource ESP",
+            category = ESP,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public ResourceRespawnerMainPage resourceRespawnerMainPage = new ResourceRespawnerMainPage();
 
     @Page(
             name = "Dark Monolith",
@@ -172,29 +187,12 @@ public class MyConfig extends Config {
     )
     public NoClickDelayMainPage noClickDelayMainPage = new NoClickDelayMainPage();
     @Page(
-            name = "Reach",
-            category = COMBAT,
-            subcategory = GENERAL,
-            location = PageLocation.BOTTOM
-    )
-    public ReachMainPage reachMainPage = new ReachMainPage();
-
-
-    @Page(
             name = "AutoClicker",
             category = COMBAT,
             subcategory = GENERAL,
             location = PageLocation.BOTTOM
     )
     public AutoClickerMainPage autoClickerMainPage = new AutoClickerMainPage();
-
-    @Page(
-            name = "HideAttack",
-            category = COMBAT,
-            subcategory = "Exploits",
-            location = PageLocation.BOTTOM
-    )
-    public HideAttackMainPage hideAttackMainPage = new HideAttackMainPage();
 
     @Button(
             name = "Telegram",
@@ -231,6 +229,7 @@ public class MyConfig extends Config {
         super(new Mod("Hypixel Cry", ModType.SKYBLOCK, "/assets/hypixelcry/logo.png"), "hypixelcry/hypixelcry.json");
         initialize();
 
+        registerKeyBind(wandOfHealingMacrosMainPage.toggleMacro, () -> FeatureRegister.wandOfHealingMacros.enable());
         registerKeyBind(rogueSwordMacrosMainPage.toggleMacro, () -> FeatureRegister.rogueSwordMacros.enable());
 
         registerKeyBind(cropMainPage.toggleMacro, () -> FeatureRegister.cropNuker.enable());

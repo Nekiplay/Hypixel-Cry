@@ -1,10 +1,13 @@
 package com.nekiplay.hypixelcry.features.macros;
 
+import com.nekiplay.hypixelcry.events.AttackEntity;
 import com.nekiplay.hypixelcry.events.BlockClick;
 import com.nekiplay.hypixelcry.utils.InventoryUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -34,6 +37,11 @@ public class AutoTool {
             }
 
             Block block = state.getBlock();
+            if (block != Blocks.redstone_ore && block != Blocks.lit_redstone_ore && block != Blocks.lapis_block && block != Blocks.coal_ore && block != Blocks.iron_ore && block != Blocks.gold_ore && block != Blocks.diamond_ore && block != Blocks.obsidian && block != Blocks.gold_block && block != Blocks.iron_block && block != Blocks.coal_block && block != Blocks.diamond_block && block != Blocks.emerald_block && block != Blocks.emerald_ore && block != Blocks.redstone_block) {
+                if (myConfigFile.autoToolMacrosMainPage.ignoreTrashBlock) {
+                    return;
+                }
+            }
             int pick = getFastestPickaxe();
             if (pick != -1) {
                 mc.thePlayer.inventory.currentItem = pick;
@@ -52,8 +60,6 @@ public class AutoTool {
                 if (!lore.isEmpty()) {
                     for (String line : lore) {
                         if (line.contains("Mining Speed:")) {
-                            mc.thePlayer.addChatMessage(new ChatComponentText("Founded"));
-                            System.out.println(line);
                             Matcher matcher = pestsFromVacuumPattern.matcher(line);
                             if (matcher.find()) {
                                 int speed = Integer.parseInt( matcher.group(1));

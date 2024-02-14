@@ -13,6 +13,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Dark_Monolith {
@@ -104,8 +105,6 @@ public class Dark_Monolith {
                 found = false;
             }
             else if (egg != null && !found){
-                Notifications.INSTANCE.send("Dark Monolith", "X: " + egg.getX() + "\nY: " + egg.getY() + "\nZ: " + egg.getZ(), new Icon("/assets/hypixelcry/icons/items/globe.png"), 1000 * 5);
-                //Main.mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.DARK_PURPLE + "Dark Monolith Egg Found!\n" + Main.prefix + EnumChatFormatting.DARK_PURPLE + "Position X: " + egg.getX() + " Y: " + egg.getY() + " Z: " + egg.getZ()));
                 found = true;
             }
         }
@@ -129,7 +128,7 @@ public class Dark_Monolith {
         {
             RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.Color.toJavaColor(), 1, event.partialTicks);
             if (myConfigFile.darkMonolithMainPage.Text) {
-                RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.darkMonolithMainPage.TextColor) + "Dark Monolith", egg.getX() + 0.5, egg.getY() + 1.5, egg.getZ() + 0.5, event.partialTicks);
+                RenderUtils.drawText("Dark Monolith", egg.getX() + 0.5, egg.getY() + 1.5, egg.getZ() + 0.5, 0.5f, myConfigFile.darkMonolithMainPage.Color.toJavaColor(), false);
             }
             if (myConfigFile.darkMonolithMainPage.Tracer) {
                 RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);

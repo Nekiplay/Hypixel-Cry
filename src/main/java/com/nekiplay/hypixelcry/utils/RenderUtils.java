@@ -72,7 +72,15 @@ public class RenderUtils {
 
         glEndList();
     }
-    public static void drawText(String str, double X, double Y, double Z, float scale, Color color) {
+    public static int getIntFromColor(int Alpha, int Red, int Green, int Blue){
+        Alpha = (Alpha << 24) & 0x00FF0000;
+        Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
+        Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
+        Blue = Blue & 0x000000FF; //Mask out anything not blue.
+
+        return 0xFF000000 | Alpha | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
+    }
+    public static void drawText(String str, double X, double Y, double Z, float scale, Color color, boolean background) {
         float lScale = scale;
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
 
@@ -100,24 +108,25 @@ public class RenderUtils {
 
         int textWidth = fontRenderer.getStringWidth(StringUtils.stripControlCodes((str)));
 
-        float j = textWidth / 2f;
-        GlStateManager.disableTexture2D();
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        GlStateManager.color(0, 0, 0, 0.5f);
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(-j - 1, -1, 0).endVertex();
-        worldrenderer.pos(-j - 1, 8, 0).endVertex();
-        worldrenderer.pos(j + 1, 8, 0).endVertex();
-        worldrenderer.pos(j + 1, -1, 0).endVertex();
-        tessellator.draw();
-        GlStateManager.enableTexture2D();
-
+        if (background) {
+            float j = textWidth / 2f;
+            GlStateManager.disableTexture2D();
+            Tessellator tessellator = Tessellator.getInstance();
+            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            GlStateManager.color(0, 0, 0, 0.5f);
+            worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+            worldrenderer.pos(-j - 1, -1, 0).endVertex();
+            worldrenderer.pos(-j - 1, 8, 0).endVertex();
+            worldrenderer.pos(j + 1, 8, 0).endVertex();
+            worldrenderer.pos(j + 1, -1, 0).endVertex();
+            tessellator.draw();
+            GlStateManager.enableTexture2D();
+        }
         glColor(color);
 
         fontRenderer.drawString(str, -textWidth / 2, 0, 553648127);
         GlStateManager.depthMask(true);
-        fontRenderer.drawString(str, -textWidth / 2, 0, -1);
+        fontRenderer.drawString(str, -textWidth / 2, 0, getIntFromColor(color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue()));
 
         GlStateManager.enableDepth();
         GlStateManager.enableBlend();

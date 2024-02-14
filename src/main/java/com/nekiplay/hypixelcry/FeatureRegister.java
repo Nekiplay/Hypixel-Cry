@@ -6,12 +6,14 @@ import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.combat.AutoClicker;
 import com.nekiplay.hypixelcry.features.macros.AutoTool;
 import com.nekiplay.hypixelcry.features.macros.RogueSword;
+import com.nekiplay.hypixelcry.features.macros.WandofHealing;
 import com.nekiplay.hypixelcry.features.nuker.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class FeatureRegister {
     public static AutoClicker autoClickerMacros = new AutoClicker();
+    public static WandofHealing wandOfHealingMacros = new WandofHealing();
     public static RogueSword rogueSwordMacros = new RogueSword();
     public static AutoTool autoToolMacros = new AutoTool();
 
@@ -29,8 +31,9 @@ public class FeatureRegister {
         //MinecraftForge.EVENT_BUS.register(new RogueSword());
         //MinecraftForge.EVENT_BUS.register(new WandofHealing());
         //MinecraftForge.EVENT_BUS.register(new AspectoftheEnd());
-        MinecraftForge.EVENT_BUS.register(autoToolMacros);
-        MinecraftForge.EVENT_BUS.register(rogueSwordMacros);
+        //MinecraftForge.EVENT_BUS.register(autoToolMacros);
+        //MinecraftForge.EVENT_BUS.register(wandOfHealingMacros);
+        //MinecraftForge.EVENT_BUS.register(rogueSwordMacros);
 
         MinecraftForge.EVENT_BUS.register(autoClickerMacros);
         MinecraftForge.EVENT_BUS.register(new NoClickDelay());
@@ -44,6 +47,7 @@ public class FeatureRegister {
 
 
         /* ESP */
+        MinecraftForge.EVENT_BUS.register(new ResourceRespawnerESP());
         MinecraftForge.EVENT_BUS.register(new ChestESP());
         MinecraftForge.EVENT_BUS.register(new Treasure_Hunter());
         MinecraftForge.EVENT_BUS.register(new Dark_Monolith());

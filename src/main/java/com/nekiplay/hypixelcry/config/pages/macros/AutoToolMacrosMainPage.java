@@ -10,4 +10,12 @@ public class AutoToolMacrosMainPage {
             subcategory = "General"
     )
     public boolean enabled = true;
+
+    @Checkbox(
+            name = "Ignore shit blocks",
+            description = "Ignore stone, logs, and other trash?",
+            category = "Auto Tool",
+            subcategory = "General"
+    )
+    public boolean ignoreTrashBlock = true;
 }
