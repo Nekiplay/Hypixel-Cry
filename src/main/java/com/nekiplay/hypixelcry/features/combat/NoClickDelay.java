@@ -17,8 +17,8 @@ public class NoClickDelay {
     public void TickEvent(TickEvent.ClientTickEvent event) {
         if (myConfigFile != null && myConfigFile.noClickDelayMainPage.enabled) {
             try {
-                MinecraftAccessor mca = (MinecraftAccessor) mc;
-                mca.setLeftClickDelay(0);
+                //MinecraftAccessor mca = (MinecraftAccessor) mc;
+                //mca.setLeftClickDelay(0);
             }
             catch (Exception ignore) { }
         }
