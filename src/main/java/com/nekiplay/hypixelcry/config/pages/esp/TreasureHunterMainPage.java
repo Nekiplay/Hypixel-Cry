@@ -55,13 +55,4 @@ public class TreasureHunterMainPage {
             subcategory = "Colors"
     )
     public OneColor treasureTracerColor = new OneColor(255, 192, 92);
-
-    @Dropdown(
-            name = "Treasure text color",
-            description = "The color of the block treasure location",
-            category = "Treasure Hunter",
-            subcategory = "Colors",
-            options = { "BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE" }
-    )
-    public int treasureTextColor = 5;
 }

@@ -134,17 +134,17 @@ public class Treasure_Hunter {
         if (allowRender) {
             if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP && pos != null) {
                 if (myConfigFile.treasureHunterMainPage.Text) {
-                    RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Treasure", pos, event.partialTicks);
+                    RenderUtils.drawText("Treasure", pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.5f, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), false);
                 }
                 RenderUtils.drawBlockBox(pos, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
                 if (myConfigFile.treasureHunterMainPage.Tracer) {
                     RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
-            else if (myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP && myConfigFile.treasureHunterMainPage.AllLocations) {
+            else if (pos == null && myConfigFile != null && myConfigFile.treasureHunterMainPage.TreasureHunterESP && myConfigFile.treasureHunterMainPage.AllLocations) {
                 for (BlockPos posibleTreasure: allPositions) {
                     if (myConfigFile.treasureHunterMainPage.Text) {
-                        RenderUtils.drawNametag(EnumChatFormatting.func_175744_a(myConfigFile.treasureHunterMainPage.treasureTextColor) + "Possible treasure", posibleTreasure, event.partialTicks);
+                        RenderUtils.drawText("Possible treasure", posibleTreasure.getX() + 0.5, posibleTreasure.getY() + 1.5, posibleTreasure.getZ() + 0.5, 0.5f, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), false);
                     }
                     RenderUtils.drawBlockBox(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
                     if (myConfigFile.treasureHunterMainPage.Tracer) {

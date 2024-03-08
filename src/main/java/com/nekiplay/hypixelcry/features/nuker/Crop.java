@@ -2,6 +2,7 @@ package com.nekiplay.hypixelcry.features.nuker;
 
 import com.nekiplay.hypixelcry.FindHotbar;
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.features.esp.Glowing_Mushroom;
 import com.nekiplay.hypixelcry.utils.BlockUtils;
 import com.nekiplay.hypixelcry.utils.PlayerUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
@@ -13,10 +14,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemSeeds;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.*;
@@ -74,7 +72,8 @@ public class Crop {
     private boolean isValidReeds(BlockPos cactus)
     {
         Block reeds = mc.theWorld.getBlockState(new BlockPos(cactus.getX(), cactus.getY() - 1, cactus.getZ())).getBlock();
-        return reeds == Blocks.reeds;
+        Block reeds2 = mc.theWorld.getBlockState(new BlockPos(cactus.getX(), cactus.getY() - 2, cactus.getZ())).getBlock();
+        return reeds == Blocks.reeds && (reeds2 == Blocks.dirt || reeds2 == Blocks.sand);
     }
 
     private void breakCrop(BlockPos crop) {
@@ -154,7 +153,7 @@ public class Crop {
             InventoryPlayer inventory = mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
             if (currentItem != null) {
-                if (((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) && hoeTick > 7) || Main.myConfigFile.cropMainPage.CropNukerRemover) {
+                if (((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe || currentItem.getItem() instanceof ItemShears) && hoeTick > 7) || Main.myConfigFile.cropMainPage.CropNukerRemover) {
                     if (boostTicks > Main.myConfigFile.cropMainPage.CropNukerBoostTicks)
                     {
                         for (int i = 0; i < Main.myConfigFile.cropMainPage.CropNukerBlockPesTick; i++) {
@@ -170,7 +169,7 @@ public class Crop {
                         boostTicks++;
                     }
                 }
-                else if (currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe) {
+                else if (currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe || currentItem.getItem() instanceof ItemShears) {
                     hoeTick++;
                 }
                 else
@@ -194,7 +193,7 @@ public class Crop {
                     for (BlockPos blockPos : farmlandsBad) {
                         RenderUtils.drawBlockBox(blockPos, new Color(255, 0, 0), 2, event.partialTicks);
                     }
-                } else if (breakCrop != null && currentItem.getItem() instanceof ItemHoe) {
+                } else if (breakCrop != null && (currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe || currentItem.getItem() instanceof ItemShears)) {
                     if (breakBlock == Blocks.wheat) {
                         RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.wheatColor.toJavaColor(), 1, event.partialTicks);
                         if (myConfigFile.cropMainPage.Tracer) {
@@ -363,7 +362,14 @@ public class Crop {
                     }
                 }
                 else if (block == Blocks.red_mushroom || block == Blocks.brown_mushroom) {
-                    warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    if (Main.myConfigFile.cropMainPage.CropNukerOnlyMathematicalHoe && isMathHoe("Moby")) {
+                        if (Glowing_Mushroom.isGlowingMushroom(blockPos)) {
+                            warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                        }
+                    }
+                    else if (!Main.myConfigFile.cropMainPage.CropNukerOnlyMathematicalHoe) {
+                        warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
+                    }
                 }
                 else if (block == Blocks.cocoa) {
                     if (isCocoaGrow(2, blockState) || Main.myConfigFile.cropMainPage.CropNukerRemover) {

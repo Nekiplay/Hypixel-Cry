@@ -20,4 +20,12 @@ public class JerryGiftsMainPage {
             subcategory = "Colors"
     )
     public OneColor Color = new OneColor(255, 255, 0);
+
+    @Checkbox(
+            name = "Text",
+            description = "Render Text to location",
+            category = "Jerry's Workshop",
+            subcategory = "Visuals"
+    )
+    public boolean Text = true;
 }

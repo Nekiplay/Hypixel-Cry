@@ -47,6 +47,16 @@ public class Glowing_Mushroom {
         }
     }
 
+    public static boolean isGlowingMushroom(BlockPos pos) {
+        for (Object pos_object : positions.toArray()) {
+            BlockPos pose = (BlockPos) pos_object;
+            if (pose.equals(pos)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (myConfigFile != null && myConfigFile.glowingMushroomMainPage.GlowingMushroomESP) {

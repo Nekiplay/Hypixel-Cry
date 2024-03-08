@@ -405,7 +405,7 @@ public class ResourceRespawnerESP {
                 colorVosem = Color.ORANGE;
             }
             if (vosemWood != 0) {
-                RenderUtils.drawText(vosemWood + "/5", -146.5, 79.5, -41.5, 1f, colorVosem, false);
+                RenderUtils.drawText(vosemWood + "/51", -146.5, 79.5, -41.5, 1f, colorVosem, false);
             }
         }
 

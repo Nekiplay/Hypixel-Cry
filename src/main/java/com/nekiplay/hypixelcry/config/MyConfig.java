@@ -7,7 +7,6 @@ import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.config.data.PageLocation;
 import com.nekiplay.hypixelcry.FeatureRegister;
 import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPage;
-import com.nekiplay.hypixelcry.config.pages.combat.noclickdelay.NoClickDelayMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.*;
 import com.nekiplay.hypixelcry.config.pages.macros.AutoToolMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.macros.RogueSwordMacrosMainPage;
@@ -16,8 +15,6 @@ import com.nekiplay.hypixelcry.config.pages.nukers.*;
 import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
 
 import java.io.IOException;
-
-import static com.nekiplay.hypixelcry.Main.features;
 
 
 public class MyConfig extends Config {
@@ -178,14 +175,6 @@ public class MyConfig extends Config {
     )
     public JerryGiftsMainPage jerryGiftsMainPage = new JerryGiftsMainPage();
     //endregion
-
-    @Page(
-            name = "No Click Delay",
-            category = COMBAT,
-            subcategory = GENERAL,
-            location = PageLocation.BOTTOM
-    )
-    public NoClickDelayMainPage noClickDelayMainPage = new NoClickDelayMainPage();
     @Page(
             name = "AutoClicker",
             category = COMBAT,

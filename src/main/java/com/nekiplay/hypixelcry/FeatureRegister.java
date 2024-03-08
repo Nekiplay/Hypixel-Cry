@@ -1,9 +1,7 @@
 package com.nekiplay.hypixelcry;
 
 import com.nekiplay.hypixelcry.config.CustomRenderer;
-import com.nekiplay.hypixelcry.features.combat.NoClickDelay;
 import com.nekiplay.hypixelcry.features.esp.*;
-import com.nekiplay.hypixelcry.features.combat.AutoClicker;
 import com.nekiplay.hypixelcry.features.macros.AutoTool;
 import com.nekiplay.hypixelcry.features.macros.RogueSword;
 import com.nekiplay.hypixelcry.features.macros.WandofHealing;
@@ -12,7 +10,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class FeatureRegister {
-    public static AutoClicker autoClickerMacros = new AutoClicker();
     public static WandofHealing wandOfHealingMacros = new WandofHealing();
     public static RogueSword rogueSwordMacros = new RogueSword();
     public static AutoTool autoToolMacros = new AutoTool();
@@ -28,15 +25,7 @@ public class FeatureRegister {
         MinecraftForge.EVENT_BUS.register(new CustomRenderer());
 
         /* Macros */
-        //MinecraftForge.EVENT_BUS.register(new RogueSword());
-        //MinecraftForge.EVENT_BUS.register(new WandofHealing());
-        //MinecraftForge.EVENT_BUS.register(new AspectoftheEnd());
-        //MinecraftForge.EVENT_BUS.register(autoToolMacros);
-        //MinecraftForge.EVENT_BUS.register(wandOfHealingMacros);
-        //MinecraftForge.EVENT_BUS.register(rogueSwordMacros);
-
-        MinecraftForge.EVENT_BUS.register(autoClickerMacros);
-        MinecraftForge.EVENT_BUS.register(new NoClickDelay());
+        MinecraftForge.EVENT_BUS.register(new RogueSword());
 
         MinecraftForge.EVENT_BUS.register(cropNuker);
         MinecraftForge.EVENT_BUS.register(foragingNuker);
@@ -54,10 +43,5 @@ public class FeatureRegister {
         MinecraftForge.EVENT_BUS.register(new Glowing_Mushroom());
         MinecraftForge.EVENT_BUS.register(new PeltMobEsp());
         MinecraftForge.EVENT_BUS.register(new Gifts());
-
-        //MinecraftForge.EVENT_BUS.register(new RemoteAccess());
-        //MinecraftForge.EVENT_BUS.register(new HideAttack());
-        //MinecraftForge.EVENT_BUS.register(new AutoClicker());
-        //MinecraftForge.EVENT_BUS.register(new NoClickDelay());
     }
 }

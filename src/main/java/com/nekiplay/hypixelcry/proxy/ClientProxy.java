@@ -20,6 +20,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event)
     {
         features.register(event);
+        ClientCommandHandler.instance.registerCommand(new EntityInfoCommand());
         ClientCommandHandler.instance.registerCommand(new SetAngle());
         ClientCommandHandler.instance.registerCommand(new TPS());
         ClientCommandHandler.instance.registerCommand(new OpenSettings());

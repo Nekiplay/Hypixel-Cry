@@ -24,24 +24,25 @@ import static com.nekiplay.hypixelcry.Main.myConfigFile;
 public class Gifts {
     private static final ArrayList<BlockPos> allPositions = new ArrayList<BlockPos>(){{
         add(new BlockPos(-1, 76, 81));
-        add(new BlockPos(-11,80,108));
-        add(new BlockPos(-28,77,92));
+        add(new BlockPos(-13,78,105));
+        add(new BlockPos(-24,76,97));
         add(new BlockPos(10,76,70));
-        add(new BlockPos(13,76,60));
         add(new BlockPos(-26,78,42));
-        add(new BlockPos(15,76,26));
-        add(new BlockPos(17,77,41));
         add(new BlockPos(19,86,71));
-        add(new BlockPos(15,88,105));
-        add(new BlockPos(-34,84,74));
         add(new BlockPos(-25,76,69));
-        add(new BlockPos(-18,85,53));
-        add(new BlockPos(-17,82,30));
-        add(new BlockPos(-13,86,96));
+        add(new BlockPos(-17,87,49));
         add(new BlockPos(17,77,90));
-        add(new BlockPos(-13,76,9));
-        add(new BlockPos(9,77,9));
         add(new BlockPos(4,82,100));
+        add(new BlockPos(27,76,51));
+        add(new BlockPos(23,87,27));
+        add(new BlockPos(26,86,43));
+        add(new BlockPos(-18,79,33));
+        add(new BlockPos(-1,79,113));
+        add(new BlockPos(21,77,34));
+        add(new BlockPos(-40,76,80));
+        add(new BlockPos(-22,77,56));
+        add(new BlockPos(-18,93,20));
+        add(new BlockPos(-15,76,11));
     }};
     private static final ArrayList<BlockPos> collected = new ArrayList<BlockPos>();
     private boolean allowRender = false;
@@ -49,7 +50,7 @@ public class Gifts {
     public void OnTick(TickEvent.ClientTickEvent event) {
         DataExtractor extractor = Main.getInstance().dataExtractor;
         String zone = extractor.getScoreBoardData().Zone;
-        if (zone.contains("Jerry's") || zone.contains("Sherry's")) {
+        if (zone.contains("Jerry") || zone.contains("Sherry's") || zone.contains("Reflective")) {
             allowRender = true;
         }
         else {
@@ -89,7 +90,7 @@ public class Gifts {
 
                 for (BlockPos pos : allPositions) {
                     double distance = event.attacked.getDistanceSq(pos);
-                    if (distance <= 2.68) {
+                    if (distance <= 4.68) {
                         if (!collected.contains(pos)) {
                             collected.add(pos);
                         }
@@ -106,6 +107,9 @@ public class Gifts {
             for (BlockPos pos: allPositions) {
                 if (!collected.contains(pos)) {
                     RenderUtils.drawBlockBox(pos, myConfigFile.jerryGiftsMainPage.Color.toJavaColor(), 1, event.partialTicks);
+                    if (myConfigFile.jerryGiftsMainPage.Text) {
+                        RenderUtils.drawText("Gift", pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.9f, myConfigFile.jerryGiftsMainPage.Color.toJavaColor(), false);
+                    }
                 }
             }
         }

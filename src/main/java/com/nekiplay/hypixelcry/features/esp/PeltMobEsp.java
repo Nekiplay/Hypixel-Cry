@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp;
 
+import com.nekiplay.hypixelcry.utils.EntityUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -13,16 +14,18 @@ import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class PeltMobEsp {
     private Entity rendered = null;
+
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent event) {
         if (myConfigFile != null && myConfigFile.peltMobMainPage.EnableESP) {
             double dist = 99999;
             if (mc.theWorld != null) {
                 List<Entity> entityList = mc.theWorld.getLoadedEntityList();
+                rendered = null;
                 for (Entity entity : entityList) {
-                    if (entity.hasCustomName()) {
-                        String title = entity.getDisplayName().getFormattedText();
-                        if (title.contains("Trackable") || title.contains("Untrackable") || title.contains("Undetected") || title.contains("Endangered") || title.contains("Elusive")) {
+                    String nametag = EntityUtils.getCustomNametag(entity);
+                    if (nametag != null) {
+                        if (nametag.contains("Trackable") || nametag.contains("Untrackable") || nametag.contains("Undetected") || nametag.contains("Endangered") || nametag.contains("Elusive")) {
                             double distance = mc.thePlayer.getDistanceSqToEntity(entity);
                             if (dist <= dist) {
                                 rendered = entity;
@@ -39,9 +42,9 @@ public class PeltMobEsp {
     public void onRender(RenderWorldLastEvent event) {
 
         if (rendered != null && myConfigFile != null && myConfigFile.peltMobMainPage.EnableESP) {
-            RenderUtils.drawEntityBox(rendered, myConfigFile.peltMobMainPage.Color.toJavaColor(), 1, event.partialTicks);
+            RenderUtils.drawText("Pelt Mob", rendered.getPosition().getX() + 0.5, rendered.getPosition().getY() + 0.5, rendered.getPosition().getZ() + 0.5, 0.5f, myConfigFile.peltMobMainPage.Color.toJavaColor(), false);
             if (myConfigFile.peltMobMainPage.EnableTracer) {
-                RenderUtils.drawTracer(rendered, myConfigFile.peltMobMainPage.Color.toJavaColor(), event.partialTicks);
+                RenderUtils.drawTracer(rendered.getPosition(), myConfigFile.peltMobMainPage.Color.toJavaColor(), 1, event.partialTicks);
             }
         }
 
