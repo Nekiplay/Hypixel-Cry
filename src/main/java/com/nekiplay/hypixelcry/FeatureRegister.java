@@ -1,10 +1,9 @@
 package com.nekiplay.hypixelcry;
 
 import com.nekiplay.hypixelcry.config.CustomRenderer;
+import com.nekiplay.hypixelcry.features.combat.*;
 import com.nekiplay.hypixelcry.features.esp.*;
-import com.nekiplay.hypixelcry.features.macros.AutoTool;
-import com.nekiplay.hypixelcry.features.macros.RogueSword;
-import com.nekiplay.hypixelcry.features.macros.WandofHealing;
+import com.nekiplay.hypixelcry.features.macros.*;
 import com.nekiplay.hypixelcry.features.nuker.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
