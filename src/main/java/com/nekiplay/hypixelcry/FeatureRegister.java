@@ -26,6 +26,7 @@ public class FeatureRegister {
 
         /* Macros */
         MinecraftForge.EVENT_BUS.register(new RogueSword());
+		MinecraftForge.EVENT_BUS.register(new AutoClicker());
 
         MinecraftForge.EVENT_BUS.register(cropNuker);
         MinecraftForge.EVENT_BUS.register(foragingNuker);
