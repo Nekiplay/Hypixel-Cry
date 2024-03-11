@@ -41,9 +41,9 @@ public class AutoClicker {
             if (System.currentTimeMillis() - lastClickTime > (long) 1000 / myConfigFile.autoClickerMainPage.CPS) {
                 try {
                     if (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY || mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.MISS) {
-                        lastClickTime = System.currentTimeMillis() + PerlinNoice(myConfigFile.autoClickerMainPage.Randomization) - 1;
-                        MinecraftAccessor mca = (MinecraftAccessor) mc;
-                        mca.clickMouse();
+                        //lastClickTime = System.currentTimeMillis() + PerlinNoice(myConfigFile.autoClickerMainPage.Randomization) - 1;
+                        //MinecraftAccessor mca = (MinecraftAccessor) mc;
+                        //mca.clickMouse();
                     }
                 }
                 catch (Exception ignore) { }
