@@ -67,7 +67,7 @@ public class FindHotbar {
         return 0;
     }
 
-    public int findSlotInHotbar(String name) {
+    public static int findSlotInHotbar(String name) {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.thePlayer;
 

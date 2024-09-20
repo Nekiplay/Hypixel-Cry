@@ -328,7 +328,7 @@ public class ResourceRespawnerESP {
                 colorOne = Color.ORANGE;
             }
             if (oneWood != 0) {
-                RenderUtils.drawText(oneWood + "/29", -150.5, 75.5, -15.5, 1f, colorOne, false);
+                RenderUtils.renderWaypointText(oneWood + "/29", new BlockPos(-150.5, 75.7, -15.5), event.partialTicks, false, colorOne);
             }
 
             Color colorTwo = Color.RED;
@@ -339,7 +339,7 @@ public class ResourceRespawnerESP {
                 colorTwo = Color.ORANGE;
             }
             if (twoWood != 0) {
-                RenderUtils.drawText(twoWood + "/24", -142.5, 75.5, -15.5, 1f, colorTwo, false);
+                RenderUtils.renderWaypointText(twoWood + "/24", new BlockPos(-142.5, 75.7, -15.5), event.partialTicks, false, colorTwo);
             }
 
             Color colorThree = Color.RED;
@@ -350,7 +350,7 @@ public class ResourceRespawnerESP {
                 colorThree = Color.ORANGE;
             }
             if (threeWood != 0) {
-                RenderUtils.drawText(threeWood + "/21", -132.5, 75.5, -21.5, 1f, colorThree, false);
+                RenderUtils.renderWaypointText(threeWood + "/21", new BlockPos(-132.5, 75.7, -21.5), event.partialTicks, false, colorThree);
             }
 
             Color colorChitiry = Color.RED;
@@ -361,7 +361,7 @@ public class ResourceRespawnerESP {
                 colorChitiry = Color.ORANGE;
             }
             if (chitiryWood != 0) {
-                RenderUtils.drawText(chitiryWood + "/27", -132.5, 75.5, -44.5, 1f, colorChitiry, false);
+                RenderUtils.renderWaypointText(chitiryWood + "/27", new BlockPos(-132.5, 75.7, -44.5), event.partialTicks, false, colorChitiry);
             }
 
             Color colorFive = Color.RED;
@@ -372,7 +372,7 @@ public class ResourceRespawnerESP {
                 colorFive = Color.ORANGE;
             }
             if (fiveWood != 0) {
-                RenderUtils.drawText(fiveWood + "/28", -116.5, 76.5, -27.5, 1f, colorFive, false);
+                RenderUtils.renderWaypointText(fiveWood + "/28", new BlockPos(-116.5, 76.7, -27.5), event.partialTicks, false, colorFive);
             }
 
             Color colorSix = Color.RED;
@@ -383,7 +383,7 @@ public class ResourceRespawnerESP {
                 colorSix = Color.ORANGE;
             }
             if (sixWood != 0) {
-                RenderUtils.drawText(sixWood + "/21", -119.5, 76.5, -35.5, 1f, colorSix, false);
+                RenderUtils.renderWaypointText(sixWood + "/21", new BlockPos(-119.5, 76.7, -35.5), event.partialTicks, false, colorSix);
             }
 
             Color colorSeven = Color.RED;
@@ -394,7 +394,7 @@ public class ResourceRespawnerESP {
                 colorSeven = Color.ORANGE;
             }
             if (sevenWood != 0) {
-                RenderUtils.drawText(sevenWood + "/42", -146.5, 76.5, -41.5, 1f, colorSeven, false);
+                RenderUtils.renderWaypointText(sevenWood + "/42", new BlockPos(-146.5, 76.7, -41.5), event.partialTicks, false, colorSeven);
             }
 
             Color colorVosem = Color.RED;
@@ -405,7 +405,7 @@ public class ResourceRespawnerESP {
                 colorVosem = Color.ORANGE;
             }
             if (vosemWood != 0) {
-                RenderUtils.drawText(vosemWood + "/51", -146.5, 79.5, -41.5, 1f, colorVosem, false);
+                RenderUtils.renderWaypointText(vosemWood + "/51", new BlockPos(-146.5, 79.7, -41.5), event.partialTicks, false, colorVosem);
             }
         }
 

@@ -3,6 +3,7 @@ package com.nekiplay.hypixelcry.features.esp;
 import com.nekiplay.hypixelcry.utils.EntityUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -42,7 +43,7 @@ public class PeltMobEsp {
     public void onRender(RenderWorldLastEvent event) {
 
         if (rendered != null && myConfigFile != null && myConfigFile.peltMobMainPage.EnableESP) {
-            RenderUtils.drawText("Pelt Mob", rendered.getPosition().getX() + 0.5, rendered.getPosition().getY() + 0.5, rendered.getPosition().getZ() + 0.5, 0.5f, myConfigFile.peltMobMainPage.Color.toJavaColor(), false);
+            RenderUtils.renderWaypointText("Pelt Mob", new BlockPos(rendered.getPosition().getX() + 0.5, rendered.getPosition().getY() + 0.5, rendered.getPosition().getZ() + 0.5), event.partialTicks, false, myConfigFile.peltMobMainPage.Color.toJavaColor());
             if (myConfigFile.peltMobMainPage.EnableTracer) {
                 RenderUtils.drawTracer(rendered.getPosition(), myConfigFile.peltMobMainPage.Color.toJavaColor(), 1, event.partialTicks);
             }

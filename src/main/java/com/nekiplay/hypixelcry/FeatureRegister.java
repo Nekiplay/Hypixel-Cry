@@ -12,6 +12,7 @@ public class FeatureRegister {
     public static WandofHealing wandOfHealingMacros = new WandofHealing();
     public static RogueSword rogueSwordMacros = new RogueSword();
     public static AutoTool autoToolMacros = new AutoTool();
+    public static GhostBlocks ghostBlocksMacros = new GhostBlocks();
 
     public static Crop cropNuker = new Crop();
     public static Foraging foragingNuker = new Foraging();
@@ -26,6 +27,7 @@ public class FeatureRegister {
         /* Macros */
         MinecraftForge.EVENT_BUS.register(new RogueSword());
 		MinecraftForge.EVENT_BUS.register(new AutoClicker());
+        MinecraftForge.EVENT_BUS.register(ghostBlocksMacros);
 
         MinecraftForge.EVENT_BUS.register(cropNuker);
         MinecraftForge.EVENT_BUS.register(foragingNuker);

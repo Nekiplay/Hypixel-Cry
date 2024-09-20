@@ -12,6 +12,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.awt.*;
+import java.awt.event.InputEvent;
+
 public class WandofHealing {
     private int last_slot = 0;
     private int tick = 0;
@@ -33,8 +36,12 @@ public class WandofHealing {
                 tick2++;
             }
             if (player.inventory.currentItem == rogueSlot && tick2 == 1) {
-                MinecraftAccessor minecraftAccessor = (MinecraftAccessor) mc;
-                minecraftAccessor.rightClickMouse();
+                try {
+                    Robot robot = new Robot();
+                    robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+                    robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+                }
+                catch (Exception e) { }
                 tick2++;
             } else if (player.inventory.currentItem == rogueSlot && tick2 == 2) {
                 mc.thePlayer.inventory.currentItem = last_slot;
@@ -56,11 +63,10 @@ public class WandofHealing {
         if (mc != null) {
             EntityPlayerSP player = mc.thePlayer;
             if (player != null) {
-                FindHotbar findHotbar = new FindHotbar();
-                int slot = findHotbar.findSlotInHotbar("Wand of Healing");
-                int slot2 = findHotbar.findSlotInHotbar("Wand of Mending");
-                int slot3 = findHotbar.findSlotInHotbar("Wand of Restoration");
-                int slot4 = findHotbar.findSlotInHotbar("Wand of Atonement");
+                int slot = FindHotbar.findSlotInHotbar("Wand of Healing");
+                int slot2 = FindHotbar.findSlotInHotbar("Wand of Mending");
+                int slot3 = FindHotbar.findSlotInHotbar("Wand of Restoration");
+                int slot4 = FindHotbar.findSlotInHotbar("Wand of Atonement");
                 if (slot != -1 || slot2 != -1 || slot3 != -1 || slot4 != -1) {
                     if (slot != -1) {
                         rogueSlot = slot;

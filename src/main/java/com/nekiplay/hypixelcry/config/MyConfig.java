@@ -9,6 +9,7 @@ import com.nekiplay.hypixelcry.FeatureRegister;
 import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.*;
 import com.nekiplay.hypixelcry.config.pages.macros.AutoToolMacrosMainPage;
+import com.nekiplay.hypixelcry.config.pages.macros.GhostBlocksMacrosPage;
 import com.nekiplay.hypixelcry.config.pages.macros.RogueSwordMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.macros.WandOfHealingMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
@@ -106,6 +107,14 @@ public class MyConfig extends Config {
             location = PageLocation.BOTTOM
     )
     public WandOfHealingMacrosMainPage wandOfHealingMacrosMainPage = new WandOfHealingMacrosMainPage();
+
+    @Page(
+            name = "Ghost Blocks",
+            category = MACROS,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public GhostBlocksMacrosPage ghostBLockMainPage = new GhostBlocksMacrosPage();
     @Page(
             name = "Auto Tool",
             category = MACROS,
@@ -220,6 +229,7 @@ public class MyConfig extends Config {
 
         registerKeyBind(wandOfHealingMacrosMainPage.toggleMacro, () -> FeatureRegister.wandOfHealingMacros.enable());
         registerKeyBind(rogueSwordMacrosMainPage.toggleMacro, () -> FeatureRegister.rogueSwordMacros.enable());
+        registerKeyBind(ghostBLockMainPage.toggleMacro, () -> FeatureRegister.ghostBlocksMacros.enable());
 
         registerKeyBind(cropMainPage.toggleMacro, () -> FeatureRegister.cropNuker.enable());
         registerKeyBind(foragingMainPage.toggleMacro, () -> FeatureRegister.foragingNuker.enable());

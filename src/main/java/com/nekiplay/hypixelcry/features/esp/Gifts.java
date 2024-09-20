@@ -108,7 +108,7 @@ public class Gifts {
                 if (!collected.contains(pos)) {
                     RenderUtils.drawBlockBox(pos, myConfigFile.jerryGiftsMainPage.Color.toJavaColor(), 1, event.partialTicks);
                     if (myConfigFile.jerryGiftsMainPage.Text) {
-                        RenderUtils.drawText("Gift", pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.9f, myConfigFile.jerryGiftsMainPage.Color.toJavaColor(), false);
+                        //RenderUtils.drawText("Gift", pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.9f, myConfigFile.jerryGiftsMainPage.Color.toJavaColor(), false);
                     }
                 }
             }

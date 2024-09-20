@@ -11,6 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
@@ -35,7 +37,7 @@ public class ChestESP {
         {
             for (BlockPos pos: locations) {
                 if (!collected.contains(pos)) {
-                    RenderUtils.drawText("Chest", pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.8f, myConfigFile.chestESPMainPage.Color.toJavaColor(), false);
+                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, null);
                     RenderUtils.drawBlockBox(pos, myConfigFile.chestESPMainPage.Color.toJavaColor(), 1, event.partialTicks);
                 }
             }
