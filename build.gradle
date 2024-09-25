@@ -15,7 +15,7 @@ buildscript {
         // Apply Mixin AP
         // annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
         //classpath 'org.spongepowered:mixin:0.8.5:processor'
-        classpath 'com.github.xcfrg:MixinGradle:0.6-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-20171001.194726-1'
     }
 
 }
