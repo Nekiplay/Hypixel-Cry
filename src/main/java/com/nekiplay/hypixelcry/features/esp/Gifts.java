@@ -68,7 +68,9 @@ public class Gifts {
                     if (head != null && !head.isEmpty()) {
                         if (head.equals("7732c5e4-1800-3b90-a70f-727d2969254b") && !collected.contains(entity.getPosition())) {
                             RenderUtils.drawBlockBox(entity.getPosition().add(0, 1, 0), myConfigFile.jerryGiftsMainPage.Color.toJavaColor(), 1, event.partialTicks);
-                            RenderUtils.renderWaypointText("Gift", entity.getPosition().add(0, 2, 0), event.partialTicks, false, myConfigFile.jerryGiftsMainPage.Color.toJavaColor());
+                            if (myConfigFile.jerryGiftsMainPage.Text) {
+                                RenderUtils.renderWaypointText("Gift", entity.getPosition().add(0, 2.8, 0), event.partialTicks, false, myConfigFile.jerryGiftsMainPage.TextColor.toJavaColor());
+                            }
                         }
                     }
                 }

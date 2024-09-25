@@ -21,7 +21,7 @@ public class AutoClickerMainPage {
             category = "AutoClicker",
             subcategory = "General"
     )
-    public int CPS = 16;
+    public int CPS = 11;
 
     @Slider(
             name = "Randomization",

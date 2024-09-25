@@ -183,6 +183,15 @@ public class MyConfig extends Config {
             location = PageLocation.BOTTOM
     )
     public JerryGiftsMainPage jerryGiftsMainPage = new JerryGiftsMainPage();
+
+    @Page(
+            name = "Chocolate Eggs",
+            category = ESP,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public ChocolateEggMainPage chocolateEggMainPage = new ChocolateEggMainPage();
+
     //endregion
     @Page(
             name = "AutoClicker",

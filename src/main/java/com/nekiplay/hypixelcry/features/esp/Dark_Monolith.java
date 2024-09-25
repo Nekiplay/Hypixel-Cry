@@ -128,7 +128,7 @@ public class Dark_Monolith {
         {
             RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.Color.toJavaColor(), 1, event.partialTicks);
             if (myConfigFile.darkMonolithMainPage.Text) {
-                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.5, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.Color.toJavaColor());
+                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.Color.toJavaColor());
             }
             if (myConfigFile.darkMonolithMainPage.Tracer) {
                 RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);

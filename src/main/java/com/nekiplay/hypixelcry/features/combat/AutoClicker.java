@@ -4,10 +4,12 @@ import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
 import com.nekiplay.hypixelcry.mixins.MinecraftAccessor;
 import com.nekiplay.hypixelcry.utils.InventoryUtils;
+import com.nekiplay.hypixelcry.utils.KeyBindUtils;
 import com.nekiplay.hypixelcry.utils.Perlin2D;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.KeyBinding;
@@ -31,7 +33,7 @@ public class AutoClicker {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void TickEvent(MillisecondEvent event) {
+    public void TickEvent(TickEvent.ClientTickEvent event) {
         if (myConfigFile.autoClickerMainPage.toggleMacro.isActive() && mc.thePlayer != null && !mc.thePlayer.isBlocking() && mc.currentScreen == null)
         {
             if (myConfigFile.autoClickerMainPage.onlyOnWeapon && !isWeaponHold()) {
@@ -41,9 +43,8 @@ public class AutoClicker {
             if (System.currentTimeMillis() - lastClickTime > (long) 1000 / myConfigFile.autoClickerMainPage.CPS) {
                 try {
                     if (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY || mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.MISS) {
-                        //lastClickTime = System.currentTimeMillis() + PerlinNoice(myConfigFile.autoClickerMainPage.Randomization) - 1;
-                        //MinecraftAccessor mca = (MinecraftAccessor) mc;
-                        //mca.clickMouse();
+                        lastClickTime = System.currentTimeMillis() + PerlinNoice(myConfigFile.autoClickerMainPage.Randomization) - 1;
+                        KeyBindUtils.leftClick();
                     }
                 }
                 catch (Exception ignore) { }

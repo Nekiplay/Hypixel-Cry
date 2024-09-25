@@ -1,30 +1,29 @@
 package com.nekiplay.hypixelcry.config.pages.esp;
 
 import cc.polyfrost.oneconfig.config.annotations.Checkbox;
-import cc.polyfrost.oneconfig.config.annotations.Color;
 import cc.polyfrost.oneconfig.config.core.OneColor;
 
-public class JerryGiftsMainPage {
+public class ChocolateEggMainPage {
     @Checkbox(
-            name = "Gift ESP",
-            description = "Render Gifts",
-            category = "Jerry's Workshop",
+            name = "Chocolate Egg ESP",
+            description = "Render eggs",
+            category = "General",
             subcategory = "General"
     )
     public boolean EnableESP = true;
 
     @cc.polyfrost.oneconfig.config.annotations.Color(
-            name = "Gift color",
-            description = "The color of the gifts",
-            category = "Jerry's Workshop",
+            name = "Egg color",
+            description = "The color of the eggs",
+            category = "General",
             subcategory = "Colors"
     )
     public OneColor Color = new OneColor(255, 255, 0);
 
     @Checkbox(
             name = "Text",
-            description = "Render Text to location",
-            category = "Jerry's Workshop",
+            description = "Render text to location",
+            category = "General",
             subcategory = "Visuals"
     )
     public boolean Text = true;
@@ -32,7 +31,7 @@ public class JerryGiftsMainPage {
     @cc.polyfrost.oneconfig.config.annotations.Color(
             name = "Text color",
             description = "The color of the gifts",
-            category = "Jerry's Workshop",
+            category = "General",
             subcategory = "Colors"
     )
     public OneColor TextColor = new OneColor(255, 255, 0);
