@@ -20,7 +20,7 @@ public class ChocolateEgg {
                     EntityArmorStand armorStand = (EntityArmorStand) entity;
                     String head = EntityUtils.getArmorStandHeadId(armorStand);
                     if (head != null && !head.isEmpty()) {
-                        if (head.equals("e67f7c89-3a19-3f30-ada2-43a3856e5028")) {
+                        if (head.equals("e67f7c89-3a19-3f30-ada2-43a3856e5028") || head.equals("015adc61-0aba-3d4d-b3d1-ca47a68a154b")) {
                             RenderUtils.drawBlockBox(entity.getPosition().add(0, 1, 0), myConfigFile.chocolateEggMainPage.Color.toJavaColor(), 1, event.partialTicks);
                             if (myConfigFile.chocolateEggMainPage.Text) {
                                 RenderUtils.renderWaypointText("Egg", entity.getPosition().add(0, 2.8, 0), event.partialTicks, false, myConfigFile.chocolateEggMainPage.TextColor.toJavaColor());
