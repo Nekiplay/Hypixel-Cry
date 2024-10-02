@@ -7,7 +7,7 @@
 	<br/><br/>
 </div>
 
-![image](https://user-images.githubusercontent.com/35975332/220020555-ac0d6d83-8312-4faf-a37a-e18200e51a62.png)
+![image](https://github.com/user-attachments/assets/293cbcd8-b619-4363-ac11-1bbebe2f5986)
 
 # Features
 ### Commands:
