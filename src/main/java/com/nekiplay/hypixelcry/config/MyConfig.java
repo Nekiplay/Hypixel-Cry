@@ -192,6 +192,14 @@ public class MyConfig extends Config {
     )
     public ChocolateEggMainPage chocolateEggMainPage = new ChocolateEggMainPage();
 
+    @Page(
+            name = "Holograms",
+            category = ESP,
+            subcategory = GENERAL,
+            location = PageLocation.BOTTOM
+    )
+    public HologramsMainPage hologramsMainPage = new HologramsMainPage();
+
     //endregion
     @Page(
             name = "AutoClicker",

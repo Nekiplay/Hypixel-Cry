@@ -23,6 +23,9 @@ public class MixinWorld {
         blockUpdateEvent.newState = newState;
         blockUpdateEvent.oldState = Main.mc.theWorld.getBlockState(pos);
         MinecraftForge.EVENT_BUS.post(blockUpdateEvent);
+        if (blockUpdateEvent.isCanceled()) {
+            cir.cancel();
+        }
     }
 
     @Inject(method = "spawnParticle(Lnet/minecraft/util/EnumParticleTypes;ZDDDDDD[I)V", at = @At("HEAD"), cancellable = true)

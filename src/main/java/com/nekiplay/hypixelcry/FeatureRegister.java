@@ -3,6 +3,7 @@ package com.nekiplay.hypixelcry;
 import com.nekiplay.hypixelcry.config.CustomRenderer;
 import com.nekiplay.hypixelcry.features.combat.*;
 import com.nekiplay.hypixelcry.features.esp.*;
+import com.nekiplay.hypixelcry.features.esp.holograms.HologramModule;
 import com.nekiplay.hypixelcry.features.macros.*;
 import com.nekiplay.hypixelcry.features.nuker.*;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,9 +21,13 @@ public class FeatureRegister {
     public static Mithril mithrilNuker = new Mithril();
     public static Ore oreNuker = new Ore();
     public static Sand sandNuker = new Sand();
+
+    public static HologramModule hologramModule = new HologramModule();
     public void register(FMLInitializationEvent event) {
         /* Events */
         MinecraftForge.EVENT_BUS.register(new CustomRenderer());
+        MinecraftForge.EVENT_BUS.register(hologramModule);
+        hologramModule.reload();
 
         /* Macros */
         MinecraftForge.EVENT_BUS.register(new RogueSword());

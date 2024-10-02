@@ -253,6 +253,11 @@ public class RenderUtils {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
     }
+    public static int myColor(int r, int g, int b) {
+        int argb = 0xFF << 24 | r << 16 | g << 8 | b;
+        return argb;
+    }
+
     public static void drawBlockBox(final BlockPos blockPos, final Color color, final int width, float partialTicks) {
         if(width == 0) return;
         final RenderManager renderManager = mc.getRenderManager();

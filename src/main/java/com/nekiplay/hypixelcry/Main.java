@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.lwjgl.opengl.Display;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -31,6 +33,8 @@ public class Main
     public static final Main getInstance() {
         return instance;
     }
+    public static final Logger LOG = LoggerFactory.getLogger(Main.class);
+    public static final String PREFIX = "Hypixel Cry";
 
     public static final Minecraft mc = Minecraft.getMinecraft();
 
