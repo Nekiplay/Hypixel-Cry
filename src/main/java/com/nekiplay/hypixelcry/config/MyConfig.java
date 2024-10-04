@@ -8,10 +8,7 @@ import cc.polyfrost.oneconfig.config.data.PageLocation;
 import com.nekiplay.hypixelcry.FeatureRegister;
 import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.*;
-import com.nekiplay.hypixelcry.config.pages.macros.AutoToolMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.macros.GhostBlocksMacrosPage;
-import com.nekiplay.hypixelcry.config.pages.macros.RogueSwordMacrosMainPage;
-import com.nekiplay.hypixelcry.config.pages.macros.WandOfHealingMacrosMainPage;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
 import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
 
@@ -93,35 +90,12 @@ public class MyConfig extends Config {
     //endregion
 
     @Page(
-            name = "Rogue Sword",
-            category = MACROS,
-            subcategory = GENERAL,
-            location = PageLocation.BOTTOM
-    )
-    public RogueSwordMacrosMainPage rogueSwordMacrosMainPage = new RogueSwordMacrosMainPage();
-
-    @Page(
-            name = "Wand Of Healing",
-            category = MACROS,
-            subcategory = GENERAL,
-            location = PageLocation.BOTTOM
-    )
-    public WandOfHealingMacrosMainPage wandOfHealingMacrosMainPage = new WandOfHealingMacrosMainPage();
-
-    @Page(
             name = "Ghost Blocks",
             category = MACROS,
             subcategory = GENERAL,
             location = PageLocation.BOTTOM
     )
     public GhostBlocksMacrosPage ghostBLockMainPage = new GhostBlocksMacrosPage();
-    @Page(
-            name = "Auto Tool",
-            category = MACROS,
-            subcategory = GENERAL,
-            location = PageLocation.BOTTOM
-    )
-    public AutoToolMacrosMainPage autoToolMacrosMainPage = new AutoToolMacrosMainPage();
 
     //region Dark Monolith ESP
     @Page(
@@ -244,8 +218,6 @@ public class MyConfig extends Config {
         super(new Mod("Hypixel Cry", ModType.SKYBLOCK, "/assets/hypixelcry/logo.png"), "hypixelcry/hypixelcry.json");
         initialize();
 
-        registerKeyBind(wandOfHealingMacrosMainPage.toggleMacro, () -> FeatureRegister.wandOfHealingMacros.enable());
-        registerKeyBind(rogueSwordMacrosMainPage.toggleMacro, () -> FeatureRegister.rogueSwordMacros.enable());
         registerKeyBind(ghostBLockMainPage.toggleMacro, () -> FeatureRegister.ghostBlocksMacros.enable());
 
         registerKeyBind(cropMainPage.toggleMacro, () -> FeatureRegister.cropNuker.enable());

@@ -1,8 +1,9 @@
 package com.nekiplay.hypixelcry.features.macros;
 
+import com.nekiplay.hypixelcry.utils.KeyBindUtils;
+import com.nekiplay.hypixelcry.utils.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.Blocks;
@@ -18,10 +19,10 @@ public class GhostBlocks {
             BlockPos pos = mc.objectMouseOver.getBlockPos();
             IBlockState state = mc.theWorld.getBlockState(pos);
             Block block = state.getBlock();
-            if (block instanceof BlockChest || block instanceof BlockEnderChest) {
-
-            }
-            else {
+            if (block instanceof BlockChest) {
+                KeyBindUtils.rightClick();
+            } else {
+                PlayerUtils.swingItem();
                 mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
             }
         }
