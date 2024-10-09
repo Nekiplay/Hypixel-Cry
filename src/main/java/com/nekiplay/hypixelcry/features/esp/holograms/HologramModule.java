@@ -68,7 +68,7 @@ public class HologramModule {
         for (Object hologramDataListedObject : allHolograms.toArray()) {
             HologramDataListed hologramDataListed = (HologramDataListed) hologramDataListedObject;
 
-            RenderUtils.renderWaypointText(hologramDataListed.text, new BlockPos(hologramDataListed.x, hologramDataListed.y, hologramDataListed.z), event.partialTicks, hologramDataListed.background, new Color(hologramDataListed.red, hologramDataListed.green, hologramDataListed.blue));
+            //RenderUtils.renderWaypointText(hologramDataListed.text, new BlockPos(hologramDataListed.x, hologramDataListed.y, hologramDataListed.z), event.partialTicks, hologramDataListed.background, new Color(hologramDataListed.red, hologramDataListed.green, hologramDataListed.blue));
             for (HologramData hologramData : hologramDataListed.other_holograms) {
                 render2(hologramData, event);
             }
@@ -76,7 +76,7 @@ public class HologramModule {
     }
 
     private void render2(HologramData hologramData, RenderWorldLastEvent event) {
-        RenderUtils.renderWaypointText(hologramData.text, new BlockPos(hologramData.x, hologramData.y, hologramData.z), event.partialTicks, hologramData.background, new Color(hologramData.red, hologramData.green, hologramData.blue));
+        //RenderUtils.renderWaypointText(hologramData.text, new BlockPos(hologramData.x, hologramData.y, hologramData.z), event.partialTicks, hologramData.background, new Color(hologramData.red, hologramData.green, hologramData.blue));
     }
 
     @SubscribeEvent
