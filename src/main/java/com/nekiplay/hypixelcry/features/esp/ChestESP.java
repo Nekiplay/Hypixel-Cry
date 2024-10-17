@@ -37,7 +37,7 @@ public class ChestESP {
         {
             for (BlockPos pos: locations) {
                 if (!collected.contains(pos)) {
-                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, null);
+                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, myConfigFile.chestESPMainPage.Color.toJavaColor());
                     RenderUtils.drawBlockBox(pos, myConfigFile.chestESPMainPage.Color.toJavaColor(), 1, event.partialTicks);
                 }
             }
