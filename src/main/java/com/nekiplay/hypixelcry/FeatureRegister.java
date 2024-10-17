@@ -23,8 +23,8 @@ public class FeatureRegister {
     public void register(FMLInitializationEvent event) {
         /* Events */
         MinecraftForge.EVENT_BUS.register(new CustomRenderer());
-        MinecraftForge.EVENT_BUS.register(hologramModule);
-        hologramModule.reload();
+        //MinecraftForge.EVENT_BUS.register(hologramModule);
+        //hologramModule.reload();
 
         /* Macros */
 		MinecraftForge.EVENT_BUS.register(new AutoClicker());
