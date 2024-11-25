@@ -27,7 +27,7 @@ public class MithrilMainPage {
             max = 5.4f,
             min = 1f
     )
-    public float MaximumNukerHorizontalDistance = 5.4f;
+    public float maximumNukerHorizontalDistance = 5.4f;
 
     @Slider(
             name = "Verical distance",
@@ -37,7 +37,7 @@ public class MithrilMainPage {
             max = 7.5f,
             min = 1f
     )
-    public float MaximumNukerVericalDistance = 7.5f;
+    public float maximumNukerVericalDistance = 7.5f;
     @Dropdown(
             name = "Find mode",        // name of the component
             description = "Exposed mode",
@@ -45,7 +45,7 @@ public class MithrilMainPage {
             category = "Mithril nuker",
             subcategory = "General"
     )
-    public int MithrilNukerExposedMode = 2;
+    public int mithrilNukerExposedMode = 2;
 
     @Checkbox(
             name = "Tracer",
@@ -53,7 +53,7 @@ public class MithrilMainPage {
             category = "Mithril nuker",
             subcategory = "Visuals"
     )
-    public boolean Tracer = true;
+    public boolean tracer = true;
 
     @Checkbox(
             name = "Skip Titanium",
@@ -61,7 +61,7 @@ public class MithrilMainPage {
             category = "Mithril nuker",
             subcategory = "General"
     )
-    public boolean MithrilNukerIgnoreTitanium = false;
+    public boolean mithrilNukerIgnoreTitanium = false;
 
     @Color(
             name = "Break color",
@@ -69,6 +69,6 @@ public class MithrilMainPage {
             category = "Mithril nuker",
             subcategory = "Colors"
     )
-    public OneColor Color = new OneColor(255, 192, 92);
+    public OneColor color = new OneColor(255, 192, 92);
 
 }

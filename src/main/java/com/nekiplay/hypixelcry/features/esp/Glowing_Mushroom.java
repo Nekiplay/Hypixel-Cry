@@ -59,10 +59,10 @@ public class Glowing_Mushroom {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && myConfigFile.glowingMushroomMainPage.GlowingMushroomESP) {
+        if (myConfigFile != null && myConfigFile.glowingMushroomMainPage.glowingMushroomESP) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos) pos_object;
-                RenderUtils.drawBlockBox(pos, myConfigFile.glowingMushroomMainPage.Color.toJavaColor(), 1, event.partialTicks);
+                RenderUtils.drawBlockBox(pos, myConfigFile.glowingMushroomMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

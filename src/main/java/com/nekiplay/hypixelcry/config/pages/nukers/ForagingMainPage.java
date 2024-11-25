@@ -34,7 +34,7 @@ public class ForagingMainPage {
             max = 5.4f,
             min = 1f
     )
-    public float MaximumNukerHorizontalDistance = 5.4f;
+    public float maximumNukerHorizontalDistance = 5.4f;
 
     @Slider(
             name = "Verical distance",
@@ -44,7 +44,7 @@ public class ForagingMainPage {
             max = 7.5f,
             min = 1f
     )
-    public float MaximumNukerVericalDistance = 7.5f;
+    public float maximumNukerVericalDistance = 7.5f;
     @Slider(
             name = "Max boost",
             step = 1,
@@ -54,7 +54,7 @@ public class ForagingMainPage {
             category = "Foraging nuker",
             subcategory = "General"
     )
-    public int ForagingNukerBlockPesTick = 4;
+    public int foragingNukerBlockPesTick = 4;
 
     @Slider(
             name = "Boost every ticks",
@@ -65,14 +65,14 @@ public class ForagingMainPage {
             category = "Foraging nuker",
             subcategory = "General"
     )
-    public int ForagingNukerBoostTicks = 13;
+    public int foragingNukerBoostTicks = 13;
     @Checkbox(
             name = "Tracer",
             description = "Render Tracer to break location",
             category = "Foraging nuker",
             subcategory = "Visuals"
     )
-    public boolean Tracer = true;
+    public boolean tracer = true;
 
     @Color(
             name = "Break block color",

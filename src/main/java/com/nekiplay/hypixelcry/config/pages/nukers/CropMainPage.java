@@ -36,7 +36,7 @@ public class CropMainPage {
             max = 5.4f,
             min = 1f
     )
-    public float MaximumNukerHorizontalDistance = 4f;
+    public float maximumNukerHorizontalDistance = 4f;
 
     @Slider(
             name = "Verical distance",
@@ -46,7 +46,7 @@ public class CropMainPage {
             max = 7.5f,
             min = 1f
     )
-    public float MaximumNukerVericalDistance = 3f;
+    public float maximumNukerVericalDistance = 3f;
 
     @Checkbox(
             name = "Replanish support",
@@ -54,7 +54,7 @@ public class CropMainPage {
             category = "Crop nuker",
             subcategory = "General"
     )
-    public boolean CropNukerReplanish = true;
+    public boolean cropNukerReplanish = true;
 
     @Checkbox(
             name = "Only mathematical hoe",
@@ -62,7 +62,7 @@ public class CropMainPage {
             category = "Crop nuker",
             subcategory = "General"
     )
-    public boolean CropNukerOnlyMathematicalHoe = false;
+    public boolean cropNukerOnlyMathematicalHoe = false;
 
     @Slider(
             name = "Max boost",
@@ -73,7 +73,7 @@ public class CropMainPage {
             category = "Crop nuker",
             subcategory = "General"
     )
-    public int CropNukerBlockPesTick = 4;
+    public int cropNukerBlockPesTick = 4;
 
     @Slider(
             name = "Boost every ticks",
@@ -84,7 +84,7 @@ public class CropMainPage {
             category = "Crop nuker",
             subcategory = "General"
     )
-    public int CropNukerBoostTicks = 13;
+    public int cropNukerBoostTicks = 13;
 
     @Checkbox(
             name = "Remover",
@@ -92,7 +92,7 @@ public class CropMainPage {
             category = "Crop nuker",
             subcategory = "General"
     )
-    public boolean CropNukerRemover = false;
+    public boolean cropNukerRemover = false;
 
     @Checkbox(
             name = "Tracer",
@@ -100,7 +100,7 @@ public class CropMainPage {
             category = "Crop nuker",
             subcategory = "Visuals"
     )
-    public boolean Tracer = true;
+    public boolean tracer = true;
 
     @Color(
             name = "Wheat color",

@@ -28,7 +28,7 @@ public class OreMainPage {
             max = 5.4f,
             min = 1f
     )
-    public float MaximumNukerHorizontalDistance = 5.4f;
+    public float maximumNukerHorizontalDistance = 5.4f;
 
     @Slider(
             name = "Verical distance",
@@ -38,7 +38,7 @@ public class OreMainPage {
             max = 7.5f,
             min = 1f
     )
-    public float MaximumNukerVericalDistance = 7.5f;
+    public float maximumNukerVericalDistance = 7.5f;
     @DualOption(
             name = "Break mode",
             description = "Mining mode",
@@ -48,7 +48,7 @@ public class OreMainPage {
             right = "Instant"
             //options = {"Default", "Instant"}
     )
-    public boolean  OreNukerMode = false;
+    public boolean  oreNukerMode = false;
 
     @Dropdown(
             name = "Find mode",
@@ -57,14 +57,14 @@ public class OreMainPage {
             subcategory = "General",
             options = {"Hidden", "Visible", "All"}
     )
-    public int OreNukerExposedMode = 2;
+    public int oreNukerExposedMode = 2;
     @Checkbox(
             name = "Coal",
             description = "Mine coal",
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerCoal = true;
+    public boolean oreNukerCoal = true;
 
     @Checkbox(
             name = "Iron",
@@ -72,7 +72,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerIron = true;
+    public boolean oreNukerIron = true;
 
     @Checkbox(
             name = "Gold",
@@ -80,7 +80,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerGold = true;
+    public boolean oreNukerGold = true;
 
     @Checkbox(
             name = "Lapis",
@@ -88,7 +88,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerLapis = true;
+    public boolean oreNukerLapis = true;
 
     @Checkbox(
             name = "Redstone",
@@ -96,7 +96,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerRedstone = true;
+    public boolean oreNukerRedstone = true;
 
     @Checkbox(
             name = "Emerald",
@@ -104,7 +104,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerEmerald = true;
+    public boolean oreNukerEmerald = true;
 
     @Checkbox(
             name = "Diamond",
@@ -112,7 +112,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerDiamond = true;
+    public boolean oreNukerDiamond = true;
 
     @Checkbox(
             name = "Stone",
@@ -121,7 +121,7 @@ public class OreMainPage {
             subcategory = "Blocks"
     )
 
-    public boolean OreNukerStone = false;
+    public boolean oreNukerStone = false;
 
     @Checkbox(
             name = "Cobblestone",
@@ -129,7 +129,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerCobblestone = false;
+    public boolean oreNukerCobblestone = false;
 
     @Checkbox(
             name = "End stone",
@@ -137,7 +137,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerEndstone = false;
+    public boolean oreNukerEndstone = false;
 
     @Checkbox(
             name = "Obsidian",
@@ -145,7 +145,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerObsidian = false;
+    public boolean oreNukerObsidian = false;
 
     @Checkbox(
             name = "Ice",
@@ -153,7 +153,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Blocks"
     )
-    public boolean OreNukerIce = false;
+    public boolean oreNukerIce = false;
 
     @Checkbox(
             name = "Tracer",
@@ -161,7 +161,7 @@ public class OreMainPage {
             category = "Ore nuker",
             subcategory = "Visuals"
     )
-    public boolean Tracer = true;
+    public boolean tracer = true;
 
     @Color(
             name = "Coal color",

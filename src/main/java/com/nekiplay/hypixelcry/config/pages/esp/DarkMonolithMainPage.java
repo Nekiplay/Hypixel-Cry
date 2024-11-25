@@ -12,7 +12,7 @@ public class DarkMonolithMainPage {
             category = "Dwarden Mines",
             subcategory = "General"
     )
-    public boolean DwardenMinesDarkMonolithESP = true;
+    public boolean dwardenMinesDarkMonolithESP = true;
 
     @Color(
             name = "Dark Monolith color",
@@ -20,7 +20,7 @@ public class DarkMonolithMainPage {
             category = "Dwarden Mines",
             subcategory = "Colors"
     )
-    public OneColor Color = new OneColor(185, 255, 135);
+    public OneColor color = new OneColor(185, 255, 135);
 
     @Checkbox(
             name = "Text",
@@ -28,7 +28,7 @@ public class DarkMonolithMainPage {
             category = "Dwarden Mines",
             subcategory = "Visuals"
     )
-    public boolean Text = true;
+    public boolean text = true;
 
     @Checkbox(
             name = "Tracer",
@@ -36,7 +36,7 @@ public class DarkMonolithMainPage {
             category = "Dwarden Mines",
             subcategory = "Visuals"
     )
-    public boolean Tracer = true;
+    public boolean tracer = true;
 
     @Color(
             name = "Tracer Dark Monolith color",

@@ -15,7 +15,7 @@ public class TreasureHunterMainPage {
             category = "Treasure Hunter",
             subcategory = "General"
     )
-    public boolean TreasureHunterESP = true;
+    public boolean treasureHunterESP = true;
 
     @Color(
             name = "Treasure color",
@@ -31,7 +31,7 @@ public class TreasureHunterMainPage {
             category = "Treasure Hunter",
             subcategory = "Visuals"
     )
-    public boolean Text = true;
+    public boolean text = true;
 
     @Checkbox(
             name = "Tracer",
@@ -39,14 +39,14 @@ public class TreasureHunterMainPage {
             category = "Treasure Hunter",
             subcategory = "Visuals"
     )
-    public boolean Tracer = true;
+    public boolean tracer = true;
     @Checkbox(
             name = "All locations",
             description = "Render all locations if dont know trasure location",
             category = "Treasure Hunter",
             subcategory = "Visuals"
     )
-    public boolean AllLocations = true;
+    public boolean allLocations = true;
 
     @Color(
             name = "Tracer Treasure color",

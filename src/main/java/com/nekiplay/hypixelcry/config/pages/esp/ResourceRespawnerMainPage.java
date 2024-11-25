@@ -9,5 +9,5 @@ public class ResourceRespawnerMainPage {
             category = "General",
             subcategory = "General"
     )
-    public boolean EnableESP = true;
+    public boolean enableESP = true;
 }

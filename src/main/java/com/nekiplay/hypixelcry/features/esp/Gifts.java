@@ -43,7 +43,7 @@ public class Gifts {
     public void onAttackEntity(AttackEntity event)
     {
         if (event.attacked instanceof EntityArmorStand) {
-            if (myConfigFile != null && myConfigFile.jerryGiftsMainPage.EnableESP && allowRender) {
+            if (myConfigFile != null && myConfigFile.jerryGiftsMainPage.enableESP && allowRender) {
 
                 EntityArmorStand armorStand = (EntityArmorStand) event.attacked;
                 String head = EntityUtils.getArmorStandHeadId(armorStand);
@@ -59,7 +59,7 @@ public class Gifts {
     }
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && myConfigFile.jerryGiftsMainPage.EnableESP && allowRender)
+        if (myConfigFile != null && myConfigFile.jerryGiftsMainPage.enableESP && allowRender)
         {
             for (Entity entity : mc.theWorld.getLoadedEntityList()) {
                 if (entity instanceof EntityArmorStand) {
@@ -67,9 +67,9 @@ public class Gifts {
                     String head = EntityUtils.getArmorStandHeadId(armorStand);
                     if (head != null && !head.isEmpty()) {
                         if (head.equals("7732c5e4-1800-3b90-a70f-727d2969254b") && !collected.contains(entity.getPosition())) {
-                            RenderUtils.drawBlockBox(entity.getPosition().add(0, 1, 0), myConfigFile.jerryGiftsMainPage.Color.toJavaColor(), 1, event.partialTicks);
-                            if (myConfigFile.jerryGiftsMainPage.Text) {
-                                RenderUtils.renderWaypointText("Gift", entity.getPosition().add(0, 2.8, 0), event.partialTicks, false, myConfigFile.jerryGiftsMainPage.TextColor.toJavaColor());
+                            RenderUtils.drawBlockBox(entity.getPosition().add(0, 1, 0), myConfigFile.jerryGiftsMainPage.color.toJavaColor(), 1, event.partialTicks);
+                            if (myConfigFile.jerryGiftsMainPage.text) {
+                                RenderUtils.renderWaypointText("Gift", entity.getPosition().add(0, 2.8, 0), event.partialTicks, false, myConfigFile.jerryGiftsMainPage.textColor.toJavaColor());
                             }
                         }
                     }

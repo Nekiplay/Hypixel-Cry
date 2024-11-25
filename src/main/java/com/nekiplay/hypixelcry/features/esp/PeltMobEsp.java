@@ -18,7 +18,7 @@ public class PeltMobEsp {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent event) {
-        if (myConfigFile != null && myConfigFile.peltMobMainPage.EnableESP) {
+        if (myConfigFile != null && myConfigFile.peltMobMainPage.enableESP) {
             double dist = 99999;
             if (mc.theWorld != null) {
                 List<Entity> entityList = mc.theWorld.getLoadedEntityList();
@@ -42,10 +42,10 @@ public class PeltMobEsp {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
 
-        if (rendered != null && myConfigFile != null && myConfigFile.peltMobMainPage.EnableESP) {
-            RenderUtils.renderWaypointText("Pelt Mob", new BlockPos(rendered.getPosition().getX() + 0.5, rendered.getPosition().getY() + 0.5, rendered.getPosition().getZ() + 0.5), event.partialTicks, false, myConfigFile.peltMobMainPage.Color.toJavaColor());
-            if (myConfigFile.peltMobMainPage.EnableTracer) {
-                RenderUtils.drawTracer(rendered.getPosition(), myConfigFile.peltMobMainPage.Color.toJavaColor(), 1, event.partialTicks);
+        if (rendered != null && myConfigFile != null && myConfigFile.peltMobMainPage.enableESP) {
+            RenderUtils.renderWaypointText("Pelt Mob", new BlockPos(rendered.getPosition().getX() + 0.5, rendered.getPosition().getY() + 0.5, rendered.getPosition().getZ() + 0.5), event.partialTicks, false, myConfigFile.peltMobMainPage.color.toJavaColor());
+            if (myConfigFile.peltMobMainPage.enableTracer) {
+                RenderUtils.drawTracer(rendered.getPosition(), myConfigFile.peltMobMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
 

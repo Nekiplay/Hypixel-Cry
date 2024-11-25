@@ -40,9 +40,9 @@ public class AutoClicker {
                 return;
             }
 
-            if (System.currentTimeMillis() - lastClickTime > (long) 1000 / myConfigFile.autoClickerMainPage.CPS) {
+            if (System.currentTimeMillis() - lastClickTime > (long) 1000 / myConfigFile.autoClickerMainPage.cps) {
                 try {
-                    lastClickTime = System.currentTimeMillis() + PerlinNoice(myConfigFile.autoClickerMainPage.Randomization) - 1;
+                    lastClickTime = System.currentTimeMillis() + PerlinNoice(myConfigFile.autoClickerMainPage.randomization) - 1;
                     KeyBindUtils.leftClick();
                 }
                 catch (Exception ignore) { }

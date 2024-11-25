@@ -22,6 +22,7 @@ public class MyConfig extends Config {
     public transient static final String ESP = "ESP";
     public transient static final String MACROS = "Macros";
     public transient static final String COMBAT = "Combat";
+    public transient static final String QOL = "QOL";
     @Checkbox(
             name = "TPS Check",
             description = "Dont break if server lag.",

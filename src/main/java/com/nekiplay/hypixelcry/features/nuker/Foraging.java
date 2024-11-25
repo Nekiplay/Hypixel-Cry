@@ -58,7 +58,7 @@ public class Foraging extends GeneralNuker {
                 InventoryPlayer inventory = mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                SetDistance(myConfigFile.foragingMainPage.MaximumNukerHorizontalDistance, myConfigFile.foragingMainPage.MaximumNukerVericalDistance);
+                SetDistance(myConfigFile.foragingMainPage.maximumNukerHorizontalDistance, myConfigFile.foragingMainPage.maximumNukerVericalDistance);
 
                 if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
                     BoostAlgorithm();
@@ -73,8 +73,8 @@ public class Foraging extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.myConfigFile.foragingMainPage.ForagingNukerBoostTicks) {
-            for (int i = 0; i < Main.myConfigFile.foragingMainPage.ForagingNukerBlockPesTick; i++) {
+        if (boostTicks > Main.myConfigFile.foragingMainPage.foragingNukerBoostTicks) {
+            for (int i = 0; i < Main.myConfigFile.foragingMainPage.foragingNukerBlockPesTick; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
@@ -89,7 +89,7 @@ public class Foraging extends GeneralNuker {
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
             RenderUtils.drawBlockBox(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.foragingMainPage.Tracer) {
+            if (myConfigFile.foragingMainPage.tracer) {
                 RenderUtils.drawTracer(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }

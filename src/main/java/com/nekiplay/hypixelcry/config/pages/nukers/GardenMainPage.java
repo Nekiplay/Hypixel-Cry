@@ -27,7 +27,7 @@ public class GardenMainPage {
             max = 5.4f,
             min = 1f
     )
-    public float MaximumNukerHorizontalDistance = 5.4f;
+    public float maximumNukerHorizontalDistance = 5.4f;
 
     @Slider(
             name = "Verical distance",
@@ -37,7 +37,7 @@ public class GardenMainPage {
             max = 7.5f,
             min = 1f
     )
-    public float MaximumNukerVericalDistance = 7.5f;
+    public float maximumNukerVericalDistance = 7.5f;
     @Slider(
             name = "Max boost",
             step = 1,
@@ -47,7 +47,7 @@ public class GardenMainPage {
             category = "Garden nuker",
             subcategory = "General"
     )
-    public int GardenNukerBlockPesTick = 4;
+    public int gardenNukerBlockPesTick = 4;
 
     @Slider(
             name = "Boost every ticks",
@@ -58,7 +58,7 @@ public class GardenMainPage {
             category = "Garden nuker",
             subcategory = "General"
     )
-    public int GardenNukerBoostTicks = 13;
+    public int gardenNukerBoostTicks = 13;
 
     @Checkbox(
             name = "Tracer",
@@ -66,7 +66,7 @@ public class GardenMainPage {
             category = "Garden nuker",
             subcategory = "Visuals"
     )
-    public boolean Tracer = true;
+    public boolean tracer = true;
 
     @Color(
             name = "Break block color",

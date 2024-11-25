@@ -318,7 +318,7 @@ public class ResourceRespawnerESP {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
 
-        if (myConfigFile != null && myConfigFile.resourceRespawnerMainPage.EnableESP) {
+        if (myConfigFile != null && myConfigFile.resourceRespawnerMainPage.enableESP) {
 
             Color colorOne = Color.RED;
             if (oneWood == 29) {

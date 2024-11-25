@@ -37,7 +37,7 @@ public class Mithril extends GeneralNuker {
             return true;
         } else if(state.getBlock() == Blocks.stained_hardened_clay) {
             return true;
-        } else if(!myConfigFile.mithrilMainPage.MithrilNukerIgnoreTitanium && state.getBlock() == Blocks.stone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.DIORITE_SMOOTH) {
+        } else if(!myConfigFile.mithrilMainPage.mithrilNukerIgnoreTitanium && state.getBlock() == Blocks.stone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.DIORITE_SMOOTH) {
             return true;
         } else if(state.getBlock() == Blocks.gold_block) {
             return true;
@@ -48,7 +48,7 @@ public class Mithril extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Main.mc.theWorld != null && Main.mc.thePlayer != null) {
-            myConfigFile.ChangeExposedMode(this, myConfigFile.mithrilMainPage.MithrilNukerExposedMode);
+            myConfigFile.ChangeExposedMode(this, myConfigFile.mithrilMainPage.mithrilNukerExposedMode);
 
             if(currentDamage > damage) {
                 currentDamage = 0;
@@ -79,7 +79,7 @@ public class Mithril extends GeneralNuker {
 
 
             if (currentDamage == 0) {
-                SetDistance(myConfigFile.mithrilMainPage.MaximumNukerHorizontalDistance, myConfigFile.mithrilMainPage.MaximumNukerVericalDistance);
+                SetDistance(myConfigFile.mithrilMainPage.maximumNukerHorizontalDistance, myConfigFile.mithrilMainPage.maximumNukerVericalDistance);
                 BlockPos near = getClosestBlock(getBlocks());
                 if (near != null) {
                     blockPos = near;
@@ -99,9 +99,9 @@ public class Mithril extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, myConfigFile.mithrilMainPage.Color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.mithrilMainPage.Tracer) {
-                RenderUtils.drawTracer(blockPos, myConfigFile.mithrilMainPage.Color.toJavaColor(), 1, event.partialTicks);
+            RenderUtils.drawBlockBox(blockPos, myConfigFile.mithrilMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (myConfigFile.mithrilMainPage.tracer) {
+                RenderUtils.drawTracer(blockPos, myConfigFile.mithrilMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

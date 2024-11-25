@@ -11,7 +11,7 @@ public class JerryGiftsMainPage {
             category = "Jerry's Workshop",
             subcategory = "General"
     )
-    public boolean EnableESP = true;
+    public boolean enableESP = true;
 
     @cc.polyfrost.oneconfig.config.annotations.Color(
             name = "Gift color",
@@ -19,7 +19,7 @@ public class JerryGiftsMainPage {
             category = "Jerry's Workshop",
             subcategory = "Colors"
     )
-    public OneColor Color = new OneColor(255, 255, 0);
+    public OneColor color = new OneColor(255, 255, 0);
 
     @Checkbox(
             name = "Text",
@@ -27,7 +27,7 @@ public class JerryGiftsMainPage {
             category = "Jerry's Workshop",
             subcategory = "Visuals"
     )
-    public boolean Text = true;
+    public boolean text = true;
 
     @cc.polyfrost.oneconfig.config.annotations.Color(
             name = "Text color",
@@ -35,5 +35,5 @@ public class JerryGiftsMainPage {
             category = "Jerry's Workshop",
             subcategory = "Colors"
     )
-    public OneColor TextColor = new OneColor(255, 255, 0);
+    public OneColor textColor = new OneColor(255, 255, 0);
 }

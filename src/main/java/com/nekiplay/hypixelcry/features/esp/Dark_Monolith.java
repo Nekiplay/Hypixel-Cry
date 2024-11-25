@@ -23,7 +23,7 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (Main.mc.theWorld != null && myConfigFile != null && myConfigFile.darkMonolithMainPage.DwardenMinesDarkMonolithESP) {
+        if (Main.mc.theWorld != null && myConfigFile != null && myConfigFile.darkMonolithMainPage.dwardenMinesDarkMonolithESP) {
             BlockPos pos1 = new BlockPos(-15, 236, -92);
             BlockPos pos2 = new BlockPos(49, 202, -162);
             BlockPos pos3 = new BlockPos(56, 214, -25);
@@ -124,13 +124,13 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && egg != null && myConfigFile.darkMonolithMainPage.DwardenMinesDarkMonolithESP)
+        if (myConfigFile != null && egg != null && myConfigFile.darkMonolithMainPage.dwardenMinesDarkMonolithESP)
         {
-            RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.Color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.darkMonolithMainPage.Text) {
-                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.Color.toJavaColor());
+            RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (myConfigFile.darkMonolithMainPage.text) {
+                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.color.toJavaColor());
             }
-            if (myConfigFile.darkMonolithMainPage.Tracer) {
+            if (myConfigFile.darkMonolithMainPage.tracer) {
                 RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
             }
         }

@@ -11,7 +11,7 @@ public class GlowingMushroomMainPage {
             category = "Glowing Mushroom",
             subcategory = "General"
     )
-    public boolean GlowingMushroomESP = true;
+    public boolean glowingMushroomESP = true;
 
     @Color(
             name = "Glowing Mushroom color",
@@ -19,5 +19,5 @@ public class GlowingMushroomMainPage {
             category = "Glowing Mushroom",
             subcategory = "Colors"
     )
-    public OneColor Color = new OneColor(255, 255, 0);
+    public OneColor color = new OneColor(255, 255, 0);
 }

@@ -10,7 +10,7 @@ public class ChestESPMainPage {
             category = "General",
             subcategory = "General"
     )
-    public boolean EnableESP = true;
+    public boolean enableESP = true;
 
     @cc.polyfrost.oneconfig.config.annotations.Color(
             name = "Chest color",
@@ -18,5 +18,5 @@ public class ChestESPMainPage {
             category = "General",
             subcategory = "Colors"
     )
-    public OneColor Color = new OneColor(255, 255, 0);
+    public OneColor color = new OneColor(255, 255, 0);
 }

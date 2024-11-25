@@ -21,7 +21,7 @@ public class AutoClickerMainPage {
             category = "AutoClicker",
             subcategory = "General"
     )
-    public int CPS = 11;
+    public int cps = 11;
 
     @Slider(
             name = "Randomization",
@@ -32,7 +32,7 @@ public class AutoClickerMainPage {
             category = "AutoClicker",
             subcategory = "General"
     )
-    public int Randomization = 64;
+    public int randomization = 64;
 
     @Checkbox(
             name = "Only on Weapon",

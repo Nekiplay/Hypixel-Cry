@@ -10,7 +10,7 @@ public class PeltMobMainPage {
             category = "Glowing Mushroom",
             subcategory = "General"
     )
-    public boolean EnableESP = true;
+    public boolean enableESP = true;
 
     @Checkbox(
             name = "Tracer",
@@ -18,7 +18,7 @@ public class PeltMobMainPage {
             category = "Glowing Mushroom",
             subcategory = "General"
     )
-    public boolean EnableTracer = true;
+    public boolean enableTracer = true;
 
     @cc.polyfrost.oneconfig.config.annotations.Color(
             name = "Pelt mob color",
@@ -26,5 +26,5 @@ public class PeltMobMainPage {
             category = "Glowing Mushroom",
             subcategory = "Colors"
     )
-    public OneColor Color = new OneColor(255, 255, 0);
+    public OneColor color = new OneColor(255, 255, 0);
 }

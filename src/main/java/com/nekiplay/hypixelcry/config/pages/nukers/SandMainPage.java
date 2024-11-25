@@ -34,7 +34,7 @@ public class SandMainPage {
             max = 5.4f,
             min = 1f
     )
-    public float MaximumNukerHorizontalDistance = 5.4f;
+    public float maximumNukerHorizontalDistance = 5.4f;
 
     @Slider(
             name = "Verical distance",
@@ -44,7 +44,7 @@ public class SandMainPage {
             max = 7.5f,
             min = 1f
     )
-    public float MaximumNukerVericalDistance = 7.5f;
+    public float maximumNukerVericalDistance = 7.5f;
     @Slider(
             name = "Max boost",
             step = 1,
@@ -54,7 +54,7 @@ public class SandMainPage {
             category = "Sand nuker",
             subcategory = "General"
     )
-    public int SandNukerBlockPesTick = 4;
+    public int sandNukerBlockPesTick = 4;
 
     @Slider(
             name = "Boost every ticks",
@@ -65,7 +65,7 @@ public class SandMainPage {
             category = "Sand nuker",
             subcategory = "General"
     )
-    public int SandNukerBoostTicks = 13;
+    public int sandNukerBoostTicks = 13;
 
     @Dropdown(
             name = "Find mode",
@@ -74,7 +74,7 @@ public class SandMainPage {
             subcategory = "General",
             options = {"Hidden", "Visible", "All"}
     )
-    public int SandExposedMode = 2;
+    public int sandExposedMode = 2;
 
     @Checkbox(
             name = "Tracer",

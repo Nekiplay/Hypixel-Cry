@@ -61,7 +61,7 @@ public class GardenMiner extends GeneralNuker {
             if (broken.size() > 20) {
                 broken.clear();
             }
-            SetDistance(myConfigFile.gardenMainPage.MaximumNukerHorizontalDistance, myConfigFile.gardenMainPage.MaximumNukerVericalDistance);
+            SetDistance(myConfigFile.gardenMainPage.maximumNukerHorizontalDistance, myConfigFile.gardenMainPage.maximumNukerVericalDistance);
 
             InventoryPlayer inventory = mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
@@ -78,8 +78,8 @@ public class GardenMiner extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.myConfigFile.gardenMainPage.GardenNukerBoostTicks) {
-            for (int i = 0; i < Main.myConfigFile.gardenMainPage.GardenNukerBlockPesTick; i++) {
+        if (boostTicks > Main.myConfigFile.gardenMainPage.gardenNukerBoostTicks) {
+            for (int i = 0; i < Main.myConfigFile.gardenMainPage.gardenNukerBlockPesTick; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
@@ -94,7 +94,7 @@ public class GardenMiner extends GeneralNuker {
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
             RenderUtils.drawBlockBox(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.gardenMainPage.Tracer) {
+            if (myConfigFile.gardenMainPage.tracer) {
                 RenderUtils.drawTracer(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }

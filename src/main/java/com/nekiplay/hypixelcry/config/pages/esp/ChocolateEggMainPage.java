@@ -10,7 +10,7 @@ public class ChocolateEggMainPage {
             category = "General",
             subcategory = "General"
     )
-    public boolean EnableESP = true;
+    public boolean enableESP = true;
 
     @cc.polyfrost.oneconfig.config.annotations.Color(
             name = "Egg color",
@@ -18,7 +18,7 @@ public class ChocolateEggMainPage {
             category = "General",
             subcategory = "Colors"
     )
-    public OneColor Color = new OneColor(255, 255, 0);
+    public OneColor color = new OneColor(255, 255, 0);
 
     @Checkbox(
             name = "Text",
@@ -26,7 +26,7 @@ public class ChocolateEggMainPage {
             category = "General",
             subcategory = "Visuals"
     )
-    public boolean Text = true;
+    public boolean text = true;
 
     @cc.polyfrost.oneconfig.config.annotations.Color(
             name = "Text color",
@@ -34,5 +34,5 @@ public class ChocolateEggMainPage {
             category = "General",
             subcategory = "Colors"
     )
-    public OneColor TextColor = new OneColor(255, 255, 0);
+    public OneColor textColor = new OneColor(255, 255, 0);
 }

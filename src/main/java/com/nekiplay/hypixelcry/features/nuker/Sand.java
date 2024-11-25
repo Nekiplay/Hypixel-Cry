@@ -62,8 +62,8 @@ public class Sand extends GeneralNuker {
                 InventoryPlayer inventory = mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.sandMainPage.SandExposedMode);
-                SetDistance(myConfigFile.sandMainPage.MaximumNukerHorizontalDistance, myConfigFile.sandMainPage.MaximumNukerVericalDistance);
+                Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.sandMainPage.sandExposedMode);
+                SetDistance(myConfigFile.sandMainPage.maximumNukerHorizontalDistance, myConfigFile.sandMainPage.maximumNukerVericalDistance);
                 if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
                     BoostAlgorithm();
                 }
@@ -76,8 +76,8 @@ public class Sand extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.myConfigFile.sandMainPage.SandNukerBoostTicks) {
-            for (int i = 0; i < Main.myConfigFile.sandMainPage.SandNukerBlockPesTick; i++) {
+        if (boostTicks > Main.myConfigFile.sandMainPage.sandNukerBoostTicks) {
+            for (int i = 0; i < Main.myConfigFile.sandMainPage.sandNukerBlockPesTick; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
