@@ -7,10 +7,13 @@
   "mixins": [
     "MinecraftAccessor",
     "MixinNetworkManager",
-    "MixinWorld"
+    "MixinWorld",
+    "GuiContainerAccessor",
+    "GuiChestAccessor"
   ],
   "client": [
     "MixinFMLHandShake",
-    "MixinMinecraft"
+    "PlayerControllerMPMixin",
+    "MinecraftMixin"
   ]
 }

@@ -1,15 +1,19 @@
 package com.nekiplay.hypixelcry;
 
+import com.nekiplay.hypixelcry.features.qol.AutoChestClose;
 import com.nekiplay.hypixelcry.config.CustomRenderer;
-import com.nekiplay.hypixelcry.features.combat.*;
 import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.esp.holograms.HologramModule;
 import com.nekiplay.hypixelcry.features.macros.*;
 import com.nekiplay.hypixelcry.features.nuker.*;
+import com.nekiplay.hypixelcry.features.qol.NoMenuInDungeons;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class FeatureRegister {
+    public static AutoChestClose autoChestClose = new AutoChestClose();
+
+
     public static GhostBlocks ghostBlocksMacros = new GhostBlocks();
 
     public static Crop cropNuker = new Crop();
@@ -23,11 +27,9 @@ public class FeatureRegister {
     public void register(FMLInitializationEvent event) {
         /* Events */
         MinecraftForge.EVENT_BUS.register(new CustomRenderer());
-        //MinecraftForge.EVENT_BUS.register(hologramModule);
-        //hologramModule.reload();
 
-        /* Macros */
-		MinecraftForge.EVENT_BUS.register(new AutoClicker());
+        MinecraftForge.EVENT_BUS.register(autoChestClose);
+
         MinecraftForge.EVENT_BUS.register(ghostBlocksMacros);
 
         MinecraftForge.EVENT_BUS.register(cropNuker);

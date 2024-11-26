@@ -34,6 +34,7 @@ public class Main
         return instance;
     }
     public static final Logger LOG = LoggerFactory.getLogger(Main.class);
+    public static KeyBinding[] keyBindings;
     public static final String PREFIX = "Hypixel Cry";
 
     public static final Minecraft mc = Minecraft.getMinecraft();

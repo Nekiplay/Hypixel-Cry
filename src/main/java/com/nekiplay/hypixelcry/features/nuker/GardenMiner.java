@@ -116,20 +116,35 @@ public class GardenMiner extends GeneralNuker {
         return false;
     }
 
-    public void enable() {
-        Minecraft mc = Minecraft.getMinecraft();
-        if (mc != null) {
-            EntityPlayerSP player = mc.thePlayer;
-            if (player != null) {
-                if (!work) {
-                    work = true;
-                    broken.clear();
-                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Garden nuker enabled"));
-                }
-                else {
-                    work = false;
-                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Garden nuker disabled"));
-                }
+    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(InputEvent.KeyInputEvent event)
+    {
+        KeyBinding[] keyBindings = Main.keyBindings;
+        if (keyBindings[2].isPressed()) {
+            if (!work) {
+                work = true;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Garden nuker enabled"));
+            }
+            else {
+                work = false;
+                blockPos = null;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Garden nuker disabled"));
+            }
+        }
+    }
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+    public void onEventMouse(InputEvent.MouseInputEvent event)
+    {
+        KeyBinding[] keyBindings = Main.keyBindings;
+        if (keyBindings[2].isPressed()) {
+            if (!work) {
+                work = true;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Garden nuker enabled"));
+            }
+            else {
+                work = false;
+                blockPos = null;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Garden nuker disabled"));
             }
         }
     }

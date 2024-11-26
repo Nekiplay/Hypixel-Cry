@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
 
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Mithril extends GeneralNuker {
@@ -121,19 +122,35 @@ public class Mithril extends GeneralNuker {
         }
     }
 
-    public void enable() {
-        Minecraft mc = Minecraft.getMinecraft();
-        if (mc != null) {
-            EntityPlayerSP player = mc.thePlayer;
-            if (player != null) {
-                if (!work) {
-                    work = true;
-                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Mithril nuker enabled"));
-                }
-                else {
-                    work = false;
-                    mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Mithril nuker disabled"));
-                }
+    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(InputEvent.KeyInputEvent event)
+    {
+        KeyBinding[] keyBindings = Main.keyBindings;
+        if (keyBindings[3].isPressed()) {
+            if (!work) {
+                work = true;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Mithril nuker enabled"));
+            }
+            else {
+                work = false;
+                blockPos = null;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Mithril nuker disabled"));
+            }
+        }
+    }
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+    public void onEventMouse(InputEvent.MouseInputEvent event)
+    {
+        KeyBinding[] keyBindings = Main.keyBindings;
+        if (keyBindings[3].isPressed()) {
+            if (!work) {
+                work = true;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Mithril nuker enabled"));
+            }
+            else {
+                work = false;
+                blockPos = null;
+                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Mithril nuker disabled"));
             }
         }
     }

@@ -10,4 +10,12 @@ public class DungeonsMainPage {
             subcategory = "General"
     )
     public boolean autCloseChests = false;
+
+    @Checkbox(
+            name = "No menu in dungeons",
+            description = "Disable 9 slot in dungeons",
+            category = "General",
+            subcategory = "General"
+    )
+    public boolean noMeinInDungeons = false;
 }

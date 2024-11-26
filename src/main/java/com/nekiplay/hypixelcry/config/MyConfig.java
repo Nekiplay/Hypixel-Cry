@@ -5,11 +5,10 @@ import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.data.Mod;
 import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.config.data.PageLocation;
-import com.nekiplay.hypixelcry.FeatureRegister;
-import com.nekiplay.hypixelcry.config.pages.combat.autoclicker.AutoClickerMainPage;
 import com.nekiplay.hypixelcry.config.pages.esp.*;
 import com.nekiplay.hypixelcry.config.pages.macros.GhostBlocksMacrosPage;
 import com.nekiplay.hypixelcry.config.pages.nukers.*;
+import com.nekiplay.hypixelcry.config.pages.qol.DungeonsMainPage;
 import com.nekiplay.hypixelcry.features.nuker.GeneralNuker;
 
 import java.io.IOException;
@@ -175,14 +174,13 @@ public class MyConfig extends Config {
     )
     public HologramsMainPage hologramsMainPage = new HologramsMainPage();
 
-    //endregion
     @Page(
-            name = "AutoClicker",
-            category = COMBAT,
+            name = "Dungeons",
+            category = QOL,
             subcategory = GENERAL,
             location = PageLocation.BOTTOM
     )
-    public AutoClickerMainPage autoClickerMainPage = new AutoClickerMainPage();
+    public DungeonsMainPage dungeonsMainPage = new DungeonsMainPage();
 
     @Button(
             name = "Telegram",
@@ -218,15 +216,6 @@ public class MyConfig extends Config {
     public MyConfig() {
         super(new Mod("Hypixel Cry", ModType.SKYBLOCK, "/assets/hypixelcry/logo.png"), "hypixelcry/hypixelcry.json");
         initialize();
-
-        registerKeyBind(ghostBLockMainPage.toggleMacro, () -> FeatureRegister.ghostBlocksMacros.enable());
-
-        registerKeyBind(cropMainPage.toggleMacro, () -> FeatureRegister.cropNuker.enable());
-        registerKeyBind(foragingMainPage.toggleMacro, () -> FeatureRegister.foragingNuker.enable());
-        registerKeyBind(gardenMainPage.toggleMacro, () -> FeatureRegister.gardenNuker.enable());
-        registerKeyBind(mithrilMainPage.toggleMacro, () -> FeatureRegister.mithrilNuker.enable());
-        registerKeyBind(oreMainPage.toggleMacro, () -> FeatureRegister.oreNuker.enable());
-        registerKeyBind(sandMainPage.toggleMacro, () -> FeatureRegister.sandNuker.enable());
     }
 
 
