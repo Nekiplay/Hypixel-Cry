@@ -122,11 +122,7 @@ public class Sand extends GeneralNuker {
             broken.add(pos);
         }
     }
-
-
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+    private void enable() {
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[5].isPressed()) {
             if (!work) {
@@ -140,20 +136,14 @@ public class Sand extends GeneralNuker {
             }
         }
     }
+    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(InputEvent.KeyInputEvent event)
+    {
+       enable();
+    }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[5].isPressed()) {
-            if (!work) {
-                work = true;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Sand nuker enabled"));
-            }
-            else {
-                work = false;
-                blockPos = null;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Sand nuker disabled"));
-            }
-        }
+        enable();
     }
 }

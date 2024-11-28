@@ -404,11 +404,7 @@ public class Crop {
         }
         return null;
     }
-
-
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+    private void enable() {
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[2].isPressed()) {
             if (!work) {
@@ -423,21 +419,15 @@ public class Crop {
             }
         }
     }
+
+    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(InputEvent.KeyInputEvent event)
+    {
+        enable();
+    }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[2].isPressed()) {
-            if (!work) {
-                work = true;
-                broken.clear();
-                farmlandsBad.clear();
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Crop nuker enabled"));
-            }
-            else {
-                work = false;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Crop nuker disabled"));
-            }
-        }
+        enable();
     }
 }

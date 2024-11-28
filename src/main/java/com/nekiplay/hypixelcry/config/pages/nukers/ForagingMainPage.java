@@ -14,11 +14,6 @@ public class ForagingMainPage {
             subcategory = "General"
     )
     public static boolean ignored; // Useless. Java limitations with @annotation.
-    @KeyBind(
-            name = "KeyBind", category = "Foraging nuker", subcategory = "General",
-            description = "Toggles the macro on/off", size = 2
-    )
-    public OneKeyBind toggleMacro = new OneKeyBind(Keyboard.KEY_NONE);
     @Info(
             text = "This nuker not recommended for AFK",
             type = InfoType.WARNING,

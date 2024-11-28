@@ -182,6 +182,14 @@ public class MyConfig extends Config {
     )
     public DungeonsMainPage dungeonsMainPage = new DungeonsMainPage();
 
+    @Checkbox(
+            name = "Debug",
+            description = "Debug for devs",
+            category = "About",
+            subcategory = "General"
+    )
+    public boolean isDebug = false;
+
     @Button(
             name = "Telegram",
             text = "Open",

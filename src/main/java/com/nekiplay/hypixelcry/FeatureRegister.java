@@ -6,7 +6,6 @@ import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.esp.holograms.HologramModule;
 import com.nekiplay.hypixelcry.features.macros.*;
 import com.nekiplay.hypixelcry.features.nuker.*;
-import com.nekiplay.hypixelcry.features.qol.NoMenuInDungeons;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 

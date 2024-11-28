@@ -12,11 +12,9 @@
 # Features
 ### Commands:
 - /cry - Open settings menu
-- /remotecontrol - For TCP macros ([Example](https://github.com/Nekiplay/Hypixel-Cry-Macro-Client-Example))
-### Instant item use:
-- Rogue Sword
-- Wand of Healing
-- Aspect of the End
+
+### QoL:
+- Auto close chests in dungeons
 
 ### Nuker's:
 - Crop

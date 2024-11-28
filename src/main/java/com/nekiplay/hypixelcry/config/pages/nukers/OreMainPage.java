@@ -14,11 +14,6 @@ public class OreMainPage {
             subcategory = "General"
     )
     public static boolean ignored2; // Useless. Java limitations with @annotation.
-    @KeyBind(
-            name = "KeyBind", category = "Ore nuker", subcategory = "General",
-            description = "Toggles the macro on/off", size = 2
-    )
-    public OneKeyBind toggleMacro = new OneKeyBind(Keyboard.KEY_NONE);
 
     @Slider(
             name = "Horizontal distance",

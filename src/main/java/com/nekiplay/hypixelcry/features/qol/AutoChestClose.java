@@ -11,11 +11,9 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class AutoChestClose {
-
-    private boolean chestOpened = false;
-    private int id = -1;
     @SubscribeEvent
     public void tickEvent(RenderWorldLastEvent event) {
         if (mc.currentScreen instanceof GuiChest) {
@@ -26,7 +24,9 @@ public class AutoChestClose {
             if (lower.hasCustomName()) {
                 windowTitle = ApecUtils.removeAllCodes(lower.getDisplayName().getFormattedText());
             }
-            //mc.thePlayer.addChatMessage(new ChatComponentText(windowTitle));
+            if (myConfigFile.isDebug) {
+                mc.thePlayer.addChatMessage(new ChatComponentText("[DEBUG] [Auto Chest Close] Opened Chest: " + windowTitle));
+            }
             if ((windowTitle.isEmpty() || windowTitle.equalsIgnoreCase("chest")) && extractor.isInTheCatacombs) {
                 mc.thePlayer.closeScreen();
             }

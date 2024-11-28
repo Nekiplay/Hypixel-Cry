@@ -213,11 +213,7 @@ public class Ore extends GeneralNuker {
             }
         }
     }
-
-
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+    private void enable() {
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[4].isPressed()) {
             if (!work) {
@@ -231,20 +227,14 @@ public class Ore extends GeneralNuker {
             }
         }
     }
+    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(InputEvent.KeyInputEvent event)
+    {
+        enable();
+    }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[4].isPressed()) {
-            if (!work) {
-                work = true;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Ore nuker enabled"));
-            }
-            else {
-                work = false;
-                blockPos = null;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Ore nuker disabled"));
-            }
-        }
+        enable();
     }
 }

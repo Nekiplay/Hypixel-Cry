@@ -121,10 +121,7 @@ public class Mithril extends GeneralNuker {
             }
         }
     }
-
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+    private void enable() {
         KeyBinding[] keyBindings = Main.keyBindings;
         if (keyBindings[3].isPressed()) {
             if (!work) {
@@ -138,20 +135,14 @@ public class Mithril extends GeneralNuker {
             }
         }
     }
+    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(InputEvent.KeyInputEvent event)
+    {
+        enable();
+    }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[3].isPressed()) {
-            if (!work) {
-                work = true;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.GREEN + "Mithril nuker enabled"));
-            }
-            else {
-                work = false;
-                blockPos = null;
-                mc.thePlayer.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.RED + "Mithril nuker disabled"));
-            }
-        }
+        enable();
     }
 }
