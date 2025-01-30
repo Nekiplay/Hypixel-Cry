@@ -110,7 +110,7 @@ public class Foraging extends GeneralNuker {
     }
     private void enable() {
         KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[2].isPressed()) {
+        if (keyBindings[1].isPressed()) {
             if (!work) {
                 work = true;
                 broken.clear();

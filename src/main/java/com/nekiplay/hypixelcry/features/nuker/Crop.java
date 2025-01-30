@@ -406,7 +406,7 @@ public class Crop {
     }
     private void enable() {
         KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[2].isPressed()) {
+        if (keyBindings[0].isPressed()) {
             if (!work) {
                 work = true;
                 broken.clear();
