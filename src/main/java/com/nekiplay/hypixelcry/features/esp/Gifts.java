@@ -48,7 +48,7 @@ public class Gifts {
                 EntityArmorStand armorStand = (EntityArmorStand) event.attacked;
                 String head = EntityUtils.getArmorStandHeadId(armorStand);
                 if (head != null && !head.isEmpty()) {
-                    if (head.equals("7732c5e4-1800-3b90-a70f-727d2969254b")) {
+                    if (head.equals("7732c5e4-1800-3b90-a70f-727d2969254b") || head.equals("3047a516-415b-3bf4-b597-b78fd2a9ccf4")) {
                         if (!collected.contains(event.attacked.getPosition())) {
                             collected.add(event.attacked.getPosition());
                         }
@@ -66,7 +66,7 @@ public class Gifts {
                     EntityArmorStand armorStand = (EntityArmorStand) entity;
                     String head = EntityUtils.getArmorStandHeadId(armorStand);
                     if (head != null && !head.isEmpty()) {
-                        if (head.equals("7732c5e4-1800-3b90-a70f-727d2969254b") && !collected.contains(entity.getPosition())) {
+                        if ((head.equals("7732c5e4-1800-3b90-a70f-727d2969254b") || head.equals("3047a516-415b-3bf4-b597-b78fd2a9ccf4")) && !collected.contains(entity.getPosition())) {
                             RenderUtils.drawBlockBox(entity.getPosition().add(0, 1, 0), myConfigFile.jerryGiftsMainPage.color.toJavaColor(), 1, event.partialTicks);
                             if (myConfigFile.jerryGiftsMainPage.text) {
                                 RenderUtils.renderWaypointText("Gift", entity.getPosition().add(0, 2.8, 0), event.partialTicks, false, myConfigFile.jerryGiftsMainPage.textColor.toJavaColor());
