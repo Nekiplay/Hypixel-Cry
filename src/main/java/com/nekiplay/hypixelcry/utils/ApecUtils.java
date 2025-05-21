@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.utils;
 
-import gg.essential.elementa.utils.Vector2f;
+import org.lwjgl.util.vector.Vector2f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.inventory.IInventory;
