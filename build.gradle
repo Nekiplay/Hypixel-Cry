@@ -47,7 +47,7 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
+    mappings = "de.oceanlabs.mcp:mcp_stable:22-1.8.9"
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     clientRunArgs += ["--tweakClass gg.essential.loader.stage0.EssentialSetupTweaker", "--mixin mixins.hypixelcry.json"]
     makeObfSourceJar = false
