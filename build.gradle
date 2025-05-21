@@ -70,8 +70,6 @@ repositories {
 
 dependencies {
     //include 'com.github.TheNullicorn:Nedit:2.1.0'
-    compileOnly("gg.essential:loader-launchwrapper:1.1.1")
-    compileOnly("gg.essential:essential-1.8.9-forge:1498")
     compile 'org.spongepowered:spongeforge:1.8.9-1890-4.2.0-BETA-1625:dev'
     compile("org.spongepowered:mixin:0.7.11-SNAPSHOT")
     annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
