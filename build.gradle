@@ -11,7 +11,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:6.2'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:6.0'
         // Apply Mixin AP
         // annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
         //classpath 'org.spongepowered:mixin:0.8.5:processor'
