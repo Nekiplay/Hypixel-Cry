@@ -875,8 +875,8 @@ public class DataExtractor {
 
         public ArrayList<String> ExtraInfo  = new ArrayList<String>();
         public ArrayList<EventIDs> currentEvents = new ArrayList<EventIDs>();
-        public int ArmadilloEnergy;
-        public int ArmadilloBaseEnergy;
+        public float ArmadilloEnergy;
+        public float ArmadilloBaseEnergy;
 
     }
 }
