@@ -96,7 +96,6 @@ tasks.shadowJar {
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:.*"))
     }
-    relocate("cc.polyfrost.oneconfig", "com.nekiplay.hypixelcry.deps.oneconfig")
 }
 
 tasks.processResources {
