@@ -9,7 +9,7 @@ import org.lwjgl.input.Keyboard;
 
 public class Macros {
     @Category(name = "Ghost Blocks", desc = "Remove blocks in world")
-    @ConfigOption(name = "Key Binding", desc = "Key Binding")
+    @ConfigOption(name = "Key Binding", desc = "Key bind")
     @ConfigEditorKeybind(defaultKey = Keyboard.KEY_NONE)
     @Expose
     public int ghostBlocksKeyBind = Keyboard.KEY_NONE;

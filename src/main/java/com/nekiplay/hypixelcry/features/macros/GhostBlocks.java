@@ -44,24 +44,36 @@ public class GhostBlocks {
             }
         }
     }
-    @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(InputEvent.KeyInputEvent event)
-    {
+
+    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+    public void onEvent(InputEvent.KeyInputEvent event) {
+        if (!Keyboard.getEventKeyState()) return;
+
         int keyCode = Keyboard.getEventKey();
-        if (keyCode > 0 && Keyboard.getEventKeyState()) {
-            if (Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
+        if (keyCode == Keyboard.KEY_NONE) return;
+
+        try {
+            if (keyCode == Main.getInstance().config.macros.ghostBlocksKeyBind) {
                 enable();
             }
+        } catch (IndexOutOfBoundsException e) {
+            // Handle invalid key code silently
         }
     }
-    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-    public void onEventMouse(InputEvent.MouseInputEvent event)
-    {
-        int keyCode = Mouse.getEventButton();
-        if (keyCode < 0 && Mouse.getEventButtonState()) {
-            if (Mouse.isButtonDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
+
+    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+    public void onEventMouse(InputEvent.MouseInputEvent event) {
+        if (!Mouse.getEventButtonState()) return;
+
+        int button = Mouse.getEventButton();
+        if (button < 0) return;
+
+        try {
+            if (button == Main.getInstance().config.macros.ghostBlocksKeyBind) {
                 enable();
             }
+        } catch (IndexOutOfBoundsException e) {
+            // Handle invalid button code silently
         }
     }
 }

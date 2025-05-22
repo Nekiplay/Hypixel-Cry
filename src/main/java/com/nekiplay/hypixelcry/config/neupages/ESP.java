@@ -13,16 +13,7 @@ public class ESP {
     )
     @ConfigEditorBoolean
     @Expose
-    public boolean glowingMushrooms = false;
-
-    @Category(name = "Glowing Mushroom Island", desc = "Render features in glowing mushroom islands")
-    @ConfigOption(
-            name = "Treasure Hunter Fetcher",
-            desc = ""
-    )
-    @ConfigEditorBoolean
-    @Expose
-    public boolean treasureHunter = false;
+    public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms;
 
     @Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
     @ConfigOption(
@@ -32,4 +23,22 @@ public class ESP {
     @ConfigEditorBoolean
     @Expose
     public boolean darkMonolith = false;
+
+    public class Glowing_Mushrooms {
+        @ConfigOption(
+                name = "Glowing Mushrooms",
+                desc = ""
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean glowingMushrooms = false;
+
+        @ConfigOption(
+                name = "Treasure Hunter Fetcher",
+                desc = ""
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean treasureHunter = false;
+    }
 }
