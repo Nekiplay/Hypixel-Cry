@@ -12,15 +12,15 @@ public class ESP {
     @Expose
     public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
 
-    @Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
+    @Accordion
     @ConfigOption(
-            name = "Dark Monolith",
+            name = "Dwarden Mines",
             desc = ""
     )
     @Expose
     public Dwarden_Mines dwardenMines = new Dwarden_Mines();
 
-    public class Dwarden_Mines {
+    public static class Dwarden_Mines {
         @ConfigOption(
                 name = "Dark Monolith",
                 desc = ""
