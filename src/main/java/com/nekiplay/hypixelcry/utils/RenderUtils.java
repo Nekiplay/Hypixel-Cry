@@ -852,8 +852,10 @@ public class RenderUtils {
 
             block.setBlockBoundsBasedOnState(mc.theWorld, pos);
 
-            axisAlignedBB = block.getSelectedBoundingBox(mc.theWorld, pos)
-                    .offset(-posX, -posY, -posZ);
+			AxisAlignedBB bb = block.getSelectedBoundingBox(mc.theWorld, pos);
+			if (bb != null) {
+				axisAlignedBB = bb;
+			}
         }
 
         glVertex3d(axisAlignedBB.minX - axisAlignedBB.maxX, axisAlignedBB.minY - axisAlignedBB.maxY, axisAlignedBB.minZ - axisAlignedBB.maxZ);
