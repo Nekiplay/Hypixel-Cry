@@ -23,6 +23,8 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -422,11 +424,18 @@ public class Crop {
     @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(InputEvent.KeyInputEvent event)
     {
-        enable();
+        int keyCode = Keyboard.getEventKey();
+        if (keyCode >= 0) {
+            enable();
+        }
     }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
+        int keyCode = Mouse.getEventButton();
+        if (keyCode < 0) {
+            enable();
+        }
         enable();
     }
 }

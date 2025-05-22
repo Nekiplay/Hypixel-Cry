@@ -21,26 +21,25 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import static com.nekiplay.hypixelcry.Main.mc;
 
 public class GhostBlocks {
     private void enable() {
-        if (Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
-            EntityPlayerSP player = mc.thePlayer;
-            if (player != null) {
-                MovingObjectPosition movingObjectPosition = player.rayTrace(16, 1f);
-                if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                    BlockPos pos = movingObjectPosition.getBlockPos();
-                    ItemStack hand = mc.thePlayer.getCurrentEquippedItem();
-                    IBlockState state = mc.theWorld.getBlockState(pos);
-                    Block block = state.getBlock();
-                    if (block instanceof BlockChest || block instanceof BlockSkull || block instanceof BlockLever) {
-                        KeyBindUtils.rightClick();
-                    } else {
-                        PlayerUtils.swingItem();
-                        mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
-                    }
+        EntityPlayerSP player = mc.thePlayer;
+        if (player != null) {
+            MovingObjectPosition movingObjectPosition = player.rayTrace(16, 1f);
+            if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                BlockPos pos = movingObjectPosition.getBlockPos();
+                ItemStack hand = mc.thePlayer.getCurrentEquippedItem();
+                IBlockState state = mc.theWorld.getBlockState(pos);
+                Block block = state.getBlock();
+                if (block instanceof BlockChest || block instanceof BlockSkull || block instanceof BlockLever) {
+                    KeyBindUtils.rightClick();
+                } else {
+                    PlayerUtils.swingItem();
+                    mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
                 }
             }
         }
@@ -48,11 +47,17 @@ public class GhostBlocks {
     @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(InputEvent.KeyInputEvent event)
     {
-        enable();
+        int keyCode = Keyboard.getEventKey();
+        if (keyCode >= 0 && Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
+            enable();
+        }
     }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
-        enable();
+        int keyCode = Mouse.getEventButton();
+        if (keyCode >= 0 && Mouse.isButtonDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
+            enable();
+        }
     }
 }
