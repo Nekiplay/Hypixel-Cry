@@ -75,7 +75,7 @@ dependencies {
     shadowImplementation("cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta+")
     compileOnly("cc.polyfrost:oneconfig-1.8.9-forge:0.2.0-alpha+")
 
-    shadowImplementation("org.notenoughupdates.moulconfig:legacy:3.8.0")
+    shadowModImpl("org.notenoughupdates.moulconfig:legacy:3.8.0")
 }
 
 tasks.withType(JavaCompile::class) {
@@ -96,9 +96,11 @@ tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-val remapJar by tasks.named<RemapJarTask>("remapJar") {
+val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
     archiveClassifier.set("")
     dependsOn(tasks.shadowJar)
+    input.set(tasks.shadowJar.get().archiveFile)
+    destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 }
 
 tasks.shadowJar {
@@ -108,7 +110,7 @@ tasks.shadowJar {
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:.*"))
     }
-
+    mergeServiceFiles()
     relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.deps.moulconfig")
 }
 
