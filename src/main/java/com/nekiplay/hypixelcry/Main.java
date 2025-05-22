@@ -93,7 +93,7 @@ public class Main
     {
         Display.setTitle("Minecraft 1.8.9 | Hypixel Cry " + VERSION);
         MinecraftForge.EVENT_BUS.register(this);
-
+		config = new NEUConfig();
         processor = new MoulConfigProcessor<>(config);
         BuiltinMoulConfigGuis.addProcessors(processor);
         ConfigProcessorDriver driver = new ConfigProcessorDriver(processor);
