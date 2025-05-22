@@ -52,7 +52,7 @@ public class ESP {
         @Accordion
         @ConfigOption(
                 name = "Treasure Hunter Fetcher",
-                desc = "Get position of treasure on farming island"
+                desc = "Get position of treasure on desert settlement"
         )
         @Expose
         public Treasure_Hunter_Fetcher treasureHunterFetcher = new Treasure_Hunter_Fetcher();
@@ -60,7 +60,7 @@ public class ESP {
         @Accordion
         @ConfigOption(
                 name = "Glowing Mushrooms",
-                desc = "Show glowing mushrooms in farming island"
+                desc = "Show glowing mushrooms in desert settlement"
         )
         @Expose
         public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
@@ -81,7 +81,7 @@ public class ESP {
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
-            @ConfigEditorDraggableList(requireNonEmpty = false)
+            @ConfigEditorDraggableList
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
         }
 
@@ -101,7 +101,7 @@ public class ESP {
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
-            @ConfigEditorDraggableList(requireNonEmpty = false)
+            @ConfigEditorDraggableList
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
         }
     }

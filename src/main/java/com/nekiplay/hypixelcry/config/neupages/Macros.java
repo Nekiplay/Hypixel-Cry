@@ -10,7 +10,7 @@ public class Macros {
     @Expose
     public Ghost_Blocks ghostBlocks = new Ghost_Blocks();
 
-    public class Ghost_Blocks {
+    public static class Ghost_Blocks {
         @ConfigOption(name = "Key binding", desc = "Activation key bind")
         @ConfigEditorKeybind(defaultKey = Keyboard.KEY_NONE)
         @Expose
@@ -27,8 +27,8 @@ public class Macros {
     @Expose
     public Auto_Close_Chests autoCloseChests = new Auto_Close_Chests();
 
-    public class Auto_Close_Chests {
-        @ConfigOption(name = "Auto close chests", desc = "Enable macro?")
+    public static class Auto_Close_Chests {
+        @ConfigOption(name = "Auto close chests", desc = "Auto close dungeon chests?")
         @ConfigEditorBoolean()
         @Expose
         public boolean enable = true;
