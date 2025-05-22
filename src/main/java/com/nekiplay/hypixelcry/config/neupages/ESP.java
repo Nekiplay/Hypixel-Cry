@@ -1,7 +1,12 @@
 package com.nekiplay.hypixelcry.config.neupages;
 
 import com.google.gson.annotations.Expose;
+import com.nekiplay.hypixelcry.config.ESPFeatures;
 import io.github.notenoughupdates.moulconfig.annotations.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ESP {
     @Category(name = "Glowing Mushroom Island", desc = "Render features in glowing mushroom islands")
@@ -38,6 +43,11 @@ public class ESP {
             @ConfigEditorColour
             @Expose
             public String colour = "0:0:0:0:0";
+
+            @ConfigOption(name = "Render features", desc = "")
+            @Expose
+            @ConfigEditorDraggableList(requireNonEmpty = false)
+            public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
         }
     }
 

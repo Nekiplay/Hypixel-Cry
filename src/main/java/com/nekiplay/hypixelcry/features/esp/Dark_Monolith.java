@@ -1,8 +1,7 @@
 package com.nekiplay.hypixelcry.features.esp;
 
-import cc.polyfrost.oneconfig.renderer.asset.Icon;
-import cc.polyfrost.oneconfig.utils.Notifications;
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.block.state.IBlockState;
@@ -125,12 +124,14 @@ public class Dark_Monolith {
     public void onRender(RenderWorldLastEvent event) {
         if (Main.getInstance().config.esp.dwardenMines.darkMonolith.enabled && egg !=null)
         {
-            RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
-            if (false) {
-                //RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.color.toJavaColor());
+            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Box)) {
+                RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
             }
-            if (false) {
-                //RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Text)) {
+                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour));
+            }
+            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Tracer)) {
+                RenderUtils.drawTracer(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
             }
         }
     }
