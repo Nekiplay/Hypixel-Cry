@@ -821,7 +821,6 @@ public class RenderUtils {
         EntityPlayerSP player = mc.thePlayer;
         if (player == null) return;
         if (mc.getRenderManager() == null) return;
-        if (mc.theWorld == null) return;
 
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
@@ -833,8 +832,14 @@ public class RenderUtils {
 
         glBegin(GL_LINES);
 
-        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0);
-        final Block block = mc.theWorld.getBlockState(pos).getBlock();
+
+        double x = pos.getX() + 0.5 - mc.getRenderManager().viewerPosX;
+        double y = pos.getY() + 0.5 - mc.getRenderManager().viewerPosY;
+        double z = pos.getZ() + 0.5 - mc.getRenderManager().viewerPosZ;
+
+        //Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
+        //        .rotatePitch(-player.rotationPitch)
+        //        .rotateYaw(-player.rotationYaw);
 
         Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
                 .rotatePitch((float) (-player.rotationPitch * (PI / 180)))
@@ -845,20 +850,7 @@ public class RenderUtils {
         glVertex3d(eyeVector.xCoord,
                 player.eyeHeight + eyeVector.yCoord, eyeVector.zCoord);
 
-        if (block != null) {
-            final double posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-            final double posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
-            final double posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-
-            block.setBlockBoundsBasedOnState(mc.theWorld, pos);
-
-			AxisAlignedBB bb = block.getSelectedBoundingBox(mc.theWorld, pos);
-			if (bb != null) {
-				axisAlignedBB = bb;
-			}
-        }
-
-        glVertex3d(axisAlignedBB.minX - axisAlignedBB.maxX, axisAlignedBB.minY - axisAlignedBB.maxY, axisAlignedBB.minZ - axisAlignedBB.maxZ);
+        glVertex3d(x, y, z);
 
         glEnd();
 
