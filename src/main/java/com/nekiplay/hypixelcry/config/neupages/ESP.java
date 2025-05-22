@@ -13,7 +13,7 @@ public class ESP {
     )
     @ConfigEditorBoolean
     @Expose
-    public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms;
+    public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
 
     @Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
     @ConfigOption(
