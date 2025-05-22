@@ -20,13 +20,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import org.lwjgl.input.Keyboard;
 
 import static com.nekiplay.hypixelcry.Main.mc;
 
 public class GhostBlocks {
     private void enable() {
-        KeyBinding[] keyBindings = Main.keyBindings;
-        if (keyBindings[6].isPressed()) {
+        if (Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
             EntityPlayerSP player = mc.thePlayer;
             if (player != null) {
                 MovingObjectPosition movingObjectPosition = player.rayTrace(16, 1f);
