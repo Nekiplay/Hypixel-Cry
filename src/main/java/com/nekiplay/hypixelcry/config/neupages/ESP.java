@@ -11,7 +11,6 @@ public class ESP {
             name = "Glowing Mushrooms",
             desc = ""
     )
-    @ConfigEditorBoolean
     @Expose
     public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
 
