@@ -13,10 +13,6 @@ public class ESP {
     public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
 
 	@Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
-    @ConfigOption(
-            name = "Dwarden Mines",
-            desc = ""
-    )
     @Expose
     public Dwarden_Mines dwardenMines = new Dwarden_Mines();
 
