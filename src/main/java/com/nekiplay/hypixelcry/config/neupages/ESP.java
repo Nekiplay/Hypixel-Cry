@@ -26,7 +26,7 @@ public class ESP {
                 desc = ""
         )
         @ConfigEditorAccordion(id = 0)
-        public boolean searchAccordion = false;
+        private boolean searchAccordion = false;
 
         @ConfigOption(
                 name = "Enable",

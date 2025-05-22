@@ -7,14 +7,22 @@ public class SpecialColor {
     private static final int MIN_CHROMA_SECS = 1;
     private static final int MAX_CHROMA_SECS = 60;
     private static final SimpleTimeMark startTime = SimpleTimeMark.now();
+    private static final Color DEFAULT_COLOR = new Color(0, 0, 0, 0); // Transparent black as default
 
     @Deprecated
     public static Color toSpecialColor(String str) {
+        if (str == null || str.isEmpty()) {
+            return DEFAULT_COLOR;
+        }
         return new Color(toSpecialColorInt(str), true);
     }
 
     @Deprecated
     public static int toSpecialColorInt(String str) {
+        if (str == null || str.isEmpty()) {
+            return DEFAULT_COLOR.getRGB();
+        }
+
         int[] components = decompose(str);
         int chroma = components[0];
         int alpha = components[1];
@@ -42,6 +50,10 @@ public class SpecialColor {
     }
 
     private static int[] decompose(String csv) {
+        if (csv == null || csv.isEmpty()) {
+            return new int[5]; // Returns array of zeros
+        }
+
         String[] parts = csv.split(":");
         int[] result = new int[5];
         for (int i = 0; i < parts.length && i < 5; i++) {
