@@ -833,16 +833,8 @@ public class RenderUtils {
 
         glBegin(GL_LINES);
 
-        double centerX = pos.getX() + 0.5 - mc.getRenderManager().viewerPosX;
-        double centerY = pos.getY() + 0.5 - mc.getRenderManager().viewerPosY;
-        double centerZ = pos.getZ() + 0.5 - mc.getRenderManager().viewerPosZ;
-
-        IBlockState state = mc.theWorld.getBlockState(pos);
-        if (state != null) {
-            centerX = (state.getBlock().getBlockBoundsMinX() + state.getBlock().getBlockBoundsMaxX()) / 2.0 - mc.getRenderManager().viewerPosX;
-            centerY = (state.getBlock().getBlockBoundsMinY() + state.getBlock().getBlockBoundsMaxY()) / 2.0 - mc.getRenderManager().viewerPosY;
-            centerZ = (state.getBlock().getBlockBoundsMinZ() + state.getBlock().getBlockBoundsMaxZ()) / 2.0 - mc.getRenderManager().viewerPosZ;
-        }
+        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0);
+        final Block block = mc.theWorld.getBlockState(pos).getBlock();
 
         Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
                 .rotatePitch((float) (-player.rotationPitch * (PI / 180)))
@@ -853,7 +845,18 @@ public class RenderUtils {
         glVertex3d(eyeVector.xCoord,
                 player.eyeHeight + eyeVector.yCoord, eyeVector.zCoord);
 
-        glVertex3d(centerX, centerY, centerZ);
+        if (block != null) {
+            final double posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
+            final double posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
+            final double posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+
+            block.setBlockBoundsBasedOnState(mc.theWorld, pos);
+
+            axisAlignedBB = block.getSelectedBoundingBox(mc.theWorld, pos)
+                    .offset(-posX, -posY, -posZ);
+        }
+
+        glVertex3d(axisAlignedBB.minX - axisAlignedBB.maxX, axisAlignedBB.minY - axisAlignedBB.maxY, axisAlignedBB.minZ - axisAlignedBB.maxZ);
 
         glEnd();
 
