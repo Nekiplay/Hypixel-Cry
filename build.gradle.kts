@@ -98,9 +98,8 @@ tasks.jar {
 
 val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
     archiveClassifier.set("")
-    dependsOn(tasks.shadowJar)
+    from(tasks.shadowJar)
     input.set(tasks.shadowJar.get().archiveFile)
-    destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 }
 
 tasks.shadowJar {
