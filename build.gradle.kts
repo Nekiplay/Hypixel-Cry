@@ -90,7 +90,6 @@ tasks.jar {
         "ForceLoadAsMod" to true,
         "MixinConfigs" to "mixins.hypixelcry.json",
         "ModSide" to "CLIENT",
-        "TweakClass" to "io.github.notenoughupdates.moulconfig.tweaker.DevelopmentResourceTweaker",
         "TweakOrder" to "0"
     )
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
