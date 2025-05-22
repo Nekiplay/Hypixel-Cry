@@ -1,8 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp;
 
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.MyConfig;
-import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
@@ -11,8 +9,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class ChestESP {
     private static final ArrayList<BlockPos> collected = new ArrayList<BlockPos>();

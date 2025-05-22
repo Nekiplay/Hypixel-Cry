@@ -2,6 +2,8 @@ package com.nekiplay.hypixelcry.utils;
 
 import com.nekiplay.hypixelcry.Main;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -819,6 +821,7 @@ public class RenderUtils {
         EntityPlayerSP player = mc.thePlayer;
         if (player == null) return;
         if (mc.getRenderManager() == null) return;
+        if (mc.theWorld == null) return;
 
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
@@ -830,10 +833,14 @@ public class RenderUtils {
 
         glBegin(GL_LINES);
 
+        IBlockState state = mc.theWorld.getBlockState(pos);
+        AxisAlignedBB bb = state.getBlock().getSelectedBoundingBox(mc.theWorld, pos);
+        if (bb == null) return;
 
-        double x = pos.getX() + 0.5 - mc.getRenderManager().viewerPosX;
-        double y = pos.getY() + 0.5 - mc.getRenderManager().viewerPosY;
-        double z = pos.getZ() + 0.5 - mc.getRenderManager().viewerPosZ;
+        // Calculate center of the hitbox
+        double centerX = (bb.minX + bb.maxX) / 2.0 - mc.getRenderManager().viewerPosX;
+        double centerY = (bb.minY + bb.maxY) / 2.0 - mc.getRenderManager().viewerPosY;
+        double centerZ = (bb.minZ + bb.maxZ) / 2.0 - mc.getRenderManager().viewerPosZ;
 
         //Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
         //        .rotatePitch(-player.rotationPitch)
@@ -848,7 +855,7 @@ public class RenderUtils {
         glVertex3d(eyeVector.xCoord,
                 player.eyeHeight + eyeVector.yCoord, eyeVector.zCoord);
 
-        glVertex3d(x, y, z);
+        glVertex3d(centerX, centerY, centerZ);
 
         glEnd();
 

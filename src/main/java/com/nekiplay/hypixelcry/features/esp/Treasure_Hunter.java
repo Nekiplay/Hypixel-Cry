@@ -133,15 +133,15 @@ public class Treasure_Hunter {
     public void onRender(RenderWorldLastEvent event) {
 
         if (allowRender) {
-            if (Main.getInstance().config.esp.farmingIslands.treasureHunterFetcher.enabled && pos != null) {
-                if (Main.getInstance().config.esp.farmingIslands.treasureHunterFetcher.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.treasureHunterFetcher.colour), 1, event.partialTicks);
+            if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.enabled && pos != null) {
+                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
-                if (Main.getInstance().config.esp.farmingIslands.treasureHunterFetcher.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.treasureHunterFetcher.colour));
+                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour));
                 }
-                if (Main.getInstance().config.esp.farmingIslands.treasureHunterFetcher.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.treasureHunterFetcher.colour), 1, event.partialTicks);
+                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
             }
         }

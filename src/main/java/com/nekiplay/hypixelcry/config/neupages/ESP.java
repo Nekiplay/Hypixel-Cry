@@ -9,13 +9,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class ESP {
-    @Category(name = "Farming islands", desc = "Render features in farming islands")
-    @ConfigOption(
-            name = "Farming islands",
-            desc = ""
-    )
+    @Category(name = "Desert Settlement", desc = "Render features in desert settlement")
     @Expose
-    public Farming_Islands farmingIslands = new Farming_Islands();
+    public Desert_Settlement desertSettlement = new Desert_Settlement();
 
 	@Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
     @Expose
@@ -51,7 +47,7 @@ public class ESP {
         }
     }
 
-    public static class Farming_Islands {
+    public static class Desert_Settlement {
 
         @Accordion
         @ConfigOption(

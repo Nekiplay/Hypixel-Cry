@@ -1,7 +1,6 @@
 package com.nekiplay.hypixelcry;
 
 import com.nekiplay.hypixelcry.features.qol.AutoChestClose;
-import com.nekiplay.hypixelcry.config.CustomRenderer;
 import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.esp.holograms.HologramModule;
 import com.nekiplay.hypixelcry.features.macros.*;
