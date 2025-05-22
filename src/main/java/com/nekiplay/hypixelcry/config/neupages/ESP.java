@@ -19,9 +19,18 @@ public class ESP {
             name = "Dark Monolith",
             desc = ""
     )
-    @ConfigEditorBoolean
     @Expose
-    public boolean darkMonolith = false;
+    public Dwarden_Mines dwardenMines = new Dwarden_Mines();
+
+    public class Dwarden_Mines {
+        @ConfigOption(
+                name = "Dark Monolith",
+                desc = ""
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean darkMonolith = false;
+    }
 
     public class Glowing_Mushrooms {
         @ConfigOption(
