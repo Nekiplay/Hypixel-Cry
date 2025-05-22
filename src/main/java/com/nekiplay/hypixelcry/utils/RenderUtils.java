@@ -833,18 +833,16 @@ public class RenderUtils {
 
         glBegin(GL_LINES);
 
+        double centerX = pos.getX() + 0.5 - mc.getRenderManager().viewerPosX;
+        double centerY = pos.getY() + 0.5 - mc.getRenderManager().viewerPosY;
+        double centerZ = pos.getZ() + 0.5 - mc.getRenderManager().viewerPosZ;
+
         IBlockState state = mc.theWorld.getBlockState(pos);
-        AxisAlignedBB bb = state.getBlock().getSelectedBoundingBox(mc.theWorld, pos);
-        if (bb == null) return;
-
-        // Calculate center of the hitbox
-        double centerX = (bb.minX + bb.maxX) / 2.0 - mc.getRenderManager().viewerPosX;
-        double centerY = (bb.minY + bb.maxY) / 2.0 - mc.getRenderManager().viewerPosY;
-        double centerZ = (bb.minZ + bb.maxZ) / 2.0 - mc.getRenderManager().viewerPosZ;
-
-        //Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
-        //        .rotatePitch(-player.rotationPitch)
-        //        .rotateYaw(-player.rotationYaw);
+        if (state != null) {
+            centerX = (state.getBlock().getBlockBoundsMinX() + state.getBlock().getBlockBoundsMaxX()) / 2.0 - mc.getRenderManager().viewerPosX;
+            centerY = (state.getBlock().getBlockBoundsMinY() + state.getBlock().getBlockBoundsMaxY()) / 2.0 - mc.getRenderManager().viewerPosY;
+            centerZ = (state.getBlock().getBlockBoundsMinZ() + state.getBlock().getBlockBoundsMaxZ()) / 2.0 - mc.getRenderManager().viewerPosZ;
+        }
 
         Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
                 .rotatePitch((float) (-player.rotationPitch * (PI / 180)))

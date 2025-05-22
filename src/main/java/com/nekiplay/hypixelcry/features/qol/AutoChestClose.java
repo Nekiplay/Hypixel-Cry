@@ -6,7 +6,6 @@ import com.nekiplay.hypixelcry.mixins.GuiChestAccessor;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
