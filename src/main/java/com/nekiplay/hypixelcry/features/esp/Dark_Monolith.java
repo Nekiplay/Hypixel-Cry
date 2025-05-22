@@ -123,9 +123,9 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.getInstance().config.esp.dwardenMines.darkMonolith && egg !=null)
+        if (Main.getInstance().config.esp.dwardenMines.darkMonolith.enabled && egg !=null)
         {
-            RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.colour), 1, event.partialTicks);
+            RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
             if (false) {
                 //RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.color.toJavaColor());
             }

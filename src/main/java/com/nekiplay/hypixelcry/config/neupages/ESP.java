@@ -12,7 +12,7 @@ public class ESP {
     @Expose
     public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
 
-    @Accordion
+	@Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
     @ConfigOption(
             name = "Dwarden Mines",
             desc = ""
@@ -21,26 +21,29 @@ public class ESP {
     public Dwarden_Mines dwardenMines = new Dwarden_Mines();
 
     public static class Dwarden_Mines {
+        @Accordion
         @ConfigOption(
                 name = "Dark Monolith",
                 desc = ""
         )
-        @ConfigEditorAccordion(id = 0)
-        private boolean searchAccordion = false;
-
-        @ConfigOption(
-                name = "Enable",
-                desc = ""
-        )
-        @ConfigEditorAccordion(id = 0)
-        @ConfigEditorBoolean
         @Expose
-        public boolean darkMonolith = false;
+        public Dark_Monolith darkMonolith = new Dark_Monolith();
 
-        @ConfigOption(name = "Box color", desc = "ESP Box color")
-        @ConfigEditorColour
-        @Expose
-        public String colour = "0:0:0:0:0";
+		public static class Dark_Monolith {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = ""
+            )
+            @ConfigEditorAccordion(id = 0)
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabled = false;
+
+            @ConfigOption(name = "Box color", desc = "ESP Box color")
+            @ConfigEditorColour
+            @Expose
+            public String colour = "0:0:0:0:0";
+        }
     }
 
     public class Glowing_Mushrooms {
