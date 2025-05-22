@@ -70,7 +70,7 @@ dependencies {
         isTransitive = false
     }
     annotationProcessor("net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5")
-    
+
     shadowModImpl("org.notenoughupdates.moulconfig:legacy:3.8.0")
 }
 
