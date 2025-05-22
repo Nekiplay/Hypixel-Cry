@@ -21,6 +21,10 @@ public class NEUConfig extends Config {
         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Just executed runnableId " + runnableId));
     }
 
+    @Override
+    public void saveNow() {
+        Main.getInstance().saveConfig();
+    }
 
     @Expose
     @Category(

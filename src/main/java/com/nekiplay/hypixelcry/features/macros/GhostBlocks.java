@@ -65,11 +65,10 @@ public class GhostBlocks {
     public void onEventMouse(InputEvent.MouseInputEvent event) {
         if (!Mouse.getEventButtonState()) return;
 
-        int button = Mouse.getEventButton();
-        if (button < 0) return;
+        int button = Mouse.getEventButton() - 100;
 
         try {
-            if (button == Main.getInstance().config.macros.ghostBlocksKeyBind) {
+            if (button == Main.getInstance().config.macros.ghostBlocksKeyBind + 100) {
                 enable();
             }
         } catch (IndexOutOfBoundsException e) {
