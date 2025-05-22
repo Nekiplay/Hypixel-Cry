@@ -48,7 +48,7 @@ public class GhostBlocks {
     public void onEvent(InputEvent.KeyInputEvent event)
     {
         int keyCode = Keyboard.getEventKey();
-        if (keyCode >= 0 && Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
+        if (keyCode > 0 && Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
             enable();
         }
     }
