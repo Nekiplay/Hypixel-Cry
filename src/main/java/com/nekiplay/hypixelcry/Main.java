@@ -9,6 +9,7 @@ import com.nekiplay.hypixelcry.commands.SetAngle;
 import com.nekiplay.hypixelcry.commands.TPS;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
+import com.nekiplay.hypixelcry.utils.ConfigUtil;
 import com.nekiplay.hypixelcry.utils.world.TickRate;
 import io.github.notenoughupdates.moulconfig.observer.PropertyTypeAdapterFactory;
 import io.github.notenoughupdates.moulconfig.processor.BuiltinMoulConfigGuis;
@@ -70,6 +71,18 @@ public class Main
     private final Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapterFactory(new PropertyTypeAdapterFactory()).create();
 
+    public File getConfigFile() {
+        return this.configFile;
+    }
+
+    public void newConfigFile() {
+        this.configFile = new File(getNeuDir(), "configNew.json");
+    }
+
+    public File getNeuDir() {
+        return this.neuDir;
+    }
+
     public MoulConfigProcessor<NEUConfig> processor = null;
 
     @SubscribeEvent
@@ -81,9 +94,27 @@ public class Main
         }
     }
 
+    public void saveConfig() {
+        ConfigUtil.saveConfig(config, configFile, gson);
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         instance = this;
+
+        neuDir = new File(event.getModConfigurationDirectory(), "hypixelcry");
+        neuDir.mkdirs();
+
+        configFile = new File(neuDir, "config.json");
+
+        if (configFile.exists()) {
+            config = ConfigUtil.loadConfig(NEUConfig.class, configFile, gson);
+        }
+
+        if (config == null) {
+            config = new NEUConfig();
+            saveConfig();
+        }
 
         System.setProperty("java.awt.headless", "false");
     }
@@ -93,7 +124,7 @@ public class Main
     {
         Display.setTitle("Minecraft 1.8.9 | Hypixel Cry " + VERSION);
         MinecraftForge.EVENT_BUS.register(this);
-		config = new NEUConfig();
+
         processor = new MoulConfigProcessor<>(config);
         BuiltinMoulConfigGuis.addProcessors(processor);
         ConfigProcessorDriver driver = new ConfigProcessorDriver(processor);
