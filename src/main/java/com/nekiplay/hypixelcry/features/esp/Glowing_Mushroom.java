@@ -65,7 +65,7 @@ public class Glowing_Mushroom {
                 if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.features.contains(ESPFeatures.Box)) {
                     RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.glowingMushrooms.colour), 1, event.partialTicks);
                 }
-                if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.features.contains(ESPFeatures.Box)) {
+                if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.features.contains(ESPFeatures.Text)) {
                     RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.glowingMushrooms.colour));
                 }
                 if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
