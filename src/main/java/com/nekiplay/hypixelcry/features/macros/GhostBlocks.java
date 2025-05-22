@@ -29,7 +29,7 @@ public class GhostBlocks {
     private void enable() {
         EntityPlayerSP player = mc.thePlayer;
         if (player != null) {
-            MovingObjectPosition movingObjectPosition = player.rayTrace(16, 1f);
+            MovingObjectPosition movingObjectPosition = player.rayTrace(Main.getInstance().config.macros.ghostBlocks.range, 1f);
             if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos pos = movingObjectPosition.getBlockPos();
                 ItemStack hand = mc.thePlayer.getCurrentEquippedItem();
