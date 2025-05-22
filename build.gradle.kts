@@ -104,7 +104,7 @@ val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
 
 tasks.shadowJar {
     archiveClassifier.set("dev")
-    configurations = listOf(shadowImplementation)
+    configurations = listOf(shadowImplementation, shadowModImpl)
     exclude("**/module-info.class", "LICENSE.txt")
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:.*"))
