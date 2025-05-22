@@ -70,11 +70,7 @@ dependencies {
         isTransitive = false
     }
     annotationProcessor("net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5")
-
-    // OneConfig dependencies
-    shadowImplementation("cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta+")
-    compileOnly("cc.polyfrost:oneconfig-1.8.9-forge:0.2.0-alpha+")
-
+    
     shadowModImpl("org.notenoughupdates.moulconfig:legacy:3.8.0")
 }
 
