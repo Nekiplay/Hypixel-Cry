@@ -25,7 +25,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class GardenMiner extends GeneralNuker {
     private int shovel_tick = 0;
@@ -55,13 +54,13 @@ public class GardenMiner extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
-            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.myConfigFile.GeneralNukerTPSGuard) {
+            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && false) {
                 return;
             }
             if (broken.size() > 20) {
                 broken.clear();
             }
-            SetDistance(myConfigFile.gardenMainPage.maximumNukerHorizontalDistance, myConfigFile.gardenMainPage.maximumNukerVericalDistance);
+            //SetDistance(myConfigFile.gardenMainPage.maximumNukerHorizontalDistance, myConfigFile.gardenMainPage.maximumNukerVericalDistance);
 
             InventoryPlayer inventory = mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
@@ -78,8 +77,8 @@ public class GardenMiner extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.myConfigFile.gardenMainPage.gardenNukerBoostTicks) {
-            for (int i = 0; i < Main.myConfigFile.gardenMainPage.gardenNukerBlockPesTick; i++) {
+        if (boostTicks > 1) {
+            for (int i = 0; i < 1; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
@@ -93,9 +92,9 @@ public class GardenMiner extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.gardenMainPage.tracer) {
-                RenderUtils.drawTracer(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
+            //RenderUtils.drawBlockBox(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (false) {
+                //RenderUtils.drawTracer(blockPos, myConfigFile.gardenMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

@@ -26,7 +26,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Foraging extends GeneralNuker {
     private int shovel_tick = 0;
@@ -47,7 +46,7 @@ public class Foraging extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
-            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.myConfigFile.GeneralNukerTPSGuard) {
+            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && false) {
                 return;
             }
             if (broken.size() > 20) {
@@ -58,7 +57,7 @@ public class Foraging extends GeneralNuker {
                 InventoryPlayer inventory = mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                SetDistance(myConfigFile.foragingMainPage.maximumNukerHorizontalDistance, myConfigFile.foragingMainPage.maximumNukerVericalDistance);
+                //SetDistance(myConfigFile.foragingMainPage.maximumNukerHorizontalDistance, myConfigFile.foragingMainPage.maximumNukerVericalDistance);
 
                 if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
                     BoostAlgorithm();
@@ -73,8 +72,8 @@ public class Foraging extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.myConfigFile.foragingMainPage.foragingNukerBoostTicks) {
-            for (int i = 0; i < Main.myConfigFile.foragingMainPage.foragingNukerBlockPesTick; i++) {
+        if (boostTicks > 1 ) {
+            for (int i = 0; i < 1; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
@@ -88,9 +87,9 @@ public class Foraging extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.foragingMainPage.tracer) {
-                RenderUtils.drawTracer(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
+            //RenderUtils.drawBlockBox(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (false) {
+                //RenderUtils.drawTracer(blockPos, myConfigFile.foragingMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Ore extends GeneralNuker {
     private static BlockPos blockPos;
@@ -30,49 +29,12 @@ public class Ore extends GeneralNuker {
     private final int damageReset = 80;
     @Override
     public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
-        Block block = state.getBlock();
-        if ((block.equals(Blocks.coal_ore) || block.equals(Blocks.coal_block)) &&  Main.myConfigFile.oreMainPage.oreNukerCoal) {
-            return true;
-        }
-        else if ((block.equals(Blocks.iron_ore) || block.equals(Blocks.iron_block)) &&  Main.myConfigFile.oreMainPage.oreNukerIron) {
-            return true;
-        }
-        else if ((block.equals(Blocks.gold_ore) || block.equals(Blocks.gold_block)) &&  Main.myConfigFile.oreMainPage.oreNukerGold) {
-            return true;
-        }
-        else if ((block.equals(Blocks.diamond_ore) || block.equals(Blocks.diamond_block)) &&  Main.myConfigFile.oreMainPage.oreNukerDiamond) {
-            return true;
-        }
-        else if ((block.equals(Blocks.emerald_ore) || block.equals(Blocks.emerald_block)) &&  Main.myConfigFile.oreMainPage.oreNukerEmerald) {
-            return true;
-        }
-        else if ((block.equals(Blocks.lit_redstone_ore) || block.equals(Blocks.redstone_ore) || block.equals(Blocks.redstone_block)) &&  Main.myConfigFile.oreMainPage.oreNukerRedstone) {
-            return true;
-        }
-        else if ((block.equals(Blocks.lapis_ore) || block.equals(Blocks.lapis_block)) &&  Main.myConfigFile.oreMainPage.oreNukerLapis) {
-            return true;
-        }
-        else if ((block.equals(Blocks.stone)) &&  myConfigFile.oreMainPage.oreNukerStone) {
-            return true;
-        }
-        else if ((block.equals(Blocks.cobblestone)) &&  Main.myConfigFile.oreMainPage.oreNukerCobblestone) {
-            return true;
-        }
-        else if ((block.equals(Blocks.ice)) &&  Main.myConfigFile.oreMainPage.oreNukerIce) {
-            return true;
-        }
-        else if ((block.equals(Blocks.obsidian)) &&  Main.myConfigFile.oreMainPage.oreNukerObsidian) {
-            return true;
-        }
-        else if ((block.equals(Blocks.end_stone)) &&  Main.myConfigFile.oreMainPage.oreNukerEndstone) {
-            return true;
-        }
         return false;
     }
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && mc.theWorld != null && mc.thePlayer != null) {
-            Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.oreMainPage.oreNukerExposedMode);
+            //Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.oreMainPage.oreNukerExposedMode);
 
             if(currentDamage > damage) {
                 currentDamage = 0;
@@ -103,7 +65,7 @@ public class Ore extends GeneralNuker {
 
 
             if (currentDamage == 0) {
-                SetDistance(myConfigFile.oreMainPage.maximumNukerHorizontalDistance, myConfigFile.oreMainPage.maximumNukerVericalDistance);
+                //SetDistance(myConfigFile.oreMainPage.maximumNukerHorizontalDistance, myConfigFile.oreMainPage.maximumNukerVericalDistance);
                 BlockPos near = getClosestBlock(getBlocks());
                 if (near != null) {
                     blockPos = near;
@@ -113,7 +75,7 @@ public class Ore extends GeneralNuker {
                     damage = damageReset;
                 }
             }
-            if (!Main.myConfigFile.oreMainPage.oreNukerMode) {
+            if (!false) {
                 currentDamage++;
             }
         }
@@ -125,75 +87,75 @@ public class Ore extends GeneralNuker {
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
             if (currentBlock == Blocks.coal_ore || currentBlock == Blocks.coal_block) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.coalColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.coalColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.coalColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.coalColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.iron_ore || currentBlock == Blocks.iron_block) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.ironColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.ironColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.ironColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.ironColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.lapis_ore || currentBlock == Blocks.lapis_block) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.lapisColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.lapisColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.lapisColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.lapisColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.redstone_block || currentBlock == Blocks.redstone_ore || currentBlock == Blocks.lit_redstone_ore) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.redstoneColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.redstoneColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.redstoneColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.redstoneColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.gold_ore || currentBlock == Blocks.gold_block) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.goldColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.goldColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.goldColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.goldColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.diamond_ore || currentBlock == Blocks.diamond_block) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.diamondColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.diamondColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.diamondColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.diamondColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.emerald_ore || currentBlock == Blocks.emerald_block) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.emeraldColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.emeraldColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.emeraldColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.emeraldColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.stone) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.stoneColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.stoneColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.stoneColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.stoneColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.cobblestone) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.cobblestoneColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.cobblestoneColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.cobblestoneColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.cobblestoneColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.end_stone) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.endStoneColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.endStoneColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.endStoneColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.endStoneColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.obsidian) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.obsidianColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.obsidianColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.obsidianColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.obsidianColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
             else if (currentBlock == Blocks.ice) {
-                RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.iceColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.oreMainPage.tracer) {
-                    RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.iceColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(blockPos, myConfigFile.oreMainPage.iceColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(blockPos, myConfigFile.oreMainPage.iceColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
         }

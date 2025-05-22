@@ -14,8 +14,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
-
 public class Glowing_Mushroom {
     public static ArrayList<BlockPos> positions = new ArrayList<>();
     @SubscribeEvent
@@ -59,10 +57,10 @@ public class Glowing_Mushroom {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && myConfigFile.glowingMushroomMainPage.glowingMushroomESP) {
+        if (false) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos) pos_object;
-                RenderUtils.drawBlockBox(pos, myConfigFile.glowingMushroomMainPage.color.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(pos, myConfigFile.glowingMushroomMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

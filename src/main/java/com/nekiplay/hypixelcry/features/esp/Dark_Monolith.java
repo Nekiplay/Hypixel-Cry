@@ -13,8 +13,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Dark_Monolith {
     BlockPos egg = null;
@@ -23,7 +21,7 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (Main.mc.theWorld != null && myConfigFile != null && myConfigFile.darkMonolithMainPage.dwardenMinesDarkMonolithESP) {
+        if (Main.mc.theWorld != null && false) {
             BlockPos pos1 = new BlockPos(-15, 236, -92);
             BlockPos pos2 = new BlockPos(49, 202, -162);
             BlockPos pos3 = new BlockPos(56, 214, -25);
@@ -124,14 +122,14 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && egg != null && myConfigFile.darkMonolithMainPage.dwardenMinesDarkMonolithESP)
+        if (false)
         {
-            RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.darkMonolithMainPage.text) {
-                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.color.toJavaColor());
+            //RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (false) {
+                //RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.color.toJavaColor());
             }
-            if (myConfigFile.darkMonolithMainPage.tracer) {
-                RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+            if (false) {
+                //RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

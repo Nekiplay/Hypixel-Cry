@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Treasure_Hunter {
     public BlockPos pos;
@@ -132,23 +131,23 @@ public class Treasure_Hunter {
     public void onRender(RenderWorldLastEvent event) {
 
         if (allowRender) {
-            if (myConfigFile != null && myConfigFile.treasureHunterMainPage.treasureHunterESP && pos != null) {
-                if (myConfigFile.treasureHunterMainPage.text) {
-                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor());
+            if (false && pos != null) {
+                if (false) {
+                    //RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor());
                 }
-                RenderUtils.drawBlockBox(pos, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.treasureHunterMainPage.tracer) {
-                    RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+                //RenderUtils.drawBlockBox(pos, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
+                if (false) {
+                    //RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
                 }
             }
-            else if (pos == null && myConfigFile != null && myConfigFile.treasureHunterMainPage.treasureHunterESP && myConfigFile.treasureHunterMainPage.allLocations) {
+            else if (pos == null && false) {
                 for (BlockPos posibleTreasure: allPositions) {
-                    if (myConfigFile.treasureHunterMainPage.text) {
-                        RenderUtils.renderWaypointText("Possible treasure", new BlockPos(posibleTreasure.getX() + 0.5, posibleTreasure.getY() + 1.5, posibleTreasure.getZ() + 0.5), event.partialTicks, false, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor());
+                    if (false) {
+                        //RenderUtils.renderWaypointText("Possible treasure", new BlockPos(posibleTreasure.getX() + 0.5, posibleTreasure.getY() + 1.5, posibleTreasure.getZ() + 0.5), event.partialTicks, false, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor());
                     }
-                    RenderUtils.drawBlockBox(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
-                    if (myConfigFile.treasureHunterMainPage.tracer) {
-                        RenderUtils.drawTracer(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+                    //RenderUtils.drawBlockBox(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
+                    if (false) {
+                        //RenderUtils.drawTracer(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
                     }
                 }
             }

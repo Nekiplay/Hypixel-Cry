@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 import static net.minecraft.block.BlockDirectional.FACING;
 
 public class Crop {
@@ -77,7 +76,7 @@ public class Crop {
     }
 
     private void breakCrop(BlockPos crop) {
-        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.myConfigFile.GeneralNukerTPSGuard) {
+        if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && false) {
             return;
         }
         InventoryPlayer inventory = mc.thePlayer.inventory;
@@ -102,7 +101,7 @@ public class Crop {
                 broken.add(crop);
                 valid = true;
             }
-            if (Main.myConfigFile.cropMainPage.cropNukerReplanish && valid) {
+            if (false && valid) {
                 if (currentItem.hasTagCompound()) {
                     NBTTagCompound lore = currentItem.getTagCompound().getCompoundTag("ExtraAttributes").getCompoundTag("enchantments");
                     if (lore != null && lore.hasKey("replenish")) {
@@ -153,10 +152,10 @@ public class Crop {
             InventoryPlayer inventory = mc.thePlayer.inventory;
             ItemStack currentItem = inventory.getCurrentItem();
             if (currentItem != null) {
-                if (((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe || currentItem.getItem() instanceof ItemShears) && hoeTick > 7) || Main.myConfigFile.cropMainPage.cropNukerRemover) {
-                    if (boostTicks > Main.myConfigFile.cropMainPage.cropNukerBoostTicks)
+                if (((currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe || currentItem.getItem() instanceof ItemShears) && hoeTick > 7) || false) {
+                    if (boostTicks > 1)
                     {
-                        for (int i = 0; i < Main.myConfigFile.cropMainPage.cropNukerBlockPesTick; i++) {
+                        for (int i = 0; i < 1; i++) {
                             BlockPos near = getNearblyCrop();
                             breakCrop(near);
                         }
@@ -195,69 +194,69 @@ public class Crop {
                     }
                 } else if (breakCrop != null && (currentItem.getItem() instanceof ItemHoe || currentItem.getItem() instanceof ItemAxe || currentItem.getItem() instanceof ItemShears)) {
                     if (breakBlock == Blocks.wheat) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.wheatColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.wheatColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.wheatColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                           //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.wheatColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.carrots) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.carrotColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.potatoes) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.potatoesColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.potatoesColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.potatoesColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.potatoesColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.reeds) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.reedsColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.reedsColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.reedsColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.reedsColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.cactus) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.cactusColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.cactusColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.cactusColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.cactusColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.melon_block || breakBlock == Blocks.melon_stem) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.melonColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.melonColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.melonColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.melonColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.pumpkin || breakBlock == Blocks.pumpkin_stem) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.pumpkinColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.pumpkinColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.pumpkinColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.pumpkinColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.cocoa) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.cocoaColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.cocoaColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.cocoaColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.cocoaColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.nether_wart) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.netherWartsColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.netherWartsColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.netherWartsColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.netherWartsColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else if (breakBlock == Blocks.brown_mushroom || breakBlock == Blocks.red_mushroom) {
-                        RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.mushRoomColor.toJavaColor(), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.mushRoomColor.toJavaColor(), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, myConfigFile.cropMainPage.mushRoomColor.toJavaColor(), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, myConfigFile.cropMainPage.mushRoomColor.toJavaColor(), 1, event.partialTicks);
                         }
                     }
                     else {
-                        RenderUtils.drawBlockBox(breakCrop, new Color(45, 165, 45), 1, event.partialTicks);
-                        if (myConfigFile.cropMainPage.tracer) {
-                            RenderUtils.drawTracer(breakCrop, new Color(45, 165, 45), 1, event.partialTicks);
+                        //RenderUtils.drawBlockBox(breakCrop, new Color(45, 165, 45), 1, event.partialTicks);
+                        if (false) {
+                            //RenderUtils.drawTracer(breakCrop, new Color(45, 165, 45), 1, event.partialTicks);
                         }
                     }
                 }
@@ -283,8 +282,8 @@ public class Crop {
 
         Vec3 playerVec = mc.thePlayer.getPositionVector();
         ArrayList<Vec3> warts = new ArrayList<>();
-        double r = myConfigFile.cropMainPage.maximumNukerHorizontalDistance;
-        double r2 = myConfigFile.cropMainPage.maximumNukerVericalDistance;
+        double r = 4;
+        double r2 = 4;
         BlockPos playerPos = mc.thePlayer.getPosition();
         playerPos = playerPos.add(0, 1, 0);
         Vec3i vec3i = new Vec3i(r, r2, r);
@@ -294,96 +293,96 @@ public class Crop {
             Block block = blockState.getBlock();
             if (!broken.contains(blockPos)) {
                 if (block == Blocks.wheat) {
-                    if (isCropGrow(7, blockState) || Main.myConfigFile.cropMainPage.cropNukerRemover) {
-                        if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Wheat Hoe")) {
+                    if (isCropGrow(7, blockState) || false) {
+                        if (false && isMathHoe("Wheat Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                        } else if (!false) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.carrots) {
-                    if (isCropGrow(7, blockState) || Main.myConfigFile.cropMainPage.cropNukerRemover) {
-                        if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Carrot Hoe")) {
+                    if (isCropGrow(7, blockState) || false) {
+                        if (false && isMathHoe("Carrot Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                        } else if (!false) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.potatoes) {
-                    if (isCropGrow(7, blockState) || Main.myConfigFile.cropMainPage.cropNukerRemover) {
-                        if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Potato Hoe")) {
+                    if (isCropGrow(7, blockState) || false) {
+                        if (false && isMathHoe("Potato Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                        } else if (!false) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.nether_wart) {
-                    if (isNetherWarsGrow(3, blockState) || Main.myConfigFile.cropMainPage.cropNukerRemover) {
-                        if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Nether Warts Hoe")) {
+                    if (isNetherWarsGrow(3, blockState) || false) {
+                        if (false && isMathHoe("Nether Warts Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                        } else if (!false) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.cactus) {
                     if (isValidCactus(blockPos)) {
-                        if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Cactus Knife")) {
+                        if (false && isMathHoe("Cactus Knife")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                        } else if (!false) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.reeds) {
                     if (isValidReeds(blockPos)) {
-                        if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Sugar Cane Hoe")) {
+                        if (false && isMathHoe("Sugar Cane Hoe")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                        } else if (!false) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
                 else if (block == Blocks.melon_block) {
-                    if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Melon Dicer")) {
+                    if (false && isMathHoe("Melon Dicer")) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                    } else if (!false) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                     }
                 }
                 else if (block == Blocks.pumpkin) {
-                    if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Pumpkin Dicer")) {
+                    if (false && isMathHoe("Pumpkin Dicer")) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                    } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                    } else if (!false) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                     }
                 }
                 else if (block == Blocks.red_mushroom || block == Blocks.brown_mushroom) {
-                    if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Moby")) {
+                    if (false && isMathHoe("Moby")) {
                         if (Glowing_Mushroom.isGlowingMushroom(blockPos)) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
-                    else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                    else if (!false) {
                         warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                     }
                 }
                 else if (block == Blocks.cocoa) {
-                    if (isCocoaGrow(2, blockState) || Main.myConfigFile.cropMainPage.cropNukerRemover) {
-                        if (Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe && isMathHoe("Coco Chopper")) {
+                    if (isCocoaGrow(2, blockState) || false) {
+                        if (false && isMathHoe("Coco Chopper")) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
-                        } else if (!Main.myConfigFile.cropMainPage.cropNukerOnlyMathematicalHoe) {
+                        } else if (!false) {
                             warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                         }
                     }
                 }
-                else if (block == Blocks.melon_stem && Main.myConfigFile.cropMainPage.cropNukerRemover) {
+                else if (block == Blocks.melon_stem && false) {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
-                else if (block == Blocks.pumpkin_stem && Main.myConfigFile.cropMainPage.cropNukerRemover) {
+                else if (block == Blocks.pumpkin_stem && false) {
                     warts.add(new Vec3(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5));
                 }
             }

@@ -19,8 +19,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
-
 public class HologramModule {
     public Gson gson = new Gson();
 

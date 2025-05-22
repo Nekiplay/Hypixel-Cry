@@ -27,7 +27,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Sand extends GeneralNuker {
     private int shovel_tick = 0;
@@ -51,7 +50,7 @@ public class Sand extends GeneralNuker {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Minecraft.getMinecraft().thePlayer != null) {
-            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && Main.myConfigFile.GeneralNukerTPSGuard) {
+            if (TickRate.INSTANCE.getTimeSinceLastTick() > 1 && false) {
                 return;
             }
             if (broken.size() > 5) {
@@ -62,8 +61,8 @@ public class Sand extends GeneralNuker {
                 InventoryPlayer inventory = mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.sandMainPage.sandExposedMode);
-                SetDistance(myConfigFile.sandMainPage.maximumNukerHorizontalDistance, myConfigFile.sandMainPage.maximumNukerVericalDistance);
+                //Main.myConfigFile.ChangeExposedMode(this, Main.myConfigFile.sandMainPage.sandExposedMode);
+                //SetDistance(myConfigFile.sandMainPage.maximumNukerHorizontalDistance, myConfigFile.sandMainPage.maximumNukerVericalDistance);
                 if (currentItem != null && currentItem.getItem() instanceof ItemSpade && shovel_tick > 4) {
                     BoostAlgorithm();
                 }
@@ -76,8 +75,8 @@ public class Sand extends GeneralNuker {
         }
     }
     private void BoostAlgorithm() {
-        if (boostTicks > Main.myConfigFile.sandMainPage.sandNukerBoostTicks) {
-            for (int i = 0; i < Main.myConfigFile.sandMainPage.sandNukerBlockPesTick; i++) {
+        if (boostTicks > 1) {
+            for (int i = 0; i < 1; i++) {
                 BlockPos near = getClosestBlock(getBlocks());
                 breakSand(near);
             }
@@ -91,9 +90,9 @@ public class Sand extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, Main.myConfigFile.sandMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.sandMainPage.Tracer) {
-                RenderUtils.drawTracer(blockPos, Main.myConfigFile.sandMainPage.color.toJavaColor(), 1, event.partialTicks);
+            //RenderUtils.drawBlockBox(blockPos, Main.myConfigFile.sandMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (false) {
+                //RenderUtils.drawTracer(blockPos, Main.myConfigFile.sandMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

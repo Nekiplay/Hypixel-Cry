@@ -14,14 +14,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
-
 public class ChestESP {
     private static final ArrayList<BlockPos> collected = new ArrayList<BlockPos>();
     private static final ArrayList<BlockPos> locations = new ArrayList<BlockPos>();
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (Main.mc.theWorld != null && myConfigFile != null && myConfigFile.chestESPMainPage.enableESP) {
+        if (Main.mc.theWorld != null && false) {
             locations.clear();
             for (TileEntity tileEntity : Main.mc.theWorld.loadedTileEntityList) {
                 if (tileEntity instanceof TileEntityChest) {
@@ -33,12 +31,12 @@ public class ChestESP {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && myConfigFile.chestESPMainPage.enableESP)
+        if (false)
         {
             for (BlockPos pos: locations) {
                 if (!collected.contains(pos)) {
-                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, myConfigFile.chestESPMainPage.color.toJavaColor());
-                    RenderUtils.drawBlockBox(pos, myConfigFile.chestESPMainPage.color.toJavaColor(), 1, event.partialTicks);
+                    //RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, myConfigFile.chestESPMainPage.color.toJavaColor());
+                    //RenderUtils.drawBlockBox(pos, myConfigFile.chestESPMainPage.color.toJavaColor(), 1, event.partialTicks);
                 }
             }
         }

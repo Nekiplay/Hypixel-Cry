@@ -1,6 +1,9 @@
 package com.nekiplay.hypixelcry.commands;
 
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.NEUConfig;
+import io.github.notenoughupdates.moulconfig.gui.GuiScreenElementWrapper;
+import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
@@ -23,12 +26,13 @@ public class OpenSettings implements ICommand {
 
     @Override
     public List<String> getCommandAliases() {
-        return new ArrayList<>(Arrays.asList("hypixeladdon"));
+        return new ArrayList<>(Arrays.asList("hypixelcry", "cry"));
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        Main.myConfigFile.openGui();
+        MoulConfigEditor<NEUConfig> gui = new MoulConfigEditor<>(Main.getInstance().processor);
+        Main.getInstance().screenToOpen = new GuiScreenElementWrapper(gui);
     }
 
     @Override

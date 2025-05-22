@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.awt.*;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Mithril extends GeneralNuker {
     private static BlockPos blockPos;
@@ -32,24 +31,13 @@ public class Mithril extends GeneralNuker {
 
     @Override
     public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
-        if(state.getBlock() == Blocks.prismarine) {
-            return true;
-        } else if(state.getBlock() == Blocks.wool) {
-            return true;
-        } else if(state.getBlock() == Blocks.stained_hardened_clay) {
-            return true;
-        } else if(!myConfigFile.mithrilMainPage.mithrilNukerIgnoreTitanium && state.getBlock() == Blocks.stone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.DIORITE_SMOOTH) {
-            return true;
-        } else if(state.getBlock() == Blocks.gold_block) {
-            return true;
-        }
         return false;
     }
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (work && Main.mc.theWorld != null && Main.mc.thePlayer != null) {
-            myConfigFile.ChangeExposedMode(this, myConfigFile.mithrilMainPage.mithrilNukerExposedMode);
+            //myConfigFile.ChangeExposedMode(this, myConfigFile.mithrilMainPage.mithrilNukerExposedMode);
 
             if(currentDamage > damage) {
                 currentDamage = 0;
@@ -80,7 +68,7 @@ public class Mithril extends GeneralNuker {
 
 
             if (currentDamage == 0) {
-                SetDistance(myConfigFile.mithrilMainPage.maximumNukerHorizontalDistance, myConfigFile.mithrilMainPage.maximumNukerVericalDistance);
+                //SetDistance(myConfigFile.mithrilMainPage.maximumNukerHorizontalDistance, myConfigFile.mithrilMainPage.maximumNukerVericalDistance);
                 BlockPos near = getClosestBlock(getBlocks());
                 if (near != null) {
                     blockPos = near;
@@ -100,9 +88,9 @@ public class Mithril extends GeneralNuker {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (work && blockPos != null) {
-            RenderUtils.drawBlockBox(blockPos, myConfigFile.mithrilMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.mithrilMainPage.tracer) {
-                RenderUtils.drawTracer(blockPos, myConfigFile.mithrilMainPage.color.toJavaColor(), 1, event.partialTicks);
+            //RenderUtils.drawBlockBox(blockPos, myConfigFile.mithrilMainPage.color.toJavaColor(), 1, event.partialTicks);
+            if (false) {
+                //RenderUtils.drawTracer(blockPos, myConfigFile.mithrilMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
     }

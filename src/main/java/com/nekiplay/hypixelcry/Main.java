@@ -1,31 +1,44 @@
 package com.nekiplay.hypixelcry;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
-import com.nekiplay.hypixelcry.config.MyConfig;
+import com.nekiplay.hypixelcry.commands.EntityInfoCommand;
+import com.nekiplay.hypixelcry.commands.OpenSettings;
+import com.nekiplay.hypixelcry.commands.SetAngle;
+import com.nekiplay.hypixelcry.commands.TPS;
+import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
-import com.nekiplay.hypixelcry.features.hud.TPSHud;
-import com.nekiplay.hypixelcry.features.hud.TimeSinceLastTickHud;
-import com.nekiplay.hypixelcry.proxy.CommonProxy;
 import com.nekiplay.hypixelcry.utils.world.TickRate;
+import io.github.notenoughupdates.moulconfig.observer.PropertyTypeAdapterFactory;
+import io.github.notenoughupdates.moulconfig.processor.BuiltinMoulConfigGuis;
+import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;
+import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Mod(modid = Main.MODID, version = Main.VERSION)
+@Mod(modid = Main.MODID, version = Main.VERSION, clientSideOnly = true)
 
 public class Main
 {
@@ -39,40 +52,78 @@ public class Main
 
     public static final Minecraft mc = Minecraft.getMinecraft();
 
-    public static MyConfig myConfigFile;
+    public GuiScreen screenToOpen = null;
+    public NEUConfig config;
+    private File configFile;
+    private File neuDir;
 
     public static FeatureRegister features = new FeatureRegister();
-
-    @SidedProxy(clientSide = "com.nekiplay.hypixelcry.proxy.ClientProxy")
-    public static CommonProxy proxy;
 
     public DataExtractor dataExtractor = new DataExtractor();
 
     public static final String MODID = "AntiCheat";
-    public static final String VERSION = "1.0.2";
+    public static final String VERSION = "1.1.0";
 
     public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
     public static final String serverprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server" + EnumChatFormatting.GRAY + "] ";
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        myConfigFile = new MyConfig();
-        TPSHud tpsHud = new TPSHud();
-        TimeSinceLastTickHud timeSinceLastTickHud = new TimeSinceLastTickHud();
-        instance = this;
-        System.setProperty("java.awt.headless", "false");
-        proxy.preInit(event);
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation()
+            .registerTypeAdapterFactory(new PropertyTypeAdapterFactory()).create();
+
+    public MoulConfigProcessor<NEUConfig> processor = null;
+
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) return;
+        if (screenToOpen != null) {
+            Minecraft.getMinecraft().displayGuiScreen(screenToOpen);
+            screenToOpen = null;
+        }
     }
 
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        instance = this;
+
+        System.setProperty("java.awt.headless", "false");
+    }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        Display.setTitle("Minecraft 1.8.9 | AntiCheat " + VERSION);
+        Display.setTitle("Minecraft 1.8.9 | Hypixel Cry " + VERSION);
+        MinecraftForge.EVENT_BUS.register(this);
+
+        processor = new MoulConfigProcessor<>(config);
+        BuiltinMoulConfigGuis.addProcessors(processor);
+        ConfigProcessorDriver driver = new ConfigProcessorDriver(processor);
+        driver.checkExpose = false;
+        driver.warnForPrivateFields = false;
+        driver.processConfig(config);
+
         MinecraftForge.EVENT_BUS.register(dataExtractor);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);
-        proxy.init(event);
+
+        features.register(event);
+
+        keyBindings = new KeyBinding[7];
+        keyBindings[0] = new KeyBinding("Crop nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
+        keyBindings[1] = new KeyBinding("Foraging nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
+        keyBindings[2] = new KeyBinding("Garden nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
+        keyBindings[3] = new KeyBinding("Mithril nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
+        keyBindings[4] = new KeyBinding("Ore nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
+        keyBindings[5] = new KeyBinding("Sand nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
+
+
+        keyBindings[6] = new KeyBinding("Ghost Blocks", Keyboard.KEY_NONE, "Hypixel Cry | Macros");
+        for (KeyBinding keyBinding : keyBindings) {
+            ClientRegistry.registerKeyBinding(keyBinding);
+        }
+        ClientCommandHandler.instance.registerCommand(new EntityInfoCommand());
+        ClientCommandHandler.instance.registerCommand(new SetAngle());
+        ClientCommandHandler.instance.registerCommand(new TPS());
+        ClientCommandHandler.instance.registerCommand(new OpenSettings());
     }
 
     @Mod.EventHandler
@@ -83,6 +134,5 @@ public class Main
         long initialDelaySeconds = initialDelay.getSeconds();
 
         Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> MinecraftForge.EVENT_BUS.post(new MillisecondEvent()), initialDelaySeconds, 1, TimeUnit.MILLISECONDS);
-        proxy.postInit(event);
     }
 }

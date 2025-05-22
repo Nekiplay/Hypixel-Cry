@@ -2,16 +2,21 @@ import com.xpdustry.ksr.kotlinRelocate
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
+    idea
     java
     id("gg.essential.loom") version "0.10.0.+"
     id("dev.architectury.architectury-pack200") version "0.1.3"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.github.juuxel.loom-quiltflower") version "1.7.3"
     kotlin("jvm") version "1.8.21"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0"
+    id("com.google.devtools.ksp") version "1.8.21-1.0.11"
+    id("net.kyori.blossom") version "2.1.0"
     id("com.xpdustry.ksr") version "1.0.0"
+    id("moe.nea.shot") version "1.0.0"
 }
 
-version = "1.9"
+version = "1.1.0"
 group = "com.nekiplay.hypixelcry"
 base.archivesName.set("HypixelAddon")
 
@@ -25,6 +30,7 @@ loom {
         "client" {
             property("mixin.debug", "true")
             arg("--mixin", "mixins.hypixelcry.json")
+            arg("--tweakClass", "io.github.notenoughupdates.moulconfig.tweaker.DevelopmentResourceTweaker")
         }
     }
     forge {
@@ -49,6 +55,11 @@ val shadowImplementation: Configuration by configurations.creating {
     configurations.implementation.get().extendsFrom(this)
 }
 
+val shadowModImpl: Configuration by configurations.creating {
+    configurations.modImplementation.get().extendsFrom(this)
+}
+
+
 dependencies {
     minecraft("com.mojang:minecraft:1.8.9")
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
@@ -63,6 +74,8 @@ dependencies {
     // OneConfig dependencies
     shadowImplementation("cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta+")
     compileOnly("cc.polyfrost:oneconfig-1.8.9-forge:0.2.0-alpha+")
+
+    shadowImplementation("org.notenoughupdates.moulconfig:legacy:3.8.0")
 }
 
 tasks.withType(JavaCompile::class) {
@@ -70,14 +83,14 @@ tasks.withType(JavaCompile::class) {
 }
 
 tasks.jar {
-    archiveClassifier.set("named")
+    archiveClassifier.set("HypixelCry")
     manifest.attributes(
         "FMLCorePluginContainsFMLMod" to true,
         "FMLCorePlugin" to "com.nekiplay.hypixelcry.FMLLoadingPlugin",
         "ForceLoadAsMod" to true,
         "MixinConfigs" to "mixins.hypixelcry.json",
         "ModSide" to "CLIENT",
-        "TweakClass" to "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker",
+        "TweakClass" to "io.github.moulberry.notenoughupdates.loader.NEUDelegatingTweaker",
         "TweakOrder" to "0"
     )
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -85,8 +98,7 @@ tasks.jar {
 
 val remapJar by tasks.named<RemapJarTask>("remapJar") {
     archiveClassifier.set("")
-    from(tasks.shadowJar)
-    input.set(tasks.shadowJar.get().archiveFile)
+    dependsOn(tasks.shadowJar)
 }
 
 tasks.shadowJar {
@@ -96,6 +108,8 @@ tasks.shadowJar {
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:.*"))
     }
+
+    relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.deps.moulconfig")
 }
 
 tasks.processResources {
