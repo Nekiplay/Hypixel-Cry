@@ -30,6 +30,7 @@ import java.util.Map;
 import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
 
+
 public class RenderUtils {
 
     private static final Map<Integer, Boolean> glCapMap = new HashMap<>();
@@ -866,7 +867,7 @@ public class RenderUtils {
     public static void drawTracer(Entity entity, Color color, float partialTicks) {
         EntityPlayerSP player = mc.thePlayer;
 
-                double x = (entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks
+        double x = (entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks
                 - mc.getRenderManager().viewerPosX);
         double y = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks
                 - mc.getRenderManager().viewerPosY);
