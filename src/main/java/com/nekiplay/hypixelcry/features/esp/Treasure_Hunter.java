@@ -23,7 +23,7 @@ import static com.nekiplay.hypixelcry.Main.mc;
 
 public class Treasure_Hunter {
     public BlockPos pos;
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void onChatMsg(ClientChatReceivedEvent event) {
         String nocodes = ApecUtils.removeAllCodes(event.message.getFormattedText());
         if (nocodes.contains("You found a treasure chest!")) {
@@ -123,12 +123,7 @@ public class Treasure_Hunter {
             allowRender = false;
         }
     }
-    @SubscribeEvent
-    public void onBreakBlock(BlockEvent.BreakEvent event) {
-        if (allPositions.contains(event.pos)) {
-            mc.thePlayer.addChatComponentMessage(new ChatComponentText("Breaking"));
-        }
-    }
+
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
 
