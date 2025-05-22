@@ -30,7 +30,6 @@ public class ESP {
                     name = "Enable",
                     desc = ""
             )
-            @ConfigEditorAccordion(id = 0)
             @ConfigEditorBoolean
             @Expose
             public boolean enabled = false;
