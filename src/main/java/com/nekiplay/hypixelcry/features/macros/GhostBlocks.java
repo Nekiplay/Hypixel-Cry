@@ -50,7 +50,7 @@ public class GhostBlocks {
         if (!Keyboard.getEventKeyState()) return;
 
         int keyCode = Keyboard.getEventKey();
-        if (keyCode == Keyboard.KEY_NONE) return;
+        if (keyCode < 0) return;
 
         try {
             if (keyCode == Main.getInstance().config.macros.ghostBlocks.ghostBlocksKeyBind) {
@@ -65,10 +65,10 @@ public class GhostBlocks {
     public void onEventMouse(InputEvent.MouseInputEvent event) {
         if (!Mouse.getEventButtonState()) return;
 
-        int button = Mouse.getEventButton();
+        int button = Mouse.getEventButton() - 100;
 
         try {
-            if (button== Main.getInstance().config.macros.ghostBlocks.ghostBlocksKeyBind) {
+            if (button == Main.getInstance().config.macros.ghostBlocks.ghostBlocksKeyBind) {
                 enable();
             }
         } catch (IndexOutOfBoundsException e) {
