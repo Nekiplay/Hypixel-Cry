@@ -30,7 +30,7 @@ loom {
         "client" {
             property("mixin.debug", "true")
             arg("--mixin", "mixins.hypixelcry.json")
-            arg("--tweakClass", "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker")
+            arg("--tweakClass", "io.github.notenoughupdates.moulconfig.tweaker.DevelopmentResourceTweaker")
         }
     }
     forge {
@@ -90,7 +90,7 @@ tasks.jar {
         "ForceLoadAsMod" to true,
         "MixinConfigs" to "mixins.hypixelcry.json",
         "ModSide" to "CLIENT",
-        "TweakClass" to "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker",
+        "TweakClass" to "io.github.notenoughupdates.moulconfig.tweaker.DevelopmentResourceTweaker",
         "TweakOrder" to "0"
     )
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE

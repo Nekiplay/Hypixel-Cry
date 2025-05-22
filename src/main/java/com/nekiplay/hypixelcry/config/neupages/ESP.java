@@ -33,13 +33,13 @@ public class ESP {
 		public static class Dark_Monolith {
             @ConfigOption(
                     name = "Enable",
-                    desc = ""
+                    desc = "Enable Dark Monolith ESP?"
             )
             @ConfigEditorBoolean
             @Expose
             public boolean enabled = false;
 
-            @ConfigOption(name = "Box color", desc = "ESP Box color")
+            @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
             public String colour = "0:0:0:0:0";
@@ -56,7 +56,7 @@ public class ESP {
         @Accordion
         @ConfigOption(
                 name = "Treasure Hunter Fetcher",
-                desc = ""
+                desc = "Get position of treasure on farming island"
         )
         @Expose
         public Treasure_Hunter_Fetcher treasureHunterFetcher = new Treasure_Hunter_Fetcher();
@@ -64,7 +64,7 @@ public class ESP {
         @Accordion
         @ConfigOption(
                 name = "Glowing Mushrooms",
-                desc = ""
+                desc = "Show glowing mushrooms in farming island"
         )
         @Expose
         public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
@@ -72,13 +72,13 @@ public class ESP {
         public static class Treasure_Hunter_Fetcher {
             @ConfigOption(
                     name = "Enable",
-                    desc = ""
+                    desc = "Enable Treasure Fetcher?"
             )
             @ConfigEditorBoolean
             @Expose
             public boolean enabled = false;
 
-            @ConfigOption(name = "Box color", desc = "ESP Box color")
+            @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
             public String colour = "0:0:0:0:0";
@@ -92,13 +92,13 @@ public class ESP {
         public static class Glowing_Mushrooms {
             @ConfigOption(
                     name = "Enable",
-                    desc = ""
+                    desc = "Enable Glowing Mushrooms ESP?"
             )
             @ConfigEditorBoolean
             @Expose
             public boolean enabled = false;
 
-            @ConfigOption(name = "Box color", desc = "ESP Box color")
+            @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
             public String colour = "0:0:0:0:0";
