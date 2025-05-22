@@ -31,13 +31,6 @@ public class FeatureRegister {
 
         MinecraftForge.EVENT_BUS.register(ghostBlocksMacros);
 
-        MinecraftForge.EVENT_BUS.register(cropNuker);
-        MinecraftForge.EVENT_BUS.register(foragingNuker);
-        MinecraftForge.EVENT_BUS.register(oreNuker);
-        MinecraftForge.EVENT_BUS.register(mithrilNuker);
-        MinecraftForge.EVENT_BUS.register(sandNuker);
-        MinecraftForge.EVENT_BUS.register(gardenNuker);
-
 
         /* ESP */
         MinecraftForge.EVENT_BUS.register(new ResourceRespawnerESP());
