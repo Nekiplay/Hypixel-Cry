@@ -48,16 +48,20 @@ public class GhostBlocks {
     public void onEvent(InputEvent.KeyInputEvent event)
     {
         int keyCode = Keyboard.getEventKey();
-        if (keyCode > 0 && Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
-            enable();
+        if (keyCode > 0 && Keyboard.getEventKeyState()) {
+            if (Keyboard.isKeyDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
+                enable();
+            }
         }
     }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
         int keyCode = Mouse.getEventButton();
-        if (keyCode < 0 && Mouse.isButtonDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
-            enable();
+        if (keyCode < 0 && Mouse.getEventButtonState()) {
+            if (Mouse.isButtonDown(Main.getInstance().config.macros.ghostBlocksKeyBind))
+                enable();
+        }
         }
     }
 }
