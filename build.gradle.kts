@@ -30,7 +30,7 @@ loom {
         "client" {
             property("mixin.debug", "true")
             arg("--mixin", "mixins.hypixelcry.json")
-            arg("--tweakClass", "io.github.notenoughupdates.moulconfig.tweaker.DevelopmentResourceTweaker")
+            arg("--tweakClass", "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker")
         }
     }
     forge {
@@ -83,14 +83,14 @@ tasks.withType(JavaCompile::class) {
 }
 
 tasks.jar {
-    archiveClassifier.set("HypixelCry")
+    archiveClassifier.set("named")
     manifest.attributes(
         "FMLCorePluginContainsFMLMod" to true,
         "FMLCorePlugin" to "com.nekiplay.hypixelcry.FMLLoadingPlugin",
         "ForceLoadAsMod" to true,
         "MixinConfigs" to "mixins.hypixelcry.json",
         "ModSide" to "CLIENT",
-        "TweakClass" to "io.github.moulberry.notenoughupdates.loader.NEUDelegatingTweaker",
+        "TweakClass" to "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker",
         "TweakOrder" to "0"
     )
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
