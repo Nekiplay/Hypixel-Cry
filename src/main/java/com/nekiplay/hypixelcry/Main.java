@@ -137,20 +137,7 @@ public class Main
         MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);
 
         features.register(event);
-
-        keyBindings = new KeyBinding[7];
-        keyBindings[0] = new KeyBinding("Crop nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
-        keyBindings[1] = new KeyBinding("Foraging nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
-        keyBindings[2] = new KeyBinding("Garden nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
-        keyBindings[3] = new KeyBinding("Mithril nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
-        keyBindings[4] = new KeyBinding("Ore nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
-        keyBindings[5] = new KeyBinding("Sand nuker", Keyboard.KEY_NONE, "Hypixel Cry | Nuker");
-
-
-        keyBindings[6] = new KeyBinding("Ghost Blocks", Keyboard.KEY_NONE, "Hypixel Cry | Macros");
-        for (KeyBinding keyBinding : keyBindings) {
-            ClientRegistry.registerKeyBinding(keyBinding);
-        }
+        
         ClientCommandHandler.instance.registerCommand(new EntityInfoCommand());
         ClientCommandHandler.instance.registerCommand(new SetAngle());
         ClientCommandHandler.instance.registerCommand(new TPS());

@@ -1,8 +1,10 @@
 package com.nekiplay.hypixelcry.features.esp;
 
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.events.world.SpawnParticleEvent;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
+import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -57,10 +59,18 @@ public class Glowing_Mushroom {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (false) {
+        if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.enabled) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos) pos_object;
-                //RenderUtils.drawBlockBox(pos, myConfigFile.glowingMushroomMainPage.color.toJavaColor(), 1, event.partialTicks);
+                if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.glowingMushrooms.colour), 1, event.partialTicks);
+                }
+                if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.glowingMushrooms.colour));
+                }
+                if (Main.getInstance().config.esp.farmingIslands.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.farmingIslands.glowingMushrooms.colour), 1, event.partialTicks);
+                }
             }
         }
     }

@@ -9,13 +9,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class ESP {
-    @Category(name = "Glowing Mushroom Island", desc = "Render features in glowing mushroom islands")
+    @Category(name = "Farming islands", desc = "Render features in farming islands")
     @ConfigOption(
-            name = "Glowing Mushrooms",
+            name = "Farming islands",
             desc = ""
     )
     @Expose
-    public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
+    public Farming_Islands farmingIslands = new Farming_Islands();
 
 	@Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
     @Expose
@@ -51,23 +51,62 @@ public class ESP {
         }
     }
 
-    public class Glowing_Mushrooms {
+    public static class Farming_Islands {
 
-
-        @ConfigOption(
-                name = "Glowing Mushrooms",
-                desc = ""
-        )
-        @ConfigEditorBoolean
-        @Expose
-        public boolean glowingMushrooms = false;
-
+        @Accordion
         @ConfigOption(
                 name = "Treasure Hunter Fetcher",
                 desc = ""
         )
-        @ConfigEditorBoolean
         @Expose
-        public boolean treasureHunter = false;
+        public Treasure_Hunter_Fetcher treasureHunterFetcher = new Treasure_Hunter_Fetcher();
+
+        @Accordion
+        @ConfigOption(
+                name = "Glowing Mushrooms",
+                desc = ""
+        )
+        @Expose
+        public Glowing_Mushrooms glowingMushrooms = new Glowing_Mushrooms();
+
+        public static class Treasure_Hunter_Fetcher {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = ""
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabled = false;
+
+            @ConfigOption(name = "Box color", desc = "ESP Box color")
+            @ConfigEditorColour
+            @Expose
+            public String colour = "0:0:0:0:0";
+
+            @ConfigOption(name = "Render features", desc = "")
+            @Expose
+            @ConfigEditorDraggableList(requireNonEmpty = false)
+            public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+        }
+
+        public static class Glowing_Mushrooms {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = ""
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabled = false;
+
+            @ConfigOption(name = "Box color", desc = "ESP Box color")
+            @ConfigEditorColour
+            @Expose
+            public String colour = "0:0:0:0:0";
+
+            @ConfigOption(name = "Render features", desc = "")
+            @Expose
+            @ConfigEditorDraggableList(requireNonEmpty = false)
+            public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+        }
     }
 }
