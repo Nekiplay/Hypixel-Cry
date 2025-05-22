@@ -424,18 +424,11 @@ public class Crop {
     @SubscribeEvent(priority= EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(InputEvent.KeyInputEvent event)
     {
-        int keyCode = Keyboard.getEventKey();
-        if (keyCode >= 0) {
-            enable();
-        }
+
     }
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
-        int keyCode = Mouse.getEventButton();
-        if (keyCode < 0) {
-            enable();
-        }
-        enable();
+
     }
 }
