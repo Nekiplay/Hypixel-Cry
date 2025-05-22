@@ -1,9 +1,7 @@
 package com.nekiplay.hypixelcry.config.neupages;
 
 import com.google.gson.annotations.Expose;
-import io.github.notenoughupdates.moulconfig.annotations.Category;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorBoolean;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigOption;
+import io.github.notenoughupdates.moulconfig.annotations.*;
 
 public class ESP {
     @Category(name = "Glowing Mushroom Island", desc = "Render features in glowing mushroom islands")
@@ -27,12 +25,27 @@ public class ESP {
                 name = "Dark Monolith",
                 desc = ""
         )
+        @ConfigEditorAccordion(id = 0)
+        public boolean searchAccordion = false;
+
+        @ConfigOption(
+                name = "Enable",
+                desc = ""
+        )
+        @ConfigEditorAccordion(id = 0)
         @ConfigEditorBoolean
         @Expose
         public boolean darkMonolith = false;
+
+        @ConfigOption(name = "Box color", desc = "ESP Box color")
+        @ConfigEditorColour
+        @Expose
+        public String colour = "0:0:0:0:0";
     }
 
     public class Glowing_Mushrooms {
+
+
         @ConfigOption(
                 name = "Glowing Mushrooms",
                 desc = ""

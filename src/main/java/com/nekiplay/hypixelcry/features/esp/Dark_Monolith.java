@@ -4,6 +4,7 @@ import cc.polyfrost.oneconfig.renderer.asset.Icon;
 import cc.polyfrost.oneconfig.utils.Notifications;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
+import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
@@ -122,9 +123,9 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (false)
+        if (Main.getInstance().config.esp.dwardenMines.darkMonolith && egg !=null)
         {
-            //RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.color.toJavaColor(), 1, event.partialTicks);
+            RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.colour), 1, event.partialTicks);
             if (false) {
                 //RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.color.toJavaColor());
             }
