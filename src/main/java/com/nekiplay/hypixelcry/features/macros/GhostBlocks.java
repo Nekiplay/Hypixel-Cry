@@ -58,9 +58,9 @@ public class GhostBlocks {
     public void onEventMouse(InputEvent.MouseInputEvent event)
     {
         int keyCode = Mouse.getEventButton();
-            if (keyCode < 0 && Mouse.getEventButtonState()) {
-                if (Mouse.isButtonDown(Main.getInstance().config.macros.ghostBlocksKeyBind))
-                    enable();
+        if (keyCode < 0 && Mouse.getEventButtonState()) {
+            if (Mouse.isButtonDown(Main.getInstance().config.macros.ghostBlocksKeyBind)) {
+                enable();
             }
         }
     }
