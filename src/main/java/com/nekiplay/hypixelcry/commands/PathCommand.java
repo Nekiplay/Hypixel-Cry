@@ -39,7 +39,7 @@ public class PathCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (args.length >= 3) {
-            PathFinderRenderer.pathFinder = new PathFinder(mc.theWorld, 254 * 4);
+            PathFinderRenderer.pathFinder = new PathFinder(mc.theWorld, 254 * 2);
             long x = Long.parseLong(args[0]);
             long y = Long.parseLong(args[1]);
             long z = Long.parseLong(args[2]);

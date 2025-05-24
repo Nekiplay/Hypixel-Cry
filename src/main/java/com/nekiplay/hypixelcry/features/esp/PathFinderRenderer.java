@@ -24,7 +24,7 @@ public class PathFinderRenderer {
 
     private static BlockPos lastPlayerPos = null;
     private static int updateCooldown = 0;
-    private static final int UPDATE_INTERVAL = 10; // Обновлять путь каждые 10 тиков (~0.5 секунды)
+    private static final int UPDATE_INTERVAL = 20; // Обновлять путь каждые 10 тиков (~1 секунда)
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END || mc.thePlayer == null || end == null || pathFinder == null) {
@@ -33,10 +33,10 @@ public class PathFinderRenderer {
 
         BlockPos currentPos = mc.thePlayer.getPosition();
         boolean playerMoved = !currentPos.equals(lastPlayerPos);
-        boolean needsUpdate = blocks.isEmpty() || playerMoved;
+        //boolean needsUpdate = blocks.isEmpty() || playerMoved;
 
         // Обновляем путь только если игрок переместился или после интервала
-        if (needsUpdate || updateCooldown <= 0) {
+        if (updateCooldown <= 0) {
             // Используем упрощенный путь для оптимизации
             List<BlockPos> newPath = pathFinder.findPath(currentPos, end);
             if (newPath != null && !newPath.isEmpty()) {
