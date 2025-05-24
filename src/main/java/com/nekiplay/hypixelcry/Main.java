@@ -10,6 +10,7 @@ import com.nekiplay.hypixelcry.commands.SetAngle;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
+import com.nekiplay.hypixelcry.utils.PathFinder;
 import io.github.notenoughupdates.moulconfig.observer.PropertyTypeAdapterFactory;
 import io.github.notenoughupdates.moulconfig.processor.BuiltinMoulConfigGuis;
 import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;

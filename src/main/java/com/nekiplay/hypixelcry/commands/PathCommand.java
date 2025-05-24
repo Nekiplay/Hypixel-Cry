@@ -13,6 +13,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,18 +40,16 @@ public class PathCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (args.length >= 3) {
-            PathFinderRenderer.pathFinder = new PathFinder(mc.theWorld, 254 * 2);
             long x = Long.parseLong(args[0]);
             long y = Long.parseLong(args[1]);
             long z = Long.parseLong(args[2]);
 
-            PathFinderRenderer.end = new BlockPos(x, y, z);
-            sender.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.WHITE + "Set new path"));
+            PathFinderRenderer.addOrUpdatePath("0", new BlockPos(x, y, z), Color.RED, "End");
         }
         else {
-            PathFinderRenderer.blocks = null;
-            PathFinderRenderer.end = null;
-            sender.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.WHITE + "Path removed"));
+            if (PathFinderRenderer.hasPath("0")) {
+                PathFinderRenderer.removePath("0");
+            }
         }
     }
 

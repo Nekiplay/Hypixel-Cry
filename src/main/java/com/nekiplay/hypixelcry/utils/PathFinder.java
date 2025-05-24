@@ -10,10 +10,18 @@ import java.util.*;
 public class PathFinder {
     private final World world;
     private final int maxSearchDistance;
+    private int maxOperationsPerTick = 1000;
+    private int operationsCount;
 
     public PathFinder(World world, int maxSearchDistance) {
         this.world = world;
         this.maxSearchDistance = maxSearchDistance;
+    }
+
+    public PathFinder(World world, int maxSearchDistance, int maxOperationsPerTick) {
+        this.world = world;
+        this.maxSearchDistance = maxSearchDistance;
+        this.maxOperationsPerTick = maxOperationsPerTick;
     }
 
     /**
@@ -23,21 +31,21 @@ public class PathFinder {
      * @return List of BlockPos representing the path, or null if no path found
      */
     public List<BlockPos> findPath(BlockPos start, BlockPos end) {
+        operationsCount = 0;
         if (start.equals(end)) {
             return Arrays.asList(start);
         }
 
-        // Check if the end position is loaded and walkable
-        if (isPositionLoadedAndWalkable(end)) {
-            return findPathToExactPosition(start, end);
-        } else {
-            return findPathToNearestAvailable(start, end);
+        // First try exact path
+        if (world.isBlockLoaded(end)) {
+            List<BlockPos> path = findPathToExactPosition(start, end);
+            if (path != null) return path;
         }
+
+        // If exact path not found, try find nearest
+        return findPathToNearestAvailable(start, end);
     }
 
-    /**
-     * Find path to exact position if it's walkable
-     */
     private List<BlockPos> findPathToExactPosition(BlockPos start, BlockPos end) {
         PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingDouble(n -> n.fCost));
         Set<BlockPos> closedSet = new HashSet<>();
@@ -47,7 +55,8 @@ public class PathFinder {
         openSet.add(startNode);
         allNodes.put(start, startNode);
 
-        while (!openSet.isEmpty()) {
+        while (!openSet.isEmpty() && operationsCount < maxOperationsPerTick) {
+            operationsCount++;
             Node current = openSet.poll();
 
             if (current.pos.equals(end)) {
@@ -57,17 +66,9 @@ public class PathFinder {
             closedSet.add(current.pos);
 
             for (BlockPos neighbor : getNeighbors(current.pos)) {
-                if (closedSet.contains(neighbor)) {
-                    continue;
-                }
-
-                if (!isWalkable(neighbor)) {
-                    continue;
-                }
-
-                if (start.distanceSq(neighbor) > maxSearchDistance * maxSearchDistance) {
-                    continue;
-                }
+                if (closedSet.contains(neighbor)) continue;
+                if (!isWalkable(neighbor)) continue;
+                if (start.distanceSq(neighbor) > maxSearchDistance * maxSearchDistance) continue;
 
                 double tentativeGCost = current.gCost + getMovementCost(current.pos, neighbor);
 
@@ -85,13 +86,9 @@ public class PathFinder {
                 }
             }
         }
-
         return null;
     }
 
-    /**
-     * Find path to nearest available position near the target
-     */
     private List<BlockPos> findPathToNearestAvailable(BlockPos start, BlockPos target) {
         PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingDouble(n -> n.fCost));
         Set<BlockPos> closedSet = new HashSet<>();
@@ -103,35 +100,33 @@ public class PathFinder {
         openSet.add(startNode);
         allNodes.put(start, startNode);
 
-        while (!openSet.isEmpty()) {
+        while (!openSet.isEmpty() && operationsCount < maxOperationsPerTick) {
+            operationsCount++;
             Node current = openSet.poll();
 
-            // Check if this is the closest node we've found so far to the target
-            double currentDistance = current.pos.distanceSq(target);
-            if (currentDistance < bestDistance) {
-                bestDistance = currentDistance;
-                bestNode = current;
-            }
+            // Проверяем загружен ли чанк перед оценкой расстояния
+            if (world.isBlockLoaded(current.pos)) {
+                double currentDistance = current.pos.distanceSq(target);
+                if (currentDistance < bestDistance) {
+                    bestDistance = currentDistance;
+                    bestNode = current;
+                }
 
-            // If we're close enough to the target, return the path
-            if (currentDistance <= 9) { // 3 blocks distance squared
-                return reconstructPath(current);
+                if (currentDistance <= 9) {
+                    return reconstructPath(current);
+                }
             }
 
             closedSet.add(current.pos);
 
             for (BlockPos neighbor : getNeighbors(current.pos)) {
-                if (closedSet.contains(neighbor)) {
-                    continue;
-                }
+                if (closedSet.contains(neighbor)) continue;
 
-                if (!isWalkable(neighbor)) {
-                    continue;
-                }
+                // Пропускаем незагруженные чанки
+                if (!world.isBlockLoaded(neighbor)) continue;
 
-                if (start.distanceSq(neighbor) > maxSearchDistance * maxSearchDistance) {
-                    continue;
-                }
+                if (!isWalkable(neighbor)) continue;
+                if (start.distanceSq(neighbor) > maxSearchDistance * maxSearchDistance) continue;
 
                 double tentativeGCost = current.gCost + getMovementCost(current.pos, neighbor);
 
@@ -149,21 +144,7 @@ public class PathFinder {
                 }
             }
         }
-
-        // If no path to exact position, return path to closest found position
         return bestNode != null ? reconstructPath(bestNode) : null;
-    }
-
-    /**
-     * Check if position is loaded and walkable
-     */
-    private boolean isPositionLoadedAndWalkable(BlockPos pos) {
-        // Check if chunk is loaded
-        if (!world.isBlockLoaded(pos)) {
-            return false;
-        }
-
-        return isWalkable(pos);
     }
 
     /**
@@ -171,34 +152,25 @@ public class PathFinder {
      */
     private List<BlockPos> getNeighbors(BlockPos pos) {
         List<BlockPos> neighbors = new ArrayList<>();
-
-        // Basic 4-directional movement (can be expanded to 8-directional)
         int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
         for (int[] dir : directions) {
             BlockPos neighbor = pos.add(dir[0], 0, dir[1]);
-
-            // Check if we can walk to this position
-            if (canMoveTo(pos, neighbor)) {
+            if (world.isBlockLoaded(neighbor) && canMoveTo(pos, neighbor)) {
                 neighbors.add(neighbor);
             }
-        }
 
-        // Check for vertical movement (jumping up or falling down)
-        for (int[] dir : directions) {
-            // Try jumping up
+            // Проверка вертикального перемещения только для загруженных чанков
             BlockPos upNeighbor = pos.add(dir[0], 1, dir[1]);
-            if (canMoveTo(pos, upNeighbor)) {
+            if (world.isBlockLoaded(upNeighbor) && canMoveTo(pos, upNeighbor)) {
                 neighbors.add(upNeighbor);
             }
 
-            // Try falling down
             BlockPos downNeighbor = pos.add(dir[0], -1, dir[1]);
-            if (canMoveTo(pos, downNeighbor)) {
+            if (world.isBlockLoaded(downNeighbor) && canMoveTo(pos, downNeighbor)) {
                 neighbors.add(downNeighbor);
             }
         }
-
         return neighbors;
     }
 
@@ -241,35 +213,28 @@ public class PathFinder {
      * Check if a position is walkable (solid ground, air above for entity)
      */
     private boolean isWalkable(BlockPos pos) {
-        // Check if there's solid ground to stand on
+        if (!world.isBlockLoaded(pos)) return false;
+
         BlockPos groundPos = pos.add(0, -1, 0);
+        if (!world.isBlockLoaded(groundPos)) return false;
+
         Block groundBlock = world.getBlockState(groundPos).getBlock();
+        if (!groundBlock.getMaterial().isSolid()) return false;
 
-        if (!groundBlock.getMaterial().isSolid()) {
-            return false;
-        }
+        if (!isPassable(pos)) return false;
 
-        // Check if the position itself is clear (air or passable)
-        if (!isPassable(pos)) {
-            return false;
-        }
-
-        // Check if there's clearance above for the entity (2 blocks high)
         BlockPos abovePos = pos.add(0, 1, 0);
-        if (!isPassable(abovePos)) {
-            return false;
-        }
-
-        return true;
+        return world.isBlockLoaded(abovePos) && isPassable(abovePos);
     }
 
     /**
      * Check if a block position is passable (air, water, etc.)
      */
     private boolean isPassable(BlockPos pos) {
+        if (!world.isBlockLoaded(pos)) return false;
+
         Block block = world.getBlockState(pos).getBlock();
         Material material = block.getMaterial();
-
         return material == Material.air ||
                 material == Material.water ||
                 !material.blocksMovement();
