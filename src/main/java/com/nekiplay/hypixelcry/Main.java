@@ -6,7 +6,6 @@ import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.commands.EntityInfoCommand;
 import com.nekiplay.hypixelcry.commands.OpenSettings;
 import com.nekiplay.hypixelcry.commands.SetAngle;
-import com.nekiplay.hypixelcry.commands.TPS;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
@@ -16,18 +15,15 @@ import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;
 import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -138,7 +134,6 @@ public class Main
 
         ClientCommandHandler.instance.registerCommand(new EntityInfoCommand());
         ClientCommandHandler.instance.registerCommand(new SetAngle());
-        ClientCommandHandler.instance.registerCommand(new TPS());
         ClientCommandHandler.instance.registerCommand(new OpenSettings());
     }
 
