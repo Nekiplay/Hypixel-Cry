@@ -89,7 +89,7 @@ public class PathFinderRenderer {
 
                 pathFinderExecutor.submit(() -> {
                     // Создаем новый PathFinder для каждого потока
-                    PathFinder pathFinder = new PathFinder(mc.theWorld, 256 * 2);
+                    PathFinder pathFinder = new PathFinder(mc.theWorld, 256 * 2, 32000);
                     List<BlockPos> newPath = pathFinder.findPath(startPos, endPos);
                     List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
                             ? pathFinder.getSimplifiedPath(newPath)
