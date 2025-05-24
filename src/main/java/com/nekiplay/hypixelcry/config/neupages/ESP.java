@@ -134,4 +134,66 @@ public class ESP {
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
         }
     }
+
+    @Category(name = "Crystal Hollows", desc = "Render features in crystall hollows")
+    @Expose
+    public Crystal_Hollows crystalHollows = new Crystal_Hollows();
+
+    public static class Crystal_Hollows {
+        @Accordion
+        @ConfigOption(
+                name = "Yog ESP",
+                desc = ""
+        )
+        @Expose
+        public Yog yog = new Yog();
+
+        public static class Yog {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = "Enable Dark Monolith ESP?"
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabled = false;
+
+            @ConfigOption(name = "Color", desc = "ESP color")
+            @ConfigEditorColour
+            @Expose
+            public String colour = "0:0:0:0:0";
+
+            @ConfigOption(name = "Render features", desc = "")
+            @Expose
+            @ConfigEditorDraggableList(requireNonEmpty = false)
+            public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+        }
+		
+		@Accordion
+        @ConfigOption(
+                name = "Automaton ESP",
+                desc = ""
+        )
+        @Expose
+        public Automaton automaton = new Automaton();
+
+        public static class Automaton {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = "Enable Dark Monolith ESP?"
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabled = false;
+
+            @ConfigOption(name = "Color", desc = "ESP color")
+            @ConfigEditorColour
+            @Expose
+            public String colour = "0:0:0:0:0";
+
+            @ConfigOption(name = "Render features", desc = "")
+            @Expose
+            @ConfigEditorDraggableList(requireNonEmpty = false)
+            public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+        }
+    }
 }

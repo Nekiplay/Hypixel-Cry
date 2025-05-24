@@ -2,6 +2,7 @@ package com.nekiplay.hypixelcry.commands;
 
 import com.mojang.authlib.properties.Property;
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.utils.ApecUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.CommandException;
@@ -20,9 +21,6 @@ import net.minecraft.util.MovingObjectPosition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.util.*;
 import java.util.List;
 
@@ -52,7 +50,9 @@ public class EntityInfoCommand implements ICommand {
         if (nametagEntity != null) {
             String nametag = nametagEntity.getCustomNameTag();
             sender.addChatMessage(new ChatComponentText(Main.prefix + "[Custom name] " + nametag));
+            sender.addChatMessage(new ChatComponentText(Main.prefix + "[Custom name no color] " + ApecUtils.removeAllCodes(nametag)));
             copy += "[Custom name] " + nametag + "\n";
+            copy += "[Custom name no color] " + ApecUtils.removeAllCodes(nametag) + "\n";
         }
 
         Entity headEntity = getHead();
