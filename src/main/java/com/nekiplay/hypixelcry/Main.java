@@ -10,7 +10,6 @@ import com.nekiplay.hypixelcry.commands.TPS;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
-import com.nekiplay.hypixelcry.utils.world.TickRate;
 import io.github.notenoughupdates.moulconfig.observer.PropertyTypeAdapterFactory;
 import io.github.notenoughupdates.moulconfig.processor.BuiltinMoulConfigGuis;
 import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;
@@ -48,7 +47,6 @@ public class Main
         return instance;
     }
     public static final Logger LOG = LogManager.getLogger("HypixelCry");
-    public static KeyBinding[] keyBindings;
     public static final String PREFIX = "Hypixel Cry";
 
     public static final Minecraft mc = Minecraft.getMinecraft();
@@ -134,7 +132,7 @@ public class Main
 
         MinecraftForge.EVENT_BUS.register(dataExtractor);
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);
+        //MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);
 
         features.register(event);
 

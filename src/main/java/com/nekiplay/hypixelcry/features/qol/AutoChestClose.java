@@ -22,7 +22,7 @@ public class AutoChestClose {
             if (lower.hasCustomName()) {
                 windowTitle = ApecUtils.removeAllCodes(lower.getDisplayName().getFormattedText());
             }
-            if (Main.getInstance().config.macros.autoCloseChests.enable && (windowTitle.isEmpty() || windowTitle.equalsIgnoreCase("chest")) && extractor.isInTheCatacombs) {
+            if (Main.getInstance().config.macros.dungeons.autoCloseChests.enable && (windowTitle.isEmpty() || windowTitle.equalsIgnoreCase("chest")) && extractor.isInTheCatacombs) {
                 mc.thePlayer.closeScreen();
             }
         }

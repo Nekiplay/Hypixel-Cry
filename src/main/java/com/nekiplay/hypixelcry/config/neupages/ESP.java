@@ -9,6 +9,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class ESP {
+
+    @Accordion
+    @ConfigOption(
+            name = "Chest ESP",
+            desc = ""
+    )
+    @Expose
+    public Chest_ESP chestEsp = new Chest_ESP();
+
     @Category(name = "Desert Settlement", desc = "Render features in desert settlement")
     @Expose
     public Desert_Settlement desertSettlement = new Desert_Settlement();
@@ -16,6 +25,26 @@ public class ESP {
 	@Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
     @Expose
     public Dwarden_Mines dwardenMines = new Dwarden_Mines();
+
+    public static class Chest_ESP {
+        @ConfigOption(
+                name = "Enable",
+                desc = "Enable Chest ESP?"
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean enabled = false;
+
+        @ConfigOption(name = "Color", desc = "ESP color")
+        @ConfigEditorColour
+        @Expose
+        public String colour = "0:0:0:0:0";
+
+        @ConfigOption(name = "Render features", desc = "")
+        @Expose
+        @ConfigEditorDraggableList(requireNonEmpty = false)
+        public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+    }
 
     public static class Dwarden_Mines {
         @Accordion
