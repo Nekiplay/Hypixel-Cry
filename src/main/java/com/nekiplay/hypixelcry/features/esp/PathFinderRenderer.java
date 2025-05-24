@@ -119,6 +119,9 @@ public class PathFinderRenderer {
         
         // Первый расчет или сброс пути
         if (pathData.blocks.isEmpty()) return true;
+		
+		BlockPos endPos = pathData.blocks.get(pathData.blocks.size()-1);
+        if (currentPos.distanceSq(endPos) < 32*32) return true;
         
         // Отклонение от маршрута
         BlockPos nearestPoint = findNearestPathPoint(currentPos, pathData.blocks);
