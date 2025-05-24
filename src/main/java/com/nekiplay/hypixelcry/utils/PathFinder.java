@@ -38,8 +38,8 @@ public class PathFinder {
 
         // First try exact path
         if (world.isBlockLoaded(end)) {
-            List<BlockPos> path = findPathToExactPosition(start, end);
-            if (path != null) return path;
+            //List<BlockPos> path = findPathToExactPosition(start, end);
+            //if (path != null) return path;
         }
 
         // If exact path not found, try find nearest
