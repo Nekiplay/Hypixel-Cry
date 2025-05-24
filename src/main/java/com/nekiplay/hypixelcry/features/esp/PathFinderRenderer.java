@@ -149,21 +149,59 @@ public class PathFinderRenderer {
     }
 
     private BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
-        if (path == null || path.isEmpty()) return null;
-        
-        BlockPos nearest = path.get(0);
-        double minDistance = playerPos.distanceSq(nearest);
-        
-        for (int i = 1; i < path.size(); i++) {
-            BlockPos point = path.get(i);
-            double distance = playerPos.distanceSq(point);
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearest = point;
-            }
-        }
-        return nearest;
-    }
+		if (path == null || path.size() < 2) {
+			return path != null && !path.isEmpty() ? path.get(0) : null;
+		}
+	
+		BlockPos nearestPoint = null;
+		double minDistance = Double.MAX_VALUE;
+	
+		// Проверяем расстояние до всех сегментов пути
+		for (int i = 0; i < path.size() - 1; i++) {
+			BlockPos start = path.get(i);
+			BlockPos end = path.get(i + 1);
+			
+			// Вычисляем ближайшую точку на текущем сегменте пути
+			BlockPos closestOnSegment = getClosestPointOnLine(playerPos, start, end);
+			double distance = playerPos.distanceSq(closestOnSegment);
+			
+			if (distance < minDistance) {
+				minDistance = distance;
+				nearestPoint = distance == playerPos.distanceSq(start) ? start : 
+							distance == playerPos.distanceSq(end) ? end : closestOnSegment;
+			}
+		}
+	
+		return nearestPoint;
+	}
+	
+	private BlockPos getClosestPointOnLine(BlockPos point, BlockPos lineStart, BlockPos lineEnd) {
+		// Вектор линии
+		double lineX = lineEnd.getX() - lineStart.getX();
+		double lineY = lineEnd.getY() - lineStart.getY();
+		double lineZ = lineEnd.getZ() - lineStart.getZ();
+		
+		// Вектор от начала линии до точки
+		double pointX = point.getX() - lineStart.getX();
+		double pointY = point.getY() - lineStart.getY();
+		double pointZ = point.getZ() - lineStart.getZ();
+		
+		// Длина линии в квадрате
+		double lineLengthSq = lineX * lineX + lineY * lineY + lineZ * lineZ;
+		
+		// Скалярное произведение
+		double dot = pointX * lineX + pointY * lineY + pointZ * lineZ;
+		
+		// Параметр положения проекции (0 = начало линии, 1 = конец линии)
+		double t = Math.max(0, Math.min(1, dot / lineLengthSq));
+		
+		// Вычисляем ближайшую точку на линии
+		return new BlockPos(
+			lineStart.getX() + t * lineX,
+			lineStart.getY() + t * lineY,
+			lineStart.getZ() + t * lineZ
+		);
+	}
 
     private void updatePathProgress(BlockPos playerPos, PathData pathData) {
         if (pathData.blocks.isEmpty()) return;
