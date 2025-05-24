@@ -90,62 +90,70 @@ public class PathFinder {
     }
 
     private List<BlockPos> findPathToNearestAvailable(BlockPos start, BlockPos target) {
-        PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingDouble(n -> n.fCost));
-        Set<BlockPos> closedSet = new HashSet<>();
-        Map<BlockPos, Node> allNodes = new HashMap<>();
-        Node bestNode = null;
-        double bestDistance = Double.MAX_VALUE;
-
-        Node startNode = new Node(start, 0, heuristic(start, target), null);
-        openSet.add(startNode);
-        allNodes.put(start, startNode);
-
-        while (!openSet.isEmpty() && operationsCount < maxOperationsPerTick) {
-            operationsCount++;
-            Node current = openSet.poll();
-
-            // Проверяем загружен ли чанк перед оценкой расстояния
-            if (world.isBlockLoaded(current.pos)) {
-                double currentDistance = current.pos.distanceSq(target);
-                if (currentDistance < bestDistance) {
-                    bestDistance = currentDistance;
-                    bestNode = current;
-                }
-
-                if (currentDistance <= 9) {
-                    return reconstructPath(current);
-                }
-            }
-
-            closedSet.add(current.pos);
-
-            for (BlockPos neighbor : getNeighbors(current.pos)) {
-                if (closedSet.contains(neighbor)) continue;
-
-                // Пропускаем незагруженные чанки
-                if (!world.isBlockLoaded(neighbor)) continue;
-
-                if (!isWalkable(neighbor)) continue;
-                if (start.distanceSq(neighbor) > maxSearchDistance * maxSearchDistance) continue;
-
-                double tentativeGCost = current.gCost + getMovementCost(current.pos, neighbor);
-
-                Node neighborNode = allNodes.get(neighbor);
-                if (neighborNode == null) {
-                    neighborNode = new Node(neighbor, tentativeGCost, heuristic(neighbor, target), current);
-                    allNodes.put(neighbor, neighborNode);
-                    openSet.add(neighborNode);
-                } else if (tentativeGCost < neighborNode.gCost) {
-                    openSet.remove(neighborNode);
-                    neighborNode.gCost = tentativeGCost;
-                    neighborNode.fCost = neighborNode.gCost + neighborNode.hCost;
-                    neighborNode.parent = current;
-                    openSet.add(neighborNode);
-                }
-            }
-        }
-        return bestNode != null ? reconstructPath(bestNode) : null;
-    }
+		PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingDouble(n -> n.fCost));
+		Set<BlockPos> closedSet = new HashSet<>();
+		Map<BlockPos, Node> allNodes = new HashMap<>();
+		Node bestNode = null;
+		double bestDistance = Double.MAX_VALUE;
+	
+		Node startNode = new Node(start, 0, heuristic(start, target), null);
+		openSet.add(startNode);
+		allNodes.put(start, startNode);
+	
+		while (!openSet.isEmpty() && operationsCount < maxOperationsPerTick) {
+			operationsCount++;
+			Node current = openSet.poll();
+	
+			// Проверяем загружен ли чанк перед оценкой расстояния
+			if (world.isBlockLoaded(current.pos)) {
+				double currentDistance = current.pos.distanceSq(target);
+				if (currentDistance < bestDistance) {
+					bestDistance = currentDistance;
+					bestNode = current;
+				}
+	
+				// Если достигли точки достаточно близко к цели (даже если цель не загружена)
+				if (currentDistance <= 16) { // Увеличил радиус с 9 до 16 (4 блока)
+					return reconstructPath(current);
+				}
+			}
+	
+			closedSet.add(current.pos);
+	
+			for (BlockPos neighbor : getNeighbors(current.pos)) {
+				if (closedSet.contains(neighbor)) continue;
+	
+				// Пропускаем незагруженные чанки, но сохраняем возможность найти путь к границе загруженной области
+				if (!world.isBlockLoaded(neighbor)) {
+					// Запоминаем граничную точку как возможную цель
+					if (bestNode == null || current.pos.distanceSq(target) < bestDistance) {
+						bestDistance = current.pos.distanceSq(target);
+						bestNode = current;
+					}
+					continue;
+				}
+	
+				if (!isWalkable(neighbor)) continue;
+				if (start.distanceSq(neighbor) > maxSearchDistance * maxSearchDistance) continue;
+	
+				double tentativeGCost = current.gCost + getMovementCost(current.pos, neighbor);
+	
+				Node neighborNode = allNodes.get(neighbor);
+				if (neighborNode == null) {
+					neighborNode = new Node(neighbor, tentativeGCost, heuristic(neighbor, target), current);
+					allNodes.put(neighbor, neighborNode);
+					openSet.add(neighborNode);
+				} else if (tentativeGCost < neighborNode.gCost) {
+					openSet.remove(neighborNode);
+					neighborNode.gCost = tentativeGCost;
+					neighborNode.fCost = neighborNode.gCost + neighborNode.hCost;
+					neighborNode.parent = current;
+					openSet.add(neighborNode);
+				}
+			}
+		}
+		return bestNode != null ? reconstructPath(bestNode) : null;
+	}
 
     /**
      * Get all walkable neighboring positions
