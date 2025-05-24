@@ -59,23 +59,6 @@ public class PathFinderRenderer {
         }
     }
 
-    private BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
-        if (path == null || path.isEmpty()) return null;
-
-        BlockPos nearest = path.get(0);
-        double minDistance = playerPos.distanceSq(nearest);
-
-        for (int i = 1; i < path.size(); i++) {
-            BlockPos point = path.get(i);
-            double distance = playerPos.distanceSq(point);
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearest = point;
-            }
-        }
-        return nearest;
-    }
-
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END || mc.thePlayer == null || mc.theWorld == null) {
