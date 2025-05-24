@@ -47,12 +47,13 @@ public class EntityInfoCommand implements ICommand {
         String copy = "";
 
         Entity nametagEntity = getNametag();
-        if (nametagEntity != null) {
+        Entity name = getName();
+        if (nametagEntity != null && name != null) {
             String nametag = nametagEntity.getCustomNameTag();
             sender.addChatMessage(new ChatComponentText(Main.prefix + "[Custom name] " + nametag));
-            sender.addChatMessage(new ChatComponentText(Main.prefix + "[Custom name no color] " + ApecUtils.removeAllCodes(nametag)));
+            sender.addChatMessage(new ChatComponentText(Main.prefix + "[Name] " + name.getName()));
             copy += "[Custom name] " + nametag + "\n";
-            copy += "[Custom name no color] " + ApecUtils.removeAllCodes(nametag) + "\n";
+            copy += "[Name] " + name.getName() + "\n";
         }
 
         Entity headEntity = getHead();
@@ -90,6 +91,15 @@ public class EntityInfoCommand implements ICommand {
         if (!copy.equals("")) {
             GuiScreen.setClipboardString(copy);
         }
+    }
+
+    @Nullable
+    private Entity getName() {
+        return mc.theWorld.getLoadedEntityList().
+                stream().
+                filter(entity ->
+                        entity != mc.thePlayer)
+                .min(Comparator.comparingDouble(entity -> entity.getDistanceSqToCenter(mc.thePlayer.getPosition()))).orElse(null);
     }
 
     @Nullable

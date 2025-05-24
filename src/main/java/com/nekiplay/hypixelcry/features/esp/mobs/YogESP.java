@@ -27,12 +27,7 @@ public class YogESP {
             List<Entity> entityList = mc.theWorld.getLoadedEntityList();
             for (Entity entity : entityList) {
                 if (entity instanceof EntityMagmaCube) {
-                    if (entity.hasCustomName()) {
-						if (ApecUtils.removeAllCodes(entity.getCustomNameTag()).contains("Yog"))
-						{
-							yogs.add(entity);
-						}
-                    }
+                    yogs.add(entity);
                 }
             }
         }
