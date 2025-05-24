@@ -2,7 +2,6 @@ package com.nekiplay.hypixelcry.commands;
 
 import com.mojang.authlib.properties.Property;
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.utils.world.TickRate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.CommandException;
