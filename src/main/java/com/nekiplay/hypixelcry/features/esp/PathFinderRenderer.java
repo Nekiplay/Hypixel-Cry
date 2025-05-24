@@ -26,7 +26,8 @@ public class PathFinderRenderer {
     private static final ExecutorService pathFinderExecutor = Executors.newFixedThreadPool(2);
     private static final Map<String, PathData> paths = new ConcurrentHashMap<>();
     private static final Queue<PathResult> pathResults = new ConcurrentLinkedQueue<>();
-    private static final int UPDATE_INTERVAL = 10;
+    private static final double RECALCULATION_DISTANCE = 15.0;
+    private static final int CHUNK_UPDATE_RADIUS = 2;
 
     public static class PathData {
         public final BlockPos end;
@@ -34,8 +35,12 @@ public class PathFinderRenderer {
         public final String endText;
         public List<BlockPos> blocks = Collections.emptyList();
         public BlockPos lastPlayerPos = null;
-        public int updateCooldown = 0;
+        public int furthestReachedIndex = 0;
+        public int currentVisibleFromIndex = 0;
         public boolean needsUpdate = true;
+        public int lastChunkX = Integer.MIN_VALUE;
+        public int lastChunkZ = Integer.MIN_VALUE;
+        public boolean chunksUpdated = false;
 
         public PathData(BlockPos end, Color color, String endText) {
             this.end = end;
@@ -54,76 +59,179 @@ public class PathFinderRenderer {
         }
     }
 
+    private BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
+        if (path == null || path.isEmpty()) return null;
+
+        BlockPos nearest = path.get(0);
+        double minDistance = playerPos.distanceSq(nearest);
+
+        for (int i = 1; i < path.size(); i++) {
+            BlockPos point = path.get(i);
+            double distance = playerPos.distanceSq(point);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = point;
+            }
+        }
+        return nearest;
+    }
+
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END || mc.thePlayer == null || mc.theWorld == null) {
             return;
         }
 
-        // Обрабатываем результаты из других потоков
+        BlockPos currentPos = mc.thePlayer.getPosition();
+        
+        // Обработка результатов из других потоков
         while (!pathResults.isEmpty()) {
             PathResult result = pathResults.poll();
             PathData pathData = paths.get(result.pathId);
             if (pathData != null) {
                 pathData.blocks = result.blocks;
+                pathData.furthestReachedIndex = 0;
+                pathData.currentVisibleFromIndex = 0;
+                pathData.chunksUpdated = false;
+                pathData.needsUpdate = false;
             }
         }
-
-        BlockPos currentPos = mc.thePlayer.getPosition();
 
         for (Map.Entry<String, PathData> entry : paths.entrySet()) {
             String pathId = entry.getKey();
             PathData pathData = entry.getValue();
 
-            boolean playerMoved = !currentPos.equals(pathData.lastPlayerPos);
-            boolean needsUpdate = pathData.needsUpdate || playerMoved || pathData.updateCooldown <= 0;
+            // Проверка обновления чанков
+            int currentChunkX = currentPos.getX() >> 4;
+            int currentChunkZ = currentPos.getZ() >> 4;
+            if (Math.abs(currentChunkX - pathData.lastChunkX) > CHUNK_UPDATE_RADIUS || 
+                Math.abs(currentChunkZ - pathData.lastChunkZ) > CHUNK_UPDATE_RADIUS) {
+                pathData.chunksUpdated = true;
+                pathData.lastChunkX = currentChunkX;
+                pathData.lastChunkZ = currentChunkZ;
+            }
 
-            if (needsUpdate) {
-                pathData.updateCooldown = UPDATE_INTERVAL;
+            // Обновление прогресса пути
+            updatePathProgress(currentPos, pathData);
+
+            // Проверка необходимости перерасчета
+            if (shouldRecalculatePath(currentPos, pathData)) {
                 pathData.lastPlayerPos = currentPos;
-                pathData.needsUpdate = false;
-
-                // Создаем копию данных для потока
-                BlockPos startPos = currentPos;
-                BlockPos endPos = pathData.end;
-
+                
                 pathFinderExecutor.submit(() -> {
-                    // Создаем новый PathFinder для каждого потока
-                    PathFinder pathFinder = new PathFinder(mc.theWorld, 256 * 2, 100000);
-                    List<BlockPos> newPath = pathFinder.findPath(startPos, endPos);
+                    PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 25000);
+                    List<BlockPos> newPath = pathFinder.findPath(currentPos, pathData.end);
                     List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
                             ? pathFinder.getSimplifiedPath(newPath)
                             : Collections.emptyList();
-
-                    // Добавляем результат в очередь для обработки в основном потоке
                     pathResults.add(new PathResult(pathId, simplifiedPath));
                 });
-            } else {
-                pathData.updateCooldown--;
             }
         }
     }
 
-    @SubscribeEvent
-    public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (mc.theWorld == null || paths.isEmpty()) {
-            return;
+	private boolean shouldRecalculatePath(BlockPos currentPos, PathData pathData) {
+        // Принудительное обновление
+        if (pathData.needsUpdate) return true;
+        
+        // Первый расчет или сброс пути
+        if (pathData.blocks.isEmpty()) return true;
+        
+        // Отклонение от маршрута
+        BlockPos nearestPoint = findNearestPathPoint(currentPos, pathData.blocks);
+        if (nearestPoint == null || 
+            currentPos.distanceSq(nearestPoint) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
+            return true;
+        }
+        
+        // Появление более оптимального пути
+        return pathData.chunksUpdated && isPotentialBetterPathAvailable(currentPos, pathData);
+    }
+
+    private BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
+        if (path == null || path.isEmpty()) return null;
+        
+        BlockPos nearest = path.get(0);
+        double minDistance = playerPos.distanceSq(nearest);
+        
+        for (int i = 1; i < path.size(); i++) {
+            BlockPos point = path.get(i);
+            double distance = playerPos.distanceSq(point);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = point;
+            }
+        }
+        return nearest;
+    }
+
+    private void updatePathProgress(BlockPos playerPos, PathData pathData) {
+        if (pathData.blocks.isEmpty()) return;
+
+        BlockPos nearest = findNearestPathPoint(playerPos, pathData.blocks);
+        int nearestIndex = pathData.blocks.indexOf(nearest);
+
+        // Обновление самого дальнего достигнутого индекса
+        if (nearestIndex > pathData.furthestReachedIndex && 
+            playerPos.distanceSq(nearest) < 9.0) {
+            pathData.furthestReachedIndex = nearestIndex;
         }
 
-        for (PathData pathData : paths.values()) {
-            if (pathData.blocks == null || pathData.blocks.isEmpty()) {
-                continue;
-            }
+        // Обновление видимой части пути
+        if (nearestIndex < pathData.currentVisibleFromIndex) {
+            pathData.currentVisibleFromIndex = nearestIndex;
+        } else if (nearestIndex > pathData.currentVisibleFromIndex + 5) {
+            pathData.currentVisibleFromIndex = Math.min(nearestIndex - 3, pathData.furthestReachedIndex);
+        }
+    }
 
-            // Рендерим линии пути
-            BlockPos prevPos = pathData.blocks.get(0);
-            for (int i = 1; i < pathData.blocks.size(); i++) {
-                BlockPos currentPos = pathData.blocks.get(i);
+    private boolean isFarFromPath(BlockPos playerPos, PathData pathData) {
+        if (pathData.blocks.isEmpty()) return true;
+        BlockPos nearest = findNearestPathPoint(playerPos, pathData.blocks);
+        return nearest == null || playerPos.distanceSq(nearest) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE;
+    }
+
+    private boolean isPotentialBetterPathAvailable(BlockPos playerPos, PathData pathData) {
+        if (pathData.blocks.isEmpty() || !mc.theWorld.isBlockLoaded(pathData.end)) {
+            return false;
+        }
+
+        BlockPos currentPathEnd = pathData.blocks.get(pathData.blocks.size()-1);
+        double currentDistance = currentPathEnd.distanceSq(pathData.end);
+
+        for (int x = -3; x <= 3; x++) {
+            for (int z = -3; z <= 3; z++) {
+                BlockPos testPos = playerPos.add(x*16, 0, z*16);
+                if (mc.theWorld.isBlockLoaded(testPos)) {
+                    double testDistance = testPos.distanceSq(pathData.end);
+                    if (testDistance < currentDistance) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @SubscribeEvent
+    public void onRenderWorldLast(RenderWorldLastEvent event) {
+        if (mc.theWorld == null || paths.isEmpty()) return;
+
+        for (PathData pathData : paths.values()) {
+            if (pathData.blocks == null || pathData.blocks.isEmpty()) continue;
+
+            int fromIndex = Math.max(0, pathData.currentVisibleFromIndex - 2);
+            List<BlockPos> visiblePath = pathData.blocks.subList(fromIndex, pathData.blocks.size());
+
+            if (visiblePath.size() < 2) continue;
+
+            BlockPos prevPos = visiblePath.get(0);
+            for (int i = 1; i < visiblePath.size(); i++) {
+                BlockPos currentPos = visiblePath.get(i);
                 RenderUtils.drawLine(prevPos, currentPos, 1, pathData.color);
                 prevPos = currentPos;
             }
 
-            // Рендерим маркер конечной точки
             BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
             RenderUtils.renderWaypointText(
                     pathData.endText,
