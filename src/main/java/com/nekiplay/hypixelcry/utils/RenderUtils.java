@@ -812,6 +812,54 @@ public class RenderUtils {
         glEnable(GL_TEXTURE_2D);
     }
 
+    public static void drawLine(final BlockPos pos1, final BlockPos pos2, float width, Color color) {
+        EntityPlayerSP player = mc.thePlayer;
+        if (player == null) return;
+        if (mc.getRenderManager() == null) return;
+
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glEnable(GL_LINE_SMOOTH);
+        glLineWidth(width);
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_DEPTH_TEST);
+        glDepthMask(false);
+
+        glBegin(GL_LINES);
+
+        double x1 = pos1.getX() + 0.5 - mc.getRenderManager().viewerPosX;
+        double y1 = pos1.getY() - mc.getRenderManager().viewerPosY;
+        double z1 = pos1.getZ() + 0.5 - mc.getRenderManager().viewerPosZ;
+
+        double x2 = pos2.getX() + 0.5 - mc.getRenderManager().viewerPosX;
+        double y2 = pos2.getY() - mc.getRenderManager().viewerPosY;
+        double z2 = pos2.getZ() + 0.5 - mc.getRenderManager().viewerPosZ;
+
+        //Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
+        //        .rotatePitch(-player.rotationPitch)
+        //        .rotateYaw(-player.rotationYaw);
+
+        Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0)
+                .rotatePitch((float) (-player.rotationPitch * (PI / 180)))
+                .rotateYaw((float) (-player.rotationYaw * (PI / 180)));
+
+        glColor(color);
+
+        glVertex3d(x1,y1, z1);
+
+        glVertex3d(x2, y2, z2);
+
+        glEnd();
+
+        glEnable(GL_TEXTURE_2D);
+        glDisable(GL_LINE_SMOOTH);
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(true);
+        //glDisable(GL_BLEND);
+        glEnable(GL_BLEND);
+        glColor4f(1f, 1f, 1f, 1f);
+    }
+
     public static void makeScissorBox(final float x, final float y, final float x2, final float y2) {
         final ScaledResolution scaledResolution = new ScaledResolution(mc);
         final int factor = scaledResolution.getScaleFactor();

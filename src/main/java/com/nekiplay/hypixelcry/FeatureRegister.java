@@ -35,5 +35,6 @@ public class FeatureRegister {
         MinecraftForge.EVENT_BUS.register(new PeltMobEsp());
         MinecraftForge.EVENT_BUS.register(new Gifts());
         MinecraftForge.EVENT_BUS.register(new ChocolateEgg());
+        MinecraftForge.EVENT_BUS.register(new PathFinderRenderer());
     }
 }
