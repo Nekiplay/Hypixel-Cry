@@ -24,7 +24,7 @@ public class PathCommand implements ICommand {
 
     @Override
     public List<String> getCommandAliases() {
-        return new ArrayList<>(Collections.emptyList());
+        return Collections.emptyList();
     }
 
     @Override

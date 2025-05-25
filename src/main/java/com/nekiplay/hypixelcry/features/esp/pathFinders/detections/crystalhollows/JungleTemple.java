@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -18,96 +19,85 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class JungleTemple {
-    private static final ConcurrentHashMap<Long, Boolean> processedChunks = new ConcurrentHashMap<>();
-    private static BlockPos currentTemplePos = null;
-    private static final String TEMPLE_KEY = "JungleTemple_Unique";
-
-    @SubscribeEvent
-    public void onChunkLoad(ChunkEvent.Load event) {
-        Chunk chunk = event.getChunk();
-        long chunkKey = getChunkKey(chunk.xPosition, chunk.zPosition);
-
-        if (!processedChunks.containsKey(chunkKey)) {
-            processedChunks.put(chunkKey, true);
-            scanChunkForTemple(event.world, chunk);
-        }
-    }
+    public static BlockPos jungleTemple = null;
+    private static volatile boolean running = false;
+    private static Thread detectionThread;
+    private static boolean foundAndNotified = false; // Флаг для отслеживания отправки сообщения
+    private static final int SEARCH_RADIUS = 148; // Радиус поиска
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        removeTempleWaypoint();
-        processedChunks.clear();
+        jungleTemple = null;
+        foundAndNotified = false;
+        stopDetection();
     }
 
-    private static long getChunkKey(int x, int z) {
-        return ((long)x << 32) | (z & 0xFFFFFFFFL);
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START &&
+                event.type == TickEvent.Type.CLIENT &&
+                Minecraft.getMinecraft().theWorld != null &&
+                Minecraft.getMinecraft().thePlayer != null) {
+
+            // Постоянный поиск (каждый тик)
+            if (!running && !foundAndNotified) {
+                startDetection(Minecraft.getMinecraft().theWorld,
+                        Minecraft.getMinecraft().thePlayer.getPosition(),
+                        SEARCH_RADIUS);
+            }
+        }
     }
 
-    private static void scanChunkForTemple(World world, Chunk chunk) {
-        new Thread(() -> {
-            try {
-                for (int x = 0; x < 16; x++) {
-                    for (int z = 0; z < 16; z++) {
-                        for (int y = 0; y < 256; y++) {
-                            BlockPos pos = new BlockPos(
-                                    (chunk.xPosition << 4) + x,
-                                    y,
-                                    (chunk.zPosition << 4) + z
-                            );
+    public static void startDetection(World world, BlockPos center, int radius) {
+        if (running) return;
 
-                            if (isTempleStructure(world, pos)) {
-                                updateTemplePosition(pos);
-                                return; // Прекращаем поиск после нахождения храма
-                            }
+        running = true;
+        detectionThread = new Thread(() -> {
+            BlockPos foundPos = findEmeraldWithSmoothAndesiteBelow(world, center, radius);
+
+            if (foundPos != null && !foundAndNotified) {
+                jungleTemple = foundPos;
+                foundAndNotified = true;
+
+                // Отправляем сообщение игроку
+                PathFinderRenderer.addOrUpdatePath("Temple", foundPos, Color.GREEN, "Temple");
+            }
+
+            running = false;
+        }, "JungleTempleDetector");
+        detectionThread.start();
+    }
+
+    public static void stopDetection() {
+        running = false;
+        if (detectionThread != null && detectionThread.isAlive()) {
+            detectionThread.interrupt();
+        }
+    }
+
+    public static BlockPos findEmeraldWithSmoothAndesiteBelow(World world, BlockPos center, int radius) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                for (int y = -radius; y <= radius; y++) {
+                    BlockPos checkPos = center.add(x, y, z);
+
+                    IBlockState state = world.getBlockState(checkPos);
+                    Block block = state.getBlock();
+
+                    if (block == Blocks.emerald_block) {
+                        BlockPos belowPos = checkPos.down();
+                        IBlockState belowState = world.getBlockState(belowPos);
+                        Block belowBlock = belowState.getBlock();
+
+                        boolean isAndesite = belowBlock == Blocks.stone &&
+                                belowState.getBlock().getMetaFromState(belowState) == 6;
+                        if (isAndesite) {
+                            return checkPos;
                         }
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        }).start();
-    }
-
-    private static boolean isTempleStructure(World world, BlockPos pos) {
-        Block block = world.getBlockState(pos).getBlock();
-        if (block != Blocks.emerald_block) return false;
-
-        BlockPos belowPos = pos.down();
-        BlockPos abovePos1 = pos.up();
-        BlockPos abovePos2 = abovePos1.up();
-
-        return world.getBlockState(belowPos).getBlock() == Blocks.stone &&
-                world.getBlockState(abovePos1).getBlock() == Blocks.emerald_block &&
-                world.getBlockState(abovePos2).getBlock() == Blocks.emerald_block;
-    }
-
-    private static void updateTemplePosition(BlockPos newPos) {
-        Minecraft.getMinecraft().addScheduledTask(() -> {
-            // Если позиция изменилась или это первый храм
-            if (currentTemplePos == null || !currentTemplePos.equals(newPos)) {
-                // Удаляем старый вейпоинт
-                if (currentTemplePos != null) {
-                    PathFinderRenderer.removePath(TEMPLE_KEY);
-                }
-
-                // Сохраняем новую позицию и добавляем вейпоинт
-                currentTemplePos = newPos;
-                PathFinderRenderer.addOrUpdatePath(
-                        TEMPLE_KEY,
-                        newPos.up(), // Показываем на 1 блок выше основания
-                        Color.GREEN,
-                        "Jungle Temple"
-                );
-            }
-        });
-    }
-
-    private static void removeTempleWaypoint() {
-        Minecraft.getMinecraft().addScheduledTask(() -> {
-            if (currentTemplePos != null) {
-                PathFinderRenderer.removePath(TEMPLE_KEY);
-                currentTemplePos = null;
-            }
-        });
+        }
+        return null;
     }
 }

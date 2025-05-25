@@ -131,6 +131,7 @@ public class Main
 
         features.register(event);
 
+        ClientCommandHandler.instance.registerCommand(new BlockInfoCommand());
         ClientCommandHandler.instance.registerCommand(new TestCommand());
         ClientCommandHandler.instance.registerCommand(new PathCommand());
         ClientCommandHandler.instance.registerCommand(new EntityInfoCommand());
