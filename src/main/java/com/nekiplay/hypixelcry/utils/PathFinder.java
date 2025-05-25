@@ -13,10 +13,6 @@ public class PathFinder {
     private final int maxOperationsPerTick;
     private int operationsCount;
 
-    // Кэш для проверки проходимости блоков
-    private final Map<BlockPos, Boolean> walkableCache = new HashMap<>(1024 * 2);
-    private final Map<BlockPos, Boolean> passableCache = new HashMap<>(1024 * 2);
-
     // Приоритетные направления для более прямых путей
     private static final int[][] DIRECTIONS = {
             {1, 0, 0}, {-1, 0, 0}, {0, 0, 1}, {0, 0, -1}, // Горизонтальные
@@ -36,8 +32,6 @@ public class PathFinder {
 
     public List<BlockPos> findPath(BlockPos start, BlockPos end) {
         operationsCount = 0;
-        walkableCache.clear();
-        passableCache.clear();
 
         if (start.equals(end)) return Collections.singletonList(start);
 
@@ -215,21 +209,17 @@ public class PathFinder {
 
     // Быстрые версии методов с кэшированием
     private boolean isWalkableFast(BlockPos pos) {
-        return walkableCache.computeIfAbsent(pos, p ->
-                world.isBlockLoaded(p) &&
-                        isPassableFast(p) &&
-                        isSolid(p.add(0, -1, 0)) &&
-                        isPassableFast(p.add(0, 1, 0))
-        );
+        return world.isBlockLoaded(pos) &&
+                isPassableFast(pos) &&
+                isSolid(pos.add(0, -1, 0)) &&
+                isPassableFast(pos.add(0, 1, 0));
     }
 
     private boolean isPassableFast(BlockPos pos) {
-        return passableCache.computeIfAbsent(pos, p ->
-                world.isBlockLoaded(p) &&
-                        (world.getBlockState(p).getBlock().getMaterial().blocksMovement() == false ||
-                                world.getBlockState(p).getBlock().getMaterial() == Material.air ||
-                                world.getBlockState(p).getBlock().getMaterial() == Material.water)
-        );
+        return world.isBlockLoaded(pos) &&
+                (!world.getBlockState(pos).getBlock().getMaterial().blocksMovement() ||
+                        world.getBlockState(pos).getBlock().getMaterial() == Material.air ||
+                        world.getBlockState(pos).getBlock().getMaterial() == Material.water);
     }
 
     private boolean isSolid(BlockPos pos) {

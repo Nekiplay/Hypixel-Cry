@@ -2,6 +2,8 @@ package com.nekiplay.hypixelcry;
 
 import com.nekiplay.hypixelcry.features.esp.mobs.AutomatonESP;
 import com.nekiplay.hypixelcry.features.esp.mobs.YogESP;
+import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
+import com.nekiplay.hypixelcry.features.esp.pathFinders.detections.crystalhollows.JungleTemple;
 import com.nekiplay.hypixelcry.features.qol.AutoChestClose;
 import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.esp.holograms.HologramModule;
@@ -25,6 +27,8 @@ public class FeatureRegister {
 
 
         /* ESP */
+        MinecraftForge.EVENT_BUS.register(new JungleTemple());
+
         MinecraftForge.EVENT_BUS.register(new AutomatonESP());
         MinecraftForge.EVENT_BUS.register(new YogESP());
         MinecraftForge.EVENT_BUS.register(new ResourceRespawnerESP());

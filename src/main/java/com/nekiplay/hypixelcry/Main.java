@@ -3,10 +3,7 @@ package com.nekiplay.hypixelcry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
-import com.nekiplay.hypixelcry.commands.EntityInfoCommand;
-import com.nekiplay.hypixelcry.commands.OpenSettings;
-import com.nekiplay.hypixelcry.commands.PathCommand;
-import com.nekiplay.hypixelcry.commands.SetAngle;
+import com.nekiplay.hypixelcry.commands.*;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
@@ -134,6 +131,7 @@ public class Main
 
         features.register(event);
 
+        ClientCommandHandler.instance.registerCommand(new TestCommand());
         ClientCommandHandler.instance.registerCommand(new PathCommand());
         ClientCommandHandler.instance.registerCommand(new EntityInfoCommand());
         ClientCommandHandler.instance.registerCommand(new SetAngle());

@@ -1,13 +1,9 @@
-package com.nekiplay.hypixelcry.features.esp;
+package com.nekiplay.hypixelcry.features.esp.pathFinders;
 
-import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.PathFinder;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -26,8 +22,8 @@ public class PathFinderRenderer {
     private static final ExecutorService pathFinderExecutor = Executors.newFixedThreadPool(2);
     private static final Map<String, PathData> paths = new ConcurrentHashMap<>();
     private static final Queue<PathResult> pathResults = new ConcurrentLinkedQueue<>();
-    private static final double RECALCULATION_DISTANCE = 15.0;
-    private static final int CHUNK_UPDATE_RADIUS = 2;
+    private static final double RECALCULATION_DISTANCE = 9.0;
+    private static final int CHUNK_UPDATE_RADIUS = 1;
 
     public static class PathData {
         public final BlockPos end;
@@ -102,7 +98,7 @@ public class PathFinderRenderer {
                 pathData.lastPlayerPos = currentPos;
                 
                 pathFinderExecutor.submit(() -> {
-                    PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 25000);
+                    PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 4000);
                     List<BlockPos> newPath = pathFinder.findPath(currentPos, pathData.end);
                     List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
                             ? pathFinder.getSimplifiedPath(newPath)
@@ -252,11 +248,17 @@ public class PathFinderRenderer {
             BlockPos prevPos = visiblePath.get(0);
             for (int i = 1; i < visiblePath.size(); i++) {
                 BlockPos currentPos = visiblePath.get(i);
-                RenderUtils.drawLine(prevPos, currentPos, 1, pathData.color);
+                RenderUtils.drawLine(prevPos, currentPos, 4, pathData.color);
                 prevPos = currentPos;
             }
 
             BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
+
+            RenderUtils.drawBlockBox(
+                    endPos.subtract(new Vec3i(0, 1, 0)),
+                    pathData.color, 4,
+                    event.partialTicks
+            );
             RenderUtils.renderWaypointText(
                     pathData.endText,
                     new BlockPos(endPos.getX() + 0.5, endPos.getY() + 1.8, endPos.getZ() + 0.5),
