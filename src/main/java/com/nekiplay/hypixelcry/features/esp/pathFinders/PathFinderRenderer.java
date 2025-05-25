@@ -98,7 +98,7 @@ public class PathFinderRenderer {
                 pathData.lastPlayerPos = currentPos;
                 
                 pathFinderExecutor.submit(() -> {
-                    PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 4000);
+                    PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 6000);
                     List<BlockPos> newPath = pathFinder.findPath(currentPos, pathData.end);
                     List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
                             ? pathFinder.getSimplifiedPath(newPath)
