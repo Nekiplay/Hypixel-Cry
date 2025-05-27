@@ -46,6 +46,17 @@ public class EntityUtils {
     }
 
     @Nullable
+    public static String getArmorStandHeadName(EntityArmorStand entity) {
+        if (entity.getEquipmentInSlot(4) != null) {
+            ItemStack helmet = entity.getEquipmentInSlot(4);
+            if (helmet != null && !helmet.getDisplayName().isEmpty()) {
+                return helmet.getDisplayName();
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     public static String getPlayerSkin(EntityPlayer player) {
         if (player.getGameProfile() == null) {
             return null;

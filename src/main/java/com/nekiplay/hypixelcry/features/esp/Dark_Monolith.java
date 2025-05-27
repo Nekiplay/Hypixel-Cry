@@ -1,9 +1,9 @@
 package com.nekiplay.hypixelcry.features.esp;
 
-import cc.polyfrost.oneconfig.renderer.asset.Icon;
-import cc.polyfrost.oneconfig.utils.Notifications;
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
+import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
@@ -13,8 +13,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Dark_Monolith {
     BlockPos egg = null;
@@ -23,7 +21,10 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (Main.mc.theWorld != null && myConfigFile != null && myConfigFile.darkMonolithMainPage.dwardenMinesDarkMonolithESP) {
+        if (clientTickEvent.phase == TickEvent.Phase.START) {
+            return;
+        }
+        if (Main.mc.theWorld != null && Main.getInstance().config.esp.dwardenMines.darkMonolith.enabled) {
             BlockPos pos1 = new BlockPos(-15, 236, -92);
             BlockPos pos2 = new BlockPos(49, 202, -162);
             BlockPos pos3 = new BlockPos(56, 214, -25);
@@ -124,14 +125,16 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && egg != null && myConfigFile.darkMonolithMainPage.dwardenMinesDarkMonolithESP)
+        if (Main.getInstance().config.esp.dwardenMines.darkMonolith.enabled && egg !=null)
         {
-            RenderUtils.drawBlockBox(egg, myConfigFile.darkMonolithMainPage.color.toJavaColor(), 1, event.partialTicks);
-            if (myConfigFile.darkMonolithMainPage.text) {
-                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, myConfigFile.darkMonolithMainPage.color.toJavaColor());
+            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Box)) {
+                RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
             }
-            if (myConfigFile.darkMonolithMainPage.tracer) {
-                RenderUtils.drawTracer(egg, myConfigFile.darkMonolithMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Text)) {
+                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour));
+            }
+            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Tracer)) {
+                RenderUtils.drawTracer(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
             }
         }
     }

@@ -18,13 +18,15 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Gifts {
     private static final ArrayList<BlockPos> collected = new ArrayList<BlockPos>();
     private boolean allowRender = false;
     @SubscribeEvent
     public void OnTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
         DataExtractor extractor = Main.getInstance().dataExtractor;
         String zone = extractor.getScoreBoardData().Zone;
         if (zone.contains("Jerry") || zone.contains("Sherry's") || zone.contains("Reflective")) {
@@ -43,7 +45,7 @@ public class Gifts {
     public void onAttackEntity(AttackEntity event)
     {
         if (event.attacked instanceof EntityArmorStand) {
-            if (myConfigFile != null && myConfigFile.jerryGiftsMainPage.enableESP && allowRender) {
+            if (false && allowRender) {
 
                 EntityArmorStand armorStand = (EntityArmorStand) event.attacked;
                 String head = EntityUtils.getArmorStandHeadId(armorStand);
@@ -59,7 +61,7 @@ public class Gifts {
     }
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && myConfigFile.jerryGiftsMainPage.enableESP && allowRender)
+        if (false && allowRender)
         {
             for (Entity entity : mc.theWorld.getLoadedEntityList()) {
                 if (entity instanceof EntityArmorStand) {
@@ -67,9 +69,9 @@ public class Gifts {
                     String head = EntityUtils.getArmorStandHeadId(armorStand);
                     if (head != null && !head.isEmpty()) {
                         if ((head.equals("7732c5e4-1800-3b90-a70f-727d2969254b") || head.equals("3047a516-415b-3bf4-b597-b78fd2a9ccf4")) && !collected.contains(entity.getPosition())) {
-                            RenderUtils.drawBlockBox(entity.getPosition().add(0, 1, 0), myConfigFile.jerryGiftsMainPage.color.toJavaColor(), 1, event.partialTicks);
-                            if (myConfigFile.jerryGiftsMainPage.text) {
-                                RenderUtils.renderWaypointText("Gift", entity.getPosition().add(0, 2.8, 0), event.partialTicks, false, myConfigFile.jerryGiftsMainPage.textColor.toJavaColor());
+                            //RenderUtils.drawBlockBox(entity.getPosition().add(0, 1, 0), myConfigFile.jerryGiftsMainPage.color.toJavaColor(), 1, event.partialTicks);
+                            if (false) {
+                                //RenderUtils.renderWaypointText("Gift", entity.getPosition().add(0, 2.8, 0), event.partialTicks, false, myConfigFile.jerryGiftsMainPage.textColor.toJavaColor());
                             }
                         }
                     }

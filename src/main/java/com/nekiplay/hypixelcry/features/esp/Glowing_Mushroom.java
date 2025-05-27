@@ -1,8 +1,10 @@
 package com.nekiplay.hypixelcry.features.esp;
 
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.events.world.SpawnParticleEvent;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
+import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -14,12 +16,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
-
 public class Glowing_Mushroom {
-    public static ArrayList<BlockPos> positions = new ArrayList<>();
+    private static ArrayList<BlockPos> positions = new ArrayList<>();
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
+        if (clientTickEvent.phase == TickEvent.Phase.START) {
+            return;
+        }
         if (Main.mc.theWorld != null) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos)pos_object;
@@ -59,10 +62,18 @@ public class Glowing_Mushroom {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (myConfigFile != null && myConfigFile.glowingMushroomMainPage.glowingMushroomESP) {
+        if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.enabled) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos) pos_object;
-                RenderUtils.drawBlockBox(pos, myConfigFile.glowingMushroomMainPage.color.toJavaColor(), 1, event.partialTicks);
+                if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
+                }
+                if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.glowingMushrooms.colour));
+                }
+                if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
+                }
             }
         }
     }

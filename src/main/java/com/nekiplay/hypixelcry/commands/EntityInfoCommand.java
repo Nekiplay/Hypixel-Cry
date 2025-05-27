@@ -2,7 +2,7 @@ package com.nekiplay.hypixelcry.commands;
 
 import com.mojang.authlib.properties.Property;
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.utils.world.TickRate;
+import com.nekiplay.hypixelcry.utils.ApecUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.CommandException;
@@ -21,9 +21,6 @@ import net.minecraft.util.MovingObjectPosition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.util.*;
 import java.util.List;
 
@@ -42,7 +39,7 @@ public class EntityInfoCommand implements ICommand {
 
     @Override
     public List<String> getCommandAliases() {
-        return new ArrayList<String>();
+        return Collections.emptyList();
     }
 
     @Override
@@ -50,15 +47,18 @@ public class EntityInfoCommand implements ICommand {
         String copy = "";
 
         Entity nametagEntity = getNametag();
-        if (nametagEntity != null) {
+        Entity name = getName();
+        if (nametagEntity != null && name != null) {
             String nametag = nametagEntity.getCustomNameTag();
             sender.addChatMessage(new ChatComponentText(Main.prefix + "[Custom name] " + nametag));
+            sender.addChatMessage(new ChatComponentText(Main.prefix + "[Name] " + name.getName()));
             copy += "[Custom name] " + nametag + "\n";
+            copy += "[Name] " + name.getName() + "\n";
         }
 
-        Entity headEntity = getHead();
-        if (headEntity != null) {
-            EntityArmorStand armorStand = (EntityArmorStand)headEntity;
+        Entity skullEntity = getSkull();
+        if (skullEntity != null) {
+            EntityArmorStand armorStand = (EntityArmorStand)skullEntity;
             ItemStack helmet = armorStand.getEquipmentInSlot(4);
             if (helmet.getItem() == Items.skull && helmet.hasTagCompound()) {
                 NBTTagCompound tag = helmet.getTagCompound();
@@ -66,10 +66,20 @@ public class EntityInfoCommand implements ICommand {
                     NBTTagCompound skullOwner = tag.getCompoundTag("SkullOwner");
                     if (skullOwner.hasKey("Id", 8)) {
                         String id = skullOwner.getString("Id");
-                        sender.addChatMessage(new ChatComponentText(Main.prefix + "[ArmorStand Head id] " + id));
-                        copy += "[ArmorStand Head id] " + id + "\n";
+                        sender.addChatMessage(new ChatComponentText(Main.prefix + "[ArmorStand SkullOwner] " + id));
+                        copy += "[ArmorStand SkullOwner] " + id + "\n";
                     }
                 }
+            }
+        }
+
+        Entity headEntity = getHeadName();
+        if (headEntity != null) {
+            EntityArmorStand armorStand = (EntityArmorStand)headEntity;
+            ItemStack helmet = armorStand.getEquipmentInSlot(4);
+            if (helmet != null && !helmet.getDisplayName().isEmpty()) {
+                sender.addChatMessage(new ChatComponentText(Main.prefix + "[ArmorStand Head Name] " + helmet.getDisplayName()));
+                copy += "[ArmorStand Head name] " + helmet.getDisplayName() + "\n";
             }
         }
 
@@ -94,6 +104,15 @@ public class EntityInfoCommand implements ICommand {
     }
 
     @Nullable
+    private Entity getName() {
+        return mc.theWorld.getLoadedEntityList().
+                stream().
+                filter(entity ->
+                        entity != mc.thePlayer)
+                .min(Comparator.comparingDouble(entity -> entity.getDistanceSqToCenter(mc.thePlayer.getPosition()))).orElse(null);
+    }
+
+    @Nullable
     private Entity getNametag() {
         return mc.theWorld.getLoadedEntityList().
                 stream().
@@ -103,7 +122,16 @@ public class EntityInfoCommand implements ICommand {
     }
 
     @Nullable
-    private Entity getHead() {
+    private Entity getHeadName() {
+        return mc.theWorld.getLoadedEntityList().
+                stream().
+                filter(entity ->
+                        entity instanceof EntityArmorStand && ((EntityArmorStand) entity).getEquipmentInSlot(4) != null)
+                .min(Comparator.comparingDouble(entity -> entity.getDistanceSqToCenter(mc.thePlayer.getPosition()))).orElse(null);
+    }
+
+    @Nullable
+    private Entity getSkull() {
         return mc.theWorld.getLoadedEntityList().
                 stream().
                 filter(entity ->

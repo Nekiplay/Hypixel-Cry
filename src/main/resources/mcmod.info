@@ -6,9 +6,11 @@
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["AntiCheat"],
+  "authorList": ["Neki_play"],
   "credits": "",
   "logoFile": "assets/hypixelcry/logo.png",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": [
+    "NotEnoughUpdates"
+  ]
 }]

@@ -2,8 +2,10 @@ package com.nekiplay.hypixelcry.features.esp;
 
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
+import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -18,11 +20,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class Treasure_Hunter {
     public BlockPos pos;
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void onChatMsg(ClientChatReceivedEvent event) {
         String nocodes = ApecUtils.removeAllCodes(event.message.getFormattedText());
         if (nocodes.contains("You found a treasure chest!")) {
@@ -113,6 +114,9 @@ public class Treasure_Hunter {
     private boolean allowRender = false;
     @SubscribeEvent
     public void OnTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
         DataExtractor extractor = Main.getInstance().dataExtractor;
         String zone = extractor.getScoreBoardData().Zone;
         if (zone.contains("Archeologist") || zone.contains("Mushroom") || zone.contains("Oasis") || zone.contains("Shepherd") || zone.contains("Desert") || zone.contains("Site")) {
@@ -122,34 +126,20 @@ public class Treasure_Hunter {
             allowRender = false;
         }
     }
-    @SubscribeEvent
-    public void onBreakBlock(BlockEvent.BreakEvent event) {
-        if (allPositions.contains(event.pos)) {
-            mc.thePlayer.addChatComponentMessage(new ChatComponentText("Breaking"));
-        }
-    }
+
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
 
         if (allowRender) {
-            if (myConfigFile != null && myConfigFile.treasureHunterMainPage.treasureHunterESP && pos != null) {
-                if (myConfigFile.treasureHunterMainPage.text) {
-                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor());
+            if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.enabled && pos != null) {
+                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
-                RenderUtils.drawBlockBox(pos, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
-                if (myConfigFile.treasureHunterMainPage.tracer) {
-                    RenderUtils.drawTracer(pos, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
+                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour));
                 }
-            }
-            else if (pos == null && myConfigFile != null && myConfigFile.treasureHunterMainPage.treasureHunterESP && myConfigFile.treasureHunterMainPage.allLocations) {
-                for (BlockPos posibleTreasure: allPositions) {
-                    if (myConfigFile.treasureHunterMainPage.text) {
-                        RenderUtils.renderWaypointText("Possible treasure", new BlockPos(posibleTreasure.getX() + 0.5, posibleTreasure.getY() + 1.5, posibleTreasure.getZ() + 0.5), event.partialTicks, false, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor());
-                    }
-                    RenderUtils.drawBlockBox(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureColor.toJavaColor(), 1, event.partialTicks);
-                    if (myConfigFile.treasureHunterMainPage.tracer) {
-                        RenderUtils.drawTracer(posibleTreasure, myConfigFile.treasureHunterMainPage.treasureTracerColor.toJavaColor(), 1, event.partialTicks);
-                    }
+                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
             }
         }

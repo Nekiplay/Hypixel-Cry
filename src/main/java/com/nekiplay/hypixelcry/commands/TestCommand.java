@@ -1,22 +1,24 @@
 package com.nekiplay.hypixelcry.commands;
 
-import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.NEUConfig;
-import io.github.notenoughupdates.moulconfig.gui.GuiScreenElementWrapper;
-import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
+import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
+import com.nekiplay.hypixelcry.features.esp.pathFinders.detections.crystalhollows.JungleTemple;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class OpenSettings implements ICommand {
+import static com.nekiplay.hypixelcry.Main.mc;
+
+public class TestCommand implements ICommand {
     @Override
     public String getCommandName() {
-        return "addon";
+        return "test";
     }
 
     @Override
@@ -26,13 +28,12 @@ public class OpenSettings implements ICommand {
 
     @Override
     public List<String> getCommandAliases() {
-        return new ArrayList<>(Arrays.asList("hypixelcry", "cry"));
+        return new ArrayList<>(Collections.emptyList());
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        MoulConfigEditor<NEUConfig> gui = new MoulConfigEditor<>(Main.getInstance().processor);
-        Main.getInstance().screenToOpen = new GuiScreenElementWrapper(gui);
+
     }
 
     @Override

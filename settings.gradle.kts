@@ -10,6 +10,7 @@ pluginManagement {
         maven(url = "https://repo.spongepowered.org/maven/")
         maven(url = "https://repo.essential.gg/repository/maven-releases/")
         maven(url = "https://maven.architectury.dev/")
+        maven("https://repo.nea.moe/releases")
         maven("https://maven.xpdustry.com/releases") {
             name = "xpdustry-releases"
             mavenContent { releasesOnly() }

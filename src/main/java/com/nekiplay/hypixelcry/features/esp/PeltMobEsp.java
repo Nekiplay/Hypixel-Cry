@@ -11,14 +11,16 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class PeltMobEsp {
     private Entity rendered = null;
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent event) {
-        if (myConfigFile != null && myConfigFile.peltMobMainPage.enableESP) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
+        if (false) {
             double dist = 99999;
             if (mc.theWorld != null) {
                 List<Entity> entityList = mc.theWorld.getLoadedEntityList();
@@ -42,10 +44,10 @@ public class PeltMobEsp {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
 
-        if (rendered != null && myConfigFile != null && myConfigFile.peltMobMainPage.enableESP) {
-            RenderUtils.renderWaypointText("Pelt Mob", new BlockPos(rendered.getPosition().getX() + 0.5, rendered.getPosition().getY() + 0.5, rendered.getPosition().getZ() + 0.5), event.partialTicks, false, myConfigFile.peltMobMainPage.color.toJavaColor());
-            if (myConfigFile.peltMobMainPage.enableTracer) {
-                RenderUtils.drawTracer(rendered.getPosition(), myConfigFile.peltMobMainPage.color.toJavaColor(), 1, event.partialTicks);
+        if (rendered != null && false) {
+            //RenderUtils.renderWaypointText("Pelt Mob", new BlockPos(rendered.getPosition().getX() + 0.5, rendered.getPosition().getY() + 0.5, rendered.getPosition().getZ() + 0.5), event.partialTicks, false, myConfigFile.peltMobMainPage.color.toJavaColor());
+            if (false) {
+                //RenderUtils.drawTracer(rendered.getPosition(), myConfigFile.peltMobMainPage.color.toJavaColor(), 1, event.partialTicks);
             }
         }
 

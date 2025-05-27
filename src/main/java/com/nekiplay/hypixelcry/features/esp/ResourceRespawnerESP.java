@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.Main.mc;
-import static com.nekiplay.hypixelcry.Main.myConfigFile;
 
 public class ResourceRespawnerESP {
     private int oneWood = 0;
@@ -26,6 +25,9 @@ public class ResourceRespawnerESP {
     private int vosemWood = 0;
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
         oneWood = GetWoodCount(new ArrayList<BlockPos>(){{
             add(new BlockPos(-150, 73, -20));
             add(new BlockPos(-150, 73, -19));
@@ -318,7 +320,7 @@ public class ResourceRespawnerESP {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
 
-        if (myConfigFile != null && myConfigFile.resourceRespawnerMainPage.enableESP) {
+        if (false) {
 
             Color colorOne = Color.RED;
             if (oneWood == 29) {
