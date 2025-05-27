@@ -4,7 +4,7 @@
 	<a href="https://github.com/Nekiplay/Hypixel-Cry/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/Hypixel-Cry" alt="GitHub stars"/></a><br/>
 </div>
 
-![image](https://github.com/user-attachments/assets/293cbcd8-b619-4363-ac11-1bbebe2f5986)
+![1748385538470](https://github.com/user-attachments/assets/8cb12840-ea5e-4500-8594-2f134d0e78aa)
 
 # Features
 ### Commands:
