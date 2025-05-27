@@ -7,9 +7,9 @@
   "mixins": [
     "MinecraftAccessor",
     "MixinNetworkManager",
-    "MixinWorld",
     "GuiContainerAccessor",
-    "GuiChestAccessor"
+    "GuiChestAccessor",
+    "MixinWorld"
   ],
   "client": [
     "MixinFMLHandShake",

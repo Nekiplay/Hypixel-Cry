@@ -20,6 +20,9 @@ public class Glowing_Mushroom {
     public static ArrayList<BlockPos> positions = new ArrayList<>();
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
+        if (clientTickEvent.phase == TickEvent.Phase.START) {
+            return;
+        }
         if (Main.mc.theWorld != null) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos)pos_object;

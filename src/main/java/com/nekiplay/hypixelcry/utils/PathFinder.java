@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.utils;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -35,111 +35,7 @@ public class PathFinder {
 
         if (start.equals(end)) return Collections.singletonList(start);
 
-        // Быстрая проверка прямой видимости
-        if (hasDirectPath(start, end)) {
-            return Arrays.asList(start, end);
-        }
-
         return findPathToNearestAvailable(start, end);
-    }
-
-    private boolean hasDirectPath(BlockPos from, BlockPos to) {
-        // Быстрая проверка прямой видимости
-        if (from.distanceSq(to) > 25) return false; // Ограничение расстояния
-
-        // Проверяем, что конечная точка проходима
-        if (!isWalkableFast(to)) return false;
-
-        // Упрощенная проверка прямой видимости (алгоритм Брезенхема)
-        return isLineWalkable(from, to);
-    }
-
-    private boolean isLineWalkable(BlockPos start, BlockPos end) {
-        int dx = Math.abs(end.getX() - start.getX());
-        int dy = Math.abs(end.getY() - start.getY());
-        int dz = Math.abs(end.getZ() - start.getZ());
-
-        int xs = start.getX() < end.getX() ? 1 : -1;
-        int ys = start.getY() < end.getY() ? 1 : -1;
-        int zs = start.getZ() < end.getZ() ? 1 : -1;
-
-        // Доминирующее направление - X
-        if (dx >= dy && dx >= dz) {
-            int p1 = 2 * dy - dx;
-            int p2 = 2 * dz - dx;
-            int x = start.getX();
-            int y = start.getY();
-            int z = start.getZ();
-
-            while (x != end.getX()) {
-                x += xs;
-                if (p1 >= 0) {
-                    y += ys;
-                    p1 -= 2 * dx;
-                }
-                if (p2 >= 0) {
-                    z += zs;
-                    p2 -= 2 * dx;
-                }
-                p1 += 2 * dy;
-                p2 += 2 * dz;
-
-                BlockPos current = new BlockPos(x, y, z);
-                if (!isPassableFast(current)) return false;
-            }
-        }
-        // Доминирующее направление - Y
-        else if (dy >= dx && dy >= dz) {
-            int p1 = 2 * dx - dy;
-            int p2 = 2 * dz - dy;
-            int x = start.getX();
-            int y = start.getY();
-            int z = start.getZ();
-
-            while (y != end.getY()) {
-                y += ys;
-                if (p1 >= 0) {
-                    x += xs;
-                    p1 -= 2 * dy;
-                }
-                if (p2 >= 0) {
-                    z += zs;
-                    p2 -= 2 * dy;
-                }
-                p1 += 2 * dx;
-                p2 += 2 * dz;
-
-                BlockPos current = new BlockPos(x, y, z);
-                if (!isPassableFast(current)) return false;
-            }
-        }
-        // Доминирующее направление - Z
-        else {
-            int p1 = 2 * dy - dz;
-            int p2 = 2 * dx - dz;
-            int x = start.getX();
-            int y = start.getY();
-            int z = start.getZ();
-
-            while (z != end.getZ()) {
-                z += zs;
-                if (p1 >= 0) {
-                    y += ys;
-                    p1 -= 2 * dz;
-                }
-                if (p2 >= 0) {
-                    x += xs;
-                    p2 -= 2 * dz;
-                }
-                p1 += 2 * dy;
-                p2 += 2 * dx;
-
-                BlockPos current = new BlockPos(x, y, z);
-                if (!isPassableFast(current)) return false;
-            }
-        }
-
-        return true;
     }
 
     private List<BlockPos> findPathToNearestAvailable(BlockPos start, BlockPos target) {
@@ -207,7 +103,6 @@ public class PathFinder {
         return neighbors;
     }
 
-    // Быстрые версии методов с кэшированием
     private boolean isWalkableFast(BlockPos pos) {
         return world.isBlockLoaded(pos) &&
                 isPassableFast(pos) &&

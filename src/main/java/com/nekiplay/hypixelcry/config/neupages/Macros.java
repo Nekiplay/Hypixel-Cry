@@ -22,6 +22,18 @@ public class Macros {
         public int range = 8;
     }
 
+    @Accordion
+    @ConfigOption(name = "Auto Chest Open", desc = "Auto open chests")
+    @Expose
+    public AutoChestOpen autoChestOpen = new AutoChestOpen();
+
+    public static class AutoChestOpen {
+        @ConfigOption(name = "Enabled", desc = "")
+        @ConfigEditorBoolean()
+        @Expose
+        public boolean enabled = false;
+    }
+
     @Category(name = "Dungeons", desc = "Macros in dungeons")
     @Expose
     public Dungeons dungeons = new Dungeons();

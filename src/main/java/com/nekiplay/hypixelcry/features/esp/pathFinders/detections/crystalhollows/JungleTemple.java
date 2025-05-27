@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp.pathFinders.detections.crystalhollows;
 
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,7 @@ public class JungleTemple {
     private static volatile boolean running = false;
     private static Thread detectionThread;
     private static boolean foundAndNotified = false; // Флаг для отслеживания отправки сообщения
-    private static final int SEARCH_RADIUS = 148; // Радиус поиска
+    private static final int SEARCH_RADIUS = 200; // Радиус поиска
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
@@ -55,12 +56,20 @@ public class JungleTemple {
         detectionThread = new Thread(() -> {
             BlockPos foundPos = findEmeraldWithSmoothAndesiteBelow(world, center, radius);
 
-            if (foundPos != null && !foundAndNotified) {
-                jungleTemple = foundPos;
-                foundAndNotified = true;
+            if (Main.getInstance().config.esp.crystalHollows.pathFinder.enabledJungleTemple) {
+                if (foundPos != null && !foundAndNotified) {
+                    jungleTemple = foundPos;
+                    foundAndNotified = true;
 
-                // Отправляем сообщение игроку
-                PathFinderRenderer.addOrUpdatePath("Temple", foundPos, Color.GREEN, "Temple");
+                    // Отправляем сообщение игроку
+                    PathFinderRenderer.addOrUpdatePath("Temple", foundPos, Color.GREEN, "Temple");
+                }
+            }
+            else {
+                if (PathFinderRenderer.hasPath("Temple")) {
+                    PathFinderRenderer.removePath("Temple");
+                }
+                foundAndNotified = false;
             }
 
             running = false;

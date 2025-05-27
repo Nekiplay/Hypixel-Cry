@@ -195,5 +195,41 @@ public class ESP {
             @ConfigEditorDraggableList(requireNonEmpty = false)
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
         }
+
+        @Accordion
+        @ConfigOption(
+                name = "Jungle Temple PathFinder",
+                desc = ""
+        )
+        @Expose
+        public PathFinder pathFinder = new PathFinder();
+
+        public static class PathFinder {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = "Enable Jungle Temple path finder?"
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabledJungleTemple = false;
+        }
+    }
+
+    @Accordion
+    @ConfigOption(
+            name = "PathFinder",
+            desc = ""
+    )
+    @Expose
+    public PathFinderESP pathFinderESP = new PathFinderESP();
+
+    public static class PathFinderESP {
+        @ConfigOption(
+                name = "Enable",
+                desc = "Enable PathFinder?"
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean enabled = true;
     }
 }

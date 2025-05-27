@@ -4,6 +4,7 @@ import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.events.world.SpawnParticleEvent;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Vec3;
@@ -21,7 +22,12 @@ public class MixinWorld {
     private void onSetBlockState(BlockPos pos, IBlockState newState, int flags, CallbackInfoReturnable<Boolean> cir) {
         BlockUpdateEvent blockUpdateEvent = new BlockUpdateEvent(pos);
         blockUpdateEvent.newState = newState;
-        blockUpdateEvent.oldState = Main.mc.theWorld.getBlockState(pos);
+        if (Main.mc.theWorld != null) {
+            blockUpdateEvent.oldState = Main.mc.theWorld.getBlockState(pos);
+        }
+        else {
+            blockUpdateEvent.oldState = Blocks.air.getDefaultState();
+        }
         MinecraftForge.EVENT_BUS.post(blockUpdateEvent);
         if (blockUpdateEvent.isCanceled()) {
             cir.cancel();

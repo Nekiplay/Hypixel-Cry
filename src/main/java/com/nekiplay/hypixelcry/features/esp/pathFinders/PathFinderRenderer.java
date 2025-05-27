@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp.pathFinders;
 
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.PathFinder;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.util.BlockPos;
@@ -76,35 +77,37 @@ public class PathFinderRenderer {
             }
         }
 
-        for (Map.Entry<String, PathData> entry : paths.entrySet()) {
-            String pathId = entry.getKey();
-            PathData pathData = entry.getValue();
+        if (Main.getInstance().config.esp.pathFinderESP.enabled) {
+            for (Map.Entry<String, PathData> entry : paths.entrySet()) {
+                String pathId = entry.getKey();
+                PathData pathData = entry.getValue();
 
-            // Проверка обновления чанков
-            int currentChunkX = currentPos.getX() >> 4;
-            int currentChunkZ = currentPos.getZ() >> 4;
-            if (Math.abs(currentChunkX - pathData.lastChunkX) > CHUNK_UPDATE_RADIUS || 
-                Math.abs(currentChunkZ - pathData.lastChunkZ) > CHUNK_UPDATE_RADIUS) {
-                pathData.chunksUpdated = true;
-                pathData.lastChunkX = currentChunkX;
-                pathData.lastChunkZ = currentChunkZ;
-            }
+                // Проверка обновления чанков
+                int currentChunkX = currentPos.getX() >> 4;
+                int currentChunkZ = currentPos.getZ() >> 4;
+                if (Math.abs(currentChunkX - pathData.lastChunkX) > CHUNK_UPDATE_RADIUS ||
+                        Math.abs(currentChunkZ - pathData.lastChunkZ) > CHUNK_UPDATE_RADIUS) {
+                    pathData.chunksUpdated = true;
+                    pathData.lastChunkX = currentChunkX;
+                    pathData.lastChunkZ = currentChunkZ;
+                }
 
-            // Обновление прогресса пути
-            updatePathProgress(currentPos, pathData);
+                // Обновление прогресса пути
+                updatePathProgress(currentPos, pathData);
 
-            // Проверка необходимости перерасчета
-            if (shouldRecalculatePath(currentPos, pathData)) {
-                pathData.lastPlayerPos = currentPos;
-                
-                pathFinderExecutor.submit(() -> {
-                    PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 6000);
-                    List<BlockPos> newPath = pathFinder.findPath(currentPos, pathData.end);
-                    List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
-                            ? pathFinder.getSimplifiedPath(newPath)
-                            : Collections.emptyList();
-                    pathResults.add(new PathResult(pathId, simplifiedPath));
-                });
+                // Проверка необходимости перерасчета
+                if (shouldRecalculatePath(currentPos, pathData)) {
+                    pathData.lastPlayerPos = currentPos;
+
+                    pathFinderExecutor.submit(() -> {
+                        PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 6000);
+                        List<BlockPos> newPath = pathFinder.findPath(currentPos, pathData.end);
+                        List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
+                                ? pathFinder.getSimplifiedPath(newPath)
+                                : Collections.emptyList();
+                        pathResults.add(new PathResult(pathId, simplifiedPath));
+                    });
+                }
             }
         }
     }
@@ -205,12 +208,6 @@ public class PathFinderRenderer {
         }
     }
 
-    private boolean isFarFromPath(BlockPos playerPos, PathData pathData) {
-        if (pathData.blocks.isEmpty()) return true;
-        BlockPos nearest = findNearestPathPoint(playerPos, pathData.blocks);
-        return nearest == null || playerPos.distanceSq(nearest) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE;
-    }
-
     private boolean isPotentialBetterPathAvailable(BlockPos playerPos, PathData pathData) {
         if (pathData.blocks.isEmpty() || !mc.theWorld.isBlockLoaded(pathData.end)) {
             return false;
@@ -237,35 +234,37 @@ public class PathFinderRenderer {
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         if (mc.theWorld == null || paths.isEmpty()) return;
 
-        for (PathData pathData : paths.values()) {
-            if (pathData.blocks == null || pathData.blocks.isEmpty()) continue;
+        if (Main.getInstance().config.esp.pathFinderESP.enabled) {
+            for (PathData pathData : paths.values()) {
+                if (pathData.blocks == null || pathData.blocks.isEmpty()) continue;
 
-            int fromIndex = Math.max(0, pathData.currentVisibleFromIndex - 2);
-            List<BlockPos> visiblePath = pathData.blocks.subList(fromIndex, pathData.blocks.size());
+                int fromIndex = Math.max(0, pathData.currentVisibleFromIndex - 2);
+                List<BlockPos> visiblePath = pathData.blocks.subList(fromIndex, pathData.blocks.size());
 
-            if (visiblePath.size() < 2) continue;
+                if (visiblePath.size() < 2) continue;
 
-            BlockPos prevPos = visiblePath.get(0);
-            for (int i = 1; i < visiblePath.size(); i++) {
-                BlockPos currentPos = visiblePath.get(i);
-                RenderUtils.drawLine(prevPos, currentPos, 4, pathData.color);
-                prevPos = currentPos;
+                BlockPos prevPos = visiblePath.get(0);
+                for (int i = 1; i < visiblePath.size(); i++) {
+                    BlockPos currentPos = visiblePath.get(i);
+                    RenderUtils.drawLine(prevPos, currentPos, 4, pathData.color);
+                    prevPos = currentPos;
+                }
+
+                BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
+
+                RenderUtils.drawBlockBox(
+                        endPos.subtract(new Vec3i(0, 1, 0)),
+                        pathData.color, 4,
+                        event.partialTicks
+                );
+                RenderUtils.renderWaypointText(
+                        pathData.endText,
+                        new BlockPos(endPos.getX() + 0.5, endPos.getY() + 1.8, endPos.getZ() + 0.5),
+                        event.partialTicks,
+                        false,
+                        pathData.color
+                );
             }
-
-            BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
-
-            RenderUtils.drawBlockBox(
-                    endPos.subtract(new Vec3i(0, 1, 0)),
-                    pathData.color, 4,
-                    event.partialTicks
-            );
-            RenderUtils.renderWaypointText(
-                    pathData.endText,
-                    new BlockPos(endPos.getX() + 0.5, endPos.getY() + 1.8, endPos.getZ() + 0.5),
-                    event.partialTicks,
-                    false,
-                    pathData.color
-            );
         }
     }
 

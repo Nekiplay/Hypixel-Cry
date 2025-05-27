@@ -114,6 +114,9 @@ public class Treasure_Hunter {
     private boolean allowRender = false;
     @SubscribeEvent
     public void OnTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
         DataExtractor extractor = Main.getInstance().dataExtractor;
         String zone = extractor.getScoreBoardData().Zone;
         if (zone.contains("Archeologist") || zone.contains("Mushroom") || zone.contains("Oasis") || zone.contains("Shepherd") || zone.contains("Desert") || zone.contains("Site")) {

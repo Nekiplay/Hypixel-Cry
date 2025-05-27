@@ -17,6 +17,9 @@ public class PeltMobEsp {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
         if (false) {
             double dist = 99999;
             if (mc.theWorld != null) {

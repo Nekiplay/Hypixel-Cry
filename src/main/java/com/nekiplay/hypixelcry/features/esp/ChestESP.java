@@ -17,6 +17,9 @@ public class ChestESP {
     private static final ArrayList<BlockPos> locations = new ArrayList<BlockPos>();
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
+        if (clientTickEvent.phase == TickEvent.Phase.START) {
+            return;
+        }
         if (Main.mc.theWorld != null && Main.getInstance().config.esp.chestEsp.enabled) {
             locations.clear();
             for (TileEntity tileEntity : Main.mc.theWorld.loadedTileEntityList) {

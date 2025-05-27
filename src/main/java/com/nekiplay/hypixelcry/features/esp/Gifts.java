@@ -24,6 +24,9 @@ public class Gifts {
     private boolean allowRender = false;
     @SubscribeEvent
     public void OnTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
         DataExtractor extractor = Main.getInstance().dataExtractor;
         String zone = extractor.getScoreBoardData().Zone;
         if (zone.contains("Jerry") || zone.contains("Sherry's") || zone.contains("Reflective")) {

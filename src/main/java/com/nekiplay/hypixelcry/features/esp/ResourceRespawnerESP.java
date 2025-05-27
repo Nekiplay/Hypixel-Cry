@@ -25,6 +25,9 @@ public class ResourceRespawnerESP {
     private int vosemWood = 0;
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
         oneWood = GetWoodCount(new ArrayList<BlockPos>(){{
             add(new BlockPos(-150, 73, -20));
             add(new BlockPos(-150, 73, -19));

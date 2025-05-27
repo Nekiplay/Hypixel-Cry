@@ -38,9 +38,9 @@ public class GhostBlocks {
                 if (block instanceof BlockChest || block instanceof BlockSkull || block instanceof BlockLever) {
                     KeyBindUtils.rightClick();
                 } else {
-                    KeyBindUtils.leftClick();
                     //PlayerUtils.swingItem();
                     mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
+                    KeyBindUtils.leftClick();
                 }
             }
         }
