@@ -29,6 +29,7 @@ public class FeatureRegister {
         /* ESP */
         MinecraftForge.EVENT_BUS.register(new JungleTemple());
 
+        MinecraftForge.EVENT_BUS.register(new FrozenCourpes());
         MinecraftForge.EVENT_BUS.register(new AutoChestOpen());
         MinecraftForge.EVENT_BUS.register(new AutomatonESP());
         MinecraftForge.EVENT_BUS.register(new YogESP());

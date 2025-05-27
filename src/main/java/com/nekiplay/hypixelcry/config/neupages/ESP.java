@@ -215,6 +215,40 @@ public class ESP {
         }
     }
 
+    @Category(name = "Glacite Tunnels", desc = "Render features in glacite tunnels")
+    @Expose
+    public Glacite_Tunnels glaciteTunnels = new Glacite_Tunnels();
+
+    public static class Glacite_Tunnels {
+        @Accordion
+        @ConfigOption(
+                name = "Yog ESP",
+                desc = ""
+        )
+        @Expose
+        public Frozen_Courpes frozenCourpes = new Frozen_Courpes();
+
+        public static class Frozen_Courpes {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = "Enable Frozen Courpes ESP?"
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabled = true;
+
+            @ConfigOption(name = "Color", desc = "ESP color")
+            @ConfigEditorColour
+            @Expose
+            public String colour = "0:0:0:0:0";
+
+            @ConfigOption(name = "Render features", desc = "")
+            @Expose
+            @ConfigEditorDraggableList(requireNonEmpty = false)
+            public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+        }
+    }
+
     @Accordion
     @ConfigOption(
             name = "PathFinder",
