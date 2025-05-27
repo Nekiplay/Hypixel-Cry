@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -28,11 +29,14 @@ public class AutoChestOpen {
             return;
         }
         if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-            BlockPos pos = new BlockPos(mc.objectMouseOver.hitVec.xCoord, mc.objectMouseOver.hitVec.yCoord, mc.objectMouseOver.hitVec.zCoord);
+            BlockPos pos = mc.objectMouseOver.getBlockPos();
             IBlockState blockState = mc.theWorld.getBlockState(pos);
-            if (blockState.getBlock() == Blocks.chest && (lastUsed == null || !lastUsed.equals(pos))) {
+            if (mc.currentScreen == null && blockState.getBlock() == Blocks.chest && (lastUsed == null || !lastUsed.equals(pos))) {
                 lastUsed = pos;
                 KeyBindUtils.rightClick();
+                if (Main.getInstance().config.macros.autoChestOpen.rageMode) {
+                    mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
+                }
             }
         }
     }

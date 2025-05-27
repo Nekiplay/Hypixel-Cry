@@ -32,6 +32,11 @@ public class Macros {
         @ConfigEditorBoolean()
         @Expose
         public boolean enabled = false;
+
+        @ConfigOption(name = "Rage mode", desc = "Set chest to air after open")
+        @ConfigEditorBoolean()
+        @Expose
+        public boolean rageMode = false;
     }
 
     @Category(name = "Dungeons", desc = "Macros in dungeons")

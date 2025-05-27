@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 public class Glowing_Mushroom {
-    public static ArrayList<BlockPos> positions = new ArrayList<>();
+    private static ArrayList<BlockPos> positions = new ArrayList<>();
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
