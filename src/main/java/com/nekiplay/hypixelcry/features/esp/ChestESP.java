@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp;
 
+import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
@@ -20,13 +21,19 @@ public class ChestESP {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
             return;
         }
-        if (Main.mc.theWorld != null && Main.getInstance().config.esp.chestEsp.enabled) {
-            locations.clear();
-            for (TileEntity tileEntity : Main.mc.theWorld.loadedTileEntityList) {
-                if (tileEntity instanceof TileEntityChest) {
-                    locations.add(tileEntity.getPos());
+        DataExtractor extractor = Main.getInstance().dataExtractor;
+        if (extractor.isInSkyblock) {
+            if (Main.mc.theWorld != null && Main.getInstance().config.esp.chestEsp.enabled) {
+                locations.clear();
+                for (TileEntity tileEntity : Main.mc.theWorld.loadedTileEntityList) {
+                    if (tileEntity instanceof TileEntityChest) {
+                        locations.add(tileEntity.getPos());
+                    }
                 }
             }
+        }
+        else {
+            locations.clear();
         }
     }
 
