@@ -222,7 +222,7 @@ public class ESP {
     public static class Glacite_Tunnels {
         @Accordion
         @ConfigOption(
-                name = "Yog ESP",
+                name = "Frozen Courpes ESP",
                 desc = ""
         )
         @Expose
