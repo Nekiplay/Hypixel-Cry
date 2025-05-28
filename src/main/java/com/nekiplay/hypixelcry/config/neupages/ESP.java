@@ -30,7 +30,7 @@ public class ESP {
         @ConfigOption(name = "Color", desc = "ESP color")
         @ConfigEditorColour
         @Expose
-        public String colour = "0:0:0:0:0";
+        public String colour = "0:255:255:0:13";
 
         @ConfigOption(name = "Render features", desc = "")
         @Expose
@@ -92,7 +92,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:64:255:30";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -126,7 +126,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:131:0:255";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -151,7 +151,7 @@ public class ESP {
         public static class Yog {
             @ConfigOption(
                     name = "Enable",
-                    desc = "Enable Dark Monolith ESP?"
+                    desc = "Enable Yog ESP?"
             )
             @ConfigEditorBoolean
             @Expose
@@ -160,7 +160,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:255:19:0";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -179,7 +179,7 @@ public class ESP {
         public static class Automaton {
             @ConfigOption(
                     name = "Enable",
-                    desc = "Enable Dark Monolith ESP?"
+                    desc = "Enable Authomaton ESP?"
             )
             @ConfigEditorBoolean
             @Expose
@@ -188,7 +188,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:255:255:255";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -240,12 +240,20 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:25:6:255";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
             @ConfigEditorDraggableList(requireNonEmpty = false)
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+
+            @ConfigOption(
+                    name = "Enable PathFinder",
+                    desc = "Enable Frozen Courpes PathFinder?"
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabledPathFinder = true;
         }
     }
 

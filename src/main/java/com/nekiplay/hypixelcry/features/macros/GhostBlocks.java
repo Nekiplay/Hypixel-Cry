@@ -29,7 +29,7 @@ public class GhostBlocks {
     private void enable() {
         EntityPlayerSP player = mc.thePlayer;
         if (player != null) {
-            MovingObjectPosition movingObjectPosition = player.rayTrace(Main.getInstance().config.macros.ghostBlocks.range, 1f);
+            MovingObjectPosition movingObjectPosition = player.rayTrace(Main.config.macros.ghostBlocks.range, 1f);
             if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos pos = movingObjectPosition.getBlockPos();
                 ItemStack hand = mc.thePlayer.getCurrentEquippedItem();
@@ -54,7 +54,7 @@ public class GhostBlocks {
         if (keyCode < 0) return;
 
         try {
-            if (keyCode == Main.getInstance().config.macros.ghostBlocks.ghostBlocksKeyBind) {
+            if (keyCode == Main.config.macros.ghostBlocks.ghostBlocksKeyBind) {
                 enable();
             }
         } catch (IndexOutOfBoundsException e) {
@@ -69,7 +69,7 @@ public class GhostBlocks {
         int button = Mouse.getEventButton() - 100;
 
         try {
-            if (button == Main.getInstance().config.macros.ghostBlocks.ghostBlocksKeyBind) {
+            if (button == Main.config.macros.ghostBlocks.ghostBlocksKeyBind) {
                 enable();
             }
         } catch (IndexOutOfBoundsException e) {

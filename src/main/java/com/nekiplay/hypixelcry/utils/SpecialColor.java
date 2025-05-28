@@ -9,7 +9,6 @@ public class SpecialColor {
     private static final SimpleTimeMark startTime = SimpleTimeMark.now();
     private static final Color DEFAULT_COLOR = new Color(0, 0, 0, 0); // Transparent black as default
 
-    @Deprecated
     public static Color toSpecialColor(String str) {
         if (str == null || str.isEmpty()) {
             return DEFAULT_COLOR;
@@ -17,7 +16,6 @@ public class SpecialColor {
         return new Color(toSpecialColorInt(str), true);
     }
 
-    @Deprecated
     public static int toSpecialColorInt(String str) {
         if (str == null || str.isEmpty()) {
             return DEFAULT_COLOR.getRGB();

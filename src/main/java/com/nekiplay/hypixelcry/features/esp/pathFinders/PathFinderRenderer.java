@@ -77,7 +77,7 @@ public class PathFinderRenderer {
             }
         }
 
-        if (Main.getInstance().config.esp.pathFinderESP.enabled) {
+        if (Main.config.esp.pathFinderESP.enabled) {
             for (Map.Entry<String, PathData> entry : paths.entrySet()) {
                 String pathId = entry.getKey();
                 PathData pathData = entry.getValue();
@@ -234,7 +234,7 @@ public class PathFinderRenderer {
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         if (mc.theWorld == null || paths.isEmpty()) return;
 
-        if (Main.getInstance().config.esp.pathFinderESP.enabled) {
+        if (Main.config.esp.pathFinderESP.enabled) {
             for (PathData pathData : paths.values()) {
                 if (pathData.blocks == null || pathData.blocks.isEmpty()) continue;
 

@@ -24,7 +24,7 @@ public class Dark_Monolith {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
             return;
         }
-        if (Main.mc.theWorld != null && Main.getInstance().config.esp.dwardenMines.darkMonolith.enabled) {
+        if (Main.mc.theWorld != null && Main.config.esp.dwardenMines.darkMonolith.enabled) {
             BlockPos pos1 = new BlockPos(-15, 236, -92);
             BlockPos pos2 = new BlockPos(49, 202, -162);
             BlockPos pos3 = new BlockPos(56, 214, -25);
@@ -125,16 +125,16 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.getInstance().config.esp.dwardenMines.darkMonolith.enabled && egg !=null)
+        if (Main.config.esp.dwardenMines.darkMonolith.enabled && egg !=null)
         {
-            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Box)) {
-                RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
+            if (Main.config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Box)) {
+                RenderUtils.drawBlockBox(egg, SpecialColor.toSpecialColor(Main.config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
             }
-            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Text)) {
-                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour));
+            if (Main.config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Text)) {
+                RenderUtils.renderWaypointText("Dark Monolith", new BlockPos(egg.getX() + 0.5, egg.getY() + 1.8, egg.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.config.esp.dwardenMines.darkMonolith.colour));
             }
-            if (Main.getInstance().config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Tracer)) {
-                RenderUtils.drawTracer(egg, SpecialColor.toSpecialColor(Main.getInstance().config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
+            if (Main.config.esp.dwardenMines.darkMonolith.features.contains(ESPFeatures.Tracer)) {
+                RenderUtils.drawTracer(egg, SpecialColor.toSpecialColor(Main.config.esp.dwardenMines.darkMonolith.colour), 1, event.partialTicks);
             }
         }
     }

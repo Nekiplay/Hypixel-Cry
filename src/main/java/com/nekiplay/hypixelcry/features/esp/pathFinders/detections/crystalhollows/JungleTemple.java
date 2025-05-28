@@ -31,6 +31,9 @@ public class JungleTemple {
         jungleTemple = null;
         foundAndNotified = false;
         stopDetection();
+        if (PathFinderRenderer.hasPath("Temple")) {
+            PathFinderRenderer.removePath("Temple");
+        }
     }
 
     @SubscribeEvent

@@ -47,7 +47,7 @@ public class Main
     public static final Minecraft mc = Minecraft.getMinecraft();
 
     public GuiScreen screenToOpen = null;
-    public NEUConfig config;
+    public static NEUConfig config;
     private File configFile;
     private File neuDir;
 

@@ -23,7 +23,7 @@ public class ChestESP {
         }
         DataExtractor extractor = Main.getInstance().dataExtractor;
         if (extractor.isInSkyblock) {
-            if (Main.mc.theWorld != null && Main.getInstance().config.esp.chestEsp.enabled) {
+            if (Main.mc.theWorld != null && Main.config.esp.chestEsp.enabled) {
                 locations.clear();
                 for (TileEntity tileEntity : Main.mc.theWorld.loadedTileEntityList) {
                     if (tileEntity instanceof TileEntityChest) {
@@ -39,17 +39,17 @@ public class ChestESP {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.getInstance().config.esp.chestEsp.enabled)
+        if (Main.config.esp.chestEsp.enabled)
         {
             for (BlockPos pos: locations) {
-                if (Main.getInstance().config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.chestEsp.colour), 1, event.partialTicks);
+                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
                 }
-                if (Main.getInstance().config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.chestEsp.colour));
+                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.config.esp.chestEsp.colour));
                 }
-                if (Main.getInstance().config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.chestEsp.colour), 1, event.partialTicks);
+                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
                 }
             }
         }
