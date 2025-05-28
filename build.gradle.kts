@@ -22,7 +22,6 @@ base.archivesName.set("HypixelAddon")
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
-    withSourcesJar()
 }
 
 loom {
@@ -72,6 +71,8 @@ dependencies {
     annotationProcessor("net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5")
 
     shadowModImpl("org.notenoughupdates.moulconfig:legacy:3.8.0")
+
+    shadowImplementation("it.unimi.dsi:fastutil:8.2.1")
 }
 
 tasks.withType(JavaCompile::class) {
@@ -88,7 +89,6 @@ tasks.jar {
         "ModSide" to "CLIENT",
         "TweakOrder" to "0"
     )
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
