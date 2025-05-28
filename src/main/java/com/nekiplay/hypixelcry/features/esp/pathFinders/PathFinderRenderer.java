@@ -164,6 +164,33 @@ public class PathFinderRenderer {
 		
 		return false;
 	}
+
+    private BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
+		if (path == null || path.size() < 2) {
+			return path != null && !path.isEmpty() ? path.get(0) : null;
+		}
+	
+		BlockPos nearestPoint = null;
+		double minDistance = Double.MAX_VALUE;
+	
+		// Проверяем расстояние до всех сегментов пути
+		for (int i = 0; i < path.size() - 1; i++) {
+			BlockPos start = path.get(i);
+			BlockPos end = path.get(i + 1);
+			
+			// Вычисляем ближайшую точку на текущем сегменте пути
+			BlockPos closestOnSegment = getClosestPointOnLine(playerPos, start, end);
+			double distance = playerPos.distanceSq(closestOnSegment);
+			
+			if (distance < minDistance) {
+				minDistance = distance;
+				nearestPoint = distance == playerPos.distanceSq(start) ? start : 
+							distance == playerPos.distanceSq(end) ? end : closestOnSegment;
+			}
+		}
+	
+		return nearestPoint;
+	}
 	
 	private BlockPos getClosestPointOnLine(BlockPos point, BlockPos lineStart, BlockPos lineEnd) {
 		// Вектор линии
