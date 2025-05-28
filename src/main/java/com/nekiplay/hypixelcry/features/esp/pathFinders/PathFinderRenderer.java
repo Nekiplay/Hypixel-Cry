@@ -116,12 +116,10 @@ public class PathFinderRenderer {
                             //List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
                             //        ? pathFinder.getSimplifiedPath(newPath)
                             //        : Collections.emptyList();
-                            mc.thePlayer.addChatMessage(new ChatComponentText("Path blocks: " + smoothed.size()));
                             pathResults.add(new PathResult(pathId, smoothed));
                         }
                         else {
                             pathResults.add(new PathResult(pathId, new ArrayList<>()));
-                            mc.thePlayer.addChatMessage(new ChatComponentText("Path no found"));
                         }
                     });
                 }
@@ -130,51 +128,41 @@ public class PathFinderRenderer {
     }
 
 	private boolean shouldRecalculatePath(BlockPos currentPos, PathData pathData) {
-        // Принудительное обновление
-        if (pathData.needsUpdate) return true;
-        
-        // Первый расчет или сброс пути
-        if (pathData.blocks.isEmpty()) return true;
+		// Принудительное обновление
+		if (pathData.needsUpdate) return true;
 		
+		// Первый расчет или сброс пути
+		if (pathData.blocks.isEmpty()) return true;
+		
+		// Проверяем, достигли ли мы конечной точки
 		BlockPos endPos = pathData.blocks.get(pathData.blocks.size()-1);
-        if (currentPos.distanceSq(endPos) < 32*32) return true;
-        
-        // Отклонение от маршрута
-        BlockPos nearestPoint = findNearestPathPoint(currentPos, pathData.blocks);
-        if (nearestPoint == null || 
-            currentPos.distanceSq(nearestPoint) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
-            return true;
-        }
-        
-        // Появление более оптимального пути
-        return pathData.chunksUpdated && isPotentialBetterPathAvailable(currentPos, pathData);
-    }
-
-    private BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
-		if (path == null || path.size() < 2) {
-			return path != null && !path.isEmpty() ? path.get(0) : null;
+		if (currentPos.distanceSq(endPos) < 4*4) { // 4 блока - порог достижения цели
+			return false;
 		}
-	
-		BlockPos nearestPoint = null;
-		double minDistance = Double.MAX_VALUE;
-	
-		// Проверяем расстояние до всех сегментов пути
-		for (int i = 0; i < path.size() - 1; i++) {
-			BlockPos start = path.get(i);
-			BlockPos end = path.get(i + 1);
-			
-			// Вычисляем ближайшую точку на текущем сегменте пути
-			BlockPos closestOnSegment = getClosestPointOnLine(playerPos, start, end);
-			double distance = playerPos.distanceSq(closestOnSegment);
-			
-			if (distance < minDistance) {
-				minDistance = distance;
-				nearestPoint = distance == playerPos.distanceSq(start) ? start : 
-							distance == playerPos.distanceSq(end) ? end : closestOnSegment;
+		
+		// Находим ближайшую точку на сегментах пути
+		double minDistanceSq = Double.MAX_VALUE;
+		for (int i = 0; i < pathData.blocks.size() - 1; i++) {
+			BlockPos start = pathData.blocks.get(i);
+			BlockPos end = pathData.blocks.get(i+1);
+			BlockPos closest = getClosestPointOnLine(currentPos, start, end);
+			double distanceSq = currentPos.distanceSq(closest);
+			if (distanceSq < minDistanceSq) {
+				minDistanceSq = distanceSq;
 			}
 		}
-	
-		return nearestPoint;
+		
+		// Если ближайшая точка дальше порогового расстояния - пересчитываем
+		if (minDistanceSq > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
+			return true;
+		}
+		
+		// Проверяем, не появился ли более оптимальный путь из-за обновления чанков
+		if (pathData.chunksUpdated && isPotentialBetterPathAvailable(currentPos, pathData)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private BlockPos getClosestPointOnLine(BlockPos point, BlockPos lineStart, BlockPos lineEnd) {
@@ -264,6 +252,12 @@ public class PathFinderRenderer {
                 for (int i = 1; i < visiblePath.size(); i++) {
                     BlockPos currentPos = visiblePath.get(i);
                     RenderUtils.drawLine(prevPos, currentPos, 4, pathData.color);
+					
+					RenderUtils.drawBlockBox(
+                        currentPos,
+                        pathData.color, 1,
+                        event.partialTicks
+					);
                     prevPos = currentPos;
                 }
 
