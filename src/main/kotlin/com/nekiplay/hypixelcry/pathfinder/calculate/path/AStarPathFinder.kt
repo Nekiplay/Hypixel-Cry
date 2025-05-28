@@ -13,6 +13,8 @@ import com.nekiplay.hypixelcry.pathfinder.movement.Moves
 class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goal: Goal, val ctx: CalculationContext) {
     private val closedSet: Long2ObjectMap<PathNode> = Long2ObjectOpenHashMap()
     private var calculating = false
+	private var closestNode: PathNode? = null
+    private var closestDistance = Double.MAX_VALUE
 
     fun calculatePath(): Path? {
         calculating = true
@@ -23,9 +25,19 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
         startNode.costSoFar = 0.0
         startNode.totalCost = startNode.costToEnd
         openSet.add(startNode)
+        
+        // Инициализация closestNode стартовой точкой
+        closestNode = startNode
+        closestDistance = startNode.costToEnd
 
         while (!openSet.isEmpty() && calculating) {
             val currentNode = openSet.poll()
+
+            // Обновляем ближайшую точку, если текущая ближе к цели
+            if (currentNode.costToEnd < closestDistance) {
+                closestNode = currentNode
+                closestDistance = currentNode.costToEnd
+            }
 
             if (goal.isAtGoal(currentNode.x, currentNode.y, currentNode.z)) {
                 return Path(startNode, currentNode, goal, ctx)
@@ -54,6 +66,13 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
             }
         }
         calculating = false
+        
+        // Если не достигли цели, но нашли ближайшую точку, возвращаем путь до неё
+        closestNode?.let {
+            if (it != startNode) {
+                return Path(startNode, it, goal, ctx)
+            }
+        }
         return null
     }
 

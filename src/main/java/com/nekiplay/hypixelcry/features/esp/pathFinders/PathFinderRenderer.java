@@ -8,6 +8,7 @@ import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext;
 import com.nekiplay.hypixelcry.utils.PathFinder;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -115,10 +116,12 @@ public class PathFinderRenderer {
                             //List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
                             //        ? pathFinder.getSimplifiedPath(newPath)
                             //        : Collections.emptyList();
+                            mc.thePlayer.addChatMessage(new ChatComponentText("Path blocks: " + smoothed.size()));
                             pathResults.add(new PathResult(pathId, smoothed));
                         }
                         else {
                             pathResults.add(new PathResult(pathId, new ArrayList<>()));
+                            mc.thePlayer.addChatMessage(new ChatComponentText("Path no found"));
                         }
                     });
                 }
