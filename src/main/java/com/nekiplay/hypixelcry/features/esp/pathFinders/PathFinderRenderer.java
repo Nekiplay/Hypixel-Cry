@@ -1,6 +1,7 @@
 package com.nekiplay.hypixelcry.features.esp.pathFinders;
 
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.pathfinder.calculate.Path;
 import com.nekiplay.hypixelcry.pathfinder.calculate.path.AStarPathFinder;
 import com.nekiplay.hypixelcry.pathfinder.goal.Goal;
 import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext;
@@ -106,9 +107,9 @@ public class PathFinderRenderer {
                         CalculationContext calculationContext = new CalculationContext();
                         AStarPathFinder finder = new AStarPathFinder(currentPos.getX(), currentPos.getY(), currentPos.getZ(), new Goal(pathData.end.getX(), pathData.end.getY(), pathData.end.getZ(), calculationContext), calculationContext);
 
-                        var path = finder.calculatePath();
+                        Path path = finder.calculatePath();
                         if (path != null) {
-                            var smoothed = path.getSmoothedPath();
+                            List<BlockPos> smoothed = path.getSmoothedPath();
                             //PathFinder pathFinder = new PathFinder(mc.theWorld, 130, 6000);
                             //List<BlockPos> newPath = pathFinder.findPath(currentPos, pathData.end);
                             //List<BlockPos> simplifiedPath = newPath != null && !newPath.isEmpty()
