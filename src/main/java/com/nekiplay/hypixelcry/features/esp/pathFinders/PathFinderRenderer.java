@@ -318,7 +318,7 @@ public class PathFinderRenderer {
                 BlockPos prevPos = pathData.remainingPath.get(0);
                 for (int i = 1; i < pathData.remainingPath.size(); i++) {
                     BlockPos currentPos = pathData.remainingPath.get(i);
-                    RenderUtils.drawLine(prevPos, currentPos.add(0, 1, 0), 4, pathData.color);
+                    RenderUtils.drawLine(prevPos, currentPos, 4, pathData.color);
 					
 					RenderUtils.drawBlockBox(
                         currentPos,
