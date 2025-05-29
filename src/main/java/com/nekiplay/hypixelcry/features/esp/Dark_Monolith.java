@@ -12,6 +12,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 
@@ -39,17 +40,19 @@ public class Dark_Monolith {
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (clientTickEvent.phase == TickEvent.Phase.START || Main.mc.theWorld == null || !Main.config.esp.dwardenMines.darkMonolith.enabled) {
+        if (clientTickEvent.phase == TickEvent.Phase.START || mc.theWorld == null || !Main.config.esp.dwardenMines.darkMonolith.enabled) {
             return;
         }
 
         // Проверяем все позиции до нахождения яйца
         BlockPos foundEgg = null;
         for (BlockPos pos : MONOLITH_POSITIONS) {
-            BlockPos currentEgg = findEgg(pos);
-            if (currentEgg != null) {
-                foundEgg = currentEgg;
-                break;
+            if (mc.theWorld.isBlockLoaded(pos)) {
+                BlockPos currentEgg = findEgg(pos);
+                if (currentEgg != null) {
+                    foundEgg = currentEgg;
+                    break;
+                }
             }
         }
 
@@ -66,7 +69,7 @@ public class Dark_Monolith {
         Vec3i vec3i = new Vec3i(5, 5, 5);
         Iterable<BlockPos> blocks = BlockPos.getAllInBox(start.add(vec3i), start.subtract(vec3i));
         for (BlockPos block : blocks) {
-            IBlockState state = Main.mc.theWorld.getBlockState(block);
+            IBlockState state = mc.theWorld.getBlockState(block);
             if (state != null && state.getBlock() == Blocks.dragon_egg) {
                 return block;
             }
