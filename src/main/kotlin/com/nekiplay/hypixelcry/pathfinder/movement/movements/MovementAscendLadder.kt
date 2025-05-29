@@ -49,6 +49,7 @@ class MovementAscendLadder(mm: Main, from: BlockPos, to: BlockPos) : Movement(mm
             }
 
             // Стоимость подъема по лестнице
+			res.set(destX, destY + 1, destZ)
             res.cost = ctx.cost.ONE_UP_LADDER_COST
         }
     }
