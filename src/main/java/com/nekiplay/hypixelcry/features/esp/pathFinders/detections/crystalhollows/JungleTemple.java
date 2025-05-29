@@ -97,11 +97,15 @@ public class JungleTemple {
                     Block block = state.getBlock();
 
                     if (block == Blocks.emerald_block) {
+                        BlockPos upPos = checkPos.up();
+                        IBlockState upState = world.getBlockState(upPos);
+                        Block upBlock = upState.getBlock();
+
                         BlockPos belowPos = checkPos.down();
                         IBlockState belowState = world.getBlockState(belowPos);
                         Block belowBlock = belowState.getBlock();
 
-                        boolean isAndesite = belowBlock == Blocks.stone &&
+                        boolean isAndesite = belowBlock == Blocks.stone && upBlock == Blocks.emerald_block && 
                                 belowState.getBlock().getMetaFromState(belowState) == 6;
                         if (isAndesite) {
                             return checkPos;
