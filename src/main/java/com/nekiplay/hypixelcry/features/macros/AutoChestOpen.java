@@ -97,12 +97,10 @@ public class AutoChestOpen {
 
     private void simulateHumanClick(MovingObjectPosition chestPos) {
         ItemStack itemstack = mc.thePlayer.inventory.getCurrentItem();
-        if (mc.playerController.getIsHittingBlock()) {
-            mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos.getBlockPos(), mc.objectMouseOver.sideHit, chestPos.hitVec);
+        mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos.getBlockPos(), mc.objectMouseOver.sideHit, chestPos.hitVec);
 
-            if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
-                mc.theWorld.setBlockState(chestPos.getBlockPos(), Blocks.air.getDefaultState());
-            }
+        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
+            mc.theWorld.setBlockState(chestPos.getBlockPos(), Blocks.air.getDefaultState());
         }
     }
 
