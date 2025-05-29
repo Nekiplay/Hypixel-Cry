@@ -52,7 +52,9 @@ public class FrozenCourpes {
                 double distance = Main.mc.thePlayer.getDistanceToEntity(armorStand);
                 if (distance <= 7 && PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
                     PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
-                    detectedCourses.add(armorStand);
+                    if (!detectedCourses.contains(armorStand)) {
+                        detectedCourses.add(armorStand);
+                    }
                 }
             }
         }
