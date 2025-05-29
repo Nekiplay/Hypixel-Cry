@@ -28,7 +28,7 @@ public class AutoChestOpen {
     };
     private int tickCounter = 0;
     private static final int CHEST_COOLDOWN = 20; // 1 секунда
-    private static final double SEARCH_DISTANCE = 5.0;
+    private static final double SEARCH_DISTANCE = 4.0;
     private static final int MAX_CHESTS_TO_REMOVE_PER_TICK = 20; // Чтобы не нагружать процессор
 
     @SubscribeEvent
