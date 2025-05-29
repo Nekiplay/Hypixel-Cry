@@ -46,6 +46,13 @@ public class FrozenCourpes {
                     }
                 }
             }
+
+            for (EntityArmorStand armorStand : new ArrayList<>(courses)) {
+                double distance = Main.mc.thePlayer.getDistanceToEntity(armorStand);
+                if (distance <= 7 && PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
+                    PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
+                }
+            }
         }
     }
 
