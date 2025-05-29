@@ -177,7 +177,7 @@ public class PathFinderRenderer {
 
         // Проверяем, достигли ли мы конечной точки
         BlockPos endPos = pathData.blocks.get(pathData.blocks.size()-1);
-        if (currentPos.distanceSq(endPos) < 4*4) {
+        if (currentPos.distanceSq(endPos) < RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
             return true;
         }
 
