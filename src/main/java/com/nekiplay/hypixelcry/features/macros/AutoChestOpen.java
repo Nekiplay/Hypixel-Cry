@@ -17,10 +17,16 @@ import java.util.*;
 import static com.nekiplay.hypixelcry.Main.mc;
 
 public class AutoChestOpen {
-    private final Map<BlockPos, Integer> openedChests = new HashMap<>();
+    private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<BlockPos, Integer>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<BlockPos, Integer> eldest) {
+            return size() > 100; // Ограничиваем размер карты
+        }
+    };
     private int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 20;
+    private static final int CHEST_COOLDOWN = 20; // 1 секунда
     private static final double SEARCH_DISTANCE = 5.0;
+    private static final int MAX_CHESTS_TO_REMOVE_PER_TICK = 20; // Чтобы не нагружать процессор
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -30,7 +36,7 @@ public class AutoChestOpen {
 
         tickCounter++;
         if (tickCounter % 20 == 0) {
-            updateOpenedChestsTimers();
+            cleanUpOldChests();
         }
 
         if (mc.currentScreen == null) {
@@ -38,9 +44,20 @@ public class AutoChestOpen {
         }
     }
 
-    private void updateOpenedChestsTimers() {
-        openedChests.entrySet().removeIf(entry -> entry.getValue() >= CHEST_COOLDOWN);
-        openedChests.replaceAll((k, v) -> v + 20);
+    private void cleanUpOldChests() {
+        // Удаляем старые сундуки, которые больше не актуальны
+        Iterator<Map.Entry<BlockPos, Integer>> iterator = openedChests.entrySet().iterator();
+        int removed = 0;
+
+        while (iterator.hasNext() && removed < MAX_CHESTS_TO_REMOVE_PER_TICK) {
+            Map.Entry<BlockPos, Integer> entry = iterator.next();
+            if (entry.getValue() >= CHEST_COOLDOWN) {
+                iterator.remove();
+                removed++;
+            } else {
+                openedChests.put(entry.getKey(), entry.getValue() + 20);
+            }
+        }
     }
 
     private void checkForChestInLineOfSight() {
