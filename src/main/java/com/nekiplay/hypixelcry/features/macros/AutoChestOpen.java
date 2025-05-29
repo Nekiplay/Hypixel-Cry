@@ -70,7 +70,7 @@ public class AutoChestOpen {
             Block block = state.getBlock();
             if (block == Blocks.chest) {
                 if (!openedChests.containsKey(pos)) {
-                    simulateHumanClick(pos);
+                    simulateHumanClick(mc.objectMouseOver);
                     openedChests.put(pos, 0);
                     return;
                 }
