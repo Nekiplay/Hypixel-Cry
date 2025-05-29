@@ -172,35 +172,50 @@ public class BlockUtils {
     }
 
     public static MovingObjectPosition rayTraceToChest(Vec3 startVec, Vec3 endVec) {
-        MovingObjectPosition result = null;
-        Vec3 currentVec = startVec;
-        double step = 0.1; // Шаг для проверки
-        Vec3 direction = endVec.subtract(startVec).normalize();
-        double distance = startVec.distanceTo(endVec);
-
-        for (double d = 0; d < distance; d += step) {
-            currentVec = startVec.add(new Vec3(direction.xCoord * d, direction.yCoord * d, direction.zCoord * d));
-            BlockPos pos = new BlockPos(currentVec.xCoord, currentVec.yCoord, currentVec.zCoord);
-            IBlockState state = Main.mc.theWorld.getBlockState(pos);
-
-            if (state.getBlock() == Blocks.chest) {
-                // Нашли сундук - возвращаем позицию
-                Vec3 hitVec = new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-                return new MovingObjectPosition(MovingObjectPosition.MovingObjectType.BLOCK, hitVec,
-                        EnumFacing.UP, pos);
-            }
-
-            // Пропускаем только воздух и полностью прозрачные блоки
-            if (state.getBlock() != Blocks.air &&
-                    !state.getBlock().isPassable(Main.mc.theWorld, pos) &&
-                    state.getBlock().isOpaqueCube()) {
-                // Наткнулись на непрозрачный блок - прерываем поиск
-                break;
-            }
-        }
-
-        return result;
-    }
+		MovingObjectPosition result = null;
+		Vec3 direction = endVec.subtract(startVec).normalize();
+		double distance = startVec.distanceTo(endVec);
+		double step = 0.1; // Шаг для проверки
+	
+		// Список блоков, которые можно "игнорировать" (пропускать)
+		List<Block> transparentBlocks = Arrays.asList(
+			Blocks.air, Blocks.tallgrass, Blocks.flowing_water, Blocks.water,
+			Blocks.flowing_lava, Blocks.lava, Blocks.vine, Blocks.snow_layer
+		);
+	
+		for (double d = 0; d <= distance; d += step) {
+			Vec3 currentVec = startVec.addVector(
+				direction.xCoord * d,
+				direction.yCoord * d,
+				direction.zCoord * d
+			);
+			BlockPos pos = new BlockPos(currentVec);
+			IBlockState state = Main.mc.theWorld.getBlockState(pos);
+	
+			// Если нашли сундук
+			if (state.getBlock() == Blocks.chest) {
+				Vec3 hitVec = new Vec3(
+					pos.getX() + 0.5,
+					pos.getY() + 0.5,
+					pos.getZ() + 0.5
+				);
+				return new MovingObjectPosition(
+					MovingObjectPosition.MovingObjectType.BLOCK,
+					hitVec,
+					EnumFacing.UP,
+					pos
+				);
+			}
+	
+			// Если встретили непрозрачный блок (не из списка игнорируемых)
+			if (!transparentBlocks.contains(state.getBlock()) && 
+				!state.getBlock().isPassable(Main.mc.theWorld, pos)) {
+				break;
+			}
+		}
+	
+		return result;
+	}
 
     public static MovingObjectPosition fastRayTraceIgnoreBlocks(Vec3 startVec, Vec3 endVec, Block... ignoredBlocks) {
         List<Block> ignored = Arrays.asList(ignoredBlocks);
