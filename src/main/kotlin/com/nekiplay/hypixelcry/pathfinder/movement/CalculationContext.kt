@@ -17,7 +17,7 @@ class CalculationContext(sprintFactor: Double = 0.13, walkFactor: Double = 0.1, 
     val maxFallHeight = 20
 
     var stepSize = 1
-    var maxIterations = 25000
+    var maxIterations = 5000
 
     fun get(x: Int, y: Int, z: Int): IBlockState {
         return bsa.get(x, y, z)
