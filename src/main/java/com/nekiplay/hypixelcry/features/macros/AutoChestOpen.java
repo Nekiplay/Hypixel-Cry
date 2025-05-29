@@ -64,6 +64,20 @@ public class AutoChestOpen {
     }
 
     private void checkForChestInLineOfSight() {
+        if (mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            BlockPos pos = mc.objectMouseOver.getBlockPos();
+            IBlockState state = mc.theWorld.getBlockState(pos);
+            Block block = state.getBlock();
+            if (block == Blocks.chest) {
+                if (!openedChests.containsKey(pos)) {
+                    simulateHumanClick(pos);
+                    openedChests.put(pos, 0);
+                    return;
+                }
+            }
+        }
+
+
         if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.GhostHand)) {
             Vec3 startVec = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
             Vec3 lookVec = mc.thePlayer.getLook(1.0f);
@@ -79,27 +93,16 @@ public class AutoChestOpen {
                 }
             }
         }
-        else {
-            if (mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                BlockPos pos = mc.objectMouseOver.getBlockPos();
-                IBlockState state = mc.theWorld.getBlockState(pos);
-                Block block = state.getBlock();
-                if (block == Blocks.chest) {
-                    if (!openedChests.containsKey(pos)) {
-                        simulateHumanClick(pos);
-                        openedChests.put(pos, 0);
-                    }
-                }
-            }
-        }
     }
 
     private void simulateHumanClick(BlockPos chestPos) {
         ItemStack itemstack = mc.thePlayer.inventory.getCurrentItem();
-        mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
+        if (mc.playerController.getIsHittingBlock()) {
+            mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
 
-        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
-            mc.theWorld.setBlockState(chestPos, Blocks.air.getDefaultState());
+            if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
+                mc.theWorld.setBlockState(chestPos, Blocks.air.getDefaultState());
+            }
         }
     }
 
