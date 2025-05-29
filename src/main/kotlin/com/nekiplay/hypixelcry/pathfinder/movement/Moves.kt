@@ -103,35 +103,5 @@ enum class Moves(val offsetX: Int, val offsetZ: Int) {
         }
     },
 
-    LADDER_UP_NORTH(0, -1) {
-        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
-            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
-        }
-    },
-
-    LADDER_UP_SOUTH(0, +1) {
-        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
-            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
-        }
-    },
-
-    LADDER_UP_EAST(+1, 0) {
-        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
-            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
-        }
-    },
-
-    LADDER_UP_WEST(-1, 0) {
-        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
-            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
-        }
-    },
-
-    LADDER_UP_CENTER(0, 0) {
-        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
-            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX, parentY + 1, parentZ, res)
-        }
-    };
-
     abstract fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult)
 }
