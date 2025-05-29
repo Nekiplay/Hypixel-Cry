@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 
 import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 public class ChestESP {
     private static final ArrayList<BlockPos> locations = new ArrayList<BlockPos>();
@@ -47,19 +48,20 @@ public class ChestESP {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (Main.config.esp.chestEsp.enabled)
         {
             for (BlockPos pos: locations) {
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
+                    RenderUtils.drawBlockBox(pos, toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
                 }
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.config.esp.chestEsp.colour));
+                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.chestEsp.colour));
                 }
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
+                    RenderUtils.drawTracer(pos, toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
                 }
             }
         }

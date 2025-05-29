@@ -15,6 +15,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
+import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
+
 public class Treasure_Hunter {
     public BlockPos pos;
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
@@ -121,18 +123,19 @@ public class Treasure_Hunter {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (allowRender) {
             if (Main.config.esp.desertSettlement.treasureHunterFetcher.enabled && pos != null) {
                 if (Main.config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
+                    RenderUtils.drawBlockBox(pos, toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
                 if (Main.config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour));
+                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour));
                 }
                 if (Main.config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
+                    RenderUtils.drawTracer(pos, toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
             }
         }

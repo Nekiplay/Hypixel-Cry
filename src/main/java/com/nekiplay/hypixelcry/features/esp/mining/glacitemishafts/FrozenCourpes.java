@@ -20,12 +20,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 public class FrozenCourpes {
     public List<EntityArmorStand> courses = new ArrayList<EntityArmorStand>();
     private final List<Integer> removedPathFinders = new ArrayList<>();
     private EntityArmorStand currentTarget = null;
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
@@ -37,7 +39,7 @@ public class FrozenCourpes {
                 if (entity instanceof EntityArmorStand) {
                     EntityArmorStand armorStand = (EntityArmorStand) entity;
                     String head = EntityUtils.getArmorStandHeadName(armorStand);
-                    if (head != null && !head.isEmpty() && head.contains("Lapis Armor Helmet")) {
+                    if (head != null && head.contains("Lapis Armor Helmet")) {
                         if (!courses.contains(armorStand)) {
                             courses.add(armorStand);
                         }
@@ -52,7 +54,7 @@ public class FrozenCourpes {
                     for (EntityArmorStand armorStand : courses) {
                         if (!removedPathFinders.contains(armorStand.getEntityId())) {
                             PathFinderRenderer.addOrUpdatePath(Integer.toString(armorStand.getEntityId()), armorStand.getPosition(),
-                                    SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), "Courpe");
+                                    toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), "Courpe");
                         }
                     }
                 } else if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == ESP.Glacite_Mineshafts.Frozen_Courpes.Priority.Nearest) {
@@ -79,6 +81,7 @@ public class FrozenCourpes {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void handleNearestPriority() {
         // Remove all existing paths first
         for (EntityArmorStand armorStand : courses) {
@@ -105,7 +108,7 @@ public class FrozenCourpes {
             // Add path only to the current target
             PathFinderRenderer.addOrUpdatePath(Integer.toString(currentTarget.getEntityId()),
                     currentTarget.getPosition(),
-                    SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour),
+                    toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour),
                     "Courpe");
         }
     }
@@ -122,18 +125,19 @@ public class FrozenCourpes {
         currentTarget = null;
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         if (Main.config.esp.glaciteMineshafts.frozenCourpes.enabled) {
             for (EntityArmorStand entity : courses) {
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawEntityBox(entity, SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
+                    RenderUtils.drawEntityBox(entity, toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
                 }
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Courpe", new BlockPos(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour));
+                    RenderUtils.renderWaypointText("Courpe", new BlockPos(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour));
                 }
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(entity.getPosition(), SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
+                    RenderUtils.drawTracer(entity.getPosition(), toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
                 }
             }
         }
