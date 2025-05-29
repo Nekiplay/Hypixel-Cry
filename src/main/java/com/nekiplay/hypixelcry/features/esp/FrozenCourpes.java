@@ -2,6 +2,7 @@ package com.nekiplay.hypixelcry.features.esp;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import com.nekiplay.hypixelcry.utils.EntityUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.Main.mc;
@@ -23,48 +25,94 @@ import static com.nekiplay.hypixelcry.Main.mc;
 public class FrozenCourpes {
     public List<EntityArmorStand> courses = new ArrayList<EntityArmorStand>();
     private final List<Integer> removedPathFinders = new ArrayList<>();
+    private EntityArmorStand currentTarget = null;
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
             return;
         }
-        if (Main.mc.theWorld != null) {
+        if (Main.mc.theWorld != null && Main.mc.thePlayer != null) {
+            // Update course list
             for (Entity entity : mc.theWorld.getLoadedEntityList()) {
                 if (entity instanceof EntityArmorStand) {
                     EntityArmorStand armorStand = (EntityArmorStand) entity;
                     String head = EntityUtils.getArmorStandHeadName(armorStand);
-                    if (head != null && !head.isEmpty()) {
-                        if (head.contains("Lapis Armor Helmet")) {
-                            if (!courses.contains((armorStand))) {
-                                courses.add(armorStand);
-
-                                if (!removedPathFinders.contains(armorStand.getEntityId())) {
-                                    if (Main.config.esp.glaciteTunnels.frozenCourpes.enabledPathFinder) {
-                                        PathFinderRenderer.addOrUpdatePath(Integer.toString(armorStand.getEntityId()), armorStand.getPosition(), SpecialColor.toSpecialColor(Main.config.esp.glaciteTunnels.frozenCourpes.colour), "Courpe");
-                                    }
-                                }
-                            }
+                    if (head != null && !head.isEmpty() && head.contains("Lapis Armor Helmet")) {
+                        if (!courses.contains(armorStand)) {
+                            courses.add(armorStand);
                         }
                     }
                 }
             }
 
+            // Handle path finding based on priority
+            if (Main.config.esp.glaciteMineshafts.frozenCourpes.enabledPathFinder) {
+                if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == ESP.Glacite_Mineshafts.Frozen_Courpes.Priority.All) {
+                    // Original behavior for All priority
+                    for (EntityArmorStand armorStand : courses) {
+                        if (!removedPathFinders.contains(armorStand.getEntityId())) {
+                            PathFinderRenderer.addOrUpdatePath(Integer.toString(armorStand.getEntityId()), armorStand.getPosition(),
+                                    SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), "Courpe");
+                        }
+                    }
+                } else if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == ESP.Glacite_Mineshafts.Frozen_Courpes.Priority.Nearest) {
+                    // New behavior for Nearest priority
+                    handleNearestPriority();
+                }
+            }
+
+            // Check if player reached any target
             for (EntityArmorStand armorStand : new ArrayList<>(courses)) {
                 double distance = Main.mc.thePlayer.getDistanceToEntity(armorStand);
-                if (distance <= 7 && PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
-                    PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
+                if (distance <= 7) {
+                    if (PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
+                        PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
+                    }
                     if (!removedPathFinders.contains(armorStand.getEntityId())) {
                         removedPathFinders.add(armorStand.getEntityId());
+                    }
+                    if (armorStand.equals(currentTarget)) {
+                        currentTarget = null; // Reset current target if reached
                     }
                 }
             }
         }
     }
 
+    private void handleNearestPriority() {
+        // Remove all existing paths first
+        for (EntityArmorStand armorStand : courses) {
+            PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
+        }
+
+        // Filter out reached targets and find the nearest one
+        List<EntityArmorStand> validTargets = new ArrayList<>();
+        for (EntityArmorStand armorStand : courses) {
+            if (!removedPathFinders.contains(armorStand.getEntityId())) {
+                validTargets.add(armorStand);
+            }
+        }
+
+        if (!validTargets.isEmpty()) {
+            // Sort by distance to player
+            validTargets.sort(Comparator.comparingDouble(e -> Main.mc.thePlayer.getDistanceToEntity(e)));
+
+            // If we don't have a current target or the current target is no longer valid
+            if (currentTarget == null || !validTargets.contains(currentTarget)) {
+                currentTarget = validTargets.get(0); // Get the nearest
+            }
+
+            // Add path only to the current target
+            PathFinderRenderer.addOrUpdatePath(Integer.toString(currentTarget.getEntityId()),
+                    currentTarget.getPosition(),
+                    SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour),
+                    "Courpe");
+        }
+    }
+
     @SubscribeEvent
-    public void onWorldUnload(WorldEvent.Unload event)
-    {
+    public void onWorldUnload(WorldEvent.Unload event) {
         for (EntityArmorStand armorStand : courses) {
             if (PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
                 PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
@@ -72,21 +120,21 @@ public class FrozenCourpes {
         }
         courses.clear();
         removedPathFinders.clear();
+        currentTarget = null;
     }
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.config.esp.glaciteTunnels.frozenCourpes.enabled)
-        {
+        if (Main.config.esp.glaciteMineshafts.frozenCourpes.enabled) {
             for (EntityArmorStand entity : courses) {
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawEntityBox(entity, SpecialColor.toSpecialColor(Main.config.esp.glaciteTunnels.frozenCourpes.colour), 1, event.partialTicks);
+                    RenderUtils.drawEntityBox(entity, SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
                 }
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Courpe", new BlockPos(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.config.esp.glaciteTunnels.frozenCourpes.colour));
+                    RenderUtils.renderWaypointText("Courpe", new BlockPos(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour));
                 }
                 if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(entity.getPosition(), SpecialColor.toSpecialColor(Main.config.esp.glaciteTunnels.frozenCourpes.colour), 1, event.partialTicks);
+                    RenderUtils.drawTracer(entity.getPosition(), SpecialColor.toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
                 }
             }
         }

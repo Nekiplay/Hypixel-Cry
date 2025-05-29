@@ -215,11 +215,11 @@ public class ESP {
         }
     }
 
-    @Category(name = "Glacite Tunnels", desc = "Render features in glacite tunnels")
+    @Category(name = "Glacite Mineshafts", desc = "Render features in glacite mineshafts")
     @Expose
-    public Glacite_Tunnels glaciteTunnels = new Glacite_Tunnels();
+    public Glacite_Mineshafts glaciteMineshafts = new Glacite_Mineshafts();
 
-    public static class Glacite_Tunnels {
+    public static class Glacite_Mineshafts {
         @Accordion
         @ConfigOption(
                 name = "Frozen Courpes ESP",
@@ -254,6 +254,20 @@ public class ESP {
             @ConfigEditorBoolean
             @Expose
             public boolean enabledPathFinder = true;
+
+            @ConfigOption(name = "PathFinder priority", desc = "")
+            @Expose
+            @ConfigEditorDropdown()
+            public Priority priority = Priority.Nearest;
+
+            public enum Priority {
+                Nearest, All;
+
+                @Override
+                public String toString() {
+                    return name();
+                }
+            }
         }
     }
 
@@ -268,10 +282,18 @@ public class ESP {
     public static class PathFinderESP {
         @ConfigOption(
                 name = "Enable",
-                desc = "Enable PathFinder?"
+                desc = "Enable render PathFinder?"
         )
         @ConfigEditorBoolean
         @Expose
         public boolean enabled = true;
+
+        @ConfigOption(
+                name = "Enable",
+                desc = "Enable render sub points?"
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean enableSubPoints = false;
     }
 }

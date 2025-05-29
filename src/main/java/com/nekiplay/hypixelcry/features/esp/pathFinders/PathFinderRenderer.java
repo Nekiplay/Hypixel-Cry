@@ -83,7 +83,7 @@ public class PathFinderRenderer {
             }
         }
 
-        if (Main.config.esp.pathFinderESP.enabled) {
+        if (Main.config.misc.pathFinderESP.enabled) {
             for (Map.Entry<String, PathData> entry : paths.entrySet()) {
                 String pathId = entry.getKey();
                 PathData pathData = entry.getValue();
@@ -328,7 +328,7 @@ public class PathFinderRenderer {
                             pathData.color
                     );
 					
-					if (!currentPos.equals(endPos)) {
+					if (!currentPos.equals(endPos) && Main.config.esp.pathFinderESP.enableSubPoints) {
 						RenderUtils.drawBlockBox(
 							currentPos,
 							pathData.color, 1,
