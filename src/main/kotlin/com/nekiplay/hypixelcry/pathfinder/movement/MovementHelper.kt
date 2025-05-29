@@ -59,7 +59,7 @@ object MovementHelper {
             }
 
             block is BlockCauldron -> false
-            block == Blocks.ladder -> false
+            block == Blocks.ladder -> true
             else -> {
                 try {
                     block.isPassable(null, null)

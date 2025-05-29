@@ -1,6 +1,7 @@
 package com.nekiplay.hypixelcry.pathfinder.movement
 
 import com.nekiplay.hypixelcry.pathfinder.movement.movements.MovementAscend
+import com.nekiplay.hypixelcry.pathfinder.movement.movements.MovementAscendLadder
 import com.nekiplay.hypixelcry.pathfinder.movement.movements.MovementDescend
 import com.nekiplay.hypixelcry.pathfinder.movement.movements.MovementDiagonal
 import com.nekiplay.hypixelcry.pathfinder.movement.movements.MovementTraverse
@@ -99,6 +100,36 @@ enum class Moves(val offsetX: Int, val offsetZ: Int) {
     DIAGONAL_SOUTHWEST(-1, +1) {
         override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
             MovementDiagonal.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentZ + offsetZ, res)
+        }
+    },
+
+    LADDER_UP_NORTH(0, -1) {
+        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
+            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
+        }
+    },
+
+    LADDER_UP_SOUTH(0, +1) {
+        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
+            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
+        }
+    },
+
+    LADDER_UP_EAST(+1, 0) {
+        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
+            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
+        }
+    },
+
+    LADDER_UP_WEST(-1, 0) {
+        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
+            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX + offsetX, parentY + 1, parentZ + offsetZ, res)
+        }
+    },
+
+    LADDER_UP_CENTER(0, 0) {
+        override fun calculate(ctx: CalculationContext, parentX: Int, parentY: Int, parentZ: Int, res: MovementResult) {
+            MovementAscendLadder.calculateCost(ctx, parentX, parentY, parentZ, parentX, parentY + 1, parentZ, res)
         }
     };
 
