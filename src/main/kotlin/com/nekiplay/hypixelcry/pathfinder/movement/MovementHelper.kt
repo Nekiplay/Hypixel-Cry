@@ -109,6 +109,95 @@ object MovementHelper {
         return block.isPassable(bsa.access, bsa.isPassableBlockPos.set(x, y, z))
     }
 
+    fun canWalkThroughLader(
+        bsa: BlockStateAccessor,
+        x: Int,
+        y: Int,
+        z: Int,
+        state: IBlockState = bsa.get(x, y, z)
+    ): Boolean {
+        val canWalk = canWalkThroughBlockStateLader(state)
+        if (canWalk != null) {
+            return canWalk
+        }
+        return canWalkThroughPositionLader(bsa, x, y, z, state)
+    }
+
+    fun canWalkThroughBlockStateLader(state: IBlockState): Boolean? {
+        val block = state.block
+        return when {
+            block == Blocks.air -> true
+            block == Blocks.fire || block == Blocks.tripwire || block == Blocks.web || block == Blocks.end_portal || block == Blocks.cocoa || block is BlockSkull || block is BlockTrapDoor -> false
+            block is BlockDoor || block is BlockFenceGate -> {
+                // TODO this assumes that all doors in all mods are openable
+                if (block == Blocks.iron_door) {
+                    false
+                } else {
+                    true
+                }
+            }
+
+            block == Blocks.carpet -> null
+            block is BlockSnow -> null
+            block is BlockLiquid -> {
+                if (state.getValue(BlockLiquid.LEVEL) != 0) {
+                    false
+                } else {
+                    null
+                }
+            }
+
+            block is BlockCauldron -> false
+            block == Blocks.ladder -> true
+            else -> {
+                try {
+                    block.isPassable(null, null)
+                } catch (exception: Throwable) {
+                    println("The block ${state.block.localizedName} requires a special case due to the exception ${exception.message}")
+                    null
+                }
+            }
+        }
+    }
+
+    fun canWalkThroughPositionLader(
+        bsa: BlockStateAccessor,
+        x: Int,
+        y: Int,
+        z: Int,
+        state: IBlockState
+    ): Boolean {
+        val block = state.block
+
+        if (block == Blocks.carpet) {
+            return canStandOn(bsa, x, y - 1, z)
+        }
+
+        if (block is BlockSnow) {
+            if (!bsa.isBlockInLoadedChunks(x, z)) {
+                return true
+            }
+            if (state.getValue(BlockSnow.LAYERS) >= 1) {
+                return false
+            }
+            return canStandOn(bsa, x, y - 1, z)
+        }
+
+        if (block is BlockLiquid) {
+            if (isFlowing(x, y, z, state, bsa)) {
+                return false
+            }
+
+            val up = bsa.get(x, y + 1, z)
+            if (up.block is BlockLiquid || up.block is BlockLilyPad) {
+                return false
+            }
+            return block == Blocks.water || block == Blocks.flowing_water
+        }
+
+        return block.isPassable(bsa.access, bsa.isPassableBlockPos.set(x, y, z))
+    }
+
     fun canStandOn(bsa: BlockStateAccessor, x: Int, y: Int, z: Int, state: IBlockState = bsa.get(x, y, z)): Boolean {
         val block = state.block
         return when {

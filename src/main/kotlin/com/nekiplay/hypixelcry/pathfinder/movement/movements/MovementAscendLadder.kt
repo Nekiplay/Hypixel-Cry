@@ -34,12 +34,12 @@ class MovementAscendLadder(mm: Main, from: BlockPos, to: BlockPos) : Movement(mm
                 return
             }
 
-            if (!MovementHelper.isLadder(destState) && !MovementHelper.canWalkThrough(ctx.bsa, destX, destY, destZ)) {
+            if (!MovementHelper.isLadder(destState) && !MovementHelper.canWalkThroughLader(ctx.bsa, destX, destY, destZ)) {
                 return
             }
 
             // Проверяем пространство над целевым блоком
-            if (!MovementHelper.canWalkThrough(ctx.bsa, destX, destY + 1, destZ)) {
+            if (!MovementHelper.canWalkThroughLader(ctx.bsa, destX, destY + 1, destZ)) {
                 return
             }
 

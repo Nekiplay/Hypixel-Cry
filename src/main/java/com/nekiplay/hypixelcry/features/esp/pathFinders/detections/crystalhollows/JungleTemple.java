@@ -59,12 +59,11 @@ public class JungleTemple {
         detectionThread = new Thread(() -> {
             BlockPos foundPos = findEmeraldWithSmoothAndesiteBelow(world, center, radius);
 
-            if (Main.getInstance().config.esp.crystalHollows.pathFinder.enabledJungleTemple) {
+            if (Main.config.esp.crystalHollows.pathFinder.enabledJungleTemple) {
                 if (foundPos != null && !foundAndNotified) {
                     jungleTemple = foundPos;
                     foundAndNotified = true;
 
-                    // Отправляем сообщение игроку
                     PathFinderRenderer.addOrUpdatePath("Temple", foundPos, Color.GREEN, "Temple");
                 }
             }

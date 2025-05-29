@@ -69,7 +69,7 @@ public class PathFinderRenderer {
         }
 
         BlockPos currentPos = mc.thePlayer.getPosition();
-
+        currentPos = currentPos.add(0, -1, 0);
         // Обработка результатов
         while (!pathResults.isEmpty()) {
             PathResult result = pathResults.poll();
@@ -103,12 +103,13 @@ public class PathFinderRenderer {
                 updateRemainingPath(currentPos, pathData);
 
                 if (shouldRecalculatePath(currentPos, pathData)) {
+                    BlockPos finalCurrentPos = currentPos;
                     pathFinderExecutor.submit(() -> {
                         CalculationContext ctx = new CalculationContext();
                         BlockPos targetPos = getNearestLoadedPos(endPos);
 
                         AStarPathFinder finder = new AStarPathFinder(
-                                currentPos.getX(), currentPos.getY(), currentPos.getZ(),
+                                finalCurrentPos.getX(), finalCurrentPos.getY(), finalCurrentPos.getZ(),
                                 new Goal(targetPos.getX(), targetPos.getY(), targetPos.getZ(), ctx),
                                 ctx
                         );
@@ -202,7 +203,7 @@ public class PathFinderRenderer {
 
     private boolean isFarFromEntirePath(BlockPos playerPos, List<BlockPos> path) {
         // Быстрая проверка расстояния до всех точек пути
-        double maxAllowedDistSq = RECALCULATION_DISTANCE * RECALCULATION_DISTANCE * 4; // Больший порог
+        double maxAllowedDistSq = RECALCULATION_DISTANCE * RECALCULATION_DISTANCE; // Больший порог
 
         for (BlockPos pos : path) {
             if (playerPos.distanceSq(pos) <= maxAllowedDistSq) {
@@ -320,7 +321,12 @@ public class PathFinderRenderer {
                 BlockPos prevPos = pathData.remainingPath.get(0);
                 for (int i = 1; i < pathData.remainingPath.size(); i++) {
                     BlockPos currentPos = pathData.remainingPath.get(i);
-                    RenderUtils.drawLine(prevPos, currentPos, 4, pathData.color);
+                    RenderUtils.drawLine(
+                            prevPos.add(0, 0.5, 0),
+                            currentPos.add(0, 0.5, 0),
+                            4,
+                            pathData.color
+                    );
 					
 					if (!currentPos.equals(endPos)) {
 						RenderUtils.drawBlockBox(
