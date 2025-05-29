@@ -1,8 +1,13 @@
 package com.nekiplay.hypixelcry.config.neupages;
 
 import com.google.gson.annotations.Expose;
+import com.nekiplay.hypixelcry.config.ESPFeatures;
 import io.github.notenoughupdates.moulconfig.annotations.*;
 import org.lwjgl.input.Keyboard;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Macros {
     @Accordion
@@ -33,10 +38,31 @@ public class Macros {
         @Expose
         public boolean enabled = false;
 
-        @ConfigOption(name = "Rage mode", desc = "Set chest to air after open")
-        @ConfigEditorBoolean()
+        @ConfigOption(name = "Features", desc = "")
         @Expose
-        public boolean rageMode = false;
+        @ConfigEditorDraggableList(requireNonEmpty = false)
+        public List<ChestFeatures> features = new ArrayList<ChestFeatures>() {{
+            add(ChestFeatures.Air);
+            add(ChestFeatures.GhostHand);
+        }};
+
+        public enum ChestFeatures {
+            Air("Set to air after open"),
+            GhostHand("Ghost hand"),
+
+            ;
+            String label;
+
+            ChestFeatures(String label) {
+                this.label = label;
+            }
+
+            @Override
+            public String toString() {
+                return label;
+            }
+        }
+
     }
 
     @Category(name = "Dungeons", desc = "Macros in dungeons")

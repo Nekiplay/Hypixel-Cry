@@ -1,8 +1,11 @@
 package com.nekiplay.hypixelcry.features.macros;
 
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.neupages.Macros;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.utils.BlockUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -25,7 +28,7 @@ public class AutoChestOpen {
     };
     private int tickCounter = 0;
     private static final int CHEST_COOLDOWN = 20; // 1 секунда
-    private static final double SEARCH_DISTANCE = 5.0;
+    private static final double SEARCH_DISTANCE = 4.0;
     private static final int MAX_CHESTS_TO_REMOVE_PER_TICK = 20; // Чтобы не нагружать процессор
 
     @SubscribeEvent
@@ -61,17 +64,32 @@ public class AutoChestOpen {
     }
 
     private void checkForChestInLineOfSight() {
-        Vec3 startVec = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
-        Vec3 lookVec = mc.thePlayer.getLook(1.0f);
-        Vec3 endVec = startVec.addVector(lookVec.xCoord * SEARCH_DISTANCE, lookVec.yCoord * SEARCH_DISTANCE, lookVec.zCoord * SEARCH_DISTANCE);
+        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.GhostHand)) {
+            Vec3 startVec = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
+            Vec3 lookVec = mc.thePlayer.getLook(1.0f);
+            Vec3 endVec = startVec.addVector(lookVec.xCoord * SEARCH_DISTANCE, lookVec.yCoord * SEARCH_DISTANCE, lookVec.zCoord * SEARCH_DISTANCE);
 
-        MovingObjectPosition mouseOver = BlockUtils.rayTraceToChest(startVec, endVec);
+            MovingObjectPosition mouseOver = BlockUtils.rayTraceToChest(startVec, endVec);
 
-        if (mouseOver != null && mouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-            BlockPos chestPos = mouseOver.getBlockPos();
-            if (!openedChests.containsKey(chestPos)) {
-                simulateHumanClick(chestPos);
-                openedChests.put(chestPos, 0);
+            if (mouseOver != null && mouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                BlockPos chestPos = mouseOver.getBlockPos();
+                if (!openedChests.containsKey(chestPos)) {
+                    simulateHumanClick(chestPos);
+                    openedChests.put(chestPos, 0);
+                }
+            }
+        }
+        else {
+            if (mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                BlockPos pos = mc.objectMouseOver.getBlockPos();
+                IBlockState state = mc.theWorld.getBlockState(pos);
+                Block block = state.getBlock();
+                if (block == Blocks.chest) {
+                    if (!openedChests.containsKey(pos)) {
+                        simulateHumanClick(pos);
+                        openedChests.put(pos, 0);
+                    }
+                }
             }
         }
     }
@@ -80,7 +98,7 @@ public class AutoChestOpen {
         ItemStack itemstack = mc.thePlayer.inventory.getCurrentItem();
         mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
 
-        if (Main.config.macros.autoChestOpen.rageMode) {
+        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
             mc.theWorld.setBlockState(chestPos, Blocks.air.getDefaultState());
         }
     }
@@ -92,7 +110,7 @@ public class AutoChestOpen {
 
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
-        if (Main.config.macros.autoChestOpen.rageMode && event.newState.getBlock() == Blocks.chest) {
+        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air) && event.newState.getBlock() == Blocks.chest) {
             if (openedChests.containsKey(event.pos)) {
                 event.setCanceled(true);
             }
