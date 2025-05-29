@@ -22,7 +22,7 @@ import static com.nekiplay.hypixelcry.Main.mc;
 
 public class FrozenCourpes {
     public List<EntityArmorStand> courses = new ArrayList<EntityArmorStand>();
-    public List<EntityArmorStand> detectedCourses = new ArrayList<EntityArmorStand>();
+    private List<Integer> removedPathFinders = new ArrayList<>();
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
@@ -39,7 +39,7 @@ public class FrozenCourpes {
                             if (!courses.contains((armorStand))) {
                                 courses.add(armorStand);
 
-                                if (!detectedCourses.contains(armorStand)) {
+                                if (!removedPathFinders.contains(armorStand.getEntityId())) {
                                     if (Main.config.esp.glaciteTunnels.frozenCourpes.enabledPathFinder) {
                                         PathFinderRenderer.addOrUpdatePath(Integer.toString(armorStand.getEntityId()), armorStand.getPosition(), SpecialColor.toSpecialColor(Main.config.esp.glaciteTunnels.frozenCourpes.colour), "Courpe");
                                     }
@@ -54,8 +54,8 @@ public class FrozenCourpes {
                 double distance = Main.mc.thePlayer.getDistanceToEntity(armorStand);
                 if (distance <= 7 && PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
                     PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
-                    if (!detectedCourses.contains(armorStand)) {
-                        detectedCourses.add(armorStand);
+                    if (!removedPathFinders.contains(armorStand.getEntityId())) {
+                        removedPathFinders.add(armorStand.getEntityId());
                     }
                 }
             }
