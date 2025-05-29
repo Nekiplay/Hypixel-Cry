@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.features.esp;
+package com.nekiplay.hypixelcry.features.esp.mining.glacitemishafts;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class FrozenCourpes {
     public List<EntityArmorStand> courses = new ArrayList<EntityArmorStand>();
     private final List<Integer> removedPathFinders = new ArrayList<>();
     private EntityArmorStand currentTarget = null;
-
+    
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (clientTickEvent.phase == TickEvent.Phase.START) {

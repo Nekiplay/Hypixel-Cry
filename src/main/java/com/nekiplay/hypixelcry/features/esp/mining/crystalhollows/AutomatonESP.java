@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.features.esp.mobs;
+package com.nekiplay.hypixelcry.features.esp.mining.crystalhollows;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
@@ -6,7 +6,6 @@ import com.nekiplay.hypixelcry.utils.RenderUtils;
 import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

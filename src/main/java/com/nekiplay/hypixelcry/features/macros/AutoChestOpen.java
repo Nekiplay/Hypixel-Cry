@@ -15,15 +15,15 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.nekiplay.hypixelcry.Main.mc;
 
 public class AutoChestOpen {
     public BlockPos lastUsed = null;
-    public List<BlockPos> opened = new ArrayList<BlockPos>();
+    public Map<BlockPos, Integer> opened = new HashMap<BlockPos, Integer>();
+    private int tickCounter = 0;
+
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
@@ -35,13 +35,31 @@ public class AutoChestOpen {
         if (!Main.config.macros.autoChestOpen.enabled) {
             return;
         }
+
+        // Увеличиваем счетчик тиков и обрабатываем таймеры для opened
+        tickCounter++;
+        if (tickCounter % 20 == 0) { // Оптимизация: проверяем каждые 20 тиков
+            List<BlockPos> toRemove = new ArrayList<BlockPos>();
+            for (Map.Entry<BlockPos, Integer> entry : opened.entrySet()) {
+                int newValue = entry.getValue() + 20;
+                if (newValue >= 200) { // 200 тиков = 10 секунд (20 тиков/сек)
+                    toRemove.add(entry.getKey());
+                } else {
+                    opened.put(entry.getKey(), newValue);
+                }
+            }
+            for (BlockPos pos : toRemove) {
+                opened.remove(pos);
+            }
+        }
+
         if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
             BlockPos pos = mc.objectMouseOver.getBlockPos();
             IBlockState blockState = mc.theWorld.getBlockState(pos);
             if (mc.currentScreen == null && blockState.getBlock() == Blocks.chest && (lastUsed == null || !lastUsed.equals(pos))) {
                 lastUsed = pos;
-                if (!opened.contains(pos)) {
-                    opened.add(pos);
+                if (!opened.containsKey(pos)) {
+                    opened.put(pos, 0); // Добавляем с нулевым счетчиком
                 }
                 KeyBindUtils.rightClick();
                 if (Main.config.macros.autoChestOpen.rageMode) {
@@ -61,7 +79,7 @@ public class AutoChestOpen {
     public void onBlockUpdate(BlockUpdateEvent event) {
         if (Main.config.macros.autoChestOpen.rageMode) {
             if (event.newState.getBlock() == Blocks.chest) {
-                if (opened.contains(event.pos)) {
+                if (opened.containsKey(event.pos)) {
                     event.setCanceled(true);
                 }
             }

@@ -27,6 +27,11 @@ public class ESP {
         @Expose
         public boolean enabled = false;
 
+        @ConfigOption(name = "Range", desc = "Max range, 0 = unlimited")
+        @ConfigEditorSlider(minValue = 0, maxValue = 50, minStep = 1)
+        @Expose
+        public int maxRange = 0;
+
         @ConfigOption(name = "Color", desc = "ESP color")
         @ConfigEditorColour
         @Expose
@@ -255,7 +260,7 @@ public class ESP {
             @Expose
             public boolean enabledPathFinder = true;
 
-            @ConfigOption(name = "PathFinder priority", desc = "")
+            @ConfigOption(name = "PathFinder type", desc = "Render path to nearest or all courpes")
             @Expose
             @ConfigEditorDropdown()
             public Priority priority = Priority.Nearest;
