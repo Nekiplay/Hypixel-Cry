@@ -87,7 +87,7 @@ public class AutoChestOpen {
 
             if (mouseOver != null && mouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos chestPos = mouseOver.getBlockPos();
-                if (!openedChests.containsKey(chestPos)) {
+                if (!openedChests.containsKey(chestPos) && mc.thePlayer.getDistanceSq(chestPos) <= SEARCH_DISTANCE * SEARCH_DISTANCE) {
                     simulateHumanClick(mouseOver);
                     openedChests.put(chestPos, 0);
                 }
