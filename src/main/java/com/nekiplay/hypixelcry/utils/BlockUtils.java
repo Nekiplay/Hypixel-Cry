@@ -3,9 +3,12 @@ package com.nekiplay.hypixelcry.utils;
 import com.nekiplay.hypixelcry.Main;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BlockUtils {
     public static Vec3 bp = null;
@@ -166,5 +169,61 @@ public class BlockUtils {
             movingobjectposition2 = new MovingObjectPosition(MovingObjectPosition.MovingObjectType.MISS, vec31, enumfacing, blockpos);
         }
         return movingobjectposition2;
+    }
+
+    public static MovingObjectPosition rayTraceToChest(Vec3 startVec, Vec3 endVec) {
+        MovingObjectPosition result = null;
+        Vec3 currentVec = startVec;
+        double step = 0.1; // Шаг для проверки
+        Vec3 direction = endVec.subtract(startVec).normalize();
+        double distance = startVec.distanceTo(endVec);
+
+        for (double d = 0; d < distance; d += step) {
+            currentVec = startVec.add(new Vec3(direction.xCoord * d, direction.yCoord * d, direction.zCoord * d));
+            BlockPos pos = new BlockPos(currentVec.xCoord, currentVec.yCoord, currentVec.zCoord);
+            IBlockState state = Main.mc.theWorld.getBlockState(pos);
+
+            if (state.getBlock() == Blocks.chest) {
+                // Нашли сундук - возвращаем позицию
+                Vec3 hitVec = new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                return new MovingObjectPosition(MovingObjectPosition.MovingObjectType.BLOCK, hitVec,
+                        EnumFacing.UP, pos);
+            }
+
+            // Пропускаем только воздух и полностью прозрачные блоки
+            if (state.getBlock() != Blocks.air &&
+                    !state.getBlock().isPassable(Main.mc.theWorld, pos) &&
+                    state.getBlock().isOpaqueCube()) {
+                // Наткнулись на непрозрачный блок - прерываем поиск
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public static MovingObjectPosition fastRayTraceIgnoreBlocks(Vec3 startVec, Vec3 endVec, Block... ignoredBlocks) {
+        List<Block> ignored = Arrays.asList(ignoredBlocks);
+        MovingObjectPosition result = null;
+        Vec3 currentVec = startVec;
+        double step = 0.1;
+        Vec3 direction = endVec.subtract(startVec).normalize();
+        double distance = startVec.distanceTo(endVec);
+
+        for (double d = 0; d < distance; d += step) {
+            currentVec = startVec.add(new Vec3(direction.xCoord * d, direction.yCoord * d, direction.zCoord * d));
+            BlockPos pos = new BlockPos(currentVec.xCoord, currentVec.yCoord, currentVec.zCoord);
+            IBlockState state = Main.mc.theWorld.getBlockState(pos);
+
+            if (!ignored.contains(state.getBlock()) &&
+                    state.getBlock() != Blocks.air &&
+                    !state.getBlock().isPassable(Main.mc.theWorld, pos)) {
+                Vec3 hitVec = new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                return new MovingObjectPosition(MovingObjectPosition.MovingObjectType.BLOCK,
+                        hitVec, EnumFacing.UP, pos);
+            }
+        }
+
+        return result;
     }
 }
