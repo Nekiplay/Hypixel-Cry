@@ -22,6 +22,7 @@ import static com.nekiplay.hypixelcry.Main.mc;
 
 public class FrozenCourpes {
     public List<EntityArmorStand> courses = new ArrayList<EntityArmorStand>();
+    public List<EntityArmorStand> detectedCourses = new ArrayList<EntityArmorStand>();
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
@@ -35,7 +36,7 @@ public class FrozenCourpes {
                     String head = EntityUtils.getArmorStandHeadName(armorStand);
                     if (head != null && !head.isEmpty()) {
                         if (head.contains("Lapis Armor Helmet")) {
-                            if (!courses.contains((armorStand))) {
+                            if (!courses.contains((armorStand)) && !detectedCourses.contains(armorStand)) {
                                 courses.add(armorStand);
 
                                 if (Main.config.esp.glaciteTunnels.frozenCourpes.enabledPathFinder) {
@@ -51,6 +52,7 @@ public class FrozenCourpes {
                 double distance = Main.mc.thePlayer.getDistanceToEntity(armorStand);
                 if (distance <= 7 && PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
                     PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
+                    detectedCourses.add(armorStand);
                 }
             }
         }
@@ -65,6 +67,7 @@ public class FrozenCourpes {
             }
         }
         courses.clear();
+        detectedCourses.clear();
     }
 
     @SubscribeEvent
