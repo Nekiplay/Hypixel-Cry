@@ -25,7 +25,7 @@ public class FrozenCourpes {
     public List<EntityArmorStand> courses = new ArrayList<EntityArmorStand>();
     private final List<Integer> removedPathFinders = new ArrayList<>();
     private EntityArmorStand currentTarget = null;
-    
+
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (clientTickEvent.phase == TickEvent.Phase.START) {

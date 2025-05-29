@@ -3,23 +3,17 @@ package com.nekiplay.hypixelcry.features.esp;
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.utils.SpecialColor;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
-
-import static com.nekiplay.hypixelcry.Main.mc;
 
 public class Treasure_Hunter {
     public BlockPos pos;
@@ -129,7 +123,6 @@ public class Treasure_Hunter {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-
         if (allowRender) {
             if (Main.config.esp.desertSettlement.treasureHunterFetcher.enabled && pos != null) {
                 if (Main.config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Box)) {
