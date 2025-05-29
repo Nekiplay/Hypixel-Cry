@@ -348,7 +348,6 @@ public class PathFinderRenderer {
 	private Path calculateRoughPath(BlockPos start, BlockPos end) {
 		// Упрощенный расчет пути с большим шагом
 		CalculationContext ctx = new CalculationContext();
-		ctx.pathfindingAccuracy = 0.5f; // Пониженная точность
 		AStarPathFinder finder = new AStarPathFinder(
 			start.getX(), start.getY(), start.getZ(),
 			new Goal(end.getX(), end.getY(), end.getZ(), ctx),
@@ -360,7 +359,6 @@ public class PathFinderRenderer {
 	private List<BlockPos> calculateDetailedPath(BlockPos start, BlockPos end) {
 		// Детальный расчет для финального участка
 		CalculationContext ctx = new CalculationContext();
-		ctx.pathfindingAccuracy = 1.0f; // Полная точность
 		AStarPathFinder finder = new AStarPathFinder(
 			start.getX(), start.getY(), start.getZ(),
 			new Goal(end.getX(), end.getY(), end.getZ(), ctx),
