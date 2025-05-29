@@ -35,7 +35,7 @@ class MovementAscendLadder(mm: Main, from: BlockPos, to: BlockPos) : Movement(mm
             }
 
             // Проверяем, что целевой блок тоже лестница или можно через него пройти
-            if (!MovementHelper.isLadder(destState) && !MovementHelper.canWalkThrough(ctx.bsa, destX, destY, destZ)) {
+            if (!MovementHelper.isLadder(destState)) {
                 return
             }
 
