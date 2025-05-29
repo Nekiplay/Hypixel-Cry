@@ -4,7 +4,6 @@ import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;

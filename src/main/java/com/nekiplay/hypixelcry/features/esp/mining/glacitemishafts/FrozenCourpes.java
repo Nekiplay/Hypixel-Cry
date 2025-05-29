@@ -6,7 +6,6 @@ import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import com.nekiplay.hypixelcry.utils.EntityUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.BlockPos;

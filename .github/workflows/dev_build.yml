@@ -17,8 +17,8 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          automatic_release_tag: "1.1.0"
+          automatic_release_tag: "1.1.1"
           prerelease: true
-          title: "1.8.9 Forge Build | v1.1.0"
+          title: "1.8.9 Alpha Build | v1.1.1"
           files: |
             ./build/libs/*.jar

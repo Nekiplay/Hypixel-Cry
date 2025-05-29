@@ -3,7 +3,6 @@ package com.nekiplay.hypixelcry.features.esp.mining.crystalhollows;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.util.BlockPos;
