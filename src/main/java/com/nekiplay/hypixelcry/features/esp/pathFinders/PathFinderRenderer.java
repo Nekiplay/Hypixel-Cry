@@ -30,6 +30,9 @@ public class PathFinderRenderer {
     private static final Queue<PathResult> pathResults = new ConcurrentLinkedQueue<>();
     private static final double RECALCULATION_DISTANCE = 9.0;
     private static final int CHUNK_UPDATE_RADIUS = 1;
+	
+	private static final int MAX_PATHFINDING_RANGE = 150; // Максимальный радиус поиска пути
+	private static final int PATH_SIMPLIFY_DISTANCE = 50; // Дистанция для упрощения пути
 
     public static class PathData {
         public final BlockPos end;
@@ -85,7 +88,8 @@ public class PathFinderRenderer {
         if (Main.config.esp.pathFinderESP.enabled) {
             for (Map.Entry<String, PathData> entry : paths.entrySet()) {
                 String pathId = entry.getKey();
-                PathData pathData = entry.getValue();
+				PathData pathData = entry.getValue();
+				BlockPos endPos = pathData.end;
 
                 // Проверка обновления чанков
                 int currentChunkX = currentPos.getX() >> 4;
@@ -96,15 +100,36 @@ public class PathFinderRenderer {
                     pathData.lastChunkX = currentChunkX;
                     pathData.lastChunkZ = currentChunkZ;
                 }
+				
+				double distanceToEnd = currentPos.distanceSq(endPos);
 
                 // Обновление прогресса пути
                 updatePathProgress(currentPos, pathData);
+
+				if (distanceToEnd > MAX_PATHFINDING_RANGE * MAX_PATHFINDING_RANGE) {
+					if (shouldRecalculatePath(currentPos, pathData)) {
+						pathFinderExecutor.submit(() -> {
+							// Фаза 1: Поиск грубого пути к региону цели
+							BlockPos intermediateTarget = findIntermediateTarget(currentPos, endPos);
+							Path roughPath = calculateRoughPath(currentPos, intermediateTarget);
+							
+							// Фаза 2: Детальный расчет ближнего участка
+							if (roughPath != null) {
+								List<BlockPos> fullPath = combinePaths(roughPath, 
+									calculateDetailedPath(roughPath.getEndPoint(), endPos));
+								pathResults.add(new PathResult(pathId, fullPath));
+							}
+						});
+					}
+					continue;
+				}
 
                 // Проверка необходимости перерасчета
                 if (shouldRecalculatePath(currentPos, pathData)) {
                     pathData.lastPlayerPos = currentPos;
 
                     pathFinderExecutor.submit(() -> {
+                        mc.thePlayer.addChatMessage(new ChatComponentText("Calculating path"));
                         CalculationContext calculationContext = new CalculationContext();
                         AStarPathFinder finder = new AStarPathFinder(currentPos.getX(), currentPos.getY(), currentPos.getZ(), new Goal(pathData.end.getX(), pathData.end.getY(), pathData.end.getZ(), calculationContext), calculationContext);
 
@@ -271,7 +296,7 @@ public class PathFinderRenderer {
                 if (pathData.blocks == null || pathData.blocks.isEmpty()) continue;
 
                 int fromIndex = Math.max(0, pathData.currentVisibleFromIndex - 2);
-                List<BlockPos> visiblePath = pathData.blocks.subList(fromIndex, pathData.blocks.size());
+                List<BlockPos> visiblePath = pathData.blocks;
 
                 if (visiblePath.size() < 2) continue;
 
@@ -305,6 +330,54 @@ public class PathFinderRenderer {
             }
         }
     }
+	
+	private BlockPos findIntermediateTarget(BlockPos start, BlockPos end) {
+		// Находим точку в MAX_PATHFINDING_RANGE блоках от старта по направлению к цели
+		double dx = end.getX() - start.getX();
+		double dz = end.getZ() - start.getZ();
+		double distance = Math.sqrt(dx*dx + dz*dz);
+		double ratio = MAX_PATHFINDING_RANGE / distance;
+		
+		return new BlockPos(
+			start.getX() + (int)(dx * ratio),
+			end.getY(), // Сохраняем высоту цели
+			start.getZ() + (int)(dz * ratio)
+		);
+	}
+
+	private Path calculateRoughPath(BlockPos start, BlockPos end) {
+		// Упрощенный расчет пути с большим шагом
+		CalculationContext ctx = new CalculationContext();
+		ctx.pathfindingAccuracy = 0.5f; // Пониженная точность
+		AStarPathFinder finder = new AStarPathFinder(
+			start.getX(), start.getY(), start.getZ(),
+			new Goal(end.getX(), end.getY(), end.getZ(), ctx),
+			ctx
+		);
+		return finder.calculatePath();
+	}
+	
+	private List<BlockPos> calculateDetailedPath(BlockPos start, BlockPos end) {
+		// Детальный расчет для финального участка
+		CalculationContext ctx = new CalculationContext();
+		ctx.pathfindingAccuracy = 1.0f; // Полная точность
+		AStarPathFinder finder = new AStarPathFinder(
+			start.getX(), start.getY(), start.getZ(),
+			new Goal(end.getX(), end.getY(), end.getZ(), ctx),
+			ctx
+		);
+		Path path = finder.calculatePath();
+		return path != null ? path.getSmoothedPath() : Collections.emptyList();
+	}
+	
+	private List<BlockPos> combinePaths(Path roughPath, List<BlockPos> detailedPath) {
+		// Объединение двух участков пути
+		List<BlockPos> combined = new ArrayList<>(roughPath.getSmoothedPath());
+		if (!detailedPath.isEmpty()) {
+			combined.addAll(detailedPath.subList(1, detailedPath.size())); // Исключаем дублирование точки
+		}
+		return combined;
+	}
 
     // API для управления путями
     public static void addOrUpdatePath(String id, BlockPos end, Color color, String endText) {

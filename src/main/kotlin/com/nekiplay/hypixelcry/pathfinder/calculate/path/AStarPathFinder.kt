@@ -10,6 +10,7 @@ import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementResult
 import com.nekiplay.hypixelcry.pathfinder.movement.Moves
 import com.nekiplay.hypixelcry.pathfinder.util.mc
+import net.minecraft.util.BlockPos
 
 class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goal: Goal, val ctx: CalculationContext) {
     private val closedSet: Long2ObjectMap<PathNode> = Long2ObjectOpenHashMap()
@@ -44,12 +45,16 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
                 return Path(startNode, currentNode, goal, ctx)
             }
 
+            if (!isChunkLoaded(currentNode.x, currentNode.y, currentNode.z)) {
+                return Path(startNode, currentNode, goal, ctx)
+            }
+
             for (move in moves) {
                 res.reset()
                 move.calculate(ctx, currentNode.x, currentNode.y, currentNode.z, res)
 
                 // Проверяем, загружен ли чанк в этом месте
-                if (!isChunkLoaded(res.x, res.z)) {
+                if (!isChunkLoaded(res.x, res.y, res.z)) {
                     res.cost = ctx.cost.INF_COST // Помечаем как непроходимый
                 }
 
@@ -83,10 +88,8 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
         return null
     }
 
-    private fun isChunkLoaded(x: Int, z: Int): Boolean {
-        val chunkX = x shr 4
-        val chunkZ = z shr 4
-        return mc.theWorld?.chunkProvider?.chunkExists(chunkX, chunkZ) ?: false
+    private fun isChunkLoaded(x: Int, y: Int, z: Int): Boolean {
+        return mc.theWorld?.isBlockLoaded(BlockPos(x, y, z)) ?: false
     }
 
     fun getNode(x: Int, y: Int, z: Int, hash: Long): PathNode {
