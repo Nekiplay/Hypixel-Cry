@@ -322,8 +322,8 @@ public class PathFinderRenderer {
                 for (int i = 1; i < pathData.remainingPath.size(); i++) {
                     BlockPos currentPos = pathData.remainingPath.get(i);
                     RenderUtils.drawLine(
-                            prevPos.add(0, 0.5, 0),
-                            currentPos.add(0, 0.5, 0),
+                            prevPos.add(0, 1.5, 0),
+                            currentPos.add(0, 1.5, 0),
                             4,
                             pathData.color
                     );
@@ -346,7 +346,7 @@ public class PathFinderRenderer {
                 );
                 RenderUtils.renderWaypointText(
                         pathData.endText,
-                        new BlockPos(endPos.getX() + 0.5, endPos.getY() + 1.8, endPos.getZ() + 0.5),
+                        new BlockPos(endPos.getX() + 0.5, endPos.getY() + 2.8, endPos.getZ() + 0.5),
                         event.partialTicks,
                         false,
                         pathData.color
