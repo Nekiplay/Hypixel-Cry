@@ -88,20 +88,20 @@ public class AutoChestOpen {
             if (mouseOver != null && mouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos chestPos = mouseOver.getBlockPos();
                 if (!openedChests.containsKey(chestPos)) {
-                    simulateHumanClick(chestPos);
+                    simulateHumanClick(mouseOver);
                     openedChests.put(chestPos, 0);
                 }
             }
         }
     }
 
-    private void simulateHumanClick(BlockPos chestPos) {
+    private void simulateHumanClick(MovingObjectPosition chestPos) {
         ItemStack itemstack = mc.thePlayer.inventory.getCurrentItem();
         if (mc.playerController.getIsHittingBlock()) {
-            mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
+            mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos.getBlockPos(), mc.objectMouseOver.sideHit, chestPos.hitVec);
 
             if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
-                mc.theWorld.setBlockState(chestPos, Blocks.air.getDefaultState());
+                mc.theWorld.setBlockState(chestPos.getBlockPos(), Blocks.air.getDefaultState());
             }
         }
     }
