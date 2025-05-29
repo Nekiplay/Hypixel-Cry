@@ -22,7 +22,7 @@ import static com.nekiplay.hypixelcry.Main.mc;
 
 public class FrozenCourpes {
     public List<EntityArmorStand> courses = new ArrayList<EntityArmorStand>();
-    private List<Integer> removedPathFinders = new ArrayList<>();
+    private final List<Integer> removedPathFinders = new ArrayList<>();
 
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
@@ -71,7 +71,7 @@ public class FrozenCourpes {
             }
         }
         courses.clear();
-        detectedCourses.clear();
+        removedPathFinders.clear();
     }
 
     @SubscribeEvent
