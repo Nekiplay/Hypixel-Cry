@@ -34,22 +34,16 @@ class MovementAscendLadder(mm: Main, from: BlockPos, to: BlockPos) : Movement(mm
                 return
             }
 
-            // Проверяем, что целевой блок тоже лестница или можно через него пройти
-            if (!MovementHelper.isLadder(destState)) {
+            if (!MovementHelper.isLadder(destState) && !MovementHelper.canWalkThrough(ctx.bsa, destX, destY, destZ)) {
                 return
             }
 
-            // Проверяем, что над целевым блоком есть место
+            // Проверяем пространство над целевым блоком
             if (!MovementHelper.canWalkThrough(ctx.bsa, destX, destY + 1, destZ)) {
-                return
-            }
-			
-			if (!MovementHelper.canWalkThrough(ctx.bsa, destX, destY + 2, destZ)) {
                 return
             }
 
             // Стоимость подъема по лестнице
-			res.set(destX, destY + 1, destZ)
             res.cost = ctx.cost.ONE_UP_LADDER_COST
         }
     }

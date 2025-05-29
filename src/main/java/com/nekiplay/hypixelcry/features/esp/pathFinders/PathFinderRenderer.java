@@ -315,23 +315,26 @@ public class PathFinderRenderer {
                 if (pathData.blocks == null || pathData.blocks.isEmpty()) continue;
                 if (pathData.remainingPath.isEmpty()) continue;
 
+				BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
+
                 BlockPos prevPos = pathData.remainingPath.get(0);
                 for (int i = 1; i < pathData.remainingPath.size(); i++) {
                     BlockPos currentPos = pathData.remainingPath.get(i);
                     RenderUtils.drawLine(prevPos, currentPos, 4, pathData.color);
 					
-					RenderUtils.drawBlockBox(
-                        currentPos,
-                        pathData.color, 1,
-                        event.partialTicks
-					);
+					if (!currentPos.equals(endPos)) {
+						RenderUtils.drawBlockBox(
+							currentPos,
+							pathData.color, 1,
+							event.partialTicks
+						);
+					}
                     prevPos = currentPos;
                 }
 
-                BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
 
                 RenderUtils.drawBlockBox(
-                        endPos.subtract(new Vec3i(0, 1, 0)),
+                        endPos,
                         pathData.color, 4,
                         event.partialTicks
                 );
