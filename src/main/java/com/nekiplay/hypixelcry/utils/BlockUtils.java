@@ -180,7 +180,7 @@ public class BlockUtils {
 		// Список блоков, которые можно "игнорировать" (пропускать)
 		List<Block> transparentBlocks = Arrays.asList(
 			Blocks.air, Blocks.tallgrass, Blocks.flowing_water, Blocks.water,
-			Blocks.flowing_lava, Blocks.lava, Blocks.vine, Blocks.snow_layer
+			Blocks.flowing_lava, Blocks.lava, Blocks.vine, Blocks.snow_layer, Blocks.stone
 		);
 	
 		for (double d = 0; d <= distance; d += step) {
