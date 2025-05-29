@@ -16,6 +16,9 @@ class CalculationContext(sprintFactor: Double = 0.13, walkFactor: Double = 0.1, 
     val cost = ActionCosts(sprintFactor, walkFactor, sneakFactor, jumpBoostAmplifier)
     val maxFallHeight = 20
 
+    var stepSize = 1
+    var maxIterations = 25000
+
     fun get(x: Int, y: Int, z: Int): IBlockState {
         return bsa.get(x, y, z)
     }

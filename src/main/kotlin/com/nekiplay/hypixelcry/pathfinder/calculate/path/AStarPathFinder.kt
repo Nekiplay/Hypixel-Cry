@@ -17,9 +17,11 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
     private var calculating = false
 	private var closestNode: PathNode? = null
     private var closestDistance = Double.MAX_VALUE
+    private var iterations = 0
 
     fun calculatePath(): Path? {
         calculating = true
+        iterations = 0
         val openSet = BinaryHeapOpenSet()
         val startNode = PathNode(startX, startY, startZ, goal)
         val res = MovementResult()
@@ -27,15 +29,18 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
         startNode.costSoFar = 0.0
         startNode.totalCost = startNode.costToEnd
         openSet.add(startNode)
-        
-        // Инициализация closestNode стартовой точкой
+
         closestNode = startNode
         closestDistance = startNode.costToEnd
 
-        while (!openSet.isEmpty() && calculating) {
+        while (!openSet.isEmpty() && calculating && iterations < ctx.maxIterations) {
+            iterations++
+
+            // Пропускаем итерации согласно stepSize
+            if (iterations % ctx.stepSize != 0) continue
+
             val currentNode = openSet.poll()
 
-            // Обновляем ближайшую точку, если текущая ближе к цели
             if (currentNode.costToEnd < closestDistance) {
                 closestNode = currentNode
                 closestDistance = currentNode.costToEnd
@@ -53,15 +58,14 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
                 res.reset()
                 move.calculate(ctx, currentNode.x, currentNode.y, currentNode.z, res)
 
-                // Проверяем, загружен ли чанк в этом месте
                 if (!isChunkLoaded(res.x, res.y, res.z)) {
-                    res.cost = ctx.cost.INF_COST // Помечаем как непроходимый
+                    res.cost = ctx.cost.INF_COST
                 }
 
                 val cost = res.cost
                 if (cost >= ctx.cost.INF_COST) continue
-                val neighbourNode =
-                    getNode(res.x, res.y, res.z, PathNode.longHash(res.x, res.y, res.z))
+
+                val neighbourNode = getNode(res.x, res.y, res.z, PathNode.longHash(res.x, res.y, res.z))
                 val neighbourCostSoFar = currentNode.costSoFar + cost
 
                 if (neighbourNode.costSoFar > neighbourCostSoFar) {
@@ -78,8 +82,7 @@ class AStarPathFinder(val startX: Int, val startY: Int, val startZ: Int, val goa
             }
         }
         calculating = false
-        
-        // Если не достигли цели, но нашли ближайшую точку, возвращаем путь до неё
+
         closestNode?.let {
             if (it != startNode) {
                 return Path(startNode, it, goal, ctx)
