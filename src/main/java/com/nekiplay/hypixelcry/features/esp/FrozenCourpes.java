@@ -36,11 +36,13 @@ public class FrozenCourpes {
                     String head = EntityUtils.getArmorStandHeadName(armorStand);
                     if (head != null && !head.isEmpty()) {
                         if (head.contains("Lapis Armor Helmet")) {
-                            if (!courses.contains((armorStand)) && !detectedCourses.contains(armorStand)) {
+                            if (!courses.contains((armorStand))) {
                                 courses.add(armorStand);
 
-                                if (Main.config.esp.glaciteTunnels.frozenCourpes.enabledPathFinder) {
-                                    PathFinderRenderer.addOrUpdatePath(Integer.toString(armorStand.getEntityId()), armorStand.getPosition(), SpecialColor.toSpecialColor(Main.config.esp.glaciteTunnels.frozenCourpes.colour), "Courpe");
+                                if (!detectedCourses.contains(armorStand)) {
+                                    if (Main.config.esp.glaciteTunnels.frozenCourpes.enabledPathFinder) {
+                                        PathFinderRenderer.addOrUpdatePath(Integer.toString(armorStand.getEntityId()), armorStand.getPosition(), SpecialColor.toSpecialColor(Main.config.esp.glaciteTunnels.frozenCourpes.colour), "Courpe");
+                                    }
                                 }
                             }
                         }
