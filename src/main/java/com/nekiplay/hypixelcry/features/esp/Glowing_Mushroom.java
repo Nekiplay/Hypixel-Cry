@@ -15,9 +15,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 public class Glowing_Mushroom {
-    private static ArrayList<BlockPos> positions = new ArrayList<>();
+    private static List<BlockPos> positions = new ArrayList<BlockPos>();
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
@@ -27,10 +30,7 @@ public class Glowing_Mushroom {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos)pos_object;
                 IBlockState state = Main.mc.theWorld.getBlockState(pos);
-                boolean find = false;
-                if (state.getBlock() == Blocks.brown_mushroom || state.getBlock() == Blocks.red_mushroom) {
-                    find = true;
-                }
+                boolean find = state.getBlock() == Blocks.brown_mushroom || state.getBlock() == Blocks.red_mushroom;
                 if (!find) {
                     positions.remove(pos);
                 }
@@ -60,19 +60,20 @@ public class Glowing_Mushroom {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.enabled) {
+        if (Main.config.esp.desertSettlement.glowingMushrooms.enabled) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos) pos_object;
-                if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
+                if (Main.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, toSpecialColor(Main.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
                 }
-                if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.glowingMushrooms.colour));
+                if (Main.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.desertSettlement.glowingMushrooms.colour));
                 }
-                if (Main.getInstance().config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
+                if (Main.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, toSpecialColor(Main.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
                 }
             }
         }

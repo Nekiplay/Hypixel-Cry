@@ -1,7 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp;
 
 import com.nekiplay.hypixelcry.utils.EntityUtils;
-import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraftforge.client.event.RenderWorldLastEvent;

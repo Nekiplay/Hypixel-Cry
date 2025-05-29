@@ -27,10 +27,15 @@ public class ESP {
         @Expose
         public boolean enabled = false;
 
+        @ConfigOption(name = "Range", desc = "Max range, 0 = unlimited")
+        @ConfigEditorSlider(minValue = 0, maxValue = 50, minStep = 1)
+        @Expose
+        public int maxRange = 0;
+
         @ConfigOption(name = "Color", desc = "ESP color")
         @ConfigEditorColour
         @Expose
-        public String colour = "0:0:0:0:0";
+        public String colour = "0:255:255:0:13";
 
         @ConfigOption(name = "Render features", desc = "")
         @Expose
@@ -92,7 +97,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:64:255:30";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -126,7 +131,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:131:0:255";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -151,7 +156,7 @@ public class ESP {
         public static class Yog {
             @ConfigOption(
                     name = "Enable",
-                    desc = "Enable Dark Monolith ESP?"
+                    desc = "Enable Yog ESP?"
             )
             @ConfigEditorBoolean
             @Expose
@@ -160,7 +165,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:255:19:0";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -179,7 +184,7 @@ public class ESP {
         public static class Automaton {
             @ConfigOption(
                     name = "Enable",
-                    desc = "Enable Dark Monolith ESP?"
+                    desc = "Enable Authomaton ESP?"
             )
             @ConfigEditorBoolean
             @Expose
@@ -188,7 +193,7 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:255:255:255";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
@@ -215,11 +220,11 @@ public class ESP {
         }
     }
 
-    @Category(name = "Glacite Tunnels", desc = "Render features in glacite tunnels")
+    @Category(name = "Glacite Mineshafts", desc = "Render features in glacite mineshafts")
     @Expose
-    public Glacite_Tunnels glaciteTunnels = new Glacite_Tunnels();
+    public Glacite_Mineshafts glaciteMineshafts = new Glacite_Mineshafts();
 
-    public static class Glacite_Tunnels {
+    public static class Glacite_Mineshafts {
         @Accordion
         @ConfigOption(
                 name = "Frozen Courpes ESP",
@@ -240,12 +245,34 @@ public class ESP {
             @ConfigOption(name = "Color", desc = "ESP color")
             @ConfigEditorColour
             @Expose
-            public String colour = "0:0:0:0:0";
+            public String colour = "0:255:25:6:255";
 
             @ConfigOption(name = "Render features", desc = "")
             @Expose
             @ConfigEditorDraggableList(requireNonEmpty = false)
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+
+            @ConfigOption(
+                    name = "Enable PathFinder",
+                    desc = "Enable Frozen Courpes PathFinder?"
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabledPathFinder = true;
+
+            @ConfigOption(name = "PathFinder type", desc = "Render path to nearest or all courpes")
+            @Expose
+            @ConfigEditorDropdown()
+            public Priority priority = Priority.Nearest;
+
+            public enum Priority {
+                Nearest, All;
+
+                @Override
+                public String toString() {
+                    return name();
+                }
+            }
         }
     }
 
@@ -260,10 +287,18 @@ public class ESP {
     public static class PathFinderESP {
         @ConfigOption(
                 name = "Enable",
-                desc = "Enable PathFinder?"
+                desc = "Enable render PathFinder?"
         )
         @ConfigEditorBoolean
         @Expose
         public boolean enabled = true;
+
+        @ConfigOption(
+                name = "Enable",
+                desc = "Enable render sub points?"
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean enableSubPoints = false;
     }
 }

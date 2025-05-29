@@ -3,23 +3,19 @@ package com.nekiplay.hypixelcry.features.esp;
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.utils.SpecialColor;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
-import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 public class Treasure_Hunter {
     public BlockPos pos;
@@ -127,19 +123,19 @@ public class Treasure_Hunter {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-
         if (allowRender) {
-            if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.enabled && pos != null) {
-                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
+            if (Main.config.esp.desertSettlement.treasureHunterFetcher.enabled && pos != null) {
+                if (Main.config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
-                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour));
+                if (Main.config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Treasure", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour));
                 }
-                if (Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
+                if (Main.config.esp.desertSettlement.treasureHunterFetcher.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, toSpecialColor(Main.config.esp.desertSettlement.treasureHunterFetcher.colour), 1, event.partialTicks);
                 }
             }
         }

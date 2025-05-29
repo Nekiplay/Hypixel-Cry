@@ -1,7 +1,8 @@
 package com.nekiplay.hypixelcry;
 
-import com.nekiplay.hypixelcry.features.esp.mobs.AutomatonESP;
-import com.nekiplay.hypixelcry.features.esp.mobs.YogESP;
+import com.nekiplay.hypixelcry.features.esp.mining.glacitemishafts.FrozenCourpes;
+import com.nekiplay.hypixelcry.features.esp.mining.crystalhollows.AutomatonESP;
+import com.nekiplay.hypixelcry.features.esp.mining.crystalhollows.YogESP;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.detections.crystalhollows.JungleTemple;
 import com.nekiplay.hypixelcry.features.qol.AutoChestClose;

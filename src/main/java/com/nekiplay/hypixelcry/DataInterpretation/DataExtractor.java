@@ -27,7 +27,7 @@ import java.util.List;
 public class DataExtractor {
 
     private Minecraft mc = Minecraft.getMinecraft();
-    public PotionFetcher potionFetcher = new PotionFetcher(this);
+    //public PotionFetcher potionFetcher = new PotionFetcher(this);
 
     private final char HpSymbol = '\u2764';
     private final char DfSymbol = '\u2748';
@@ -156,7 +156,7 @@ public class DataExtractor {
                     this.isInSkyblock = ApecUtils.removeAllCodes(s).toLowerCase().contains("skyblock");
                     if (wasInTheCatacombs ^ isInTheCatacombs) {
                         wasInTheCatacombs = isInTheCatacombs;
-                        potionFetcher.ClearAll();
+                        //potionFetcher.ClearAll();
                     }
                 }
             } catch (Exception e) {

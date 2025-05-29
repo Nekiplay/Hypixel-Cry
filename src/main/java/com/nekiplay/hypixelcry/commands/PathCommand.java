@@ -34,11 +34,11 @@ public class PathCommand implements ICommand {
             long y = Long.parseLong(args[1]);
             long z = Long.parseLong(args[2]);
 
-            PathFinderRenderer.addOrUpdatePath("0", new BlockPos(x, y, z), Color.RED, "End");
+            PathFinderRenderer.addOrUpdatePath("Custom", new BlockPos(x, y, z), Color.RED, "End");
         }
         else {
-            if (PathFinderRenderer.hasPath("0")) {
-                PathFinderRenderer.removePath("0");
+            if (PathFinderRenderer.hasPath("Custom")) {
+                PathFinderRenderer.removePath("Custom");
             }
         }
     }

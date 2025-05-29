@@ -14,6 +14,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 
+import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
+
 public class ChestESP {
     private static final ArrayList<BlockPos> locations = new ArrayList<BlockPos>();
     @SubscribeEvent
@@ -23,11 +26,19 @@ public class ChestESP {
         }
         DataExtractor extractor = Main.getInstance().dataExtractor;
         if (extractor.isInSkyblock) {
-            if (Main.mc.theWorld != null && Main.getInstance().config.esp.chestEsp.enabled) {
+            if (mc.theWorld != null && Main.config.esp.chestEsp.enabled) {
                 locations.clear();
-                for (TileEntity tileEntity : Main.mc.theWorld.loadedTileEntityList) {
+                for (TileEntity tileEntity : mc.theWorld.loadedTileEntityList) {
                     if (tileEntity instanceof TileEntityChest) {
-                        locations.add(tileEntity.getPos());
+                        if (Main.config.esp.chestEsp.maxRange == 0) {
+                            locations.add(tileEntity.getPos());
+                        }
+                        else {
+                            double dist = mc.thePlayer.getDistanceSq(tileEntity.getPos());
+                            if (dist <= Main.config.esp.chestEsp.maxRange * Main.config.esp.chestEsp.maxRange) {
+                                locations.add(tileEntity.getPos());
+                            }
+                        }
                     }
                 }
             }
@@ -37,19 +48,20 @@ public class ChestESP {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.getInstance().config.esp.chestEsp.enabled)
+        if (Main.config.esp.chestEsp.enabled)
         {
             for (BlockPos pos: locations) {
-                if (Main.getInstance().config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.chestEsp.colour), 1, event.partialTicks);
+                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
                 }
-                if (Main.getInstance().config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, SpecialColor.toSpecialColor(Main.getInstance().config.esp.chestEsp.colour));
+                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Chest", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.chestEsp.colour));
                 }
-                if (Main.getInstance().config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, SpecialColor.toSpecialColor(Main.getInstance().config.esp.chestEsp.colour), 1, event.partialTicks);
+                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, toSpecialColor(Main.config.esp.chestEsp.colour), 1, event.partialTicks);
                 }
             }
         }
