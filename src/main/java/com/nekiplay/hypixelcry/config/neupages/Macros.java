@@ -43,13 +43,10 @@ public class Macros {
         @ConfigEditorDraggableList(requireNonEmpty = false)
         public List<ChestFeatures> features = new ArrayList<ChestFeatures>() {{
             add(ChestFeatures.Air);
-            add(ChestFeatures.GhostHand);
         }};
 
         public enum ChestFeatures {
             Air("Set to air after open"),
-            GhostHand("Ghost hand"),
-
             ;
             String label;
 

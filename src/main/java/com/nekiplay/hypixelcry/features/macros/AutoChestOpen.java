@@ -3,14 +3,11 @@ package com.nekiplay.hypixelcry.features.macros;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.neupages.Macros;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
-import com.nekiplay.hypixelcry.utils.BlockUtils;
-import net.minecraft.block.Block;
+import com.nekiplay.hypixelcry.utils.KeyBindUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -20,100 +17,59 @@ import java.util.*;
 import static com.nekiplay.hypixelcry.Main.mc;
 
 public class AutoChestOpen {
-    private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<BlockPos, Integer>() {
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<BlockPos, Integer> eldest) {
-            return size() > 100; // Ограничиваем размер карты
-        }
-    };
+    public BlockPos lastUsed = null;
+    private final Map<BlockPos, Long> opened = new WeakHashMap<>(); // Используем WeakHashMap для автоматической очистки
     private int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 20; // 1 секунда
-    private static final double SEARCH_DISTANCE = 4.0;
-    private static final int MAX_CHESTS_TO_REMOVE_PER_TICK = 20; // Чтобы не нагружать процессор
+    private static final int CLEANUP_INTERVAL = 20 * 5; // Оптимизация: проверяем каждые 5 секунд
+    private static final long CHEST_COOLDOWN = 10_000; // 10 секунд в миллисекундах
 
     @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.START || mc.theWorld == null || mc.thePlayer == null || !Main.config.macros.autoChestOpen.enabled) {
+    public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
+        if (clientTickEvent.phase == TickEvent.Phase.START) {
+            return;
+        }
+        if (mc.theWorld == null || mc.thePlayer == null) {
+            return;
+        }
+        if (!Main.config.macros.autoChestOpen.enabled) {
             return;
         }
 
+        // Увеличиваем счетчик тиков и обрабатываем таймеры для opened
         tickCounter++;
-        if (tickCounter % 20 == 0) {
-            cleanUpOldChests();
+        if (tickCounter % CLEANUP_INTERVAL == 0) {
+            long currentTime = System.currentTimeMillis();
+            opened.entrySet().removeIf(entry -> currentTime - entry.getValue() >= CHEST_COOLDOWN);
         }
 
-        if (mc.currentScreen == null) {
-            checkForChestInLineOfSight();
-        }
-    }
-
-    private void cleanUpOldChests() {
-        // Удаляем старые сундуки, которые больше не актуальны
-        Iterator<Map.Entry<BlockPos, Integer>> iterator = openedChests.entrySet().iterator();
-        int removed = 0;
-
-        while (iterator.hasNext() && removed < MAX_CHESTS_TO_REMOVE_PER_TICK) {
-            Map.Entry<BlockPos, Integer> entry = iterator.next();
-            if (entry.getValue() >= CHEST_COOLDOWN) {
-                iterator.remove();
-                removed++;
-            } else {
-                openedChests.put(entry.getKey(), entry.getValue() + 20);
-            }
-        }
-    }
-
-    private void checkForChestInLineOfSight() {
-        if (mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+        if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
             BlockPos pos = mc.objectMouseOver.getBlockPos();
-            IBlockState state = mc.theWorld.getBlockState(pos);
-            Block block = state.getBlock();
-            if (block == Blocks.chest) {
-                if (!openedChests.containsKey(pos)) {
-                    simulateHumanClick(mc.objectMouseOver);
-                    openedChests.put(pos, 0);
-                    return;
+            IBlockState blockState = mc.theWorld.getBlockState(pos);
+            if (mc.currentScreen == null && blockState.getBlock() == Blocks.chest && (lastUsed == null || !lastUsed.equals(pos))) {
+                lastUsed = pos;
+                if (!opened.containsKey(pos)) {
+                    opened.put(pos, System.currentTimeMillis()); // Сохраняем текущее время
+                    KeyBindUtils.rightClick();
+                    if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
+                        mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
+                    }
                 }
             }
-        }
-
-
-        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.GhostHand)) {
-            Vec3 startVec = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
-            Vec3 lookVec = mc.thePlayer.getLook(1.0f);
-            Vec3 endVec = startVec.addVector(lookVec.xCoord * SEARCH_DISTANCE, lookVec.yCoord * SEARCH_DISTANCE, lookVec.zCoord * SEARCH_DISTANCE);
-
-            MovingObjectPosition mouseOver = BlockUtils.rayTraceToChest(startVec, endVec);
-
-            if (mouseOver != null && mouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                BlockPos chestPos = mouseOver.getBlockPos();
-                if (!openedChests.containsKey(chestPos) && mc.thePlayer.getDistanceSq(chestPos) <= SEARCH_DISTANCE * SEARCH_DISTANCE) {
-                    simulateHumanClick(mouseOver);
-                    openedChests.put(chestPos, 0);
-                }
-            }
-        }
-    }
-
-    private void simulateHumanClick(MovingObjectPosition chestPos) {
-        ItemStack itemstack = mc.thePlayer.inventory.getCurrentItem();
-        mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, chestPos.getBlockPos(), mc.objectMouseOver.sideHit, chestPos.hitVec);
-
-        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
-            mc.theWorld.setBlockState(chestPos.getBlockPos(), Blocks.air.getDefaultState());
         }
     }
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        openedChests.clear();
+        opened.clear();
     }
 
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
-        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air) && event.newState.getBlock() == Blocks.chest) {
-            if (openedChests.containsKey(event.pos)) {
-                event.setCanceled(true);
+        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.ChestFeatures.Air)) {
+            if (event.newState.getBlock() == Blocks.chest) {
+                if (opened.containsKey(event.pos)) {
+                    event.setCanceled(true);
+                }
             }
         }
     }
