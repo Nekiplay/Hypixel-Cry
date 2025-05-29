@@ -140,7 +140,7 @@ public class ESP {
         }
     }
 
-    @Category(name = "Crystal Hollows", desc = "Render features in crystall hollows")
+    @Category(name = "Crystal Hollows", desc = "Render features in crystal hollows")
     @Expose
     public Crystal_Hollows crystalHollows = new Crystal_Hollows();
 
@@ -184,7 +184,7 @@ public class ESP {
         public static class Automaton {
             @ConfigOption(
                     name = "Enable",
-                    desc = "Enable Authomaton ESP?"
+                    desc = "Enable Automaton ESP?"
             )
             @ConfigEditorBoolean
             @Expose
