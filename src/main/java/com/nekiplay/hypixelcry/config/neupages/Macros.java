@@ -46,7 +46,7 @@ public class Macros {
         }};
 
         public enum ChestFeatures {
-            Air("Set to air after open"),
+            Air("Set to air after click"),
             ;
             String label;
 
