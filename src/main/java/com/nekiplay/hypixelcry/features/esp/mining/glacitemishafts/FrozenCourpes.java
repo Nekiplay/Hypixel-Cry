@@ -1,12 +1,12 @@
 package com.nekiplay.hypixelcry.features.esp.mining.glacitemishafts;
 
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.PathFinderPriority;
 import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import com.nekiplay.hypixelcry.utils.EntityUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.BlockPos;
@@ -49,7 +49,7 @@ public class FrozenCourpes {
 
             // Handle path finding based on priority
             if (Main.config.esp.glaciteMineshafts.frozenCourpes.enabledPathFinder) {
-                if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == ESP.Glacite_Mineshafts.Frozen_Courpes.Priority.All) {
+                if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == PathFinderPriority.All) {
                     // Original behavior for All priority
                     for (EntityArmorStand armorStand : courses) {
                         if (!removedPathFinders.contains(armorStand.getEntityId())) {
@@ -57,7 +57,7 @@ public class FrozenCourpes {
                                     toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), "Courpe");
                         }
                     }
-                } else if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == ESP.Glacite_Mineshafts.Frozen_Courpes.Priority.Nearest) {
+                } else if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == PathFinderPriority.Nearest) {
                     // New behavior for Nearest priority
                     handleNearestPriority();
                 }

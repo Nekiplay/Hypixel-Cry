@@ -1,7 +1,7 @@
 package com.nekiplay.hypixelcry.features.esp.farming;
 
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.events.world.SpawnParticleEvent;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.block.Block;

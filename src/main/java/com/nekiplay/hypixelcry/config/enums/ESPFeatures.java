@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.config;
+package com.nekiplay.hypixelcry.config.enums;
 
 public enum ESPFeatures {
     Box("Box"),

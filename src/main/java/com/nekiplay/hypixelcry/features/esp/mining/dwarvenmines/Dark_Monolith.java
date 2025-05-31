@@ -2,7 +2,8 @@ package com.nekiplay.hypixelcry.features.esp.mining.dwarvenmines;
 
 import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
+import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -54,7 +55,7 @@ public class Dark_Monolith {
     private boolean shouldSkipTick(TickEvent.ClientTickEvent event) {
         return event.phase == TickEvent.Phase.START ||
                 mc.theWorld == null ||
-                !Main.config.esp.dwardenMines.darkMonolith.enabled || !IslandType.current().equals(IslandType.Dwarven_Mines);
+                !Main.config.esp.dwarvenMines.darkMonolith.enabled || !IslandType.current().equals(IslandType.Dwarven_Mines);
     }
 
     private BlockPos findEggInWorld() {
@@ -86,7 +87,7 @@ public class Dark_Monolith {
     public void onRender(RenderWorldLastEvent event) {
         if (!shouldRender()) return;
 
-        Color color = toSpecialColor(Main.config.esp.dwardenMines.darkMonolith.colour);
+        Color color = toSpecialColor(Main.config.esp.dwarvenMines.darkMonolith.colour);
         BlockPos centerPos = new BlockPos(
                 eggPosition.getX() + 0.5,
                 eggPosition.getY() + 0.5,
@@ -105,10 +106,10 @@ public class Dark_Monolith {
     }
 
     private boolean shouldRender() {
-        return Main.config.esp.dwardenMines.darkMonolith.enabled && eggPosition != null;
+        return Main.config.esp.dwarvenMines.darkMonolith.enabled && eggPosition != null && IslandTypeChangeChecker.getLastDetected().equals(IslandType.Dwarven_Mines);
     }
 
     private boolean shouldRenderFeature(ESPFeatures feature) {
-        return Main.config.esp.dwardenMines.darkMonolith.features.contains(feature);
+        return Main.config.esp.dwarvenMines.darkMonolith.features.contains(feature);
     }
 }

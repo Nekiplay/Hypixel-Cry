@@ -1,10 +1,8 @@
 package com.nekiplay.hypixelcry.features.esp;
 
-import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;

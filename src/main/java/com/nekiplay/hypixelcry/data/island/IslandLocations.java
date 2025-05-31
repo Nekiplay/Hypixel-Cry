@@ -8,13 +8,13 @@ public class IslandLocations {
 
     static {
         // Инициализируем локации для каждого острова
-		islandLocationsMap.put(
+        islandLocationsMap.put(
                 IslandType.None,
                 Collections.singletonList(
                         "None"
                 )
         );
-		
+
         islandLocationsMap.put(
                 IslandType.Hub,
                 Arrays.asList(
@@ -51,99 +51,87 @@ public class IslandLocations {
                         "Weaponsmith",
                         "Community Center",
                         "Pet Care",
-						"Thaumaturgist",
-						"Wizard Tower"
+                        "Thaumaturgist",
+                        "Wizard Tower",
+                        "Bank",
+                        "Carnival"
                 )
         );
 
         islandLocationsMap.put(
                 IslandType.Private_Island,
                 Collections.singletonList(
-                        "Private Island"
-                )
-        );
-
-        islandLocationsMap.put(
-                IslandType.Private_Island_Guest,
-                Collections.singletonList(
-                        "Private Island Guest"
+                        "Your Island"
                 )
         );
 
         islandLocationsMap.put(
                 IslandType.Garden,
                 Collections.singletonList(
-                        "Garden"
+                        "The Garden"
                 )
         );
 
         islandLocationsMap.put(
-                IslandType.Garden_Guest,
-                Collections.singletonList(
-                        "Garden Guest"
-                )
-        );
-
-		islandLocationsMap.put(
                 IslandType.Dungeon_Hub,
                 Collections.singletonList(
                         "Dungeon Hub"
                 )
         );
-		
-		islandLocationsMap.put(
+
+        islandLocationsMap.put(
                 IslandType.Park,
                 Arrays.asList(
                         "Birch Park",
-						"Spruce Woods",
-						"Lonely Island",
-						"Dark Thicket",
-						"Savanna Woodland",
-						"Melody's Plateau",
-						"Jungle Island"
+                        "Spruce Woods",
+                        "Lonely Island",
+                        "Dark Thicket",
+                        "Savanna Woodland",
+                        "Melody's Plateau",
+                        "Jungle Island"
                 )
         );
-		
-		islandLocationsMap.put(
+
+        islandLocationsMap.put(
                 IslandType.Gold_Mine,
                 Collections.singletonList(
                         "Gold Mine"
                 )
         );
-		
-		islandLocationsMap.put(
+
+        islandLocationsMap.put(
                 IslandType.Deep_Caverns,
                 Arrays.asList(
                         "Deep Caverns",
-						"Gunpowder Mines",
-						"Lapis Quarry",
-						"Pigmen's Den",
-						"Slimehill",
-						"Diamond Reserve",
-						"Obsidian Sanctuary"
+                        "Gunpowder Mines",
+                        "Lapis Quarry",
+                        "Pigmen's Den",
+                        "Slimehill",
+                        "Diamond Reserve",
+                        "Obsidian Sanctuary"
                 )
         );
-		
-		
-		islandLocationsMap.put(
+
+
+        islandLocationsMap.put(
                 IslandType.Farming_Islands,
                 Collections.singletonList(
                         "The Barn"
                 )
         );
-		
-		islandLocationsMap.put(
+
+        islandLocationsMap.put(
                 IslandType.Desert_Settlement,
                 Arrays.asList(
                         "Desert Settlement",
-						"Mushroom Desert",
-						"Oasis",
-						"Trapper's Den",
-						"Shepherd's Keep",
-						"Archaeological Site",
-						"Mushroom Gorge",
-						"Overgrown Mushroom Cave",
-						"Glowing Mushroom Cave"
+                        "Mushroom Desert",
+                        "Oasis",
+                        "Trapper's Den",
+                        "Shepherd's Keep",
+                        "Archaeological Site",
+                        "Mushroom Gorge",
+                        "Overgrown Mushroom Cave",
+                        "Glowing Mushroom Cave"
                 )
         );
 

@@ -1,8 +1,11 @@
 package com.nekiplay.hypixelcry.features.macros;
 
 import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.config.enums.AutoChestOpenFeatures;
 import com.nekiplay.hypixelcry.config.neupages.Macros;
+import com.nekiplay.hypixelcry.events.hypixel.IslandTypeChangeEvent;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
+import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
@@ -32,7 +35,7 @@ public class AutoChestOpen {
 
     private boolean shouldSkipTick(TickEvent.ClientTickEvent event) {
         return event.phase == TickEvent.Phase.START || mc.theWorld == null ||
-                mc.thePlayer == null || !Main.config.macros.autoChestOpen.enabled;
+                mc.thePlayer == null || !Main.config.macros.autoChestOpen.enabled || !Main.config.macros.autoChestOpen.allowedIslands.contains(IslandTypeChangeChecker.getLastDetected());
     }
 
     private void cleanUpOldChests() {
@@ -44,7 +47,7 @@ public class AutoChestOpen {
     }
 
     private void handleChestOpening() {
-        boolean ghostHand = Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.Features.GhostHand);
+        boolean ghostHand = Main.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.GhostHand);
 
         if (ghostHand) {
             MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlock(
@@ -89,7 +92,7 @@ public class AutoChestOpen {
         );
         mc.thePlayer.swingItem();
 
-        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.Features.Air)) {
+        if (Main.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air)) {
             mc.theWorld.setBlockState(mop.getBlockPos(), Blocks.air.getDefaultState());
         }
     }
@@ -101,7 +104,7 @@ public class AutoChestOpen {
 
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
-        if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.Features.Air) &&
+        if (Main.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air) &&
                 event.newState.getBlock() == Blocks.chest && openedChests.containsKey(event.pos)) {
             event.setCanceled(true);
         }

@@ -1,6 +1,8 @@
 package com.nekiplay.hypixelcry.config.neupages;
 
 import com.google.gson.annotations.Expose;
+import com.nekiplay.hypixelcry.config.enums.AutoChestOpenFeatures;
+import com.nekiplay.hypixelcry.data.island.IslandType;
 import io.github.notenoughupdates.moulconfig.annotations.*;
 import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
@@ -35,30 +37,21 @@ public class Macros {
         @Expose
         public boolean enabled = false;
 
-        @ConfigOption(name = "Features", desc = "")
+        @ConfigOption(name = "Features", desc = "Additional features")
         @Expose
         @ConfigEditorDraggableList(requireNonEmpty = false)
-        public List<Features> features = new ArrayList<Features>() {{
-                add(Features.Air);
-                add(Features.GhostHand);
+        public List<AutoChestOpenFeatures> features = new ArrayList<AutoChestOpenFeatures>() {{
+                add(AutoChestOpenFeatures.Air);
+                add(AutoChestOpenFeatures.GhostHand);
         }};
 
-        public enum Features {
-            Air("Set to air after open"),
-            GhostHand("Open thought blocks"),
-
-            ;
-            final String label;
-
-            Features(String label) {
-                this.label = label;
-            }
-
-            @Override
-            public String toString() {
-                return label;
-            }
-        }
+        @ConfigOption(name = "Work in", desc = "Allow islands for working")
+        @Expose
+        @ConfigEditorDraggableList(requireNonEmpty = false)
+        public List<IslandType> allowedIslands = new ArrayList<IslandType>() {{
+            add(IslandType.Catacombs);
+            add(IslandType.Crystal_Hollows);
+        }};
 
     }
 

@@ -2,8 +2,9 @@ package com.nekiplay.hypixelcry.features.esp.farming;
 
 import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.config.neupages.ESP;
+import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.util.BlockPos;
@@ -40,7 +41,7 @@ public class Treasure_Hunter {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            allowRender = IslandType.current().equals(IslandType.Desert_Settlement);
+            allowRender = IslandTypeChangeChecker.getLastDetected().equals(IslandType.Desert_Settlement);
         }
     }
 

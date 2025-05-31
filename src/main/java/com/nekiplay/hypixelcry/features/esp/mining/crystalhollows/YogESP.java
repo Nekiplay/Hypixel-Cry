@@ -1,9 +1,10 @@
 package com.nekiplay.hypixelcry.features.esp.mining.crystalhollows;
 
 import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
+import com.nekiplay.hypixelcry.data.island.IslandType;
+import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.util.BlockPos;
@@ -22,7 +23,7 @@ public class YogESP {
     @SubscribeEvent
     public void TickEvent(TickEvent.ClientTickEvent event) {
         yogs.clear();
-        if (mc.theWorld != null && Main.config.esp.crystalHollows.yog.enabled) {
+        if (mc.theWorld != null && Main.config.esp.crystalHollows.yog.enabled && IslandTypeChangeChecker.getLastDetected().equals(IslandType.Crystal_Hollows)) {
             List<Entity> entityList = mc.theWorld.getLoadedEntityList();
             for (Entity entity : entityList) {
                 if (entity instanceof EntityMagmaCube) {

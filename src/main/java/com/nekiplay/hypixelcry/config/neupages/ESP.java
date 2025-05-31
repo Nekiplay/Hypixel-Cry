@@ -1,7 +1,8 @@
 package com.nekiplay.hypixelcry.config.neupages;
 
 import com.google.gson.annotations.Expose;
-import com.nekiplay.hypixelcry.config.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
+import com.nekiplay.hypixelcry.config.enums.PathFinderPriority;
 import io.github.notenoughupdates.moulconfig.annotations.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +37,7 @@ public class ESP {
         @Expose
         public String colour = "0:255:255:0:13";
 
-        @ConfigOption(name = "Render features", desc = "")
+        @ConfigOption(name = "Features", desc = "Render features")
         @Expose
         @ConfigEditorDraggableList(requireNonEmpty = false)
         public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
@@ -78,7 +79,7 @@ public class ESP {
             @Expose
             public String colour = "0:0:0:0:0";
 
-            @ConfigOption(name = "Render features", desc = "")
+            @ConfigOption(name = "Features", desc = "Render features")
             @Expose
             @ConfigEditorDraggableList
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
@@ -98,18 +99,18 @@ public class ESP {
             @Expose
             public String colour = "0:255:64:255:30";
 
-            @ConfigOption(name = "Render features", desc = "")
+            @ConfigOption(name = "Features", desc = "Render features")
             @Expose
             @ConfigEditorDraggableList
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
         }
     }
 
-	@Category(name = "Dwarden Mines", desc = "Render features in dwarden mines")
+	@Category(name = "Dwarven Mines", desc = "Render features in dwarven mines")
     @Expose
-    public Dwarden_Mines dwardenMines = new Dwarden_Mines();
+    public Dwarven_Mines dwarvenMines = new Dwarven_Mines();
 
-    public static class Dwarden_Mines {
+    public static class Dwarven_Mines {
         @Accordion
         @ConfigOption(
                 name = "Dark Monolith",
@@ -132,7 +133,7 @@ public class ESP {
             @Expose
             public String colour = "0:255:131:0:255";
 
-            @ConfigOption(name = "Render features", desc = "")
+            @ConfigOption(name = "Features", desc = "Render features")
             @Expose
             @ConfigEditorDraggableList(requireNonEmpty = false)
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
@@ -166,7 +167,7 @@ public class ESP {
             @Expose
             public String colour = "0:255:255:19:0";
 
-            @ConfigOption(name = "Render features", desc = "")
+            @ConfigOption(name = "Features", desc = "Render features")
             @Expose
             @ConfigEditorDraggableList(requireNonEmpty = false)
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
@@ -194,7 +195,7 @@ public class ESP {
             @Expose
             public String colour = "0:255:255:255:255";
 
-            @ConfigOption(name = "Render features", desc = "")
+            @ConfigOption(name = "Features", desc = "Render features")
             @Expose
             @ConfigEditorDraggableList(requireNonEmpty = false)
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
@@ -246,7 +247,7 @@ public class ESP {
             @Expose
             public String colour = "0:255:25:6:255";
 
-            @ConfigOption(name = "Render features", desc = "")
+            @ConfigOption(name = "Features", desc = "Render features")
             @Expose
             @ConfigEditorDraggableList(requireNonEmpty = false)
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
@@ -262,16 +263,7 @@ public class ESP {
             @ConfigOption(name = "PathFinder type", desc = "Render path to nearest or all courpes")
             @Expose
             @ConfigEditorDropdown()
-            public Priority priority = Priority.Nearest;
-
-            public enum Priority {
-                Nearest, All;
-
-                @Override
-                public String toString() {
-                    return name();
-                }
-            }
+            public PathFinderPriority priority = PathFinderPriority.Nearest;
         }
     }
 
