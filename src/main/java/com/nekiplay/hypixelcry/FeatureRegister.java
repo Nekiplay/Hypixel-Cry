@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry;
 
+import com.nekiplay.hypixelcry.data.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.features.esp.farming.Glowing_Mushroom;
 import com.nekiplay.hypixelcry.features.esp.farming.Treasure_Hunter;
 import com.nekiplay.hypixelcry.features.esp.mining.dwarvenmines.Dark_Monolith;
@@ -42,5 +43,9 @@ public class FeatureRegister {
         MinecraftForge.EVENT_BUS.register(new Gifts());
 
         MinecraftForge.EVENT_BUS.register(new PathFinderRenderer());
+    }
+
+    public void registerSystemFeatures(FMLInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new IslandTypeChangeChecker());
     }
 }

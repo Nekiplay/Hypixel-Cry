@@ -124,9 +124,8 @@ public class Main
         driver.processConfig(config);
 
         MinecraftForge.EVENT_BUS.register(dataExtractor);
-        MinecraftForge.EVENT_BUS.register(this);
-        //MinecraftForge.EVENT_BUS.register(TickRate.INSTANCE);
 
+        features.registerSystemFeatures(event);
         features.register(event);
 
         ClientCommandHandler.instance.registerCommand(new LocationCommand());

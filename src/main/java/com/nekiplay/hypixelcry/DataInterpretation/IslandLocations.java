@@ -55,7 +55,35 @@ public class IslandLocations {
 						"Wizard Tower"
                 )
         );
-		
+
+        islandLocationsMap.put(
+                IslandType.Private_Island,
+                Collections.singletonList(
+                        "Private Island"
+                )
+        );
+
+        islandLocationsMap.put(
+                IslandType.Private_Island_Guest,
+                Collections.singletonList(
+                        "Private Island Guest"
+                )
+        );
+
+        islandLocationsMap.put(
+                IslandType.Garden,
+                Collections.singletonList(
+                        "Garden"
+                )
+        );
+
+        islandLocationsMap.put(
+                IslandType.Garden_Guest,
+                Collections.singletonList(
+                        "Garden Guest"
+                )
+        );
+
 		islandLocationsMap.put(
                 IslandType.Dungeon_Hub,
                 Collections.singletonList(
@@ -141,6 +169,13 @@ public class IslandLocations {
                         "Cliffside Veins",
                         "Forge Basin",
                         "The Forge"
+                )
+        );
+
+        islandLocationsMap.put(
+                IslandType.Crystal_Hollows,
+                Collections.singletonList(
+                        "Crystal Hollows"
                 )
         );
     }

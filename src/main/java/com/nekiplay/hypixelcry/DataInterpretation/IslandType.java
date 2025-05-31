@@ -7,7 +7,13 @@ import static com.nekiplay.hypixelcry.Main.mc;
 
 public enum IslandType {
     Lobby("Lobby"),
-	
+
+    Private_Island("Private Island"),
+    Private_Island_Guest("Private Island Guest"),
+
+    Garden("Garden"),
+    Garden_Guest("Garden Guest"),
+
 	Dungeon_Hub("Dungeon Hub"),
     Catacombs("Catacombs"),
 
@@ -18,6 +24,7 @@ public enum IslandType {
 	Gold_Mine("Gold Mine"),
 	Deep_Caverns("Deep Caverns"),
     Dwarven_Mines("Dwarven Mines"),
+    Crystal_Hollows("Crystal Hollows"),
 	
 	Farming_Islands("Farming Islands"),
 	Desert_Settlement("Desert Settlement"),

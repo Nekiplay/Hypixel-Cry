@@ -1,6 +1,5 @@
 package com.nekiplay.hypixelcry.commands;
 
-import com.nekiplay.hypixelcry.DataInterpretation.IslandLocations;
 import com.nekiplay.hypixelcry.DataInterpretation.IslandType;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
