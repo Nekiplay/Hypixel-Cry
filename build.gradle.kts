@@ -72,7 +72,7 @@ dependencies {
 
     shadowModImpl("org.notenoughupdates.moulconfig:legacy:3.8.0")
 
-    shadowImplementation("it.unimi.dsi:fastutil-longs:8.2.1")
+    shadowImplementation("it.unimi.dsi:fastutil:8.2.1")
 }
 
 tasks.withType(JavaCompile::class) {
@@ -106,6 +106,7 @@ tasks.shadowJar {
     }
     mergeServiceFiles()
     relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.deps.moulconfig")
+    minimize()
 }
 
 tasks.processResources {
