@@ -86,6 +86,7 @@ public class AutoChestOpen {
                 mc.thePlayer.inventory.getCurrentItem(),
                 mop.getBlockPos(), mop.sideHit, mop.hitVec
         );
+        mc.thePlayer.swingItem();
 
         if (Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.Features.Air)) {
             mc.theWorld.setBlockState(mop.getBlockPos(), Blocks.air.getDefaultState());
