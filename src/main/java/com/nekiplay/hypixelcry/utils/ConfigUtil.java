@@ -96,7 +96,7 @@ public class ConfigUtil {
 
         try {
             Files.move(file.toPath(), backupFile.toPath(), StandardCopyOption.ATOMIC_MOVE);
-        } catch (IOException _) {
+        } catch (IOException exception) {
             try {
                 Files.move(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (Exception __) {

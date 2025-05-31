@@ -33,7 +33,7 @@ public class GhostBlocks {
                     KeyBindUtils.rightClick();
                 } else {
                     mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
-                    KeyBindUtils.leftClick();
+                    mc.thePlayer.swingItem();
                 }
             }
         }
@@ -50,9 +50,7 @@ public class GhostBlocks {
             if (keyCode == Main.config.macros.ghostBlocks.ghostBlocksKeyBind) {
                 enable();
             }
-        } catch (IndexOutOfBoundsException e) {
-            // Handle invalid key code silently
-        }
+        } catch (IndexOutOfBoundsException ignored) { }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
@@ -65,8 +63,6 @@ public class GhostBlocks {
             if (button == Main.config.macros.ghostBlocks.ghostBlocksKeyBind) {
                 enable();
             }
-        } catch (IndexOutOfBoundsException e) {
-            // Handle invalid button code silently
-        }
+        } catch (IndexOutOfBoundsException ignored) { }
     }
 }

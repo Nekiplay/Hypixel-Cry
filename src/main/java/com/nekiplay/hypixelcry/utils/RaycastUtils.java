@@ -2,27 +2,24 @@ package com.nekiplay.hypixelcry.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.Main.mc;
 
 public class RaycastUtils {
-    public static MovingObjectPosition rayTraceToChest(Vec3 startVec, Vec3 endVec) {
-        // Используем стандартный рейкаст Minecraft, но с фильтрацией
+    public static MovingObjectPosition rayTraceToBlock(Vec3 startVec, Vec3 endVec, List<Block> blocks) {
         MovingObjectPosition result = fastRayTrace(startVec, endVec);
 
-        // Если попали в сундук - возвращаем результат
+        // Если попали в нужный блок - возвращаем результат
         if (result != null && result.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK &&
                 result.getBlockPos() != null &&
-                mc.theWorld.getBlockState(result.getBlockPos()).getBlock() == Blocks.chest) {
+                blocks.contains(mc.theWorld.getBlockState(result.getBlockPos()).getBlock())) {
             return result;
         }
 
-        // Если не нашли сундук стандартным методом, делаем более точный поиск
+        // Если не нашли блок стандартным методом, делаем более точный поиск
         Vec3 direction = endVec.subtract(startVec);
         double distance = direction.lengthVector();
         direction = direction.normalize();
@@ -40,7 +37,7 @@ public class RaycastUtils {
             BlockPos pos = new BlockPos(currentPos);
             IBlockState state = mc.theWorld.getBlockState(pos);
 
-            if (state.getBlock() == Blocks.chest) {
+            if (blocks.contains(state.getBlock())) {
                 return state.getBlock().collisionRayTrace(
                         mc.theWorld,
                         pos,

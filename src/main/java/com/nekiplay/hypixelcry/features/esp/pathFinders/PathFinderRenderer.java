@@ -18,13 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 
 import static com.nekiplay.hypixelcry.Main.mc;
 
 public class PathFinderRenderer {
-    private static final ExecutorService pathFinderExecutor = Executors.newFixedThreadPool(2);
-    private static final Map<String, PathData> paths = new ConcurrentHashMap<>();
-    private static final Queue<PathResult> pathResults = new ConcurrentLinkedQueue<>();
+    private static final ExecutorService PATH_FINDER_EXECUTOR = Executors.newFixedThreadPool(6);
+    private static final Map<String, PathData> PATHS = new ConcurrentHashMap<>();
+    private static final Queue<PathResult> PATH_RESULTS = new ConcurrentLinkedQueue<>();
     private static final double RECALCULATION_DISTANCE = 9.0;
     private static final int CHUNK_UPDATE_RADIUS = 1;
 
@@ -33,14 +34,13 @@ public class PathFinderRenderer {
         public final Color color;
         public final String endText;
         public List<BlockPos> blocks = new ArrayList<>();
+        public List<BlockPos> remainingPath = new ArrayList<>();
         public int furthestReachedIndex = 0;
         public int currentVisibleFromIndex = 0;
         public boolean needsUpdate = true;
         public int lastChunkX = Integer.MIN_VALUE;
         public int lastChunkZ = Integer.MIN_VALUE;
         public boolean chunksUpdated = false;
-
-        public List<BlockPos> remainingPath = new ArrayList<>();
 
         public PathData(BlockPos end, Color color, String endText) {
             this.end = end;
@@ -50,10 +50,10 @@ public class PathFinderRenderer {
     }
 
     private static class PathResult {
-        public final String pathId;
-        public final List<BlockPos> blocks;
+        final String pathId;
+        final List<BlockPos> blocks;
 
-        public PathResult(String pathId, List<BlockPos> blocks) {
+        PathResult(String pathId, List<BlockPos> blocks) {
             this.pathId = pathId;
             this.blocks = blocks;
         }
@@ -61,320 +61,244 @@ public class PathFinderRenderer {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || mc.thePlayer == null || mc.theWorld == null) {
-            return;
-        }
+        if (event.phase != TickEvent.Phase.END || mc.thePlayer == null || mc.theWorld == null) return;
 
-        BlockPos currentPos = mc.thePlayer.getPosition();
-        currentPos = currentPos.add(0, -1, 0);
-        // Обработка результатов
-        while (!pathResults.isEmpty()) {
-            PathResult result = pathResults.poll();
-            PathData pathData = paths.get(result.pathId);
-            if (pathData != null) {
-                pathData.blocks = result.blocks;
-                pathData.furthestReachedIndex = 0;
-                pathData.currentVisibleFromIndex = 0;
-                pathData.chunksUpdated = false;
-                pathData.needsUpdate = false;
-            }
-        }
+        BlockPos currentPos = mc.thePlayer.getPosition().add(0, -1, 0);
+        processPathResults();
 
         if (Main.config.misc.pathFinderESP.enabled) {
-            for (Map.Entry<String, PathData> entry : paths.entrySet()) {
-                String pathId = entry.getKey();
-                PathData pathData = entry.getValue();
-                BlockPos endPos = pathData.end;
-
-                // Проверка чанков
-                int currentChunkX = currentPos.getX() >> 4;
-                int currentChunkZ = currentPos.getZ() >> 4;
-                if (Math.abs(currentChunkX - pathData.lastChunkX) > CHUNK_UPDATE_RADIUS ||
-                        Math.abs(currentChunkZ - pathData.lastChunkZ) > CHUNK_UPDATE_RADIUS) {
-                    pathData.chunksUpdated = true;
-                    pathData.lastChunkX = currentChunkX;
-                    pathData.lastChunkZ = currentChunkZ;
-                }
-
-                // Обновление прогресса
-                updateRemainingPath(currentPos, pathData);
-
-                if (shouldRecalculatePath(currentPos, pathData)) {
-                    BlockPos finalCurrentPos = currentPos;
-                    pathFinderExecutor.submit(() -> {
-                        CalculationContext ctx = new CalculationContext();
-                        BlockPos targetPos = getNearestLoadedPos(endPos);
-
-                        AStarPathFinder finder = new AStarPathFinder(
-                                finalCurrentPos.getX(), finalCurrentPos.getY(), finalCurrentPos.getZ(),
-                                new Goal(targetPos.getX(), targetPos.getY(), targetPos.getZ(), ctx),
-                                ctx
-                        );
-
-                        Path path = finder.calculatePath();
-                        if (path != null) {
-                            pathData.remainingPath = path.getSmoothedPath();
-                            pathResults.add(new PathResult(pathId, pathData.remainingPath));
-                        }
-                    });
-                }
-            }
+            PATHS.values().forEach(pathData -> updatePath(currentPos, pathData));
         }
     }
 
-    private BlockPos getNearestLoadedPos(BlockPos target) {
-        // Если целевой блок загружен - используем его
-        if (mc.theWorld.isBlockLoaded(target)) {
-            return target;
+    private void processPathResults() {
+        while (!PATH_RESULTS.isEmpty()) {
+            PathResult result = PATH_RESULTS.poll();
+            Optional.ofNullable(PATHS.get(result.pathId)).ifPresent(data -> {
+                data.blocks = result.blocks;
+                data.furthestReachedIndex = 0;
+                data.currentVisibleFromIndex = 0;
+                data.chunksUpdated = false;
+                data.needsUpdate = false;
+            });
         }
+    }
 
-        // Получаем позицию игрока
+    private void updatePath(BlockPos currentPos, PathData pathData) {
+        updateChunkData(currentPos, pathData);
+        updateRemainingPath(currentPos, pathData);
+
+        if (shouldRecalculatePath(currentPos, pathData)) {
+            recalculatePath(currentPos, pathData);
+        }
+    }
+
+    private void updateChunkData(BlockPos currentPos, PathData pathData) {
+        int currentChunkX = currentPos.getX() >> 4;
+        int currentChunkZ = currentPos.getZ() >> 4;
+
+        if (Math.abs(currentChunkX - pathData.lastChunkX) > CHUNK_UPDATE_RADIUS ||
+                Math.abs(currentChunkZ - pathData.lastChunkZ) > CHUNK_UPDATE_RADIUS) {
+            pathData.chunksUpdated = true;
+            pathData.lastChunkX = currentChunkX;
+            pathData.lastChunkZ = currentChunkZ;
+        }
+    }
+
+    private void recalculatePath(BlockPos currentPos, PathData pathData) {
+        PATH_FINDER_EXECUTOR.submit(() -> {
+            CalculationContext ctx = new CalculationContext();
+            BlockPos targetPos = getNearestLoadedPos(pathData.end);
+
+            AStarPathFinder finder = new AStarPathFinder(
+                    currentPos.getX(), currentPos.getY(), currentPos.getZ(),
+                    new Goal(targetPos.getX(), targetPos.getY(), targetPos.getZ(), ctx),
+                    ctx
+            );
+
+            Optional.ofNullable(finder.calculatePath())
+                    .map(Path::getSmoothedPath)
+                    .ifPresent(path -> {
+                        pathData.remainingPath = path;
+                        PATH_RESULTS.add(new PathResult(getPathId(pathData), path));
+                    });
+        });
+    }
+
+    private String getPathId(PathData pathData) {
+        return PATHS.entrySet().stream()
+                .filter(entry -> entry.getValue() == pathData)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse("");
+    }
+
+    private BlockPos getNearestLoadedPos(BlockPos target) {
+        if (mc.theWorld.isBlockLoaded(target)) return target;
+
         BlockPos playerPos = mc.thePlayer.getPosition();
-
-        // Вектор направления от игрока к цели
         int dx = target.getX() - playerPos.getX();
         int dz = target.getZ() - playerPos.getZ();
 
-        // Нормализуем направление
         double length = Math.sqrt(dx*dx + dz*dz);
         if (length > 0) {
             dx = (int)(dx / length);
             dz = (int)(dz / length);
         }
 
-        // Ищем по спирали от игрока в направлении цели
         for (int radius = 1; radius <= 100; radius++) {
-            // Проверяем основное направление
             BlockPos checkPos = playerPos.add(dx * radius, 0, dz * radius);
-            if (mc.theWorld.isBlockLoaded(checkPos)) {
-                return checkPos;
-            }
+            if (mc.theWorld.isBlockLoaded(checkPos)) return checkPos;
 
-            // Проверяем соседние блоки перпендикулярно направлению
             for (int offset = 1; offset <= radius; offset++) {
-                // Перпендикулярные смещения
                 BlockPos pos1 = checkPos.add(-dz * offset, 0, dx * offset);
                 BlockPos pos2 = checkPos.add(dz * offset, 0, -dx * offset);
-
                 if (mc.theWorld.isBlockLoaded(pos1)) return pos1;
                 if (mc.theWorld.isBlockLoaded(pos2)) return pos2;
             }
         }
 
-        // Если ничего не нашли, возвращаем оригинальную позицию
         return target;
     }
 
-
     private boolean shouldRecalculatePath(BlockPos currentPos, PathData pathData) {
-        // Принудительное обновление
-        if (pathData.needsUpdate) return true;
+        if (pathData.needsUpdate || pathData.blocks.isEmpty()) return true;
 
-        // Первый расчет или сброс пути
-        if (pathData.blocks.isEmpty()) return true;
-
-        // Проверяем, достигли ли мы конечной точки
         BlockPos endPos = pathData.blocks.get(pathData.blocks.size()-1);
-        if (currentPos.distanceSq(endPos) < RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
-            return true;
-        }
+        if (currentPos.distanceSq(endPos) < RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) return true;
 
-        // Проверяем расстояние до ближайшей точки пути
         BlockPos nearest = findNearestPathPoint(currentPos, pathData.blocks);
-        if (nearest == null || currentPos.distanceSq(nearest) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
-            return true;
-        }
+        if (nearest == null || currentPos.distanceSq(nearest) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) return true;
 
-        // Проверяем обновление чанков
-        if (pathData.chunksUpdated && isPotentialBetterPathAvailable(currentPos, pathData)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean isFarFromEntirePath(BlockPos playerPos, List<BlockPos> path) {
-        // Быстрая проверка расстояния до всех точек пути
-        double maxAllowedDistSq = RECALCULATION_DISTANCE * RECALCULATION_DISTANCE; // Больший порог
-
-        for (BlockPos pos : path) {
-            if (playerPos.distanceSq(pos) <= maxAllowedDistSq) {
-                return false;
-            }
-        }
-        return true;
+        return pathData.chunksUpdated && isPotentialBetterPathAvailable(currentPos, pathData);
     }
 
     private BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
-		if (path == null || path.size() < 2) {
-			return path != null && !path.isEmpty() ? path.get(0) : null;
-		}
-	
-		BlockPos nearestPoint = null;
-		double minDistance = Double.MAX_VALUE;
-	
-		// Проверяем расстояние до всех сегментов пути
-		for (int i = 0; i < path.size() - 1; i++) {
-			BlockPos start = path.get(i);
-			BlockPos end = path.get(i + 1);
-			
-			// Вычисляем ближайшую точку на текущем сегменте пути
-			BlockPos closestOnSegment = getClosestPointOnLine(playerPos, start, end);
-			double distance = playerPos.distanceSq(closestOnSegment);
-			
-			if (distance < minDistance) {
-				minDistance = distance;
-				nearestPoint = distance == playerPos.distanceSq(start) ? start : 
-							distance == playerPos.distanceSq(end) ? end : closestOnSegment;
-			}
-		}
-	
-		return nearestPoint;
-	}
-	
-	private BlockPos getClosestPointOnLine(BlockPos point, BlockPos lineStart, BlockPos lineEnd) {
-		// Вектор линии
-		double lineX = lineEnd.getX() - lineStart.getX();
-		double lineY = lineEnd.getY() - lineStart.getY();
-		double lineZ = lineEnd.getZ() - lineStart.getZ();
-		
-		// Вектор от начала линии до точки
-		double pointX = point.getX() - lineStart.getX();
-		double pointY = point.getY() - lineStart.getY();
-		double pointZ = point.getZ() - lineStart.getZ();
-		
-		// Длина линии в квадрате
-		double lineLengthSq = lineX * lineX + lineY * lineY + lineZ * lineZ;
-		
-		// Скалярное произведение
-		double dot = pointX * lineX + pointY * lineY + pointZ * lineZ;
-		
-		// Параметр положения проекции (0 = начало линии, 1 = конец линии)
-		double t = Math.max(0, Math.min(1, dot / lineLengthSq));
-		
-		// Вычисляем ближайшую точку на линии
-		return new BlockPos(
-			lineStart.getX() + t * lineX,
-			lineStart.getY() + t * lineY,
-			lineStart.getZ() + t * lineZ
-		);
-	}
+        if (path == null || path.isEmpty()) return null;
+        if (path.size() < 2) return path.get(0);
+
+        return IntStream.range(0, path.size() - 1)
+                .mapToObj(i -> getClosestPointOnSegment(playerPos, path.get(i), path.get(i + 1)))
+                .min(Comparator.comparingDouble(playerPos::distanceSq))
+                .orElse(null);
+    }
+
+    private BlockPos getClosestPointOnSegment(BlockPos point, BlockPos start, BlockPos end) {
+        double lineX = end.getX() - start.getX();
+        double lineY = end.getY() - start.getY();
+        double lineZ = end.getZ() - start.getZ();
+
+        double pointX = point.getX() - start.getX();
+        double pointY = point.getY() - start.getY();
+        double pointZ = point.getZ() - start.getZ();
+
+        double dot = pointX * lineX + pointY * lineY + pointZ * lineZ;
+        double t = Math.max(0, Math.min(1, dot / (lineX*lineX + lineY*lineY + lineZ*lineZ)));
+
+        return new BlockPos(
+                start.getX() + t * lineX,
+                start.getY() + t * lineY,
+                start.getZ() + t * lineZ
+        );
+    }
 
     private void updateRemainingPath(BlockPos playerPos, PathData pathData) {
         if (pathData.remainingPath.isEmpty()) return;
 
-        // Находим ближайшую точку в оставшемся пути
         BlockPos nearest = findNearestPathPoint(playerPos, pathData.remainingPath);
         if (nearest == null) return;
 
-        // Обрезаем путь до текущей позиции
         int nearestIndex = pathData.remainingPath.indexOf(nearest);
         if (nearestIndex > 0) {
-            pathData.remainingPath = pathData.remainingPath.subList(
-                    nearestIndex,
-                    pathData.remainingPath.size()
-            );
+            pathData.remainingPath = pathData.remainingPath.subList(nearestIndex, pathData.remainingPath.size());
         }
     }
 
     private boolean isPotentialBetterPathAvailable(BlockPos playerPos, PathData pathData) {
-        if (pathData.blocks.isEmpty() || !mc.theWorld.isBlockLoaded(pathData.end)) {
-            return false;
-        }
+        if (pathData.blocks.isEmpty() || !mc.theWorld.isBlockLoaded(pathData.end)) return false;
 
         BlockPos currentPathEnd = pathData.blocks.get(pathData.blocks.size()-1);
         double currentDistance = currentPathEnd.distanceSq(pathData.end);
 
-        for (int x = -3; x <= 3; x++) {
-            for (int z = -3; z <= 3; z++) {
-                BlockPos testPos = playerPos.add(x*16, 0, z*16);
-                if (mc.theWorld.isBlockLoaded(testPos)) {
-                    double testDistance = testPos.distanceSq(pathData.end);
-                    if (testDistance < currentDistance) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return IntStream.rangeClosed(-3, 3)
+                .anyMatch(x -> IntStream.rangeClosed(-3, 3)
+                        .anyMatch(z -> {
+                            BlockPos testPos = playerPos.add(x*16, 0, z*16);
+                            return mc.theWorld.isBlockLoaded(testPos) && testPos.distanceSq(pathData.end) < currentDistance;
+                        }));
     }
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (mc.theWorld == null || paths.isEmpty()) return;
+        if (mc.theWorld == null || PATHS.isEmpty() || !Main.config.esp.pathFinderESP.enabled) return;
 
-        if (Main.config.esp.pathFinderESP.enabled) {
-            for (PathData pathData : paths.values()) {
-                if (pathData.blocks == null || pathData.blocks.isEmpty()) continue;
-                if (pathData.remainingPath.isEmpty()) continue;
+        PATHS.values().forEach(pathData -> renderPath(pathData, event.partialTicks));
+    }
 
-				BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
+    private void renderPath(PathData pathData, float partialTicks) {
+        if (pathData.blocks == null || pathData.blocks.isEmpty() || pathData.remainingPath.isEmpty()) return;
 
-                BlockPos prevPos = pathData.remainingPath.get(0);
-                for (int i = 1; i < pathData.remainingPath.size(); i++) {
-                    BlockPos currentPos = pathData.remainingPath.get(i);
-                    RenderUtils.drawLine(
-                            prevPos.add(0, 1.5, 0),
-                            currentPos.add(0, 1.5, 0),
-                            4,
-                            pathData.color
-                    );
-					
-					if (!currentPos.equals(endPos) && Main.config.esp.pathFinderESP.enableSubPoints) {
-						RenderUtils.drawBlockBox(
-							currentPos,
-							pathData.color, 1,
-							event.partialTicks
-						);
-					}
-                    prevPos = currentPos;
-                }
+        BlockPos endPos = pathData.blocks.get(pathData.blocks.size() - 1);
+        renderPathLines(pathData, endPos, partialTicks);
+        renderEndPoint(pathData, endPos, partialTicks);
+    }
 
+    private void renderPathLines(PathData pathData, BlockPos endPos, float partialTicks) {
+        BlockPos prevPos = pathData.remainingPath.get(0);
+        for (int i = 1; i < pathData.remainingPath.size(); i++) {
+            BlockPos currentPos = pathData.remainingPath.get(i);
+            RenderUtils.drawLine(
+                    prevPos.add(0, 1.5, 0),
+                    currentPos.add(0, 1.5, 0),
+                    4,
+                    pathData.color
+            );
 
-                RenderUtils.drawBlockBox(
-                        endPos,
-                        pathData.color, 4,
-                        event.partialTicks
-                );
-                RenderUtils.renderWaypointText(
-                        pathData.endText,
-                        new BlockPos(endPos.getX() + 0.5, endPos.getY() + 2.8, endPos.getZ() + 0.5),
-                        event.partialTicks,
-                        false,
-                        pathData.color
-                );
+            if (!currentPos.equals(endPos) && Main.config.esp.pathFinderESP.enableSubPoints) {
+                RenderUtils.drawBlockBox(currentPos, pathData.color, 1, partialTicks);
             }
+            prevPos = currentPos;
         }
     }
 
-    // API для управления путями
+    private void renderEndPoint(PathData pathData, BlockPos endPos, float partialTicks) {
+        RenderUtils.drawBlockBox(endPos, pathData.color, 4, partialTicks);
+        RenderUtils.renderWaypointText(
+                pathData.endText,
+                new BlockPos(endPos.getX() + 0.5, endPos.getY() + 2.8, endPos.getZ() + 0.5),
+                partialTicks,
+                false,
+                pathData.color
+        );
+    }
+
+    // API methods
     public static void addOrUpdatePath(String id, BlockPos end, Color color, String endText) {
         PathData newData = new PathData(end, color, endText);
-        PathData existing = paths.put(id, newData);
-
-        if (existing == null || !existing.end.equals(end)) {
+        if (!end.equals(Optional.ofNullable(PATHS.get(id)).map(data -> data.end).orElse(null))) {
             newData.needsUpdate = true;
         }
+        PATHS.put(id, newData);
     }
 
     public static void removePath(String id) {
-        paths.remove(id);
+        PATHS.remove(id);
     }
 
     public static void clearAllPaths() {
-        paths.clear();
+        PATHS.clear();
     }
 
     public static boolean hasPath(String id) {
-        return paths.containsKey(id);
+        return PATHS.containsKey(id);
     }
 
     public static List<BlockPos> getPathBlocks(String id) {
-        PathData data = paths.get(id);
+        PathData data = PATHS.get(id);
         return data != null ? new ArrayList<>(data.blocks) : Collections.emptyList();
     }
 
     public static void shutdown() {
-        pathFinderExecutor.shutdownNow();
+        PATH_FINDER_EXECUTOR.shutdownNow();
     }
 }

@@ -47,9 +47,10 @@ public class AutoChestOpen {
         boolean ghostHand = Main.config.macros.autoChestOpen.features.contains(Macros.AutoChestOpen.Features.GhostHand);
 
         if (ghostHand) {
-            MovingObjectPosition mouseOver = RaycastUtils.rayTraceToChest(
+            MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlock(
                     getEyePosition(),
-                    getLookEndPos()
+                    getLookEndPos(),
+                    Collections.singletonList(Blocks.chest)
             );
             tryOpenChest(mouseOver);
         } else if (isLookingAtChest()) {

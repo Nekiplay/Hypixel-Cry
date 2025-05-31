@@ -3,7 +3,6 @@ package com.nekiplay.hypixelcry.config.neupages;
 import com.google.gson.annotations.Expose;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
 import io.github.notenoughupdates.moulconfig.annotations.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

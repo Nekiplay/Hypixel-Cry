@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.features.esp;
+package com.nekiplay.hypixelcry.features.esp.farming;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;

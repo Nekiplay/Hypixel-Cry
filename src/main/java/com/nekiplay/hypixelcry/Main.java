@@ -57,8 +57,7 @@ public class Main
     public static final String MODID = "AntiCheat";
     public static final String VERSION = "1.1.0";
 
-    public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] ";
-    public static final String serverprefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.YELLOW + "Remote Server" + EnumChatFormatting.GRAY + "] ";
+    public static final String prefix = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.GOLD + "Hypixel Cry" + EnumChatFormatting.GRAY + "] " + EnumChatFormatting.RESET;
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapterFactory(new PropertyTypeAdapterFactory()).create();
@@ -130,6 +129,7 @@ public class Main
 
         features.register(event);
 
+        ClientCommandHandler.instance.registerCommand(new LocationCommand());
         ClientCommandHandler.instance.registerCommand(new BlockInfoCommand());
         ClientCommandHandler.instance.registerCommand(new TestCommand());
         ClientCommandHandler.instance.registerCommand(new PathCommand());

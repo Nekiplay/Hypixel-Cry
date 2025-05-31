@@ -1,5 +1,8 @@
 package com.nekiplay.hypixelcry;
 
+import com.nekiplay.hypixelcry.features.esp.farming.Glowing_Mushroom;
+import com.nekiplay.hypixelcry.features.esp.farming.Treasure_Hunter;
+import com.nekiplay.hypixelcry.features.esp.mining.dwarvenmines.Dark_Monolith;
 import com.nekiplay.hypixelcry.features.esp.mining.glacitemishafts.FrozenCourpes;
 import com.nekiplay.hypixelcry.features.esp.mining.crystalhollows.AutomatonESP;
 import com.nekiplay.hypixelcry.features.esp.mining.crystalhollows.YogESP;
@@ -7,7 +10,6 @@ import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.detections.crystalhollows.JungleTemple;
 import com.nekiplay.hypixelcry.features.qol.AutoChestClose;
 import com.nekiplay.hypixelcry.features.esp.*;
-import com.nekiplay.hypixelcry.features.esp.holograms.HologramModule;
 import com.nekiplay.hypixelcry.features.macros.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

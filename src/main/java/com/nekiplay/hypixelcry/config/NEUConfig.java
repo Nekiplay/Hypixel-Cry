@@ -18,11 +18,6 @@ public class NEUConfig extends Config {
     }
 
     @Override
-    public void executeRunnable(int runnableId) {
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Just executed runnableId " + runnableId));
-    }
-
-    @Override
     public void saveNow() {
         Main.getInstance().saveConfig();
     }
