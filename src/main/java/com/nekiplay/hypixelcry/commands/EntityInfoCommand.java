@@ -44,7 +44,7 @@ public class EntityInfoCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        String copy = "";
+        StringBuilder copy = new StringBuilder();
 
         Entity nametagEntity = getNametag();
         Entity name = getName();
@@ -52,8 +52,8 @@ public class EntityInfoCommand implements ICommand {
             String nametag = nametagEntity.getCustomNameTag();
             sender.addChatMessage(new ChatComponentText(Main.prefix + "[Custom name] " + nametag));
             sender.addChatMessage(new ChatComponentText(Main.prefix + "[Name] " + name.getName()));
-            copy += "[Custom name] " + nametag + "\n";
-            copy += "[Name] " + name.getName() + "\n";
+            copy.append("[Custom name] ").append(nametag).append("\n");
+            copy.append("[Name] ").append(name.getName()).append("\n");
         }
 
         Entity skullEntity = getSkull();
@@ -67,7 +67,7 @@ public class EntityInfoCommand implements ICommand {
                     if (skullOwner.hasKey("Id", 8)) {
                         String id = skullOwner.getString("Id");
                         sender.addChatMessage(new ChatComponentText(Main.prefix + "[ArmorStand SkullOwner] " + id));
-                        copy += "[ArmorStand SkullOwner] " + id + "\n";
+                        copy.append("[ArmorStand SkullOwner] ").append(id).append("\n");
                     }
                 }
             }
@@ -79,7 +79,7 @@ public class EntityInfoCommand implements ICommand {
             ItemStack helmet = armorStand.getEquipmentInSlot(4);
             if (helmet != null && !helmet.getDisplayName().isEmpty()) {
                 sender.addChatMessage(new ChatComponentText(Main.prefix + "[ArmorStand Head Name] " + helmet.getDisplayName()));
-                copy += "[ArmorStand Head name] " + helmet.getDisplayName() + "\n";
+                copy.append("[ArmorStand Head name] ").append(helmet.getDisplayName()).append("\n");
             }
         }
 
@@ -89,17 +89,15 @@ public class EntityInfoCommand implements ICommand {
             Map<String, Collection<Property>> m = player.getGameProfile().getProperties().asMap();
             Collection<Property> textures = m.get("textures");
 
-            textures.stream().findFirst().orElse(null);
-
             for (Property entry : textures) {
                 sender.addChatMessage(new ChatComponentText(Main.prefix + "[" + player.getName() + "] [Skin id] " + entry.getValue()));
-                copy += "[" + player.getName() + "] [Skin id] " + entry.getValue() + "\n";
+                copy.append("[").append(player.getName()).append("] [Skin id] ").append(entry.getValue()).append("\n");
             }
         }
 
 
-        if (!copy.equals("")) {
-            GuiScreen.setClipboardString(copy);
+        if (!copy.toString().isEmpty()) {
+            GuiScreen.setClipboardString(copy.toString());
         }
     }
 
@@ -116,8 +114,7 @@ public class EntityInfoCommand implements ICommand {
     private Entity getNametag() {
         return mc.theWorld.getLoadedEntityList().
                 stream().
-                filter(entity ->
-                        entity.hasCustomName())
+                filter(Entity::hasCustomName)
                 .min(Comparator.comparingDouble(entity -> entity.getDistanceSqToCenter(mc.thePlayer.getPosition()))).orElse(null);
     }
 
@@ -155,7 +152,7 @@ public class EntityInfoCommand implements ICommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
     @Override

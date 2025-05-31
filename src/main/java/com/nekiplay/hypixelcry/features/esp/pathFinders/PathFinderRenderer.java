@@ -5,11 +5,8 @@ import com.nekiplay.hypixelcry.pathfinder.calculate.Path;
 import com.nekiplay.hypixelcry.pathfinder.calculate.path.AStarPathFinder;
 import com.nekiplay.hypixelcry.pathfinder.goal.Goal;
 import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext;
-import com.nekiplay.hypixelcry.utils.PathFinder;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -179,11 +176,6 @@ public class PathFinderRenderer {
         // Проверяем, достигли ли мы конечной точки
         BlockPos endPos = pathData.blocks.get(pathData.blocks.size()-1);
         if (currentPos.distanceSq(endPos) < RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
-            return true;
-        }
-
-        // Быстрая проверка - если игрок далеко от всего пути
-        if (isFarFromEntirePath(currentPos, pathData.blocks)) {
             return true;
         }
 

@@ -2,7 +2,6 @@ package com.nekiplay.hypixelcry.DataInterpretation;
 
 import com.google.common.base.Predicate;
 import com.nekiplay.hypixelcry.EventIDs;
-import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -29,11 +28,9 @@ public class DataExtractor {
     private Minecraft mc = Minecraft.getMinecraft();
     //public PotionFetcher potionFetcher = new PotionFetcher(this);
 
-    private final char HpSymbol = '\u2764';
-    private final char DfSymbol = '\u2748';
-    private final char MnSymbol = '\u270e';
-    private final char OverflowSymbol = '\u02ac';
-    private final char[] healDurationSymbols = new char[] { '\u2586', '\u2585', '\u2584', '\u2583', '\u2582', '\u2581' };
+    private final char HpSymbol = '❤';
+    private final char MnSymbol = '✎';
+    private final char[] healDurationSymbols = new char[] { '▆', '▅', '▄', '▃', '▂', '▁' };
 
     private final String endRaceSymbol = "THE END RACE";
     private final String woodRacingSymbol = "WOODS RACING";
@@ -45,9 +42,7 @@ public class DataExtractor {
     private final String crystalRaceSymbol = "CRYSTAL CORE RACE";
     private final String giantMushroomSymbol = "GIANT MUSHROOM RACE";
     private final String precursorRuinsSymbol = "PRECURSOR RUINS RACE";
-    private final String reviveSymbol = "Revive";
     private final String armadilloName = "Armadillo";
-    private final String treasureMetalDetectorSymbol = "TREASURE:";
 
     private boolean alreadyShowedTabError = false;
     private boolean alreadyShowedScrErr = false;
@@ -63,19 +58,6 @@ public class DataExtractor {
 
     private String lastSkillXp = "";
     private String lastPurse = "";
-
-    private final String sendTradeRequestMsg = "You have sent a trade request to";
-    private final String expireSentTradeRequest = "Your /trade request to";
-
-    private final String tradeCancelled = "You cancelled the trade!";
-
-    private final String recieveTradeRequestMsg = "has sent you a trade request";
-    private final String expireRecieveTradeRequest = "The /trade request from";
-
-    private final String tradeCompleted = "Trade completed";
-
-    private final String combatZoneName = "the catacombs";
-    private final String clearedName = "dungeon cleared";
 
     private boolean usesPiggyBank = false;
 
@@ -94,7 +76,7 @@ public class DataExtractor {
 
     private PlayerStats playerStats;
     private List<String> scoreBoardLines;
-    private ScoreBoardData scoreBoardData = new ScoreBoardData();
+    private final ScoreBoardData scoreBoardData = new ScoreBoardData();
     private OtherData otherData;
 
     public boolean isInSkyblock = false; // This flag is true if the player is in skyblock
@@ -103,6 +85,7 @@ public class DataExtractor {
     /** Gets the action bar data and looks in the chat for trades */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onChatMsg(ClientChatReceivedEvent event) {
+        String reviveSymbol = "Revive";
         if (
                 (event.message.getUnformattedText().contains(String.valueOf(HpSymbol))
                         || event.message.getUnformattedText().contains(String.valueOf(MnSymbol))
@@ -131,12 +114,18 @@ public class DataExtractor {
         } else if (!event.message.getUnformattedText().contains("<") && !isFromChat(event.message.getFormattedText())){
 
             String msg = ApecUtils.removeAllCodes(event.message.getUnformattedText());
+            String sendTradeRequestMsg = "You have sent a trade request to";
             if (msg.contains(sendTradeRequestMsg)) hasSentATradeRequest = true;
+            String expireSentTradeRequest = "Your /trade request to";
             if (msg.contains(expireSentTradeRequest)) hasSentATradeRequest = false;
 
+            String recieveTradeRequestMsg = "has sent you a trade request";
             if (msg.contains(recieveTradeRequestMsg)) hasRecievedATradeRequest = true;
+            String expireRecieveTradeRequest = "The /trade request from";
             if (msg.contains(expireRecieveTradeRequest)) hasRecievedATradeRequest = false;
 
+            String tradeCompleted = "Trade completed";
+            String tradeCancelled = "You cancelled the trade!";
             if (msg.contains(tradeCancelled) || msg.contains(tradeCompleted)) {
                 if (hasSentATradeRequest) hasSentATradeRequest = false;
                 if (hasRecievedATradeRequest) hasRecievedATradeRequest = false;
@@ -152,14 +141,14 @@ public class DataExtractor {
         if (UpdateThisTick) {
             try {
                 String s = getScoreBoardTitle();
-                if (!s.equals("")) {
+                if (!s.isEmpty()) {
                     this.isInSkyblock = ApecUtils.removeAllCodes(s).toLowerCase().contains("skyblock");
                     if (wasInTheCatacombs ^ isInTheCatacombs) {
                         wasInTheCatacombs = isInTheCatacombs;
                         //potionFetcher.ClearAll();
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             try {
                 IChatComponent icc = (IChatComponent) FieldUtils.readField(mc.ingameGUI.getTabList(), ApecUtils.unObfedFieldNames.get("footer"), true);
@@ -171,7 +160,6 @@ public class DataExtractor {
                 }
             } catch (Exception e) {
                 if (!alreadyShowedTabError) {
-                    ApecUtils.showMessage("[\u00A72Apec\u00A7f] There was an error processing tab footer data!");
                     alreadyShowedTabError = true;
                 }
             }
@@ -179,7 +167,7 @@ public class DataExtractor {
             try {
                 this.scoreBoardLines = getSidebarLines();
                 this.scoreBoardLines = addDataFixesScoreboard(this.scoreBoardLines);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
 
@@ -208,7 +196,7 @@ public class DataExtractor {
 
     public List<String> addDataFixesScoreboard(List<String> s) {
         for (String _s: s) {
-            if (_s.contains("[") && !_s.contains("]")) _s.concat("\u00a7]");
+            if (_s.contains("[") && !_s.contains("]")) _s.concat("§]");
         }
         return s;
     }
@@ -277,8 +265,8 @@ public class DataExtractor {
         return (ApecUtils.containedByCharSequence(s,"am") ||
                 ApecUtils.containedByCharSequence(s,"pm")) &&
                 ApecUtils.containedByCharSequence(s,":") &&
-                (ApecUtils.containedByCharSequence(s,"\u263d") || // The moon
-                        ApecUtils.containedByCharSequence(s,"\u2600")); // The sun
+                (ApecUtils.containedByCharSequence(s,"☽") || // The moon
+                        ApecUtils.containedByCharSequence(s,"☀")); // The sun
     }
 
     /**
@@ -287,7 +275,7 @@ public class DataExtractor {
      */
 
     public boolean RepresentsZone(String s) {
-        return ApecUtils.containedByCharSequence(s,"\u23E3");
+        return ApecUtils.containedByCharSequence(s,"⏣");
     }
 
     /**
@@ -333,10 +321,12 @@ public class DataExtractor {
             isInTheCatacombs = false;
 
             for (int i = 0;i < scoreBoardLines.size();i++){
-                if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size-i).toLowerCase(),clearedName)) {
+                String clearedName = "dungeon cleared";
+                if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size-i).toLowerCase(), clearedName)) {
                     isInTheCatacombs = true;
                 }
-                if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size-i).toLowerCase(),combatZoneName) && !scoreBoardLines.get(size-i).toLowerCase().contains("to")) {
+                String combatZoneName = "the catacombs";
+                if (ApecUtils.containedByCharSequence(scoreBoardLines.get(size-i).toLowerCase(), combatZoneName) && !scoreBoardLines.get(size-i).toLowerCase().contains("to")) {
                     isInTheCatacombs = true;
                 }
             }
@@ -351,7 +341,6 @@ public class DataExtractor {
             lastHour = scoreBoardData.Hour;
         } catch (Exception err) {
             if (!alreadyShowedScrErr) {
-                ApecUtils.showMessage("[\u00A72Apec\u00A7f] There was an error processing scoreboard data!");
                 alreadyShowedScrErr = true;
             }
         }
@@ -433,8 +422,8 @@ public class DataExtractor {
         for (String line : rl) {
             if (RepresentsIRLDate(line)) {
                 sd.IRL_Date = ApecUtils.removeFirstSpaces(line);
-                if (line.contains("\u00a78")) {
-                    sd.ExtraInfo.add("Currently in: " + ApecUtils.segmentString(scoreBoardLines.get(scoreBoardLines.size() - 1), "\u00a78", '\u00a7', '~', 1, 1, ApecUtils.SegmentationOptions.TOTALLY_INCLUSIVE));
+                if (line.contains("§8")) {
+                    sd.ExtraInfo.add("Currently in: " + ApecUtils.segmentString(scoreBoardLines.get(scoreBoardLines.size() - 1), "§8", '§', '~', 1, 1, ApecUtils.SegmentationOptions.TOTALLY_INCLUSIVE));
                 }
             }
             else if (RepresentsDate(line)) sd.Date = ApecUtils.removeFirstSpaces(line);
@@ -453,7 +442,7 @@ public class DataExtractor {
                 BitsHaveBeenSet = true;
             }
             else if (!line.contains("www")) {
-                if (line.replaceAll("[^a-zA-Z0-9]", "").length() != 0) {
+                if (!line.replaceAll("[^a-zA-Z0-9]", "").isEmpty()) {
                     if (ShouldHaveSpaceBefore(line)) sd.ExtraInfo.add(" ");
                     sd.ExtraInfo.add(ApecUtils.removeFirstSpaces(line));
                     if (ShouldHaveSpaceAfter(line)) sd.ExtraInfo.add(" ");
@@ -461,7 +450,7 @@ public class DataExtractor {
             }
         }
         if (!BitsHaveBeenSet && !isInTheCatacombs) {
-            sd.Bits = "Bits: \u00a7b0";
+            sd.Bits = "Bits: §b0";
         }
 
     }
@@ -486,7 +475,7 @@ public class DataExtractor {
         try {
             //HP
             {
-                String segmentString = ApecUtils.segmentString(actionBarData, String.valueOf(HpSymbol), '\u00a7', HpSymbol, 1, 1);
+                String segmentString = ApecUtils.segmentString(actionBarData, String.valueOf(HpSymbol), '§', HpSymbol, 1, 1);
                 if (segmentString != null) {
                     Tuple<Integer, Integer> t = formatStringFractI(ApecUtils.removeAllCodes(segmentString));
                     playerStats.Hp = t.getFirst();
@@ -526,7 +515,7 @@ public class DataExtractor {
         try {
             // MP
             {
-                String segmentedString = ApecUtils.segmentString(actionBarData, String.valueOf(MnSymbol), '\u00a7', MnSymbol, 1, 1);
+                String segmentedString = ApecUtils.segmentString(actionBarData, String.valueOf(MnSymbol), '§', MnSymbol, 1, 1);
                 if (segmentedString != null) {
                     Tuple<Integer, Integer> t = formatStringFractI(ApecUtils.removeAllCodes(segmentedString));
                     playerStats.Mp = t.getFirst();
@@ -546,7 +535,8 @@ public class DataExtractor {
         try {
             // Overflow mana
             {
-                String segmentedString = ApecUtils.segmentString(actionBarData,String.valueOf(OverflowSymbol),'\u00a7',OverflowSymbol,1,1);
+                char overflowSymbol = 'ʬ';
+                String segmentedString = ApecUtils.segmentString(actionBarData,String.valueOf(overflowSymbol),'§', overflowSymbol,1,1);
                 if (segmentedString != null) {
                     int value = Integer.parseInt(ApecUtils.removeAllCodes(segmentedString.replace(",","")));
                     playerStats.Op = value;
@@ -560,8 +550,8 @@ public class DataExtractor {
                     baseOp = 0;
                 }
             }
-        } catch (Exception err) {
-            err.printStackTrace();
+        } catch (Exception ignored) {
+
         }
 
         try {
@@ -581,8 +571,8 @@ public class DataExtractor {
                     playerStats.HealDuration = 0;
                 }
             }
-        } catch (Exception err) {
-            err.printStackTrace();
+        } catch (Exception ignored) {
+
         }
 
         try {
@@ -609,7 +599,7 @@ public class DataExtractor {
                 playerStats.SkillExpPercentage = percentage;
 
             } else {
-                if (!lastSkillXp.equals("")) {
+                if (!lastSkillXp.isEmpty()) {
                     String wholeString = ApecUtils.removeAllCodes(lastSkillXp);
                     percentage = praseSkillPercentage(ApecUtils.segmentString(lastSkillXp, "(", '(', ')', 1, 1, ApecUtils.SegmentationOptions.TOTALLY_EXCLUSIVE));
 
@@ -621,13 +611,13 @@ public class DataExtractor {
                 }
             }
 
-        } catch (Exception err) {
-            err.printStackTrace();
+        } catch (Exception ignored) {
+
         }
 
         try {
             // ABILITY
-            String segmentedString = ApecUtils.segmentString(actionBarData, ")",'\u00a7',' ',3,1);
+            String segmentedString = ApecUtils.segmentString(actionBarData, ")",'§',' ',3,1);
             if (segmentedString != null) {
                 if (segmentedString.contains("-") && actionBarData.contains(String.valueOf(MnSymbol)) /* This is to make sure that the data is indeed from the action bar */ ) {
                     playerStats.IsAbilityShown = true;
@@ -641,7 +631,8 @@ public class DataExtractor {
         try {
             // DEF
             {
-                String segmentedString = ApecUtils.segmentString(actionBarData, String.valueOf(DfSymbol), '\u00a7', DfSymbol, 2, 1);
+                char dfSymbol = '❈';
+                String segmentedString = ApecUtils.segmentString(actionBarData, String.valueOf(dfSymbol), '§', dfSymbol, 2, 1);
                 if (segmentedString != null) {
                     playerStats.Defence = Integer.parseInt(ApecUtils.removeAllCodes(segmentedString.replace(",","")));
                     lastDefence = playerStats.Defence;
@@ -707,17 +698,17 @@ public class DataExtractor {
 
     private OtherData ProcessOtherData (ScoreBoardData sd) {
         OtherData otherData = new OtherData();
-        if (actionBarData == null ? true : isFromChat(actionBarData)) return otherData;
-        String endRace = ApecUtils.segmentString(actionBarData,endRaceSymbol,'\u00a7',' ',2,2);
-        String woodRacing = ApecUtils.segmentString(actionBarData,woodRacingSymbol,'\u00a7',' ',2,2);
-        String dps = ApecUtils.segmentString(actionBarData,dpsSymbol,'\u00a7',' ',1,1);
-        String sec = ApecUtils.segmentString(actionBarData,secSymbol,'\u00a7',' ',1,2);
-        String secrets = ApecUtils.segmentString(actionBarData,secretSymbol,'\u00a7','\u00a7',1,1);
-        String chickenRace = ApecUtils.segmentString(actionBarData,chickenRaceSymbol,'\u00a7',' ',2,2);
-        String jump = ApecUtils.segmentString(actionBarData,jumpSymbol,'\u00a7','\u00a7',3,1);
-        String crystalRace = ApecUtils.segmentString(actionBarData,crystalRaceSymbol,'\u00a7',' ',2,2);
-        String mushroomRace = ApecUtils.segmentString(actionBarData,giantMushroomSymbol,'\u00a7',' ',2,2);
-        String precursorRace = ApecUtils.segmentString(actionBarData,precursorRuinsSymbol,'\u00a7',' ',2,2);
+        if (actionBarData == null || isFromChat(actionBarData)) return otherData;
+        String endRace = ApecUtils.segmentString(actionBarData,endRaceSymbol,'§',' ',2,2);
+        String woodRacing = ApecUtils.segmentString(actionBarData,woodRacingSymbol,'§',' ',2,2);
+        String dps = ApecUtils.segmentString(actionBarData,dpsSymbol,'§',' ',1,1);
+        String sec = ApecUtils.segmentString(actionBarData,secSymbol,'§',' ',1,2);
+        String secrets = ApecUtils.segmentString(actionBarData,secretSymbol,'§','§',1,1);
+        String chickenRace = ApecUtils.segmentString(actionBarData,chickenRaceSymbol,'§',' ',2,2);
+        String jump = ApecUtils.segmentString(actionBarData,jumpSymbol,'§','§',3,1);
+        String crystalRace = ApecUtils.segmentString(actionBarData,crystalRaceSymbol,'§',' ',2,2);
+        String mushroomRace = ApecUtils.segmentString(actionBarData,giantMushroomSymbol,'§',' ',2,2);
+        String precursorRace = ApecUtils.segmentString(actionBarData,precursorRuinsSymbol,'§',' ',2,2);
 
         if ((endRace != null || woodRacing != null || dps != null || sec != null) && !otherData.ExtraInfo.isEmpty()) otherData.ExtraInfo.add(" ");
 
@@ -738,7 +729,7 @@ public class DataExtractor {
         if (precursorRace != null) otherData.ExtraInfo.add(precursorRace);
 
         if (actionBarData.contains(armadilloName)) {
-            String segmentEnergy = ApecUtils.segmentString(actionBarData,"/",'\u00a7','\0' /*placeholder*/,2,1, ApecUtils.SegmentationOptions.TOTALLY_INCLUSIVE);
+            String segmentEnergy = ApecUtils.segmentString(actionBarData,"/",'§','\0' /*placeholder*/,2,1, ApecUtils.SegmentationOptions.TOTALLY_INCLUSIVE);
             if (segmentEnergy != null) {
                 String[] values = ApecUtils.removeAllCodes(segmentEnergy).split("/");
                 otherData.ArmadilloEnergy = Float.parseFloat(values[0]);
@@ -746,8 +737,9 @@ public class DataExtractor {
             }
         }
 
+        String treasureMetalDetectorSymbol = "TREASURE:";
         if (actionBarData.contains(treasureMetalDetectorSymbol)) {
-            String segmentedString = ApecUtils.segmentString(actionBarData,treasureMetalDetectorSymbol,'\u00a7','m',2,1, ApecUtils.SegmentationOptions.TOTALLY_INCLUSIVE);
+            String segmentedString = ApecUtils.segmentString(actionBarData, treasureMetalDetectorSymbol,'§','m',2,1, ApecUtils.SegmentationOptions.TOTALLY_INCLUSIVE);
             if (segmentedString != null) {
                 otherData.ExtraInfo.add(segmentedString);
             }
@@ -771,9 +763,7 @@ public class DataExtractor {
      */
 
     private ArrayList<EventIDs> getEvents (ScoreBoardData sd) {
-        ArrayList<EventIDs> events = new ArrayList<EventIDs>();
-
-        return events;
+        return new ArrayList<EventIDs>();
     }
 
     /**
@@ -833,17 +823,17 @@ public class DataExtractor {
 
     // Use with caution
     public boolean isFromChat(String s) {
-        return (s.contains("[") && s.contains("]")) || (s.startsWith("\u00a77") && s.contains(": "));
+        return (s.contains("[") && s.contains("]")) || (s.startsWith("§7") && s.contains(": "));
     }
 
     /**
      * The classes that encapsulate all the different types of data
      */
 
-    public class ScoreBoardData {
+    public static class ScoreBoardData {
         public String Server = "";
-        public String Purse = "Purse: \u00a760";
-        public String Bits = "Bits: \u00a7b0";
+        public String Purse = "Purse: §60";
+        public String Bits = "Bits: §b0";
         public List<String> ExtraInfo = new ArrayList<String>();
         public String Zone = "";
         public String Date = "";
@@ -852,7 +842,7 @@ public class DataExtractor {
         public String scoreBoardTitle = "";
     }
 
-    public class PlayerStats {
+    public static class PlayerStats {
         public int Hp;
         public int BaseHp;
         public int HealDuration;
@@ -868,10 +858,10 @@ public class DataExtractor {
         public float SkillExpPercentage;
         public boolean SkillIsShown;
         public boolean IsAbilityShown;
-        public String AbilityText = "\u00a7b-00 Mana (\u00a76Some Ability\u00a7b)";
+        public String AbilityText = "§b-00 Mana (§6Some Ability§b)";
     }
 
-    public class OtherData {
+    public static class OtherData {
 
         public ArrayList<String> ExtraInfo  = new ArrayList<String>();
         public ArrayList<EventIDs> currentEvents = new ArrayList<EventIDs>();

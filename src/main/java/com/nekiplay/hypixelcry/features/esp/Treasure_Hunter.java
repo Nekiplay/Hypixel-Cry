@@ -113,14 +113,9 @@ public class Treasure_Hunter {
         if (event.phase == TickEvent.Phase.START) {
             return;
         }
-        DataExtractor extractor = Main.getInstance().dataExtractor;
+        DataExtractor extractor = Main.dataExtractor;
         String zone = extractor.getScoreBoardData().Zone;
-        if (zone.contains("Archeologist") || zone.contains("Mushroom") || zone.contains("Oasis") || zone.contains("Shepherd") || zone.contains("Desert") || zone.contains("Site")) {
-            allowRender = true;
-        }
-        else {
-            allowRender = false;
-        }
+        allowRender = zone.contains("Archeologist") || zone.contains("Mushroom") || zone.contains("Oasis") || zone.contains("Shepherd") || zone.contains("Desert") || zone.contains("Site");
     }
 
     @SuppressWarnings("deprecation")

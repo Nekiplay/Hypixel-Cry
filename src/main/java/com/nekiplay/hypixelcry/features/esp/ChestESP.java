@@ -4,7 +4,6 @@ import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
-import com.nekiplay.hypixelcry.utils.SpecialColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
@@ -24,10 +23,10 @@ public class ChestESP {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
             return;
         }
-        DataExtractor extractor = Main.getInstance().dataExtractor;
+        locations.clear();
+        DataExtractor extractor = Main.dataExtractor;
         if (extractor.isInSkyblock) {
             if (mc.theWorld != null && Main.config.esp.chestEsp.enabled) {
-                locations.clear();
                 for (TileEntity tileEntity : mc.theWorld.loadedTileEntityList) {
                     if (tileEntity instanceof TileEntityChest) {
                         if (Main.config.esp.chestEsp.maxRange == 0) {
@@ -42,9 +41,6 @@ public class ChestESP {
                     }
                 }
             }
-        }
-        else {
-            locations.clear();
         }
     }
 

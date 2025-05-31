@@ -7,11 +7,9 @@ object SpecialColor {
     private const val MAX_CHROMA_SECS = 60
     private val startTime = SimpleTimeMark.now()
 
-    @Deprecated("Use ChromaColour instead")
     @JvmStatic
     fun String.toSpecialColor() = Color(toSpecialColorInt(), true)
 
-    @Deprecated("Use ChromaColour instead")
     @JvmStatic
     fun String.toSpecialColorInt(): Int {
         val (chroma, alpha, red, green, blue) = decompose(this)

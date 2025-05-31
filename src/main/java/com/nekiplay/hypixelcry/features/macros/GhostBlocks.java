@@ -2,20 +2,15 @@ package com.nekiplay.hypixelcry.features.macros;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.KeyBindUtils;
-import com.nekiplay.hypixelcry.utils.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLever;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,13 +27,11 @@ public class GhostBlocks {
             MovingObjectPosition movingObjectPosition = player.rayTrace(Main.config.macros.ghostBlocks.range, 1f);
             if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos pos = movingObjectPosition.getBlockPos();
-                ItemStack hand = mc.thePlayer.getCurrentEquippedItem();
                 IBlockState state = mc.theWorld.getBlockState(pos);
                 Block block = state.getBlock();
                 if (block instanceof BlockChest || block instanceof BlockSkull || block instanceof BlockLever) {
                     KeyBindUtils.rightClick();
                 } else {
-                    //PlayerUtils.swingItem();
                     mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
                     KeyBindUtils.leftClick();
                 }

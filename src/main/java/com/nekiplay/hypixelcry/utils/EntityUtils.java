@@ -29,7 +29,7 @@ public class EntityUtils {
     }
 
     @Nullable
-    public static String getArmorStandHeadId(EntityArmorStand entity) {
+    public static String getArmorStandSkullOwner(EntityArmorStand entity) {
         if (entity.getEquipmentInSlot(4) != null) {
             ItemStack helmet = entity.getEquipmentInSlot(4);
             if (helmet.getItem() == Items.skull && helmet.hasTagCompound()) {
@@ -49,7 +49,7 @@ public class EntityUtils {
     public static String getArmorStandHeadName(EntityArmorStand entity) {
         if (entity.getEquipmentInSlot(4) != null) {
             ItemStack helmet = entity.getEquipmentInSlot(4);
-            if (helmet != null && !helmet.getDisplayName().isEmpty()) {
+            if (helmet != null && helmet.hasDisplayName()) {
                 return helmet.getDisplayName();
             }
         }

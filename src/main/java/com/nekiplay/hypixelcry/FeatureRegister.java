@@ -18,7 +18,6 @@ public class FeatureRegister {
 
     public static GhostBlocks ghostBlocksMacros = new GhostBlocks();
 
-    public static HologramModule hologramModule = new HologramModule();
     public void register(FMLInitializationEvent event) {
         /* Events */
 
@@ -34,14 +33,12 @@ public class FeatureRegister {
         MinecraftForge.EVENT_BUS.register(new AutoChestOpen());
         MinecraftForge.EVENT_BUS.register(new AutomatonESP());
         MinecraftForge.EVENT_BUS.register(new YogESP());
-        MinecraftForge.EVENT_BUS.register(new ResourceRespawnerESP());
         MinecraftForge.EVENT_BUS.register(new ChestESP());
         MinecraftForge.EVENT_BUS.register(new Treasure_Hunter());
         MinecraftForge.EVENT_BUS.register(new Dark_Monolith());
         MinecraftForge.EVENT_BUS.register(new Glowing_Mushroom());
-        MinecraftForge.EVENT_BUS.register(new PeltMobEsp());
         MinecraftForge.EVENT_BUS.register(new Gifts());
-        MinecraftForge.EVENT_BUS.register(new ChocolateEgg());
+
         MinecraftForge.EVENT_BUS.register(new PathFinderRenderer());
     }
 }

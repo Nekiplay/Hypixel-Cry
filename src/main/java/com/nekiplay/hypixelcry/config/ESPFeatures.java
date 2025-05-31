@@ -6,7 +6,7 @@ public enum ESPFeatures {
     Tracer("Tracer"),
 
     ;
-    String label;
+    final String label;
 
     ESPFeatures(String label) {
         this.label = label;

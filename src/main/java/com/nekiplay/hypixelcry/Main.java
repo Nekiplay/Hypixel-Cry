@@ -7,7 +7,6 @@ import com.nekiplay.hypixelcry.commands.*;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
-import com.nekiplay.hypixelcry.utils.PathFinder;
 import io.github.notenoughupdates.moulconfig.observer.PropertyTypeAdapterFactory;
 import io.github.notenoughupdates.moulconfig.processor.BuiltinMoulConfigGuis;
 import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;
@@ -53,7 +52,7 @@ public class Main
 
     public static FeatureRegister features = new FeatureRegister();
 
-    public DataExtractor dataExtractor = new DataExtractor();
+    public static DataExtractor dataExtractor = new DataExtractor();
 
     public static final String MODID = "AntiCheat";
     public static final String VERSION = "1.1.0";

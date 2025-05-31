@@ -26,7 +26,7 @@ public class SetAngle implements ICommand {
     public List<String> getCommandAliases() {
         return new ArrayList<>();
     }
-    //
+
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         try {

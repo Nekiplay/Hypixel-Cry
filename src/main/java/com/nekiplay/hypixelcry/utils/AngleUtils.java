@@ -1,12 +1,11 @@
 package com.nekiplay.hypixelcry.utils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
-public class AngleUtils {
-    private static final Minecraft mc = Minecraft.getMinecraft();
+import static com.nekiplay.hypixelcry.Main.mc;
 
+public class AngleUtils {
     public static float get360RotationYaw(float yaw) {
         return (yaw % 360 + 360) % 360;
     }
