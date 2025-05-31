@@ -14,23 +14,23 @@ public enum IslandType {
     Garden("Garden"),
     Garden_Guest("Garden Guest"),
 
-	Dungeon_Hub("Dungeon Hub"),
+    Dungeon_Hub("Dungeon Hub"),
     Catacombs("Catacombs"),
 
     Hub("Hub"),
-	
-	Park("Park"),
-	
-	Gold_Mine("Gold Mine"),
-	Deep_Caverns("Deep Caverns"),
+
+    Park("Park"),
+
+    Gold_Mine("Gold Mine"),
+    Deep_Caverns("Deep Caverns"),
     Dwarven_Mines("Dwarven Mines"),
     Crystal_Hollows("Crystal Hollows"),
-	
-	Farming_Islands("Farming Islands"),
-	Desert_Settlement("Desert Settlement"),
+
+    Farming_Islands("Farming Islands"),
+    Desert_Settlement("Desert Settlement"),
 
     Unknown("Unknown"),
-	None("None"),
+    None("None"),
     ;
     final String name;
 
@@ -53,8 +53,7 @@ public enum IslandType {
         }
         if (Main.dataExtractor.isInTheCatacombs) {
             return IslandType.Catacombs;
-        }
-        else {
+        } else {
             String zone = ApecUtils.removeAllCodes(Main.dataExtractor.getScoreBoardData().Zone);
             return IslandType.getByZone(zone);
         }
