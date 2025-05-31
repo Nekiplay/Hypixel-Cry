@@ -106,7 +106,7 @@ tasks.shadowJar {
     mergeServiceFiles()
     relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.deps.moulconfig")
     minimize {
-        keep("com.nekiplay.hypixelcry.deps.moulconfig.**")
+        exclude("com/nekiplay/hypixelcry/deps/moulconfig/.*")
     }
 }
 
