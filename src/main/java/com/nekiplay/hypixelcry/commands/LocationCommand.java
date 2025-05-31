@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.commands;
 
-import com.nekiplay.hypixelcry.DataInterpretation.IslandType;
+import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import net.minecraft.client.gui.GuiScreen;

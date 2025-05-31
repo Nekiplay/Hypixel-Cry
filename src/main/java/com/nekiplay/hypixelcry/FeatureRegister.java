@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry;
 
-import com.nekiplay.hypixelcry.data.IslandTypeChangeChecker;
+import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.features.esp.farming.Glowing_Mushroom;
 import com.nekiplay.hypixelcry.features.esp.farming.Treasure_Hunter;
 import com.nekiplay.hypixelcry.features.esp.mining.dwarvenmines.Dark_Monolith;

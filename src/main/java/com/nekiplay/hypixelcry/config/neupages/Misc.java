@@ -23,4 +23,22 @@ public class Misc {
         @Expose
         public boolean enabled = true;
     }
+
+    @Accordion
+    @ConfigOption(
+            name = "Debug",
+            desc = ""
+    )
+    @Expose
+    public Debug debug = new Debug();
+
+    public static class Debug {
+        @ConfigOption(
+                name = "Enable",
+                desc = "Enable debug?"
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean enabled = false;
+    }
 }

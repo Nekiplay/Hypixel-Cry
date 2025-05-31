@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.DataInterpretation;
+package com.nekiplay.hypixelcry.data.island;
 
 import java.util.*;
 import java.util.stream.Collectors;

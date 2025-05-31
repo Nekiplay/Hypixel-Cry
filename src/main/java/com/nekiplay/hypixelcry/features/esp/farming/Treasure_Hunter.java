@@ -1,7 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp.farming;
 
-import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
-import com.nekiplay.hypixelcry.DataInterpretation.IslandType;
+import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.ESPFeatures;
 import com.nekiplay.hypixelcry.config.neupages.ESP;

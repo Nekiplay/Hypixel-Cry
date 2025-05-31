@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.events.hypixel;
 
-import com.nekiplay.hypixelcry.DataInterpretation.IslandType;
+import com.nekiplay.hypixelcry.data.island.IslandType;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class IslandTypeChangeEvent extends Event {

@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.DataInterpretation;
+package com.nekiplay.hypixelcry.data.island;
 
 import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
