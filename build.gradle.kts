@@ -9,7 +9,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.github.juuxel.loom-quiltflower") version "1.7.3"
     kotlin("jvm") version "1.8.21"
-    //id("io.gitlab.arturbosch.detekt") version "1.23.0"
     id("com.google.devtools.ksp") version "1.8.21-1.0.11"
     id("net.kyori.blossom") version "2.1.0"
     id("com.xpdustry.ksr") version "1.0.0"
@@ -106,7 +105,9 @@ tasks.shadowJar {
     }
     mergeServiceFiles()
     relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.deps.moulconfig")
-    minimize()
+    minimize {
+        keep("com.nekiplay.hypixelcry.deps.moulconfig.**")
+    }
 }
 
 tasks.processResources {
