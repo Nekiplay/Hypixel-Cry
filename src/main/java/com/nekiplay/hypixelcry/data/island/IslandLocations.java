@@ -162,8 +162,13 @@ public class IslandLocations {
 
         islandLocationsMap.put(
                 IslandType.Crystal_Hollows,
-                Collections.singletonList(
-                        "Crystal Hollows"
+                Arrays.asList(
+                        "Crystal Hollows",
+                        "Jungle",
+                        "Mithril Deposits",
+                        "Precursor Remnants",
+                        "Goblin Holdout",
+                        "Magma Fields"
                 )
         );
     }

@@ -38,7 +38,7 @@ public class BlockInfoCommand implements ICommand {
     public void processCommand(ICommandSender sender, String[] args) {
         EntityPlayerSP player = mc.thePlayer;
         if (player != null) {
-            MovingObjectPosition movingObjectPosition = player.rayTrace(HypixelCry.getInstance().config.macros.ghostBlocks.range, 1f);
+            MovingObjectPosition movingObjectPosition = player.rayTrace(HypixelCry.config.macros.ghostBlocks.range, 1f);
             if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos pos = movingObjectPosition.getBlockPos();
                 ItemStack hand = mc.thePlayer.getCurrentEquippedItem();

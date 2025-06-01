@@ -42,7 +42,7 @@ public enum IslandType {
     }
 
     public static IslandType getByZone(String zone) {
-        return IslandLocations.getIslandByLocation(zone, mc.thePlayer.getName());
+        return IslandLocations.getIslandByLocation(zone, mc.thePlayer != null ? mc.thePlayer.getName() : "{username}");
     }
 
     public static IslandType current() {

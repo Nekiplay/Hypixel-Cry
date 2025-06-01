@@ -25,9 +25,6 @@ import java.util.List;
 
 public class DataExtractor {
 
-    private Minecraft mc = Minecraft.getMinecraft();
-    //public PotionFetcher potionFetcher = new PotionFetcher(this);
-
     private final char HpSymbol = '❤';
     private final char MnSymbol = '✎';
     private final char[] healDurationSymbols = new char[] { '▆', '▅', '▄', '▃', '▂', '▁' };

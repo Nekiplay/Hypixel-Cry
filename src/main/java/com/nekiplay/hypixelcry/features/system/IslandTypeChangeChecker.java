@@ -25,7 +25,7 @@ public class IslandTypeChangeChecker {
         IslandType current = IslandType.current();
 
         if (current != IslandType.Unknown && lastDetected != current) {
-            if (HypixelCry.config.misc.debug.enabled) {
+            if (HypixelCry.config.misc.debug.enabled && mc.thePlayer != null) {
                 mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Location changed from: " + lastDetected + " to: " + current));
             }
             IslandTypeChangeEvent islandTypeChangeEvent = new IslandTypeChangeEvent(lastDetected, current);
@@ -33,7 +33,7 @@ public class IslandTypeChangeChecker {
             MinecraftForge.EVENT_BUS.post(islandTypeChangeEvent);
         }
         else if (lastDetected != current) {
-            if (HypixelCry.config.misc.debug.enabled) {
+            if (HypixelCry.config.misc.debug.enabled && mc.thePlayer != null) {
                 mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Location changed from: " + lastDetected + " to: " + current));
             }
             lastDetected = current;
