@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.features.system;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.events.hypixel.IslandTypeChangeEvent;
 import net.minecraft.util.ChatComponentText;
@@ -9,7 +9,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class IslandTypeChangeChecker {
     private static IslandType lastDetected = IslandType.Unknown;
@@ -25,16 +25,16 @@ public class IslandTypeChangeChecker {
         IslandType current = IslandType.current();
 
         if (current != IslandType.Unknown && lastDetected != current) {
-            if (Main.config.misc.debug.enabled) {
-                mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Location changed from: " + lastDetected + " to: " + current));
+            if (HypixelCry.config.misc.debug.enabled && mc.thePlayer != null) {
+                mc.thePlayer.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.GREEN + "Location changed from: " + lastDetected + " to: " + current));
             }
             IslandTypeChangeEvent islandTypeChangeEvent = new IslandTypeChangeEvent(lastDetected, current);
             lastDetected = current;
             MinecraftForge.EVENT_BUS.post(islandTypeChangeEvent);
         }
         else if (lastDetected != current) {
-            if (Main.config.misc.debug.enabled) {
-                mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Location changed from: " + lastDetected + " to: " + current));
+            if (HypixelCry.config.misc.debug.enabled && mc.thePlayer != null) {
+                mc.thePlayer.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.RED + "Location changed from: " + lastDetected + " to: " + current));
             }
             lastDetected = current;
         }

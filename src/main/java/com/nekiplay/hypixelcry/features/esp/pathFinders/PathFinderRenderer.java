@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp.pathFinders;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.pathfinder.calculate.Path;
 import com.nekiplay.hypixelcry.pathfinder.calculate.path.AStarPathFinder;
 import com.nekiplay.hypixelcry.pathfinder.goal.Goal;
@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
-import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class PathFinderRenderer {
     private static final ExecutorService PATH_FINDER_EXECUTOR = Executors.newFixedThreadPool(6);
@@ -66,7 +66,7 @@ public class PathFinderRenderer {
         BlockPos currentPos = mc.thePlayer.getPosition().add(0, -1, 0);
         processPathResults();
 
-        if (Main.config.misc.pathFinderESP.enabled) {
+        if (HypixelCry.config.misc.pathFinderESP.enabled) {
             PATHS.values().forEach(pathData -> updatePath(currentPos, pathData));
         }
     }
@@ -230,7 +230,7 @@ public class PathFinderRenderer {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (mc.theWorld == null || PATHS.isEmpty() || !Main.config.esp.pathFinderESP.enabled) return;
+        if (mc.theWorld == null || PATHS.isEmpty() || !HypixelCry.config.esp.pathFinderESP.enabled) return;
 
         PATHS.values().forEach(pathData -> renderPath(pathData, event.partialTicks));
     }
@@ -254,7 +254,7 @@ public class PathFinderRenderer {
                     pathData.color
             );
 
-            if (!currentPos.equals(endPos) && Main.config.esp.pathFinderESP.enableSubPoints) {
+            if (!currentPos.equals(endPos) && HypixelCry.config.esp.pathFinderESP.enableSubPoints) {
                 RenderUtils.drawBlockBox(currentPos, pathData.color, 1, partialTicks);
             }
             prevPos = currentPos;

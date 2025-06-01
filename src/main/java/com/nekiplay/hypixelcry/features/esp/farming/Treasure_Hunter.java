@@ -1,7 +1,7 @@
 package com.nekiplay.hypixelcry.features.esp.farming;
 
 import com.nekiplay.hypixelcry.data.island.IslandType;
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
@@ -47,8 +47,8 @@ public class Treasure_Hunter {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (allowRender && pos != null && Main.config.esp.desertSettlement.treasureHunterFetcher.enabled) {
-            ESP.Desert_Settlement.Treasure_Hunter_Fetcher config = Main.config.esp.desertSettlement.treasureHunterFetcher;
+        if (allowRender && pos != null && HypixelCry.config.esp.desertSettlement.treasureHunterFetcher.enabled) {
+            ESP.Desert_Settlement.Treasure_Hunter_Fetcher config = HypixelCry.config.esp.desertSettlement.treasureHunterFetcher;
             Color color = toSpecialColor(config.colour);
 
             if (config.features.contains(ESPFeatures.Box)) {

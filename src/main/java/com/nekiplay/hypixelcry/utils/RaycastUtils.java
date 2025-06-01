@@ -6,7 +6,7 @@ import net.minecraft.util.*;
 
 import java.util.List;
 
-import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class RaycastUtils {
     public static MovingObjectPosition rayTraceToBlock(Vec3 startVec, Vec3 endVec, List<Block> blocks) {

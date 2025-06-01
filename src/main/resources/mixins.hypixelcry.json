@@ -15,6 +15,7 @@
     "MixinFMLHandShake",
     "PlayerControllerMPMixin",
     "MinecraftMixin",
-    "client.MixinChunkProviderClient"
+    "client.MixinChunkProviderClient",
+    "entity.MixinRendererLivingEntity"
   ]
 }

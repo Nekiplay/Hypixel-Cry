@@ -1,10 +1,10 @@
 package com.nekiplay.hypixelcry.pathfinder.movement
 
-import com.nekiplay.hypixelcry.Main
+import com.nekiplay.hypixelcry.HypixelCry
 import net.minecraft.util.BlockPos
 
 interface IMovement {
-    val mm: Main
+    val mm: HypixelCry
     val source: BlockPos
     val dest: BlockPos
     val costs: Double // plural cuz kotlin gae

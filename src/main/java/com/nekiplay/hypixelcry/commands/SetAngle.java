@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.commands;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
@@ -35,23 +35,23 @@ public class SetAngle implements ICommand {
                 if (yaw >= -180 && yaw <= 180) {
                     float pitch = Float.parseFloat(args[1]);
                     if (pitch >= -90 && pitch <= 90) {
-                        Main.mc.thePlayer.rotationYaw = yaw;
-                        Main.mc.thePlayer.rotationPitch = pitch;
+                        HypixelCry.mc.thePlayer.rotationYaw = yaw;
+                        HypixelCry.mc.thePlayer.rotationPitch = pitch;
                     }
                     else {
-                        sender.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.WHITE + "Error"));
+                        sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.WHITE + "Error"));
                     }
                 } else {
-                    sender.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.WHITE + "Error"));
+                    sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.WHITE + "Error"));
                 }
             }
             else
             {
-                sender.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.WHITE + "Use: " + "/" + getCommandName() + " <yaw> <pitch>"));
+                sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.WHITE + "Use: " + "/" + getCommandName() + " <yaw> <pitch>"));
             }
         }
         catch (Exception e) {
-            sender.addChatMessage(new ChatComponentText(Main.prefix + EnumChatFormatting.WHITE + "Error"));
+            sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.WHITE + "Error"));
         }
     }
 
