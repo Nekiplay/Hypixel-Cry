@@ -21,7 +21,7 @@ public class AutoChestOpen {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private int tickCounter = 0;
     private static final int CHEST_COOLDOWN = 20, MAX_REMOVALS_PER_TICK = 20;
-    private static final double SEARCH_DISTANCE = 4.8;
+    private static final double SEARCH_DISTANCE = 4.6;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
