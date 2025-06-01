@@ -23,7 +23,7 @@ public abstract class MixinRendererLivingEntity<T extends EntityLivingBase> {
         RenderEntityModelEvent renderEntityModelEvent = new RenderEntityModelEvent(
                 entitylivingbaseIn, p_177093_2_, p_177093_3_, p_177093_5_, p_177093_6_, p_177093_7_, p_177093_8_, mainModel
         );
-        //MinecraftForge.EVENT_BUS.post(renderEntityModelEvent);
+        MinecraftForge.EVENT_BUS.post(renderEntityModelEvent);
         if (renderEntityModelEvent.isCanceled()) {
             ci.cancel();
         }
