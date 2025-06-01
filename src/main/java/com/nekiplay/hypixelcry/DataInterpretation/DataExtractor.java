@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
+
 public class DataExtractor {
 
     private final char HpSymbol = '❤';
