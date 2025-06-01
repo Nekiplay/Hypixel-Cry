@@ -1,8 +1,8 @@
 package com.nekiplay.hypixelcry.config.enums;
 
 public enum AutoRightClickOpenFeatures {
-    Air("Set to air after open"),
-    GhostHand("Open thought blocks"),
+    Air("Set to air after click"),
+    GhostHand("Click thought blocks"),
 
     ;
     final String label;
