@@ -76,7 +76,7 @@ public class AutoChestOpen {
     }
 
     private Vec3 getLookEndPos() {
-        float distance = mc.playerController.getBlockReachDistance();
+        float distance = mc.playerController.getBlockReachDistance() - 0.05f;
         Vec3 look = mc.thePlayer.getLook(1.0f);
         return getEyePosition().addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
     }
