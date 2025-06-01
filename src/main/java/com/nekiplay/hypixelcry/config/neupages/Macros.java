@@ -43,7 +43,7 @@ public class Macros {
         @ConfigEditorDraggableList(requireNonEmpty = false)
         public List<AutoRightClickBlocks> blocks = new ArrayList<AutoRightClickBlocks>() {{
             add(AutoRightClickBlocks.Chest);
-            add(AutoRightClickBlocks.Level);
+            add(AutoRightClickBlocks.Lever);
         }};
 
         @ConfigOption(name = "Features", desc = "Additional features")
