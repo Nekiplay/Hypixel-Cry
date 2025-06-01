@@ -31,8 +31,7 @@ public class OpenSettings implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        MoulConfigEditor<NEUConfig> gui = new MoulConfigEditor<>(HypixelCry.getInstance().processor);
-        HypixelCry.getInstance().screenToOpen = new GuiScreenElementWrapper(gui);
+        HypixelCry.openGui();
     }
 
     @Override

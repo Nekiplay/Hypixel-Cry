@@ -7,14 +7,19 @@ import com.nekiplay.hypixelcry.commands.*;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.events.MillisecondEvent;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
+import io.github.notenoughupdates.moulconfig.gui.GuiScreenElementWrapper;
+import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
 import io.github.notenoughupdates.moulconfig.observer.PropertyTypeAdapterFactory;
 import io.github.notenoughupdates.moulconfig.processor.BuiltinMoulConfigGuis;
 import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;
 import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -29,6 +34,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +52,7 @@ public class HypixelCry
 
     public static final Minecraft mc = Minecraft.getMinecraft();
 
-    public GuiScreen screenToOpen = null;
+    public static GuiScreen screenToOpen = null;
     public static NEUConfig config;
     private File configFile;
     private File neuDir;
@@ -75,6 +82,11 @@ public class HypixelCry
     }
 
     public MoulConfigProcessor<NEUConfig> processor = null;
+
+    public static void openGui() {
+        MoulConfigEditor<NEUConfig> gui = new MoulConfigEditor<>(HypixelCry.getInstance().processor);
+        screenToOpen = new GuiScreenElementWrapper(gui);
+    }
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -145,5 +157,39 @@ public class HypixelCry
         long initialDelaySeconds = initialDelay.getSeconds();
 
         Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> MinecraftForge.EVENT_BUS.post(new MillisecondEvent()), initialDelaySeconds, 1, TimeUnit.MILLISECONDS);
+    }
+
+    @SubscribeEvent
+    public void onGuiInitPost(GuiScreenEvent.InitGuiEvent.Post event) {
+        if (event.gui instanceof GuiIngameMenu) {
+            int x = event.gui.width - 105;
+            int x2 = x + 100;
+            int y = event.gui.height - 22;
+            int y2 = y + 20;
+
+            List<GuiButton> sorted = new ArrayList<>(event.buttonList);
+            sorted.sort((a, b) -> (b.yPosition + b.height) - (a.yPosition + a.height));
+
+            for (GuiButton button : sorted) {
+                int otherX = button.xPosition;
+                int otherX2 = button.xPosition + button.width;
+                int otherY = button.yPosition;
+                int otherY2 = button.yPosition + button.height;
+
+                if (otherX2 > x && otherX < x2 && otherY2 > y && otherY < y2) {
+                    y = otherY - 20 - 2;
+                    y2 = y + 20;
+                }
+            }
+
+            event.buttonList.add(new GuiButton(6969422, x, Math.max(0, y), 100, 20, "Hypixel Cry"));
+        }
+    }
+
+    @SubscribeEvent
+    public void onGuiAction(GuiScreenEvent.ActionPerformedEvent.Post event) {
+        if (event.gui instanceof GuiIngameMenu && event.button.id == 6969422) {
+            openGui();
+        }
     }
 }
