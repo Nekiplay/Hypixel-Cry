@@ -1,7 +1,8 @@
 package com.nekiplay.hypixelcry.config.neupages;
 
 import com.google.gson.annotations.Expose;
-import com.nekiplay.hypixelcry.config.enums.AutoChestOpenFeatures;
+import com.nekiplay.hypixelcry.config.enums.AutoRightClickBlocks;
+import com.nekiplay.hypixelcry.config.enums.AutoRightClickOpenFeatures;
 import com.nekiplay.hypixelcry.data.island.IslandType;
 import io.github.notenoughupdates.moulconfig.annotations.*;
 import org.lwjgl.input.Keyboard;
@@ -27,22 +28,30 @@ public class Macros {
     }
 
     @Accordion
-    @ConfigOption(name = "Auto Chest Open", desc = "Auto open chests")
+    @ConfigOption(name = "Auto RightClick", desc = "Auto click to selected blocks")
     @Expose
-    public AutoChestOpen autoChestOpen = new AutoChestOpen();
+    public AutoRightClick autoRightClick = new AutoRightClick();
 
-    public static class AutoChestOpen {
-        @ConfigOption(name = "Enabled", desc = "")
+    public static class AutoRightClick {
+        @ConfigOption(name = "Enabled", desc = "Enable RightClick?")
         @ConfigEditorBoolean()
         @Expose
         public boolean enabled = false;
 
+        @ConfigOption(name = "Blocks", desc = "Click for blocks")
+        @Expose
+        @ConfigEditorDraggableList(requireNonEmpty = false)
+        public List<AutoRightClickBlocks> blocks = new ArrayList<AutoRightClickBlocks>() {{
+            add(AutoRightClickBlocks.Chest);
+            add(AutoRightClickBlocks.Level);
+        }};
+
         @ConfigOption(name = "Features", desc = "Additional features")
         @Expose
         @ConfigEditorDraggableList(requireNonEmpty = false)
-        public List<AutoChestOpenFeatures> features = new ArrayList<AutoChestOpenFeatures>() {{
-                add(AutoChestOpenFeatures.Air);
-                add(AutoChestOpenFeatures.GhostHand);
+        public List<AutoRightClickOpenFeatures> features = new ArrayList<AutoRightClickOpenFeatures>() {{
+                add(AutoRightClickOpenFeatures.Air);
+                add(AutoRightClickOpenFeatures.GhostHand);
         }};
 
         @ConfigOption(name = "Work in", desc = "Allow islands for working")

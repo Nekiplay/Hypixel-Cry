@@ -1,10 +1,12 @@
 package com.nekiplay.hypixelcry.features.macros;
 
 import com.nekiplay.hypixelcry.HypixelCry;
-import com.nekiplay.hypixelcry.config.enums.AutoChestOpenFeatures;
+import com.nekiplay.hypixelcry.config.enums.AutoRightClickBlocks;
+import com.nekiplay.hypixelcry.config.enums.AutoRightClickOpenFeatures;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
@@ -21,7 +23,6 @@ public class AutoChestOpen {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private int tickCounter = 0;
     private static final int CHEST_COOLDOWN = 20, MAX_REMOVALS_PER_TICK = 20;
-    private static final double SEARCH_DISTANCE = 4.4;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -33,7 +34,7 @@ public class AutoChestOpen {
 
     private boolean shouldSkipTick(TickEvent.ClientTickEvent event) {
         return event.phase == TickEvent.Phase.START || mc.theWorld == null ||
-                mc.thePlayer == null || !HypixelCry.config.macros.autoChestOpen.enabled || !HypixelCry.config.macros.autoChestOpen.allowedIslands.contains(IslandTypeChangeChecker.getLastDetected());
+                mc.thePlayer == null || !HypixelCry.config.macros.autoRightClick.enabled || !HypixelCry.config.macros.autoRightClick.allowedIslands.contains(IslandTypeChangeChecker.getLastDetected());
     }
 
     private void cleanUpOldChests() {
@@ -45,16 +46,27 @@ public class AutoChestOpen {
     }
 
     private void handleChestOpening() {
-        boolean ghostHand = HypixelCry.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.GhostHand);
+        boolean ghostHand = HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.GhostHand);
+
+        List<Block> selectedBlocks = new ArrayList<>();
+        if (HypixelCry.config.macros.autoRightClick.blocks.contains(AutoRightClickBlocks.Chest)) {
+            selectedBlocks.add(Blocks.chest);
+        }
+        if (HypixelCry.config.macros.autoRightClick.blocks.contains(AutoRightClickBlocks.Lever)) {
+            selectedBlocks.add(Blocks.lever);
+        }
+        if (HypixelCry.config.macros.autoRightClick.blocks.contains(AutoRightClickBlocks.Skull)) {
+            selectedBlocks.add(Blocks.skull);
+        }
 
         if (ghostHand) {
             MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlock(
                     getEyePosition(),
                     getLookEndPos(),
-                    Collections.singletonList(Blocks.chest)
+                    selectedBlocks
             );
             tryOpenChest(mouseOver);
-        } else if (isLookingAtChest()) {
+        } else if (isLookingAt(selectedBlocks)) {
             tryOpenChest(mc.objectMouseOver);
         }
     }
@@ -64,14 +76,15 @@ public class AutoChestOpen {
     }
 
     private Vec3 getLookEndPos() {
+        float distance = mc.playerController.getBlockReachDistance();
         Vec3 look = mc.thePlayer.getLook(1.0f);
-        return getEyePosition().addVector(look.xCoord * AutoChestOpen.SEARCH_DISTANCE, look.yCoord * AutoChestOpen.SEARCH_DISTANCE, look.zCoord * AutoChestOpen.SEARCH_DISTANCE);
+        return getEyePosition().addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
     }
 
-    private boolean isLookingAtChest() {
+    private boolean isLookingAt(List<Block> blocks) {
         return mc.objectMouseOver != null &&
                 mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK &&
-                mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock() == Blocks.chest;
+                blocks.contains(mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
     }
 
     private void tryOpenChest(MovingObjectPosition mouseOver) {
@@ -89,8 +102,7 @@ public class AutoChestOpen {
                 mop.getBlockPos(), mop.sideHit, mop.hitVec
         );
         mc.thePlayer.swingItem();
-
-        if (HypixelCry.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air)) {
+        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air)) {
             mc.theWorld.setBlockState(mop.getBlockPos(), Blocks.air.getDefaultState());
         }
     }
@@ -102,7 +114,7 @@ public class AutoChestOpen {
 
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
-        if (HypixelCry.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air) &&
+        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air) &&
                 event.newState.getBlock() == Blocks.chest && openedChests.containsKey(event.pos)) {
             event.setCanceled(true);
         }

@@ -9,7 +9,6 @@ public enum IslandType {
     Lobby("Lobby"),
 
     Private_Island("Private Island"),
-
     Garden("Garden"),
 
     Dungeon_Hub("Dungeon Hub"),
@@ -26,6 +25,8 @@ public enum IslandType {
 
     Farming_Islands("Farming Islands"),
     Desert_Settlement("Desert Settlement"),
+
+    Spider_Den("Spider Den"),
 
     Unknown("Unknown"),
     None("None"),
