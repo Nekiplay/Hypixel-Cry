@@ -1,9 +1,7 @@
 package com.nekiplay.hypixelcry.utils;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -20,10 +18,7 @@ import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
-import javax.vecmath.Vector3f;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +31,7 @@ public class RenderUtils {
     private static final Map<Integer, Boolean> glCapMap = new HashMap<>();
     private static final ResourceLocation beaconBeam = new ResourceLocation("textures/entity/beacon_beam.png");
     private static final int[] DISPLAY_LISTS_2D = new int[4];
-    private static final Minecraft mc = Main.mc;
+    private static final Minecraft mc = HypixelCry.mc;
 
     static {
         for (int i = 0; i < DISPLAY_LISTS_2D.length; i++) {

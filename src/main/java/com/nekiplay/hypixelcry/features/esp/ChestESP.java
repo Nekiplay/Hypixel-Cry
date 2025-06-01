@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.tileentity.TileEntityChest;
@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 public class ChestESP {
@@ -25,23 +25,23 @@ public class ChestESP {
 
         chestLocations.clear();
 
-        if (!Main.dataExtractor.isInSkyblock || mc.theWorld == null || !Main.config.esp.chestEsp.enabled) return;
+        if (!HypixelCry.dataExtractor.isInSkyblock || mc.theWorld == null || !HypixelCry.config.esp.chestEsp.enabled) return;
 
-        double maxRangeSq = Math.pow(Main.config.esp.chestEsp.maxRange, 2);
+        double maxRangeSq = Math.pow(HypixelCry.config.esp.chestEsp.maxRange, 2);
 
         mc.theWorld.loadedTileEntityList.stream()
                 .filter(TileEntityChest.class::isInstance)
                 .map(tile -> (TileEntityChest) tile)
-                .filter(tile -> Main.config.esp.chestEsp.maxRange == 0 ||
+                .filter(tile -> HypixelCry.config.esp.chestEsp.maxRange == 0 ||
                         mc.thePlayer.getDistanceSq(tile.getPos()) <= maxRangeSq)
                 .forEach(tile -> chestLocations.add(tile.getPos()));
     }
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (!Main.config.esp.chestEsp.enabled || chestLocations.isEmpty()) return;
+        if (!HypixelCry.config.esp.chestEsp.enabled || chestLocations.isEmpty()) return;
 
-        Color color = toSpecialColor(Main.config.esp.chestEsp.colour);
+        Color color = toSpecialColor(HypixelCry.config.esp.chestEsp.colour);
 
         chestLocations.forEach(pos -> {
             BlockPos centerPos = new BlockPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
@@ -59,6 +59,6 @@ public class ChestESP {
     }
 
     private boolean shouldRenderFeature(ESPFeatures feature) {
-        return Main.config.esp.chestEsp.features.contains(feature);
+        return HypixelCry.config.esp.chestEsp.features.contains(feature);
     }
 }

@@ -4,13 +4,11 @@
   "description": "Hypixel SkyBlock AntiCheat.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/Nekiplay/Hypixel-Cry",
   "updateUrl": "",
   "authorList": ["Neki_play"],
   "credits": "",
   "logoFile": "assets/hypixelcry/logo.png",
   "screenshots": [],
-  "dependencies": [
-    "NotEnoughUpdates"
-  ]
+  "dependencies": []
 }]

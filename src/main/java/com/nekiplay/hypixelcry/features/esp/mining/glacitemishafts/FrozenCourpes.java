@@ -1,9 +1,8 @@
 package com.nekiplay.hypixelcry.features.esp.mining.glacitemishafts;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.config.enums.PathFinderPriority;
-import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import com.nekiplay.hypixelcry.utils.EntityUtils;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 public class FrozenCourpes {
@@ -33,7 +32,7 @@ public class FrozenCourpes {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
             return;
         }
-        if (Main.mc.theWorld != null && Main.mc.thePlayer != null) {
+        if (HypixelCry.mc.theWorld != null && HypixelCry.mc.thePlayer != null) {
             // Update course list
             for (Entity entity : mc.theWorld.getLoadedEntityList()) {
                 if (entity instanceof EntityArmorStand) {
@@ -48,16 +47,16 @@ public class FrozenCourpes {
             }
 
             // Handle path finding based on priority
-            if (Main.config.esp.glaciteMineshafts.frozenCourpes.enabledPathFinder) {
-                if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == PathFinderPriority.All) {
+            if (HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.enabledPathFinder) {
+                if (HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.priority == PathFinderPriority.All) {
                     // Original behavior for All priority
                     for (EntityArmorStand armorStand : courses) {
                         if (!removedPathFinders.contains(armorStand.getEntityId())) {
                             PathFinderRenderer.addOrUpdatePath(Integer.toString(armorStand.getEntityId()), armorStand.getPosition(),
-                                    toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), "Courpe");
+                                    toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour), "Courpe");
                         }
                     }
-                } else if (Main.config.esp.glaciteMineshafts.frozenCourpes.priority == PathFinderPriority.Nearest) {
+                } else if (HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.priority == PathFinderPriority.Nearest) {
                     // New behavior for Nearest priority
                     handleNearestPriority();
                 }
@@ -65,7 +64,7 @@ public class FrozenCourpes {
 
             // Check if player reached any target
             for (EntityArmorStand armorStand : new ArrayList<>(courses)) {
-                double distance = Main.mc.thePlayer.getDistanceToEntity(armorStand);
+                double distance = HypixelCry.mc.thePlayer.getDistanceToEntity(armorStand);
                 if (distance <= 7) {
                     if (PathFinderRenderer.hasPath(Integer.toString(armorStand.getEntityId()))) {
                         PathFinderRenderer.removePath(Integer.toString(armorStand.getEntityId()));
@@ -98,7 +97,7 @@ public class FrozenCourpes {
 
         if (!validTargets.isEmpty()) {
             // Sort by distance to player
-            validTargets.sort(Comparator.comparingDouble(e -> Main.mc.thePlayer.getDistanceToEntity(e)));
+            validTargets.sort(Comparator.comparingDouble(e -> HypixelCry.mc.thePlayer.getDistanceToEntity(e)));
 
             // If we don't have a current target or the current target is no longer valid
             if (currentTarget == null || !validTargets.contains(currentTarget)) {
@@ -108,7 +107,7 @@ public class FrozenCourpes {
             // Add path only to the current target
             PathFinderRenderer.addOrUpdatePath(Integer.toString(currentTarget.getEntityId()),
                     currentTarget.getPosition(),
-                    toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour),
+                    toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour),
                     "Courpe");
         }
     }
@@ -128,16 +127,16 @@ public class FrozenCourpes {
     @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (Main.config.esp.glaciteMineshafts.frozenCourpes.enabled) {
+        if (HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.enabled) {
             for (EntityArmorStand entity : courses) {
-                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawEntityBox(entity, toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
+                if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawEntityBox(entity, toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
                 }
-                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Courpe", new BlockPos(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour));
+                if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Courpe", new BlockPos(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour));
                 }
-                if (Main.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(entity.getPosition(), toSpecialColor(Main.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
+                if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(entity.getPosition(), toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
                 }
             }
         }

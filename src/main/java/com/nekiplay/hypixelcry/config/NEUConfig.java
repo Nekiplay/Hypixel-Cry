@@ -1,25 +1,23 @@
 package com.nekiplay.hypixelcry.config;
 
 import com.google.gson.annotations.Expose;
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.config.neupages.Macros;
 import com.nekiplay.hypixelcry.config.neupages.Misc;
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.Category;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
 
 public class NEUConfig extends Config {
 
     @Override
     public String getTitle() {
-        return "§6Hypixel Cry §7v" + Main.VERSION;
+        return "§6Hypixel Cry §7v" + HypixelCry.VERSION;
     }
 
     @Override
     public void saveNow() {
-        Main.getInstance().saveConfig();
+        HypixelCry.getInstance().saveConfig();
     }
 
     @Expose

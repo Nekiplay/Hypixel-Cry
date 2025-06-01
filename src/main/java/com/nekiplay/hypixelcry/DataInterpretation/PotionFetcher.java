@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.DataInterpretation;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -200,7 +200,7 @@ public class PotionFetcher {
     @SubscribeEvent
     public void OnTick(TickEvent.ClientTickEvent tickEvent) {
         try {
-            ShouldRun = Main.getInstance().dataExtractor.isInSkyblock;
+            ShouldRun = HypixelCry.getInstance().dataExtractor.isInSkyblock;
         } catch (Exception err) {
             ShouldRun = false;
             err.printStackTrace();

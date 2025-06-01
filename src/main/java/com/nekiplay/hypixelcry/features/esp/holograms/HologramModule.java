@@ -2,14 +2,10 @@ package com.nekiplay.hypixelcry.features.esp.holograms;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.nekiplay.hypixelcry.Main;
-import com.nekiplay.hypixelcry.utils.RenderUtils;
-import net.minecraft.util.BlockPos;
+import com.nekiplay.hypixelcry.HypixelCry;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +22,7 @@ public class HologramModule {
 
 
     public void reload() {
-        File dir = new File(Main.mc.mcDataDir.getPath());
+        File dir = new File(HypixelCry.mc.mcDataDir.getPath());
         File dir2 = new File(dir.getPath() + "/holograms");
         if (!dir2.exists()) {
             dir2.mkdir();
@@ -45,15 +41,15 @@ public class HologramModule {
                                 HologramDataListed hologramData = gson.fromJson(json, HologramDataListed.class);
                                 if (hologramData != null) {
                                     allHolograms.add(hologramData);
-                                    Main.LOG.info(Main.PREFIX + " Success loaded hologram: " + file.getName());
+                                    HypixelCry.LOG.info(HypixelCry.PREFIX + " Success loaded hologram: " + file.getName());
                                 }
 
                             } catch (JsonSyntaxException e) {
-                                Main.LOG.error(Main.PREFIX + " Error in hologram: " + e);
+                                HypixelCry.LOG.error(HypixelCry.PREFIX + " Error in hologram: " + e);
 
                             }
                         } catch (IOException e) {
-                            Main.LOG.error(Main.PREFIX + " Error in hologram: " + e);
+                            HypixelCry.LOG.error(HypixelCry.PREFIX + " Error in hologram: " + e);
                         }
                     }
                 }

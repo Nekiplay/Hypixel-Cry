@@ -279,7 +279,6 @@ object BlockUtil {
             lastState = currState
             lastPos = BlockPos(x0, y0 + i, z0)
         }
-//        println("shit")
         return false
     }
 }

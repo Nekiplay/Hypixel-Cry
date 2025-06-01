@@ -17,7 +17,7 @@ plugins {
 
 version = "1.1.0"
 group = "com.nekiplay.hypixelcry"
-base.archivesName.set("HypixelAddon")
+base.archivesName.set("HypixelCry")
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
@@ -90,12 +90,6 @@ tasks.jar {
     )
 }
 
-val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
-    archiveClassifier.set("")
-    from(tasks.shadowJar)
-    input.set(tasks.shadowJar.get().archiveFile)
-}
-
 tasks.shadowJar {
     archiveClassifier.set("dev")
     configurations = listOf(shadowImplementation, shadowModImpl)
@@ -108,6 +102,28 @@ tasks.shadowJar {
     minimize {
 		exclude(dependency("org.notenoughupdates.moulconfig:legacy:.*"))
         exclude("com/nekiplay/hypixelcry/deps/moulconfig/.*")
+    }
+}
+
+val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
+    archiveClassifier.set("")
+    from(tasks.shadowJar)
+    input.set(tasks.shadowJar.get().archiveFile)
+
+    finalizedBy("cleanIntermediateJars")
+}
+
+tasks.register("cleanIntermediateJars") {
+    doLast {
+        val filesToDelete = fileTree("build/libs").matching {
+            include("*-named.jar", "*-dev.jar")
+        }
+        filesToDelete.forEach { file ->
+            if (file.exists()) {
+                println("Deleting intermediate file: ${file.name}")
+                file.delete()
+            }
+        }
     }
 }
 

@@ -1,9 +1,9 @@
 package com.nekiplay.hypixelcry.data.island;
 
-import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 
-import static com.nekiplay.hypixelcry.Main.mc;
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public enum IslandType {
     Lobby("Lobby"),
@@ -46,13 +46,13 @@ public enum IslandType {
     }
 
     public static IslandType current() {
-        if (!Main.dataExtractor.isInSkyblock) {
+        if (!HypixelCry.dataExtractor.isInSkyblock) {
             return IslandType.Lobby;
         }
-        if (Main.dataExtractor.isInTheCatacombs) {
+        if (HypixelCry.dataExtractor.isInTheCatacombs) {
             return IslandType.Catacombs;
         } else {
-            String zone = ApecUtils.removeAllCodes(Main.dataExtractor.getScoreBoardData().Zone);
+            String zone = ApecUtils.removeAllCodes(HypixelCry.dataExtractor.getScoreBoardData().Zone);
             return IslandType.getByZone(zone);
         }
     }

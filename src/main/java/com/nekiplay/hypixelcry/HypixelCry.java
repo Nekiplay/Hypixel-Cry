@@ -32,12 +32,12 @@ import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Mod(modid = Main.MODID, version = Main.VERSION, clientSideOnly = true)
+@Mod(modid = HypixelCry.MODID, version = HypixelCry.VERSION, clientSideOnly = true)
 
-public class Main
+public class HypixelCry
 {
-    private static Main instance;
-    public static final Main getInstance() {
+    private static HypixelCry instance;
+    public static final HypixelCry getInstance() {
         return instance;
     }
     public static final Logger LOG = LogManager.getLogger("HypixelCry");
