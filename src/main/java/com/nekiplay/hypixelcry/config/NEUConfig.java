@@ -40,7 +40,7 @@ public class NEUConfig extends Config {
 
             @Override
             public MyResourceLocation getIcon() {
-                return new MyResourceLocation("hypixelcry:social", iconName + ".png");
+                return new MyResourceLocation("hypixelcry", "social/" + iconName + ".png");
             }
         };
     }
