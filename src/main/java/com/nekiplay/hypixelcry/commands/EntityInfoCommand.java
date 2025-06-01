@@ -1,8 +1,11 @@
 package com.nekiplay.hypixelcry.commands;
 
 import com.mojang.authlib.properties.Property;
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
+import com.nekiplay.hypixelcry.utils.ApecUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -13,13 +16,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.List;
 
-import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.Main.mc;
 
 public class EntityInfoCommand implements ICommand {
     @Override
@@ -45,8 +50,8 @@ public class EntityInfoCommand implements ICommand {
         Entity name = getName();
         if (nametagEntity != null && name != null) {
             String nametag = nametagEntity.getCustomNameTag();
-            sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + "[Custom name] " + nametag));
-            sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + "[Name] " + name.getName()));
+            sender.addChatMessage(new ChatComponentText(Main.prefix + "[Custom name] " + nametag));
+            sender.addChatMessage(new ChatComponentText(Main.prefix + "[Name] " + name.getName()));
             copy.append("[Custom name] ").append(nametag).append("\n");
             copy.append("[Name] ").append(name.getName()).append("\n");
         }
@@ -61,7 +66,7 @@ public class EntityInfoCommand implements ICommand {
                     NBTTagCompound skullOwner = tag.getCompoundTag("SkullOwner");
                     if (skullOwner.hasKey("Id", 8)) {
                         String id = skullOwner.getString("Id");
-                        sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + "[ArmorStand SkullOwner] " + id));
+                        sender.addChatMessage(new ChatComponentText(Main.prefix + "[ArmorStand SkullOwner] " + id));
                         copy.append("[ArmorStand SkullOwner] ").append(id).append("\n");
                     }
                 }
@@ -73,7 +78,7 @@ public class EntityInfoCommand implements ICommand {
             EntityArmorStand armorStand = (EntityArmorStand)headEntity;
             ItemStack helmet = armorStand.getEquipmentInSlot(4);
             if (helmet != null && !helmet.getDisplayName().isEmpty()) {
-                sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + "[ArmorStand Head Name] " + helmet.getDisplayName()));
+                sender.addChatMessage(new ChatComponentText(Main.prefix + "[ArmorStand Head Name] " + helmet.getDisplayName()));
                 copy.append("[ArmorStand Head name] ").append(helmet.getDisplayName()).append("\n");
             }
         }
@@ -85,7 +90,7 @@ public class EntityInfoCommand implements ICommand {
             Collection<Property> textures = m.get("textures");
 
             for (Property entry : textures) {
-                sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + "[" + player.getName() + "] [Skin id] " + entry.getValue()));
+                sender.addChatMessage(new ChatComponentText(Main.prefix + "[" + player.getName() + "] [Skin id] " + entry.getValue()));
                 copy.append("[").append(player.getName()).append("] [Skin id] ").append(entry.getValue()).append("\n");
             }
         }

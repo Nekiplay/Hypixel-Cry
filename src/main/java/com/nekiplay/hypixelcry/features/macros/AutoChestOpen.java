@@ -1,7 +1,9 @@
 package com.nekiplay.hypixelcry.features.macros;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.enums.AutoChestOpenFeatures;
+import com.nekiplay.hypixelcry.config.neupages.Macros;
+import com.nekiplay.hypixelcry.events.hypixel.IslandTypeChangeEvent;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
@@ -15,13 +17,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.*;
 
-import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.Main.mc;
 
 public class AutoChestOpen {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private int tickCounter = 0;
     private static final int CHEST_COOLDOWN = 20, MAX_REMOVALS_PER_TICK = 20;
-    private static final double SEARCH_DISTANCE = 4.8;
+    private static final double SEARCH_DISTANCE = 4.4;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -33,7 +35,7 @@ public class AutoChestOpen {
 
     private boolean shouldSkipTick(TickEvent.ClientTickEvent event) {
         return event.phase == TickEvent.Phase.START || mc.theWorld == null ||
-                mc.thePlayer == null || !HypixelCry.config.macros.autoChestOpen.enabled || !HypixelCry.config.macros.autoChestOpen.allowedIslands.contains(IslandTypeChangeChecker.getLastDetected());
+                mc.thePlayer == null || !Main.config.macros.autoChestOpen.enabled || !Main.config.macros.autoChestOpen.allowedIslands.contains(IslandTypeChangeChecker.getLastDetected());
     }
 
     private void cleanUpOldChests() {
@@ -45,7 +47,7 @@ public class AutoChestOpen {
     }
 
     private void handleChestOpening() {
-        boolean ghostHand = HypixelCry.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.GhostHand);
+        boolean ghostHand = Main.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.GhostHand);
 
         if (ghostHand) {
             MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlock(
@@ -76,7 +78,7 @@ public class AutoChestOpen {
 
     private void tryOpenChest(MovingObjectPosition mouseOver) {
         if (mouseOver == null || mouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK ||
-                openedChests.containsKey(mouseOver.getBlockPos()) || mc.thePlayer.getDistanceSqToCenter(mouseOver.getBlockPos()) > SEARCH_DISTANCE * SEARCH_DISTANCE) return;
+                openedChests.containsKey(mouseOver.getBlockPos())) return;
 
         simulateHumanClick(mouseOver);
         openedChests.put(mouseOver.getBlockPos(), 0);
@@ -90,7 +92,7 @@ public class AutoChestOpen {
         );
         mc.thePlayer.swingItem();
 
-        if (HypixelCry.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air)) {
+        if (Main.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air)) {
             mc.theWorld.setBlockState(mop.getBlockPos(), Blocks.air.getDefaultState());
         }
     }
@@ -102,7 +104,7 @@ public class AutoChestOpen {
 
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
-        if (HypixelCry.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air) &&
+        if (Main.config.macros.autoChestOpen.features.contains(AutoChestOpenFeatures.Air) &&
                 event.newState.getBlock() == Blocks.chest && openedChests.containsKey(event.pos)) {
             event.setCanceled(true);
         }

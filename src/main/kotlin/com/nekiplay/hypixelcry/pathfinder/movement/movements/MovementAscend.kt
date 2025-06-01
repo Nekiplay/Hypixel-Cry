@@ -1,13 +1,13 @@
 package com.nekiplay.hypixelcry.pathfinder.movement.movements
 
-import com.nekiplay.hypixelcry.HypixelCry
+import com.nekiplay.hypixelcry.Main
 import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext
 import com.nekiplay.hypixelcry.pathfinder.movement.Movement
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementHelper
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementResult
 import net.minecraft.util.BlockPos
 
-class MovementAscend(mm: HypixelCry, from: BlockPos, to: BlockPos) : Movement(mm, from, to) {
+class MovementAscend(mm: Main, from: BlockPos, to: BlockPos) : Movement(mm, from, to) {
     override fun calculateCost(ctx: CalculationContext, res: MovementResult) {
         calculateCost(ctx, source.x, source.y, source.z, dest.x, dest.z, res)
         costs = res.cost

@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.mixins;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.events.world.SpawnParticleEvent;
 import net.minecraft.block.state.IBlockState;
@@ -22,8 +22,8 @@ public class MixinWorld {
     private void onSetBlockState(BlockPos pos, IBlockState newState, int flags, CallbackInfoReturnable<Boolean> cir) {
         BlockUpdateEvent blockUpdateEvent = new BlockUpdateEvent(pos);
         blockUpdateEvent.newState = newState;
-        if (HypixelCry.mc.theWorld != null) {
-            blockUpdateEvent.oldState = HypixelCry.mc.theWorld.getBlockState(pos);
+        if (Main.mc.theWorld != null) {
+            blockUpdateEvent.oldState = Main.mc.theWorld.getBlockState(pos);
         }
         else {
             blockUpdateEvent.oldState = Blocks.air.getDefaultState();

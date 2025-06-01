@@ -1,7 +1,7 @@
 package com.nekiplay.hypixelcry.commands;
 
 import com.nekiplay.hypixelcry.data.island.IslandType;
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.ICommand;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.Main.mc;
 
 public class LocationCommand implements ICommand {
     @Override
@@ -34,10 +34,10 @@ public class LocationCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        String zone = ApecUtils.removeAllCodes(HypixelCry.dataExtractor.getScoreBoardData().Zone);
+        String zone = ApecUtils.removeAllCodes(Main.dataExtractor.getScoreBoardData().Zone);
         String cleanedLocation = zone.replaceAll("[^a-zA-Z\\s']", "").trim();
-        mc.thePlayer.addChatMessage(new ChatComponentText( HypixelCry.prefix + "Current location: " + IslandType.current()));
-        mc.thePlayer.addChatMessage(new ChatComponentText( HypixelCry.prefix + "Current zone: " + cleanedLocation));
+        mc.thePlayer.addChatMessage(new ChatComponentText( Main.prefix + "Current location: " + IslandType.current()));
+        mc.thePlayer.addChatMessage(new ChatComponentText( Main.prefix + "Current zone: " + cleanedLocation));
         GuiScreen.setClipboardString(zone);
     }
 

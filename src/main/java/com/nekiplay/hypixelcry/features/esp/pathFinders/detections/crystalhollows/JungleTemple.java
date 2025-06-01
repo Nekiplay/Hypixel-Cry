@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp.pathFinders.detections.crystalhollows;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.features.esp.pathFinders.PathFinderRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -8,11 +8,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class JungleTemple {
     public static BlockPos jungleTemple = null;
@@ -54,7 +59,7 @@ public class JungleTemple {
         detectionThread = new Thread(() -> {
             BlockPos foundPos = findEmeraldWithSmoothAndesiteBelow(world, center, radius);
 
-            if (HypixelCry.config.esp.crystalHollows.pathFinder.enabledJungleTemple) {
+            if (Main.config.esp.crystalHollows.pathFinder.enabledJungleTemple) {
                 if (foundPos != null && !foundAndNotified) {
                     jungleTemple = foundPos;
                     foundAndNotified = true;

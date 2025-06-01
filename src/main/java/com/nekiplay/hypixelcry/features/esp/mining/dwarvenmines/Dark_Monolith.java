@@ -1,7 +1,7 @@
 package com.nekiplay.hypixelcry.features.esp.mining.dwarvenmines;
 
 import com.nekiplay.hypixelcry.data.island.IslandType;
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
@@ -17,7 +17,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.Main.mc;
 import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 
@@ -55,7 +55,7 @@ public class Dark_Monolith {
     private boolean shouldSkipTick(TickEvent.ClientTickEvent event) {
         return event.phase == TickEvent.Phase.START ||
                 mc.theWorld == null ||
-                !HypixelCry.config.esp.dwarvenMines.darkMonolith.enabled || !IslandType.current().equals(IslandType.Dwarven_Mines);
+                !Main.config.esp.dwarvenMines.darkMonolith.enabled || !IslandType.current().equals(IslandType.Dwarven_Mines);
     }
 
     private BlockPos findEggInWorld() {
@@ -87,7 +87,7 @@ public class Dark_Monolith {
     public void onRender(RenderWorldLastEvent event) {
         if (!shouldRender()) return;
 
-        Color color = toSpecialColor(HypixelCry.config.esp.dwarvenMines.darkMonolith.colour);
+        Color color = toSpecialColor(Main.config.esp.dwarvenMines.darkMonolith.colour);
         BlockPos centerPos = new BlockPos(
                 eggPosition.getX() + 0.5,
                 eggPosition.getY() + 0.5,
@@ -106,10 +106,10 @@ public class Dark_Monolith {
     }
 
     private boolean shouldRender() {
-        return HypixelCry.config.esp.dwarvenMines.darkMonolith.enabled && eggPosition != null && IslandTypeChangeChecker.getLastDetected().equals(IslandType.Dwarven_Mines);
+        return Main.config.esp.dwarvenMines.darkMonolith.enabled && eggPosition != null && IslandTypeChangeChecker.getLastDetected().equals(IslandType.Dwarven_Mines);
     }
 
     private boolean shouldRenderFeature(ESPFeatures feature) {
-        return HypixelCry.config.esp.dwarvenMines.darkMonolith.features.contains(feature);
+        return Main.config.esp.dwarvenMines.darkMonolith.features.contains(feature);
     }
 }

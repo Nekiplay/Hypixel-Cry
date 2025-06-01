@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.features.esp.farming;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.events.world.SpawnParticleEvent;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
@@ -25,10 +25,10 @@ public class Glowing_Mushroom {
         if (clientTickEvent.phase == TickEvent.Phase.START) {
             return;
         }
-        if (HypixelCry.mc.theWorld != null) {
+        if (Main.mc.theWorld != null) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos)pos_object;
-                IBlockState state = HypixelCry.mc.theWorld.getBlockState(pos);
+                IBlockState state = Main.mc.theWorld.getBlockState(pos);
                 boolean find = state.getBlock() == Blocks.brown_mushroom || state.getBlock() == Blocks.red_mushroom;
                 if (!find) {
                     positions.remove(pos);
@@ -40,7 +40,7 @@ public class Glowing_Mushroom {
     public void onParticleSpawn(SpawnParticleEvent event) {
         if (event.particleType == EnumParticleTypes.SPELL_MOB) {
             BlockPos pos = new BlockPos(event.position.xCoord, event.position.yCoord, event.position.zCoord);
-            Block block = HypixelCry.mc.theWorld.getBlockState(pos).getBlock();
+            Block block = Main.mc.theWorld.getBlockState(pos).getBlock();
             if (block == Blocks.brown_mushroom || block == Blocks.red_mushroom) {
                 if (!positions.contains(pos)) {
                     positions.add(pos);
@@ -62,17 +62,17 @@ public class Glowing_Mushroom {
     @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.enabled) {
+        if (Main.config.esp.desertSettlement.glowingMushrooms.enabled) {
             for (Object pos_object : positions.toArray()) {
                 BlockPos pos = (BlockPos) pos_object;
-                if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, toSpecialColor(HypixelCry.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
+                if (Main.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Box)) {
+                    RenderUtils.drawBlockBox(pos, toSpecialColor(Main.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
                 }
-                if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(HypixelCry.config.esp.desertSettlement.glowingMushrooms.colour));
+                if (Main.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Text)) {
+                    RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(Main.config.esp.desertSettlement.glowingMushrooms.colour));
                 }
-                if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, toSpecialColor(HypixelCry.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
+                if (Main.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
+                    RenderUtils.drawTracer(pos, toSpecialColor(Main.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
                 }
             }
         }

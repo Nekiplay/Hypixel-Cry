@@ -32,15 +32,16 @@ import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Mod(modid = HypixelCry.MODID, version = HypixelCry.VERSION, clientSideOnly = true)
+@Mod(modid = Main.MODID, version = Main.VERSION, clientSideOnly = true)
 
-public class HypixelCry
+public class Main
 {
-    private static HypixelCry instance;
-    public static final HypixelCry getInstance() {
+    private static Main instance;
+    public static final Main getInstance() {
         return instance;
     }
     public static final Logger LOG = LogManager.getLogger("HypixelCry");
+    public static final String PREFIX = "Hypixel Cry";
 
     public static final Minecraft mc = Minecraft.getMinecraft();
 
@@ -60,6 +61,18 @@ public class HypixelCry
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapterFactory(new PropertyTypeAdapterFactory()).create();
+
+    public File getConfigFile() {
+        return this.configFile;
+    }
+
+    public void newConfigFile() {
+        this.configFile = new File(getNeuDir(), "configNew.json");
+    }
+
+    public File getNeuDir() {
+        return this.neuDir;
+    }
 
     public MoulConfigProcessor<NEUConfig> processor = null;
 
@@ -81,7 +94,7 @@ public class HypixelCry
         instance = this;
 
         neuDir = new File(event.getModConfigurationDirectory(), "hypixelcry");
-        boolean ignore = neuDir.mkdirs();
+        neuDir.mkdirs();
 
         configFile = new File(neuDir, "config.json");
 

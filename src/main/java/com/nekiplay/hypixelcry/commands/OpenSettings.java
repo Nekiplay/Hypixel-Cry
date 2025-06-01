@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.commands;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import io.github.notenoughupdates.moulconfig.gui.GuiScreenElementWrapper;
 import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
@@ -31,8 +31,8 @@ public class OpenSettings implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        MoulConfigEditor<NEUConfig> gui = new MoulConfigEditor<>(HypixelCry.getInstance().processor);
-        HypixelCry.getInstance().screenToOpen = new GuiScreenElementWrapper(gui);
+        MoulConfigEditor<NEUConfig> gui = new MoulConfigEditor<>(Main.getInstance().processor);
+        Main.getInstance().screenToOpen = new GuiScreenElementWrapper(gui);
     }
 
     @Override

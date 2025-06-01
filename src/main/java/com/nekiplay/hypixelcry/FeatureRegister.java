@@ -16,11 +16,24 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class FeatureRegister {
+    public static AutoChestClose autoChestClose = new AutoChestClose();
+
+
+    public static GhostBlocks ghostBlocksMacros = new GhostBlocks();
+
     public void register(FMLInitializationEvent event) {
+        /* Events */
+
+        MinecraftForge.EVENT_BUS.register(autoChestClose);
+
+        MinecraftForge.EVENT_BUS.register(ghostBlocksMacros);
+
+
         /* ESP */
         MinecraftForge.EVENT_BUS.register(new JungleTemple());
 
         MinecraftForge.EVENT_BUS.register(new FrozenCourpes());
+        MinecraftForge.EVENT_BUS.register(new AutoChestOpen());
         MinecraftForge.EVENT_BUS.register(new AutomatonESP());
         MinecraftForge.EVENT_BUS.register(new YogESP());
         MinecraftForge.EVENT_BUS.register(new ChestESP());
@@ -28,12 +41,8 @@ public class FeatureRegister {
         MinecraftForge.EVENT_BUS.register(new Dark_Monolith());
         MinecraftForge.EVENT_BUS.register(new Glowing_Mushroom());
         MinecraftForge.EVENT_BUS.register(new Gifts());
-        MinecraftForge.EVENT_BUS.register(new PathFinderRenderer());
 
-        /* Macros */
-        MinecraftForge.EVENT_BUS.register(new AutoChestOpen());
-        MinecraftForge.EVENT_BUS.register(new GhostBlocks());
-        MinecraftForge.EVENT_BUS.register(new AutoChestClose());
+        MinecraftForge.EVENT_BUS.register(new PathFinderRenderer());
     }
 
     public void registerSystemFeatures(FMLInitializationEvent event) {

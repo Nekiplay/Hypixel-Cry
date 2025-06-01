@@ -3,7 +3,7 @@ package com.nekiplay.hypixelcry.utils;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
-import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.Main.mc;
 
 public class AngleUtils {
     public static float get360RotationYaw(float yaw) {

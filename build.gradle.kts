@@ -17,7 +17,7 @@ plugins {
 
 version = "1.1.0"
 group = "com.nekiplay.hypixelcry"
-base.archivesName.set("HypixelCry")
+base.archivesName.set("HypixelAddon")
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
@@ -79,7 +79,7 @@ tasks.withType(JavaCompile::class) {
 }
 
 tasks.jar {
-    archiveClassifier.set("")
+    archiveClassifier.set("named")
     manifest.attributes(
         "FMLCorePluginContainsFMLMod" to true,
         "FMLCorePlugin" to "com.nekiplay.hypixelcry.FMLLoadingPlugin",
@@ -90,14 +90,14 @@ tasks.jar {
     )
 }
 
-val remapJar by tasks.named<RemapJarTask>("remapJar") {
+val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
     archiveClassifier.set("")
     from(tasks.shadowJar)
     input.set(tasks.shadowJar.get().archiveFile)
 }
 
 tasks.shadowJar {
-    archiveClassifier.set("")
+    archiveClassifier.set("dev")
     configurations = listOf(shadowImplementation, shadowModImpl)
     exclude("**/module-info.class", "LICENSE.txt")
     dependencies {
@@ -106,7 +106,7 @@ tasks.shadowJar {
     mergeServiceFiles()
     relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.deps.moulconfig")
     minimize {
-        exclude(dependency("org.notenoughupdates.moulconfig:legacy:.*"))
+		exclude(dependency("org.notenoughupdates.moulconfig:legacy:.*"))
         exclude("com/nekiplay/hypixelcry/deps/moulconfig/.*")
     }
 }

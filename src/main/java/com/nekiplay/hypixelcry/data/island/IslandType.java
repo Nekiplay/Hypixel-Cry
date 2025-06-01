@@ -1,14 +1,15 @@
 package com.nekiplay.hypixelcry.data.island;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 
-import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.Main.mc;
 
 public enum IslandType {
     Lobby("Lobby"),
 
     Private_Island("Private Island"),
+
     Garden("Garden"),
 
     Dungeon_Hub("Dungeon Hub"),
@@ -26,8 +27,6 @@ public enum IslandType {
     Farming_Islands("Farming Islands"),
     Desert_Settlement("Desert Settlement"),
 
-    Spider_Den("Spider Den"),
-
     Unknown("Unknown"),
     None("None"),
     ;
@@ -43,17 +42,17 @@ public enum IslandType {
     }
 
     public static IslandType getByZone(String zone) {
-        return IslandLocations.getIslandByLocation(zone, mc.thePlayer != null ? mc.thePlayer.getName() : "{username}");
+        return IslandLocations.getIslandByLocation(zone, mc.thePlayer.getName());
     }
 
     public static IslandType current() {
-        if (!HypixelCry.dataExtractor.isInSkyblock) {
+        if (!Main.dataExtractor.isInSkyblock) {
             return IslandType.Lobby;
         }
-        if (HypixelCry.dataExtractor.isInTheCatacombs) {
+        if (Main.dataExtractor.isInTheCatacombs) {
             return IslandType.Catacombs;
         } else {
-            String zone = ApecUtils.removeAllCodes(HypixelCry.dataExtractor.getScoreBoardData().Zone);
+            String zone = ApecUtils.removeAllCodes(Main.dataExtractor.getScoreBoardData().Zone);
             return IslandType.getByZone(zone);
         }
     }

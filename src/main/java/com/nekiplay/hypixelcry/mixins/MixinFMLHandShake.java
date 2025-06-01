@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.mixins;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.network.handshake.FMLHandshakeMessage;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +18,7 @@ public class MixinFMLHandShake {
     private Map<String, String> modTags;
 
     @Inject(method = "<init>(Ljava/util/List;)V", at = @At("RETURN"))
-    private void remove(List<ModContainer> modList, CallbackInfo ci) {
-        if(!HypixelCry.mc.isIntegratedServerRunning()) modTags.remove(HypixelCry.MODID);
+    private void removeRGA(List<ModContainer> modList, CallbackInfo ci) {
+        if(!Main.mc.isIntegratedServerRunning()) modTags.remove(Main.MODID);
     }
 }

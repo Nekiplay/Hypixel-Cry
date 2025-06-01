@@ -1,6 +1,6 @@
 package com.nekiplay.hypixelcry.features.macros;
 
-import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.Main;
 import com.nekiplay.hypixelcry.utils.KeyBindUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -9,6 +9,7 @@ import net.minecraft.block.BlockSkull;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -17,13 +18,13 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.Main.mc;
 
 public class GhostBlocks {
     private void enable() {
         EntityPlayerSP player = mc.thePlayer;
         if (player != null) {
-            MovingObjectPosition movingObjectPosition = player.rayTrace(HypixelCry.config.macros.ghostBlocks.range, 1f);
+            MovingObjectPosition movingObjectPosition = player.rayTrace(Main.config.macros.ghostBlocks.range, 1f);
             if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos pos = movingObjectPosition.getBlockPos();
                 IBlockState state = mc.theWorld.getBlockState(pos);
@@ -46,7 +47,7 @@ public class GhostBlocks {
         if (keyCode < 0) return;
 
         try {
-            if (keyCode == HypixelCry.config.macros.ghostBlocks.ghostBlocksKeyBind) {
+            if (keyCode == Main.config.macros.ghostBlocks.ghostBlocksKeyBind) {
                 enable();
             }
         } catch (IndexOutOfBoundsException ignored) { }
@@ -59,7 +60,7 @@ public class GhostBlocks {
         int button = Mouse.getEventButton() - 100;
 
         try {
-            if (button == HypixelCry.config.macros.ghostBlocks.ghostBlocksKeyBind) {
+            if (button == Main.config.macros.ghostBlocks.ghostBlocksKeyBind) {
                 enable();
             }
         } catch (IndexOutOfBoundsException ignored) { }

@@ -166,13 +166,6 @@ public class IslandLocations {
                         "Crystal Hollows"
                 )
         );
-
-        islandLocationsMap.put(
-                IslandType.Spider_Den,
-                Collections.singletonList(
-                        "Spider's Den"
-                )
-        );
     }
 
     /**
