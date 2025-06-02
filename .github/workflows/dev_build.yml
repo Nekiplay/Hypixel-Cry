@@ -51,4 +51,4 @@ jobs:
           Special thanks to our amazing contributors who made this release possible:
           - **@Nekiplay** - Core improvements and feature implementations
         files: |
-          binaries/*.jar
+          binaries/HypixelCry-${{ env.APP_VERSION }}.jar
