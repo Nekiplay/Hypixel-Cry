@@ -41,7 +41,7 @@ public class AutoRightClick {
     private void cleanUpOldChests() {
         openedChests.entrySet().removeIf(entry -> {
             if (entry.getValue() >= CHEST_COOLDOWN) return true;
-            entry.setValue(entry.getValue() + 20);
+            entry.setValue(entry.getValue() + MAX_REMOVALS_PER_TICK);
             return false;
         });
     }
@@ -50,13 +50,15 @@ public class AutoRightClick {
         boolean ghostHand = HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.GhostHand);
 
         List<Block> selectedBlocks = new ArrayList<>();
-        if (HypixelCry.config.macros.autoRightClick.blocks.contains(AutoRightClickBlocks.Chest)) {
+        List<AutoRightClickBlocks> blocks = HypixelCry.config.macros.autoRightClick.blocks;
+        if (blocks.contains(AutoRightClickBlocks.Chest)) {
             selectedBlocks.add(Blocks.chest);
+            selectedBlocks.add(Blocks.trapped_chest);
         }
-        if (HypixelCry.config.macros.autoRightClick.blocks.contains(AutoRightClickBlocks.Lever)) {
+        if (blocks.contains(AutoRightClickBlocks.Lever)) {
             selectedBlocks.add(Blocks.lever);
         }
-        if (HypixelCry.config.macros.autoRightClick.blocks.contains(AutoRightClickBlocks.Skull)) {
+        if (blocks.contains(AutoRightClickBlocks.Skull)) {
             selectedBlocks.add(Blocks.skull);
         }
 

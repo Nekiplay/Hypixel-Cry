@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.features.qol;
+package com.nekiplay.hypixelcry.features.macros;
 
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.HypixelCry;
@@ -15,14 +15,14 @@ public class AutoChestClose {
     @SubscribeEvent
     public void tickEvent(RenderWorldLastEvent event) {
         if (mc.currentScreen instanceof GuiChest) {
-            DataExtractor extractor = HypixelCry.getInstance().dataExtractor;
+            DataExtractor extractor = HypixelCry.dataExtractor;
             GuiChestAccessor accessor = (GuiChestAccessor) mc.currentScreen;
             IInventory lower = accessor.GetLowerChestInventory();
             String windowTitle = "";
             if (lower.hasCustomName()) {
                 windowTitle = ApecUtils.removeAllCodes(lower.getDisplayName().getFormattedText());
             }
-            if (HypixelCry.getInstance().config.macros.dungeons.autoCloseChests.enable && (windowTitle.isEmpty() || windowTitle.equalsIgnoreCase("chest")) && extractor.isInTheCatacombs) {
+            if (HypixelCry.config.macros.dungeons.autoCloseChests.enable && (windowTitle.isEmpty() || windowTitle.equalsIgnoreCase("chest")) && extractor.isInTheCatacombs) {
                 mc.thePlayer.closeScreen();
             }
         }

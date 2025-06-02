@@ -13,67 +13,76 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.utils.SpecialColor.toSpecialColor;
 
 public class Glowing_Mushroom {
-    private static final List<BlockPos> positions = new ArrayList<BlockPos>();
+    private static final List<BlockPos> GLOWING_MUSHROOM_POSITIONS = new ArrayList<>();
+
     @SubscribeEvent
-    public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (clientTickEvent.phase == TickEvent.Phase.START) {
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START || HypixelCry.mc.theWorld == null) {
             return;
         }
-        if (HypixelCry.mc.theWorld != null) {
-            for (Object pos_object : positions.toArray()) {
-                BlockPos pos = (BlockPos)pos_object;
-                IBlockState state = HypixelCry.mc.theWorld.getBlockState(pos);
-                boolean find = state.getBlock() == Blocks.brown_mushroom || state.getBlock() == Blocks.red_mushroom;
-                if (!find) {
-                    positions.remove(pos);
-                }
+
+        Iterator<BlockPos> iterator = GLOWING_MUSHROOM_POSITIONS.iterator();
+        while (iterator.hasNext()) {
+            BlockPos pos = iterator.next();
+            IBlockState state = HypixelCry.mc.theWorld.getBlockState(pos);
+            boolean isMushroom = state.getBlock() == Blocks.brown_mushroom
+                    || state.getBlock() == Blocks.red_mushroom;
+
+            if (!isMushroom) {
+                iterator.remove();
             }
         }
     }
+
     @SubscribeEvent
     public void onParticleSpawn(SpawnParticleEvent event) {
-        if (event.particleType == EnumParticleTypes.SPELL_MOB) {
-            BlockPos pos = new BlockPos(event.position.xCoord, event.position.yCoord, event.position.zCoord);
-            Block block = HypixelCry.mc.theWorld.getBlockState(pos).getBlock();
-            if (block == Blocks.brown_mushroom || block == Blocks.red_mushroom) {
-                if (!positions.contains(pos)) {
-                    positions.add(pos);
-                }
-            }
+        if (event.particleType != EnumParticleTypes.SPELL_MOB) {
+            return;
+        }
+
+        BlockPos pos = new BlockPos(event.position.xCoord, event.position.yCoord, event.position.zCoord);
+        Block block = HypixelCry.mc.theWorld.getBlockState(pos).getBlock();
+
+        if ((block == Blocks.brown_mushroom || block == Blocks.red_mushroom)
+                && !GLOWING_MUSHROOM_POSITIONS.contains(pos)) {
+            GLOWING_MUSHROOM_POSITIONS.add(pos);
         }
     }
 
     public static boolean isGlowingMushroom(BlockPos pos) {
-        for (Object pos_object : positions.toArray()) {
-            BlockPos pose = (BlockPos) pos_object;
-            if (pose.equals(pos)) {
-                return true;
-            }
-        }
-        return false;
+        return GLOWING_MUSHROOM_POSITIONS.contains(pos);
     }
 
-    @SuppressWarnings("deprecation")
     @SubscribeEvent
-    public void onRender(RenderWorldLastEvent event) {
-        if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.enabled) {
-            for (Object pos_object : positions.toArray()) {
-                BlockPos pos = (BlockPos) pos_object;
-                if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Box)) {
-                    RenderUtils.drawBlockBox(pos, toSpecialColor(HypixelCry.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
-                }
-                if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Mushroom", new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5), event.partialTicks, false, toSpecialColor(HypixelCry.config.esp.desertSettlement.glowingMushrooms.colour));
-                }
-                if (HypixelCry.config.esp.desertSettlement.glowingMushrooms.features.contains(ESPFeatures.Tracer)) {
-                    RenderUtils.drawTracer(pos, toSpecialColor(HypixelCry.config.esp.desertSettlement.glowingMushrooms.colour), 1, event.partialTicks);
-                }
+    public void onWorldRender(RenderWorldLastEvent event) {
+        if (!HypixelCry.config.esp.desertSettlement.glowingMushrooms.enabled) {
+            return;
+        }
+
+        Color color = toSpecialColor(HypixelCry.config.esp.desertSettlement.glowingMushrooms.colour);
+        List<ESPFeatures> features = HypixelCry.config.esp.desertSettlement.glowingMushrooms.features;
+        float partialTicks = event.partialTicks;
+
+        for (BlockPos pos : GLOWING_MUSHROOM_POSITIONS) {
+            if (features.contains(ESPFeatures.Box)) {
+                RenderUtils.drawBlockBox(pos, color, 1, partialTicks);
+            }
+
+            if (features.contains(ESPFeatures.Text)) {
+                BlockPos textPos = new BlockPos(pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5);
+                RenderUtils.renderWaypointText("Mushroom", textPos, partialTicks, false, color);
+            }
+
+            if (features.contains(ESPFeatures.Tracer)) {
+                RenderUtils.drawTracer(pos, color, 1, partialTicks);
             }
         }
     }
