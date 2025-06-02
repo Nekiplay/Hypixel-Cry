@@ -22,6 +22,8 @@ public enum IslandType {
     Deep_Caverns("Deep Caverns"),
     Dwarven_Mines("Dwarven Mines"),
     Crystal_Hollows("Crystal Hollows"),
+    Glacite_Tunnels("Glacite Tunnels"),
+    Glacite_Mineshaft("Glacite Mineshaft"),
 
     Farming_Islands("Farming Islands"),
     Desert_Settlement("Desert Settlement"),

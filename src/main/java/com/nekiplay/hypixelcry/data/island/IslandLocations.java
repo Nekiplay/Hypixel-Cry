@@ -174,6 +174,21 @@ public class IslandLocations {
         );
 
         islandLocationsMap.put(
+                IslandType.Glacite_Tunnels,
+                Arrays.asList(
+                        "Fossil Research Center",
+                        "Glacite Tunnels"
+                )
+        );
+
+        islandLocationsMap.put(
+                IslandType.Glacite_Mineshaft,
+                Collections.singletonList(
+                        "Glacite Mineshaft"
+                )
+        );
+
+        islandLocationsMap.put(
                 IslandType.Spider_Den,
                 Arrays.asList(
                         "Spider's Den",
