@@ -1,6 +1,9 @@
 name: Development Build
 on: push
 
+env:
+  APP_VERSION: "1.1.0"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,12 +16,27 @@ jobs:
           distribution: 'adopt'
       - name: Build
         run: ./gradlew build
-      - name: Release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          automatic_release_tag: "1.1.0"
-          prerelease: true
-          title: "1.8.9 Forge Build | v1.1.0"
-          files: |
-            ./build/libs/*.jar
+        
+  create_release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    name: Create Release
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ env.APP_VERSION }}
+        name: Hypixel Cry ${{ env.APP_VERSION }}
+        body: |
+          # 🌟 Hypixel Cry ${{ env.APP_VERSION }} 🌟
+
+          ![Downloads](https://img.shields.io/github/downloads/Nekiplay/Hypixel-Cry/v${{ env.APP_VERSION }}/total) ![Version](https://img.shields.io/badge/version-${{ env.APP_VERSION }}-blue) ![Platform](https://img.shields.io/badge/platform-Windows%20|%20Linux-orange)
+          ## 👏 Contributors Hall of Fame
+          Special thanks to our amazing contributors who made this release possible:
+          - **@Nekiplay** - Core improvements and feature implementations
+        files: |
+          ./build/libs/*.jar
