@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.mixins;
+package com.nekiplay.hypixelcry.mixins.forge;
 
 import com.nekiplay.hypixelcry.HypixelCry;
 import net.minecraftforge.fml.common.ModContainer;

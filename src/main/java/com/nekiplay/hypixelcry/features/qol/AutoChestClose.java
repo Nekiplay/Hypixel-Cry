@@ -2,7 +2,7 @@ package com.nekiplay.hypixelcry.features.qol;
 
 import com.nekiplay.hypixelcry.DataInterpretation.DataExtractor;
 import com.nekiplay.hypixelcry.HypixelCry;
-import com.nekiplay.hypixelcry.mixins.GuiChestAccessor;
+import com.nekiplay.hypixelcry.mixins.gui.GuiChestAccessor;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.IInventory;

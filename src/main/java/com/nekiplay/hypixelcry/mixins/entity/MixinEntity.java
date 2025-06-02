@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.mixins;
+package com.nekiplay.hypixelcry.mixins.entity;
 
 import com.nekiplay.hypixelcry.events.EntityMove;
 import net.minecraft.entity.Entity;

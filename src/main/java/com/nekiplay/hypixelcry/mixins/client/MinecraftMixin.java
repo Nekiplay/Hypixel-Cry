@@ -1,10 +1,7 @@
-package com.nekiplay.hypixelcry.mixins;
+package com.nekiplay.hypixelcry.mixins.client;
 
-import com.nekiplay.hypixelcry.events.EntityMove;
 import com.nekiplay.hypixelcry.events.MouseClick;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

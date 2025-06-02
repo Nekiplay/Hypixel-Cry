@@ -5,16 +5,16 @@
   "package": "com.nekiplay.hypixelcry.mixins",
   "refmap": "mixins.hypixelcry.refmap.json",
   "mixins": [
-    "MinecraftAccessor",
-    "MixinNetworkManager",
-    "GuiContainerAccessor",
-    "GuiChestAccessor",
-    "MixinWorld"
+    "gui.GuiChestAccessor",
+    "gui.GuiContainerAccessor",
+    "client.MinecraftAccessor",
+    "client.MixinNetworkManager",
+    "world.MixinWorld"
   ],
   "client": [
-    "MixinFMLHandShake",
-    "PlayerControllerMPMixin",
-    "MinecraftMixin",
+    "client.MinecraftMixin",
+    "forge.MixinFMLHandShake",
+    "client.PlayerControllerMPMixin",
     "client.MixinChunkProviderClient"
   ]
 }

@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.mixins;
+package com.nekiplay.hypixelcry.mixins.client;
 
 import com.nekiplay.hypixelcry.events.BlockClick;
 import net.minecraft.client.multiplayer.PlayerControllerMP;

@@ -157,7 +157,7 @@ public class IslandLocations {
                         "Cliffside Veins",
                         "Forge Basin",
                         "The Forge",
-						"Divan's Gateway"
+                        "Divan's Gateway"
                 )
         );
 

@@ -11,23 +11,6 @@ import java.util.List;
 
 public class Macros {
     @Accordion
-    @ConfigOption(name = "Ghost Blocks", desc = "Set looking blocks to air")
-    @Expose
-    public Ghost_Blocks ghostBlocks = new Ghost_Blocks();
-
-    public static class Ghost_Blocks {
-        @ConfigOption(name = "Key binding", desc = "Activation key bind")
-        @ConfigEditorKeybind(defaultKey = Keyboard.KEY_NONE)
-        @Expose
-        public int ghostBlocksKeyBind = Keyboard.KEY_NONE;
-
-        @ConfigOption(name = "Range", desc = "Raycast range")
-        @ConfigEditorSlider(minValue = 2, maxValue = 32, minStep = 1)
-        @Expose
-        public int range = 8;
-    }
-
-    @Accordion
     @ConfigOption(name = "Auto RightClick", desc = "Auto click to selected blocks")
     @Expose
     public AutoRightClick autoRightClick = new AutoRightClick();
@@ -50,8 +33,8 @@ public class Macros {
         @Expose
         @ConfigEditorDraggableList(requireNonEmpty = false)
         public List<AutoRightClickOpenFeatures> features = new ArrayList<AutoRightClickOpenFeatures>() {{
-                add(AutoRightClickOpenFeatures.Air);
-                add(AutoRightClickOpenFeatures.GhostHand);
+            add(AutoRightClickOpenFeatures.Air);
+            add(AutoRightClickOpenFeatures.GhostHand);
         }};
 
         @ConfigOption(name = "Work in", desc = "Allow islands for working")
@@ -62,6 +45,23 @@ public class Macros {
             add(IslandType.Crystal_Hollows);
         }};
 
+    }
+
+    @Accordion
+    @ConfigOption(name = "Ghost Blocks", desc = "Set looking blocks to air")
+    @Expose
+    public Ghost_Blocks ghostBlocks = new Ghost_Blocks();
+
+    public static class Ghost_Blocks {
+        @ConfigOption(name = "Key binding", desc = "Activation key bind")
+        @ConfigEditorKeybind(defaultKey = Keyboard.KEY_NONE)
+        @Expose
+        public int ghostBlocksKeyBind = Keyboard.KEY_NONE;
+
+        @ConfigOption(name = "Range", desc = "Raycast range")
+        @ConfigEditorSlider(minValue = 2, maxValue = 32, minStep = 1)
+        @Expose
+        public int range = 8;
     }
 
     @Category(name = "Dungeons", desc = "Macros in dungeons")

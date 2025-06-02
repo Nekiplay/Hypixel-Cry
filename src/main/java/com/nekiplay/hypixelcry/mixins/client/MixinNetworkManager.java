@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.mixins;
+package com.nekiplay.hypixelcry.mixins.client;
 
 import com.nekiplay.hypixelcry.events.PacketEvent;
 import io.netty.channel.ChannelHandlerContext;

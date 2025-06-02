@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.mixins;
+package com.nekiplay.hypixelcry.mixins.world;
 
 import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
