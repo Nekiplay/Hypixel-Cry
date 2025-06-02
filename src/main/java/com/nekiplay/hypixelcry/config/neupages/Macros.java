@@ -21,6 +21,14 @@ public class Macros {
         @Expose
         public boolean enabled = false;
 
+        @ConfigOption(name = "Islands", desc = "Allow islands for working")
+        @Expose
+        @ConfigEditorDraggableList(requireNonEmpty = false)
+        public List<IslandType> allowedIslands = new ArrayList<IslandType>() {{
+            add(IslandType.Catacombs);
+            add(IslandType.Crystal_Hollows);
+        }};
+
         @ConfigOption(name = "Blocks", desc = "Click for blocks")
         @Expose
         @ConfigEditorDraggableList(requireNonEmpty = false)
@@ -36,15 +44,6 @@ public class Macros {
             add(AutoRightClickOpenFeatures.Air);
             add(AutoRightClickOpenFeatures.GhostHand);
         }};
-
-        @ConfigOption(name = "Work in", desc = "Allow islands for working")
-        @Expose
-        @ConfigEditorDraggableList(requireNonEmpty = false)
-        public List<IslandType> allowedIslands = new ArrayList<IslandType>() {{
-            add(IslandType.Catacombs);
-            add(IslandType.Crystal_Hollows);
-        }};
-
     }
 
     @Accordion

@@ -9,28 +9,8 @@ import java.util.List;
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class RaycastUtils {
-    public static MovingObjectPosition rayTraceToBlock(Vec3 startVec, Vec3 endVec, List<Block> blocks) {
+    public static MovingObjectPosition rayTraceToBlocks(Vec3 startVec, Vec3 endVec, List<Block> blocks) {
         return fastRayTrace(startVec, endVec, blocks);
-    }
-
-
-    public static MovingObjectPosition rayTrace(Vec3 target, float range, List<Block> blocks) {
-        Vec3 vec3 = mc.thePlayer.getPositionEyes(1f);
-        Vec3 vec31 = getLook(target);
-        return fastRayTrace(vec3, vec3.addVector(vec31.xCoord * (double)range, vec31.yCoord * (double)range, vec31.zCoord * (double)range), blocks);
-    }
-
-    public static Vec3 getLook(Vec3 vec) {
-        double diffX = vec.xCoord - mc.thePlayer.posX;
-        double diffY = vec.yCoord - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight());
-        double diffZ = vec.zCoord - mc.thePlayer.posZ;
-        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
-        return getVectorForRotation((float)(-(Math.atan2(diffY, dist) * 180.0 / Math.PI)), (float)(Math.atan2(diffZ, diffX) * 180.0 / Math.PI - 90.0));
-    }
-
-    public static Vec3 getVectorForRotation(float pitch, float yaw) {
-        double f2 = -Math.cos(-pitch * ((float)Math.PI / 180));
-        return new Vec3(Math.sin(-yaw * ((float)Math.PI / 180) - (float)Math.PI) * f2, Math.sin(-pitch * ((float)Math.PI / 180)), Math.cos(-yaw * ((float)Math.PI / 180) - (float)Math.PI) * f2);
     }
 
     private static MovingObjectPosition fastRayTrace(Vec3 startVec, Vec3 endVec, List<Block> targetBlocks) {

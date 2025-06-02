@@ -15,37 +15,33 @@ import com.nekiplay.hypixelcry.features.macros.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
+import java.util.Arrays;
+
 public class FeatureRegister {
-    public static AutoChestClose autoChestClose = new AutoChestClose();
-
-
-    public static GhostBlocks ghostBlocksMacros = new GhostBlocks();
-
     public void register(FMLInitializationEvent event) {
-        /* Events */
+        Arrays.asList(
+                /* Macros */
+                new AutoChestClose(),
+                new GhostBlocks(),
+                new AutoRightClick(),
 
-        MinecraftForge.EVENT_BUS.register(autoChestClose);
+                /* ESP */
+                new ChestESP(),
+                new FrozenCourpes(),
+                new AutomatonESP(),
+                new YogESP(),
+                new Dark_Monolith(),
+                new Glowing_Mushroom(),
 
-        MinecraftForge.EVENT_BUS.register(ghostBlocksMacros);
-
-
-        /* ESP */
-        MinecraftForge.EVENT_BUS.register(new JungleTemple());
-
-        MinecraftForge.EVENT_BUS.register(new FrozenCourpes());
-        MinecraftForge.EVENT_BUS.register(new AutoChestOpen());
-        MinecraftForge.EVENT_BUS.register(new AutomatonESP());
-        MinecraftForge.EVENT_BUS.register(new YogESP());
-        MinecraftForge.EVENT_BUS.register(new ChestESP());
-        MinecraftForge.EVENT_BUS.register(new Treasure_Hunter());
-        MinecraftForge.EVENT_BUS.register(new Dark_Monolith());
-        MinecraftForge.EVENT_BUS.register(new Glowing_Mushroom());
-        MinecraftForge.EVENT_BUS.register(new Gifts());
-
-        MinecraftForge.EVENT_BUS.register(new PathFinderRenderer());
+                new JungleTemple(),
+                new Treasure_Hunter(),
+                new PathFinderRenderer()
+        ).forEach(MinecraftForge.EVENT_BUS::register);
     }
 
     public void registerSystemFeatures(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new IslandTypeChangeChecker());
+        Arrays.asList(
+                new IslandTypeChangeChecker()
+        ).forEach(MinecraftForge.EVENT_BUS::register);
     }
 }

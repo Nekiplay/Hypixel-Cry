@@ -15,6 +15,6 @@
     "client.MinecraftMixin",
     "forge.MixinFMLHandShake",
     "client.PlayerControllerMPMixin",
-    "client.MixinChunkProviderClient"
+    "world.MixinChunkProviderClient"
   ]
 }

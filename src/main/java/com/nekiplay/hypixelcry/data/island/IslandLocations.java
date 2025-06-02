@@ -172,6 +172,15 @@ public class IslandLocations {
                         "Magma Fields"
                 )
         );
+
+        islandLocationsMap.put(
+                IslandType.Spider_Den,
+                Arrays.asList(
+                        "Spider's Den",
+                        "Grandma's House",
+                        "Spider Mound"
+                )
+        );
     }
 
     /**

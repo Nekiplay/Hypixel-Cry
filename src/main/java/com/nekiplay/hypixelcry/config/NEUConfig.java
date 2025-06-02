@@ -64,7 +64,7 @@ public class NEUConfig extends Config {
     @Expose
     @Category(
             name = "Visuals",
-            desc = "World rendering features"
+            desc = "Rendering features"
     )
     public ESP esp = new ESP();
 

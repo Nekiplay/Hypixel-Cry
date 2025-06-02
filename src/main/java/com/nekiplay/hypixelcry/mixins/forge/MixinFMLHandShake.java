@@ -18,7 +18,7 @@ public class MixinFMLHandShake {
     private Map<String, String> modTags;
 
     @Inject(method = "<init>(Ljava/util/List;)V", at = @At("RETURN"))
-    private void removeRGA(List<ModContainer> modList, CallbackInfo ci) {
+    private void removeHypixelCry(List<ModContainer> modList, CallbackInfo ci) {
         if(!HypixelCry.mc.isIntegratedServerRunning()) modTags.remove(HypixelCry.MODID);
     }
 }

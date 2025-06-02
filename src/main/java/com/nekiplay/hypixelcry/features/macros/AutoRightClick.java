@@ -3,6 +3,7 @@ package com.nekiplay.hypixelcry.features.macros;
 import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickBlocks;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickOpenFeatures;
+import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
@@ -19,10 +20,10 @@ import java.util.*;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
-public class AutoChestOpen {
+public class AutoRightClick {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 20, MAX_REMOVALS_PER_TICK = 20;
+    private static final int CHEST_COOLDOWN = 60, MAX_REMOVALS_PER_TICK = 20;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -60,7 +61,7 @@ public class AutoChestOpen {
         }
 
         if (ghostHand) {
-            MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlock(
+            MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlocks(
                     getEyePosition(),
                     getLookEndPos(),
                     selectedBlocks
@@ -76,7 +77,7 @@ public class AutoChestOpen {
     }
 
     private Vec3 getLookEndPos() {
-        float distance = mc.playerController.getBlockReachDistance() - 0.05f;
+        float distance = mc.playerController.getBlockReachDistance();
         Vec3 look = mc.thePlayer.getLook(1.0f);
         return getEyePosition().addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
     }
@@ -90,7 +91,6 @@ public class AutoChestOpen {
     private void tryOpenChest(MovingObjectPosition mouseOver) {
         if (mouseOver == null || mouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK ||
                 openedChests.containsKey(mouseOver.getBlockPos())) return;
-
         simulateHumanClick(mouseOver);
         openedChests.put(mouseOver.getBlockPos(), 0);
     }
@@ -102,7 +102,7 @@ public class AutoChestOpen {
                 mop.getBlockPos(), mop.sideHit, mop.hitVec
         );
         mc.thePlayer.swingItem();
-        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air)) {
+        if (!shouldSkipAir()) {
             mc.theWorld.setBlockState(mop.getBlockPos(), Blocks.air.getDefaultState());
         }
     }
@@ -114,9 +114,14 @@ public class AutoChestOpen {
 
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
-        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air) &&
-                event.newState.getBlock() == Blocks.chest && openedChests.containsKey(event.pos)) {
+        if (shouldSkipAir()) return;
+        if (event.newState.getBlock() == Blocks.chest) {
             event.setCanceled(true);
         }
+    }
+
+    public boolean shouldSkipAir() {
+        IslandType islandType = IslandTypeChangeChecker.getLastDetected();
+        return !HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air) || islandType.equals(IslandType.Catacombs) || islandType.equals(IslandType.Private_Island);
     }
 }

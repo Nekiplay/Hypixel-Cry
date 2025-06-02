@@ -1,4 +1,4 @@
-package com.nekiplay.hypixelcry.mixins.client;
+package com.nekiplay.hypixelcry.mixins.world;
 
 import com.nekiplay.hypixelcry.utils.IChunkProviderClient;
 import net.minecraft.client.multiplayer.ChunkProviderClient;
