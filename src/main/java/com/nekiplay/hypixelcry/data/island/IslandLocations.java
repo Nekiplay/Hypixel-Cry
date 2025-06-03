@@ -157,7 +157,10 @@ public class IslandLocations {
                         "Cliffside Veins",
                         "Forge Basin",
                         "The Forge",
-                        "Divan's Gateway"
+                        "Divan's Gateway",
+                        "Hanging Court",
+                        "Aristocrat Passage",
+                        "Dwarden Millage"
                 )
         );
 
@@ -194,6 +197,13 @@ public class IslandLocations {
                         "Spider's Den",
                         "Grandma's House",
                         "Spider Mound"
+                )
+        );
+
+        islandLocationsMap.put(
+                IslandType.End,
+                Collections.singletonList(
+                        "The End"
                 )
         );
     }

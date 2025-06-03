@@ -29,6 +29,7 @@ public enum IslandType {
     Desert_Settlement("Desert Settlement"),
 
     Spider_Den("Spider Den"),
+    End("End"),
 
     Unknown("Unknown"),
     None("None"),
