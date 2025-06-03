@@ -1,16 +1,9 @@
 package com.nekiplay.hypixelcry.utils.helper;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 
-@Getter
-@Setter
-@Accessors(fluent = true)
 public class RotationConfiguration {
     private Optional<Angle> from = Optional.empty();
     private Optional<Angle> to = Optional.empty();
@@ -81,6 +74,93 @@ public class RotationConfiguration {
     public Ease easeFunction() {
         return this.easeFunction;
     }
+    // Геттеры и сеттеры
+    public Optional<Angle> getFrom() {
+        return from;
+    }
+
+    public RotationConfiguration setFrom(Angle from) {
+        this.from = Optional.ofNullable(from);
+        return this;
+    }
+
+    public Optional<Angle> getTo() {
+        return to;
+    }
+
+    public RotationConfiguration setTo(Angle to) {
+        this.to = Optional.ofNullable(to);
+        return this;
+    }
+
+    public Optional<Target> getTarget() {
+        return target;
+    }
+
+    public Optional<Runnable> getCallback() {
+        return callback;
+    }
+
+    public RotationConfiguration setCallback(Runnable callback) {
+        this.callback = Optional.ofNullable(callback);
+        return this;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public RotationConfiguration setTime(long time) {
+        this.time = time;
+        return this;
+    }
+
+    public boolean isEaseBackToClientSide() {
+        return easeBackToClientSide;
+    }
+
+    public RotationConfiguration setEaseBackToClientSide(boolean easeBackToClientSide) {
+        this.easeBackToClientSide = easeBackToClientSide;
+        return this;
+    }
+
+    public boolean isFollowTarget() {
+        return followTarget;
+    }
+
+    public RotationConfiguration setFollowTarget(boolean followTarget) {
+        this.followTarget = followTarget;
+        return this;
+    }
+
+    public RotationType getRotationType() {
+        return rotationType;
+    }
+
+    public RotationConfiguration setRotationType(RotationType rotationType) {
+        this.rotationType = rotationType;
+        return this;
+    }
+
+    public Ease getEaseFunction() {
+        return easeFunction;
+    }
+
+    public RotationConfiguration setEaseFunction(Ease easeFunction) {
+        this.easeFunction = easeFunction;
+        return this;
+    }
+
+    public boolean isRandomness() {
+        return randomness;
+    }
+
+    public RotationConfiguration setRandomness(boolean randomness) {
+        this.randomness = randomness;
+        return this;
+    }
+
+
 
     @Override
     public Object clone() {

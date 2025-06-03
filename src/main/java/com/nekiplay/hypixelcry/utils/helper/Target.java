@@ -1,9 +1,6 @@
 package com.nekiplay.hypixelcry.utils.helper;
 
 import com.nekiplay.hypixelcry.utils.AngleUtils;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
@@ -11,15 +8,9 @@ import net.minecraft.util.Vec3;
 public class Target {
 
     private Vec3 vec;
-    @Getter
     private Entity entity;
-    @Getter
     private BlockPos blockPos;
-    @Getter
     private Angle angle;
-    @Accessors(fluent = true)
-    @Setter
-    @Getter
     private float additionalY = (float) (1 + Math.random()) * 0.75f;
 
     public Target(Vec3 vec) {

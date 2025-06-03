@@ -5,7 +5,6 @@ import com.nekiplay.hypixelcry.utils.AngleUtils;
 import com.nekiplay.hypixelcry.utils.helper.Angle;
 import com.nekiplay.hypixelcry.utils.helper.RotationConfiguration;
 import com.nekiplay.hypixelcry.utils.helper.Target;
-import lombok.Getter;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -46,8 +45,11 @@ public class RotationHandler {
         return serverSideYaw;
     }
 
-    @Getter
     private RotationConfiguration configuration;
+
+    public RotationConfiguration getConfiguration() {
+        return configuration;
+    }
 
     public static RotationHandler getInstance() {
         if (instance == null) {
@@ -71,18 +73,18 @@ public class RotationHandler {
     public void easeTo(RotationConfiguration configuration) {
         this.configuration = configuration;
         this.startTime = System.currentTimeMillis();
-        this.startRotation.setRotation(configuration.from().orElse(AngleUtils.getPlayerAngle()));
-        this.target = configuration.target().get();
+        this.startRotation.setRotation(configuration.getFrom().orElse(AngleUtils.getPlayerAngle()));
+        this.target = configuration.getTarget().get();
 
         Angle change = AngleUtils.getNeededChange(this.startRotation, this.target.getTargetAngle());
-        this.endTime = this.startTime + getTime(pythagoras(change.getYaw(), change.getPitch()), configuration.time());
+        this.endTime = this.startTime + getTime(pythagoras(change.getYaw(), change.getPitch()), configuration.getTime());
 
         this.randomMultiplier1 = randomMultiplier2 = random.nextBoolean() ? 4 : -7;
 
         this.lastBezierYaw = 0;
         this.lastBezierPitch = 0;
 
-        if (configuration.rotationType() == RotationConfiguration.RotationType.SERVER) {
+        if (configuration.getRotationType() == RotationConfiguration.RotationType.SERVER) {
             if (serverSideYaw == 0 && serverSidePitch == 0) {
                 serverSideYaw = mc.thePlayer.rotationYaw;
                 serverSidePitch = mc.thePlayer.rotationPitch;
@@ -117,7 +119,7 @@ public class RotationHandler {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (!enabled || this.configuration == null || this.configuration.rotationType() != RotationConfiguration.RotationType.CLIENT) {
+        if (!enabled || this.configuration == null || this.configuration.getRotationType() != RotationConfiguration.RotationType.CLIENT) {
             return;
         }
 
@@ -134,7 +136,7 @@ public class RotationHandler {
 
     @SubscribeEvent(receiveCanceled = true)
     public void onMotionUpdate(MotionUpdateEvent event) {
-        if (!enabled || this.configuration == null || this.configuration.rotationType() != RotationConfiguration.RotationType.SERVER) {
+        if (!enabled || this.configuration == null || this.configuration.getRotationType() != RotationConfiguration.RotationType.SERVER) {
             return;
         }
 
@@ -172,22 +174,22 @@ public class RotationHandler {
 
     private void handleRotationEnd() {
         if (!this.stopRequested) {
-            if (this.configuration.followTarget()) {
+            if (this.configuration.isFollowTarget()) {
                 System.out.println("Following Target");
                 this.easeTo(configuration);
                 this.followingTarget = true;
                 return;
             }
 
-            configuration.callback().ifPresent(Runnable::run);
+            configuration.getCallback().ifPresent(Runnable::run);
 
             if (!this.rotations.isEmpty()) {
                 this.easeTo(this.rotations.poll());
                 return;
             }
 
-            if (this.configuration.rotationType() == RotationConfiguration.RotationType.SERVER && this.configuration.easeBackToClientSide()) {
-                RotationConfiguration newConf = new RotationConfiguration(AngleUtils.getPlayerAngle(), this.configuration.time(),
+            if (this.configuration.getRotationType() == RotationConfiguration.RotationType.SERVER && this.configuration.isEaseBackToClientSide()) {
+                RotationConfiguration newConf = new RotationConfiguration(AngleUtils.getPlayerAngle(), this.configuration.getTime(),
                         RotationConfiguration.RotationType.SERVER, () -> {
                 });
                 this.easeTo(newConf);
@@ -230,7 +232,7 @@ public class RotationHandler {
 
     public void stopFollowingTarget() {
         if (this.configuration != null) {
-            this.configuration.followTarget(false);
+            this.configuration.setFollowTarget(false);
         }
     }
 }

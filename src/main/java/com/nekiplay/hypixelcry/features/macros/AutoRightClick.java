@@ -121,7 +121,7 @@ public class AutoRightClick {
         }
 
         if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.AutoLook)) {
-            List<BlockPos> found = findBlocksNearby(selectedBlocks, new ArrayList<>(openedChests.keySet()), mc.playerController.getBlockReachDistance() + 1);
+            List<BlockPos> found = findBlocksNearby(selectedBlocks, new ArrayList<>(openedChests.keySet()), mc.playerController.getBlockReachDistance() + 2);
             if (!found.isEmpty() && !RotationHandler.getInstance().isEnabled()) {
                 List<Vec3> points = BlockUtils.bestPointsOnBestSide(found.get(0), ghostHand ? selectedBlocks : new ArrayList<>());
                 points.sort(Comparator.comparingDouble(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1))));

@@ -27,7 +27,7 @@ public class MixinModelBiped {
 
     @Inject(method = {"setRotationAngles"}, at = {@At(value = "FIELD", target = "Lnet/minecraft/client/model/ModelBiped;swingProgress:F")})
     public void onSetRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn, CallbackInfo ci) {
-        if (!RotationHandler.getInstance().isEnabled() || RotationHandler.getInstance().getConfiguration() != null && RotationHandler.getInstance().getConfiguration().rotationType() != RotationConfiguration.RotationType.SERVER || entityIn == null || !entityIn.equals(hypixelCry$mc.thePlayer)) {
+        if (!RotationHandler.getInstance().isEnabled() || RotationHandler.getInstance().getConfiguration() != null && RotationHandler.getInstance().getConfiguration().getRotationType() != RotationConfiguration.RotationType.SERVER || entityIn == null || !entityIn.equals(hypixelCry$mc.thePlayer)) {
             return;
         }
 

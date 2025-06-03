@@ -46,7 +46,7 @@ public class Macros {
         }};
 
         @ConfigOption(name = "Rotation time", desc = "")
-        @ConfigEditorSlider(minValue = 25, maxValue = 500, minStep = 25)
+        @ConfigEditorSlider(minValue = 25, maxValue = 750, minStep = 25)
         @Expose
         public int rotationTime = 100;
     }
