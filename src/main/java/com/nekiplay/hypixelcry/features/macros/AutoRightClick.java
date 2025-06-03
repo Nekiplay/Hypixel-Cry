@@ -203,15 +203,13 @@ public class AutoRightClick {
             return;
         }
 
-        BlockPos pos = mouseOver.getBlockPos();
         simulateHumanClick(mouseOver);
-        openedChests.put(pos, 0);
     }
 
     private void simulateHumanClick(MovingObjectPosition mop) {
         if (mop == null || mop.getBlockPos() == null) return;
 
-        mc.playerController.onPlayerRightClick(
+        boolean success = mc.playerController.onPlayerRightClick(
                 mc.thePlayer,
                 mc.theWorld,
                 mc.thePlayer.inventory.getCurrentItem(),
@@ -221,9 +219,11 @@ public class AutoRightClick {
         );
         mc.thePlayer.swingItem();
 
-        if (!shouldSkipAir()) {
+        if (success && HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air)) {
+            openedChests.put(mop.getBlockPos(), 0);
             mc.theWorld.setBlockState(mop.getBlockPos(), Blocks.air.getDefaultState());
         }
+
     }
 
     @SubscribeEvent
@@ -233,16 +233,10 @@ public class AutoRightClick {
 
     @SubscribeEvent
     public void onBlockUpdate(BlockUpdateEvent event) {
-        if (shouldSkipAir()) return;
-        if (event.newState.getBlock() == Blocks.chest) {
-            event.setCanceled(true);
+        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air)) {
+            if (event.newState.getBlock() == Blocks.chest) {
+                event.setCanceled(true);
+            }
         }
-    }
-
-    public boolean shouldSkipAir() {
-        IslandType islandType = IslandTypeChangeChecker.getLastDetected();
-        return !HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air) ||
-                islandType == IslandType.Catacombs ||
-                islandType == IslandType.Private_Island;
     }
 }
