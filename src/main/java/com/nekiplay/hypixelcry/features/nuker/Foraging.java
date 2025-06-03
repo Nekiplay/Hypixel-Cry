@@ -27,7 +27,11 @@ public class Foraging extends GeneralNuker {
     private int boostTicks = 0;
     private boolean isWorking = false;
 
-    private final GeneralMiner generalMiner = new GeneralMiner();
+    private final InstantMiningChecker instantMiningChecker = new InstantMiningChecker();
+
+    public Foraging() {
+        instantMiningChecker.addAllowedItem(ItemAxe.class);
+    }
 
     @Override
     public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
@@ -43,7 +47,7 @@ public class Foraging extends GeneralNuker {
             return;
         }
 
-        if (generalMiner.AllowInstantMining()) {
+        if (instantMiningChecker.AllowInstantMining()) {
             handleForaging();
         }
     }
@@ -54,7 +58,7 @@ public class Foraging extends GeneralNuker {
 
         setDistance(5.4, 7.5);
 
-        if (currentItem != null && currentItem.getItem() instanceof ItemAxe) {
+        if (instantMiningChecker.AllowInstantMining()) {
             if (shovelTick > SHOVEL_COOLDOWN) {
                 processBoostAlgorithm();
             }
