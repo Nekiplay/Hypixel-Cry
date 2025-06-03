@@ -53,9 +53,6 @@ public class Foraging extends GeneralNuker {
     }
 
     private void handleForaging() {
-        InventoryPlayer inventory = mc.thePlayer.inventory;
-        ItemStack currentItem = inventory.getCurrentItem();
-
         setDistance(5.4, 7.5);
 
         if (instantMiningChecker.AllowInstantMining()) {
