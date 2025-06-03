@@ -9,6 +9,7 @@ import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -133,7 +134,7 @@ public class FrozenCourpes {
                     RenderUtils.drawEntityBox(entity, toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);
                 }
                 if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                    RenderUtils.renderWaypointText("Courpe", new BlockPos(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour));
+                    RenderUtils.renderWaypointText("Courpe", new Vec3(entity.posX + 0.5, entity.posY + entity.height + 0.5, entity.posZ + 0.5), event.partialTicks, false, toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour));
                 }
                 if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
                     RenderUtils.drawTracer(entity.getPosition(), toSpecialColor(HypixelCry.config.esp.glaciteMineshafts.frozenCourpes.colour), 1, event.partialTicks);

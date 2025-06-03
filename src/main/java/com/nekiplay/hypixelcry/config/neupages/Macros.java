@@ -44,6 +44,11 @@ public class Macros {
             add(AutoRightClickOpenFeatures.Air);
             add(AutoRightClickOpenFeatures.GhostHand);
         }};
+
+        @ConfigOption(name = "Rotation time", desc = "")
+        @ConfigEditorSlider(minValue = 25, maxValue = 500, minStep = 25)
+        @Expose
+        public int rotationTime = 100;
     }
 
     @Accordion

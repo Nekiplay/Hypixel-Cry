@@ -12,6 +12,7 @@ import com.nekiplay.hypixelcry.features.esp.pathFinders.detections.crystalhollow
 import com.nekiplay.hypixelcry.features.macros.AutoChestClose;
 import com.nekiplay.hypixelcry.features.esp.*;
 import com.nekiplay.hypixelcry.features.macros.*;
+import com.nekiplay.hypixelcry.features.system.RotationHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
@@ -41,7 +42,8 @@ public class FeatureRegister {
 
     public void registerSystemFeatures(FMLInitializationEvent event) {
         Arrays.asList(
-                new IslandTypeChangeChecker()
+                new IslandTypeChangeChecker(),
+                RotationHandler.getInstance()
         ).forEach(MinecraftForge.EVENT_BUS::register);
     }
 }

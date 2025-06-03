@@ -5,6 +5,7 @@ import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -50,7 +51,7 @@ public class ChestESP {
                 RenderUtils.drawBlockBox(centerPos, color, 1, event.partialTicks);
             }
             if (shouldRenderFeature(ESPFeatures.Text)) {
-                RenderUtils.renderWaypointText("Chest", centerPos.add(0, 1.3, 0), event.partialTicks, false, color);
+                RenderUtils.renderWaypointText("Chest", new Vec3(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5), event.partialTicks, false, color);
             }
             if (shouldRenderFeature(ESPFeatures.Tracer)) {
                 RenderUtils.drawTracer(centerPos, color, 1, event.partialTicks);

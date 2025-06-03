@@ -2,6 +2,8 @@ package com.nekiplay.hypixelcry.commands;
 
 import com.mojang.authlib.properties.Property;
 import com.nekiplay.hypixelcry.HypixelCry;
+import com.nekiplay.hypixelcry.utils.EntityUtils;
+import com.nekiplay.hypixelcry.utils.Utils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -13,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MovingObjectPosition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,9 +93,23 @@ public class EntityInfoCommand implements ICommand {
             }
         }
 
+        if (mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+            List<EntityArmorStand> armorStands = EntityUtils.getArmorStandAboveEntity(mc.objectMouseOver.entityHit, 0.1f, new ArrayList<String>() {{
+                add("§e§lCLICK");
+            }});
+            if (armorStands != null && !armorStands.isEmpty()) {
+                for (EntityArmorStand armorStand : armorStands) {
+                    sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + "[Entity above cursor] [Name] " + armorStand.getName()));
+                    copy.append("[Entity above cursor] [Name] ").append(armorStand.getName()).append("\n");
+                }
+
+                sender.addChatMessage(new ChatComponentText(HypixelCry.prefix + "[Entity cursor] [Name] " + armorStands.get(0).getName()));
+                copy.append("[Entity cursor] [Name] ").append(armorStands.get(0).getName()).append("\n");
+            }
+        }
 
         if (!copy.toString().isEmpty()) {
-            GuiScreen.setClipboardString(copy.toString());
+            Utils.copyToClipboard(copy.toString());
         }
     }
 

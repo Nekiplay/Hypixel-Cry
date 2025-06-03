@@ -36,10 +36,10 @@ object MovementHelper {
 
     fun canWalkThroughBlockState(state: IBlockState): Boolean? {
         val block = state.block
-        return when {
-            block == Blocks.air -> true
-            block == Blocks.fire || block == Blocks.tripwire || block == Blocks.web || block == Blocks.end_portal || block == Blocks.cocoa || block is BlockSkull || block is BlockTrapDoor -> false
-            block is BlockDoor || block is BlockFenceGate -> {
+        return when (block) {
+            Blocks.air -> true
+            Blocks.fire, Blocks.tripwire, Blocks.web, Blocks.end_portal, Blocks.cocoa, is BlockSkull, is BlockTrapDoor -> false
+            is BlockDoor, is BlockFenceGate -> {
                 // TODO this assumes that all doors in all mods are openable
                 if (block == Blocks.iron_door) {
                     false
@@ -48,9 +48,9 @@ object MovementHelper {
                 }
             }
 
-            block == Blocks.carpet -> null
-            block is BlockSnow -> null
-            block is BlockLiquid -> {
+            Blocks.carpet -> null
+            is BlockSnow -> null
+            is BlockLiquid -> {
                 if (state.getValue(BlockLiquid.LEVEL) != 0) {
                     false
                 } else {
@@ -58,8 +58,8 @@ object MovementHelper {
                 }
             }
 
-            block is BlockCauldron -> false
-            block == Blocks.ladder -> false
+            is BlockCauldron -> false
+            Blocks.ladder -> false
             else -> {
                 try {
                     block.isPassable(null, null)
@@ -125,10 +125,10 @@ object MovementHelper {
 
     fun canWalkThroughBlockStateLader(state: IBlockState): Boolean? {
         val block = state.block
-        return when {
-            block == Blocks.air -> true
-            block == Blocks.fire || block == Blocks.tripwire || block == Blocks.web || block == Blocks.end_portal || block == Blocks.cocoa || block is BlockSkull || block is BlockTrapDoor -> false
-            block is BlockDoor || block is BlockFenceGate -> {
+        return when (block) {
+            Blocks.air -> true
+            Blocks.fire, Blocks.tripwire, Blocks.web, Blocks.end_portal, Blocks.cocoa, is BlockSkull, is BlockTrapDoor -> false
+            is BlockDoor, is BlockFenceGate -> {
                 // TODO this assumes that all doors in all mods are openable
                 if (block == Blocks.iron_door) {
                     false
@@ -137,9 +137,9 @@ object MovementHelper {
                 }
             }
 
-            block == Blocks.carpet -> null
-            block is BlockSnow -> null
-            block is BlockLiquid -> {
+            Blocks.carpet -> null
+            is BlockSnow -> null
+            is BlockLiquid -> {
                 if (state.getValue(BlockLiquid.LEVEL) != 0) {
                     false
                 } else {
@@ -147,8 +147,8 @@ object MovementHelper {
                 }
             }
 
-            block is BlockCauldron -> false
-            block == Blocks.ladder -> true
+            is BlockCauldron -> false
+            Blocks.ladder -> true
             else -> {
                 try {
                     block.isPassable(null, null)

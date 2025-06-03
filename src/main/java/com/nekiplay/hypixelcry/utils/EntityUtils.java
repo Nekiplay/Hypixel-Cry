@@ -7,10 +7,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
+
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class EntityUtils {
     @Nullable
@@ -64,5 +66,36 @@ public class EntityUtils {
             return texture.getValue();
         }
         return null;
+    }
+
+    @Nullable
+    public static List<EntityArmorStand> getArmorStandAboveEntity(Entity targetEntity, float maxDistance, List<String> blackListNames) {
+        if (targetEntity == null) {
+            return null;
+        }
+
+        List<EntityArmorStand> entities = new ArrayList<>();
+
+        World world = mc.theWorld;
+        // Ищем ArmorStand в небольшом кубе над сущностью
+        List<Entity> nearbyEntities = world.getEntitiesWithinAABBExcludingEntity(
+                targetEntity,
+                targetEntity.getEntityBoundingBox()
+                        .expand(0, maxDistance, 0)  // расширяем только по Y (высота)
+        );
+
+        for (Entity entity : nearbyEntities) {
+            if (entity instanceof EntityArmorStand) {
+                EntityArmorStand armorStand = (EntityArmorStand) entity;
+                if (!blackListNames.contains(armorStand.getName())) {
+                    entities.add(armorStand);
+                }
+            }
+        }
+
+        // Сортируем по расстоянию до целевой сущности
+        entities.sort(Comparator.comparingDouble(e -> e.getDistanceSqToEntity(targetEntity)));
+
+        return entities;
     }
 }

@@ -6,12 +6,19 @@ import com.nekiplay.hypixelcry.config.enums.AutoRightClickOpenFeatures;
 import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
+import com.nekiplay.hypixelcry.features.system.RotationHandler;
+import com.nekiplay.hypixelcry.utils.AngleUtils;
+import com.nekiplay.hypixelcry.utils.BlockUtils;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
+import com.nekiplay.hypixelcry.utils.helper.RotationConfiguration;
+import com.nekiplay.hypixelcry.utils.helper.Target;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -23,7 +30,7 @@ import static com.nekiplay.hypixelcry.HypixelCry.mc;
 public class AutoRightClick {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 60, MAX_REMOVALS_PER_TICK = 20;
+    private static final int CHEST_COOLDOWN = 20 * 60, MAX_REMOVALS_PER_TICK = 20;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -46,6 +53,57 @@ public class AutoRightClick {
         });
     }
 
+    public static List<BlockPos> findBlocksNearby(List<Block> blocksToFind, List<BlockPos> blackListed, float radius) {
+        List<BlockPos> foundBlocks = new ArrayList<>();
+
+        // Проверка на null и пустые списки
+        if (mc == null || mc.thePlayer == null || mc.theWorld == null ||
+                blocksToFind == null || blocksToFind.isEmpty()) {
+            return foundBlocks;
+        }
+
+        EntityPlayer player = mc.thePlayer;
+        World world = mc.theWorld;
+        BlockPos playerPos = new BlockPos(player.posX, player.posY, player.posZ);
+        int radiusInt = (int) Math.ceil(radius); // Округляем радиус в большую сторону
+        float radiusSq = radius * radius; // Квадрат радиуса для сравнения расстояний
+
+        // Границы поиска с защитой от выхода за пределы мира
+        int minX = Math.max(playerPos.getX() - radiusInt, -30000000);
+        int maxX = Math.min(playerPos.getX() + radiusInt, 30000000);
+        int minY = Math.max(0, playerPos.getY() - radiusInt);
+        int maxY = Math.min(255, playerPos.getY() + radiusInt);
+        int minZ = Math.max(playerPos.getZ() - radiusInt, -30000000);
+        int maxZ = Math.min(playerPos.getZ() + radiusInt, 30000000);
+
+        // Оптимизация: создаем временный Set для черного списка
+        Set<BlockPos> blackListSet = blackListed != null ? new HashSet<>(blackListed) : Collections.emptySet();
+
+        // Поиск в пределах заданных границ
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                for (int y = maxY; y >= minY; y--) { // Проверяем сверху вниз (более полезно для игроков)
+                    BlockPos checkPos = new BlockPos(x, y, z);
+
+                    // Проверка на черный список
+                    if (blackListSet.contains(checkPos)) {
+                        continue;
+                    }
+
+                    Block block = world.getBlockState(checkPos).getBlock();
+                    if (blocksToFind.contains(block)) {
+                        foundBlocks.add(checkPos);
+                    }
+                }
+            }
+        }
+
+        // Сортировка по расстоянию (используем Comparator.comparing для лучшей производительности)
+        foundBlocks.sort(Comparator.comparingDouble(player::getDistanceSq));
+
+        return foundBlocks;
+    }
+
     private void handleChestOpening() {
         boolean ghostHand = HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.GhostHand);
 
@@ -60,6 +118,23 @@ public class AutoRightClick {
         }
         if (blocks.contains(AutoRightClickBlocks.Skull)) {
             selectedBlocks.add(Blocks.skull);
+        }
+
+        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.AutoLook)) {
+            List<BlockPos> found = findBlocksNearby(selectedBlocks, new ArrayList<>(openedChests.keySet()), mc.playerController.getBlockReachDistance() + 1);
+            if (!found.isEmpty() && !RotationHandler.getInstance().isEnabled()) {
+                List<Vec3> points = BlockUtils.bestPointsOnBestSide(found.get(0), ghostHand ? selectedBlocks : new ArrayList<>());
+                points.sort(Comparator.comparingDouble(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1))));
+                points.removeIf((point) -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1)) > mc.playerController.getBlockReachDistance() * mc.playerController.getBlockReachDistance());
+                if (!points.isEmpty()) {
+                    Vec3 point = points.get(0);
+                    if (ghostHand) {
+                        RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(point), HypixelCry.config.macros.autoRightClick.rotationTime, RotationConfiguration.RotationType.SERVER, null));
+                    } else {
+                        RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(point), HypixelCry.config.macros.autoRightClick.rotationTime, RotationConfiguration.RotationType.CLIENT, null));
+                    }
+                }
+            }
         }
 
         if (ghostHand) {
@@ -81,6 +156,14 @@ public class AutoRightClick {
     private Vec3 getLookEndPos() {
         float distance = mc.playerController.getBlockReachDistance();
         Vec3 look = mc.thePlayer.getLook(1.0f);
+        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.AutoLook)) {
+            RotationHandler rotationHandler = RotationHandler.getInstance();
+            float serverSideYaw = rotationHandler.getServerSideYaw();
+            float serverSidePitch = rotationHandler.getServerSidePitch();
+            if (serverSideYaw != 0 && serverSidePitch != 0) {
+                look = AngleUtils.getVectorForRotation(serverSidePitch, serverSideYaw);
+            }
+        }
         return getEyePosition().addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
     }
 

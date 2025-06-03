@@ -69,6 +69,9 @@ dependencies {
     }
     annotationProcessor("net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5")
 
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
     shadowModImpl("org.notenoughupdates.moulconfig:legacy:3.8.0")
 
     shadowImplementation("it.unimi.dsi:fastutil:8.2.1")

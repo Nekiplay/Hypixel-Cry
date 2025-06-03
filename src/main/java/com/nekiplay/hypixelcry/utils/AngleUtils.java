@@ -1,11 +1,17 @@
 package com.nekiplay.hypixelcry.utils;
 
+import com.nekiplay.hypixelcry.mixins.client.MinecraftAccessor;
+import com.nekiplay.hypixelcry.utils.helper.Angle;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class AngleUtils {
+    private static final double randomAddition = (Math.random() * 0.3 - 0.15);
+
     public static float get360RotationYaw(float yaw) {
         return (yaw % 360 + 360) % 360;
     }
@@ -148,55 +154,47 @@ public class AngleUtils {
         }
     }
 
-//    public static RotationUtils.Rotation getRotation(BlockPos block) {
-//        return getRotation(new Vec3(block.getX() + 0.5, block.getY() + 0.5, block.getZ() + 0.5));
+    public static Angle getRotation(Vec3 to) {
+        return getRotation(mc.thePlayer.getPositionEyes(((MinecraftAccessor) mc).getTimer().renderPartialTicks), to);
+    }
+
+    public static Angle getRotation(Entity to) {
+        return getRotation(mc.thePlayer.getPositionEyes(((MinecraftAccessor) mc).getTimer().renderPartialTicks),
+                to.getPositionVector().addVector(0, Math.min(((to.height * 0.85) + randomAddition), 1.7), 0));
+    }
+
+    public static Angle getRotation(BlockPos pos) {
+        return getRotation(mc.thePlayer.getPositionEyes(((MinecraftAccessor) mc).getTimer().renderPartialTicks), new Vec3(pos).addVector(0.5, 0.5, 0.5));
+    }
+
+    public static Angle getRotation(Vec3 from, BlockPos pos) {
+        return getRotation(from, new Vec3(pos).addVector(0.5, 0.5, 0.5));
+    }
+
+    public static Angle getRotation(Vec3 from, Vec3 to) {
+        double xDiff = to.xCoord - from.xCoord;
+        double yDiff = to.yCoord - from.yCoord;
+        double zDiff = to.zCoord - from.zCoord;
+
+        double dist = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
+
+        float yaw = (float) Math.toDegrees(Math.atan2(zDiff, xDiff)) - 90F;
+        float pitch = (float) -Math.toDegrees(Math.atan2(yDiff, dist));
+
+//    if (randomness) {
+//      yaw += (float) ((Math.random() - 1) * 4);
+//      pitch += (float) ((Math.random() - 1) * 4);
 //    }
-//
-//    public static RotationUtils.Rotation getRotation(Entity entity, boolean randomness) {
-//        AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
-//        double diffX = boundingBox.minX + (boundingBox.maxX - boundingBox.minX) * 0.8 - mc.thePlayer.posX;
-//        double diffY = boundingBox.minY + (boundingBox.maxY - boundingBox.minY) * 0.8 - mc.thePlayer.posY - mc.thePlayer.getEyeHeight() - 0.2;
-//        double diffZ = boundingBox.minZ + (boundingBox.maxZ - boundingBox.minZ) * 0.8 - mc.thePlayer.posZ;
-//        return getRotationTo(diffX, diffY, diffZ, randomness);
-//    }
-//
-//    public static RotationUtils.Rotation getRotation(final Vec3 from, final Vec3 to) {
-//        double diffX = to.xCoord - from.xCoord;
-//        double diffY = to.yCoord - from.yCoord;
-//        double diffZ = to.zCoord - from.zCoord;
-//        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
-//
-//        float pitch = (float) -Math.atan2(dist, diffY);
-//        float yaw = (float) Math.atan2(diffZ, diffX);
-//        pitch = (float) wrapAngleTo180((pitch * 180F / Math.PI + 90) * -1);
-//        yaw = (float) wrapAngleTo180((yaw * 180 / Math.PI) - 90);
-//
-//        return new RotationUtils.Rotation(pitch, yaw);
-//    }
-//
-//    public static RotationUtils.Rotation getRotation(Entity entity) {
-//        return getRotation(entity.getPositionEyes(1), false);
-//    }
-//
-//    public static RotationUtils.Rotation getRotation(Vec3 vec3, boolean randomness) {
-//        double diffX = vec3.xCoord - mc.thePlayer.posX;
-//        double diffY = vec3.yCoord - mc.thePlayer.posY - mc.thePlayer.getEyeHeight();
-//        double diffZ = vec3.zCoord - mc.thePlayer.posZ;
-//        return getRotationTo(diffX, diffY, diffZ, randomness);
-//    }
-//
-//    public static RotationUtils.Rotation getRotation(Vec3 vec3) {
-//        return getRotation(vec3, false);
-//    }
-//
-//    private static RotationUtils.Rotation getRotationTo(double diffX, double diffY, double diffZ, boolean randomness) {
-//        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
-//
-//        float pitch = (float) -Math.atan2(dist, diffY);
-//        float yaw = (float) Math.atan2(diffZ, diffX);
-//        pitch = (float) wrapAngleTo180((pitch * 180F / Math.PI + 90) * -1) + (randomness ? (float) (Math.random() * 6 - 3f) : 0);
-//        yaw = (float) wrapAngleTo180((yaw * 180 / Math.PI) - 90) + (randomness ? (float) (Math.random() * 6 - 3f) : 0);
-//
-//        return new RotationUtils.Rotation(yaw, pitch);
-//    }
+
+        return new Angle(yaw, pitch);
+    }
+
+    public static Angle getNeededChange(Angle startAngle, Angle endAngle) {
+        float yawChange = normalizeAngle(normalizeAngle(endAngle.getYaw()) - normalizeAngle(startAngle.getYaw()));
+        return new Angle(yawChange, endAngle.getPitch() - startAngle.getPitch());
+    }
+
+    public static Angle getPlayerAngle() {
+        return new Angle(get360RotationYaw(), mc.thePlayer.rotationPitch);
+    }
 }

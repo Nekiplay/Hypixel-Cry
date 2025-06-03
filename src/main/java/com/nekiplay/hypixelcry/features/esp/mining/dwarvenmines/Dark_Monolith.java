@@ -8,6 +8,7 @@ import com.nekiplay.hypixelcry.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -98,7 +99,7 @@ public class Dark_Monolith {
             RenderUtils.drawBlockBox(centerPos, color, 1, event.partialTicks);
         }
         if (shouldRenderFeature(ESPFeatures.Text)) {
-            RenderUtils.renderWaypointText("Dark Monolith", centerPos.add(0, 1.3, 0), event.partialTicks, false, color);
+            RenderUtils.renderWaypointText("Monolith", new Vec3(eggPosition.getX() + 0.5, eggPosition.getY() + 1.5, eggPosition.getZ() + 0.5), event.partialTicks, false, color);
         }
         if (shouldRenderFeature(ESPFeatures.Tracer)) {
             RenderUtils.drawTracer(centerPos, color, 1, event.partialTicks);

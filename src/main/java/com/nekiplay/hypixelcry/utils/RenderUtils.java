@@ -1,6 +1,5 @@
 package com.nekiplay.hypixelcry.utils;
 
-import com.nekiplay.hypixelcry.HypixelCry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -22,6 +21,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -31,7 +31,6 @@ public class RenderUtils {
     private static final Map<Integer, Boolean> glCapMap = new HashMap<>();
     private static final ResourceLocation beaconBeam = new ResourceLocation("textures/entity/beacon_beam.png");
     private static final int[] DISPLAY_LISTS_2D = new int[4];
-    private static final Minecraft mc = HypixelCry.mc;
 
     static {
         for (int i = 0; i < DISPLAY_LISTS_2D.length; i++) {
@@ -107,7 +106,7 @@ public class RenderUtils {
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-        double time = Minecraft.getMinecraft().theWorld.getTotalWorldTime() + (double) partialTicks;
+        double time = mc.theWorld.getTotalWorldTime() + (double) partialTicks;
         double d1 = MathHelper.func_181162_h(-time * 0.2D - (double) MathHelper.floor_double(-time * 0.1D));
 
         float r = ((rgb >> 16) & 0xFF) / 255f;
@@ -172,84 +171,111 @@ public class RenderUtils {
             GlStateManager.enableDepth();
         }
     }
-    public static void renderWaypointText(String str, BlockPos loc, float partialTicks, boolean background, Color color) {
+
+    public static void renderWaypointText(String str, BlockPos location, float partialTicks, boolean background, Color color) {
+        renderWaypointText(str, new Vec3(location.getX() + 0.5, location.getY() + 0.5, location.getZ() + 0.5), partialTicks, background, color);
+    }
+
+    public static void renderWaypointText(String str, Vec3 location, float partialTicks, boolean background, Color color) {
         GlStateManager.alphaFunc(516, 0.1F);
 
         GlStateManager.pushMatrix();
 
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity viewer = mc.getRenderViewEntity();
         double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
 
-        double x = loc.getX() + 0.5 - viewerX;
-        double y = loc.getY() - viewerY - viewer.getEyeHeight();
-        double z = loc.getZ() + 0.5 - viewerZ;
+        double x = location.xCoord - viewerX;
+        double y = location.yCoord - viewerY - viewer.getEyeHeight();
+        double z = location.zCoord - viewerZ;
 
         double distSq = x*x + y*y + z*z;
         double dist = Math.sqrt(distSq);
         if(distSq > 144) {
-            x *= 12/dist;
-            y *= 12/dist;
-            z *= 12/dist;
+            x *= 12 / dist;
+            y *= 12 / dist;
+            z *= 12 / dist;
         }
         GlStateManager.translate(x, y, z);
         GlStateManager.translate(0, viewer.getEyeHeight(), 0);
 
         drawNametag(str, background, color);
 
-        GlStateManager.rotate(-Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(Minecraft.getMinecraft().getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
         GlStateManager.translate(0, -0.25f, 0);
-        GlStateManager.rotate(-Minecraft.getMinecraft().getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
 
         GlStateManager.popMatrix();
 
         GlStateManager.disableLighting();
     }
-    public static void drawNametag(String str, boolean background, Color color) {
-        FontRenderer fontrenderer = Minecraft.getMinecraft().fontRendererObj;
-        float f = 1.6F;
-        float f1 = 0.016666668F * f;
+    public static void drawNametag(String text, boolean drawBackground, Color textColor) {
+        FontRenderer fontRenderer = mc.fontRendererObj;
+        float scale = 1.6F;
+        float scaleFactor = 0.016666668F * scale;
+
         GlStateManager.pushMatrix();
-        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(Minecraft.getMinecraft().getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
-        GlStateManager.scale(-f1, -f1, f1);
-        GlStateManager.disableLighting();
-        GlStateManager.depthMask(false);
-        GlStateManager.disableDepth();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        Tessellator tessellator = null;
-        WorldRenderer worldrenderer = null;
-        if (background) {
-            tessellator = Tessellator.getInstance();
-            worldrenderer = tessellator.getWorldRenderer();
+        {
+            // Setup rendering transformations
+            GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+            GlStateManager.scale(-scaleFactor, -scaleFactor, scaleFactor);
+
+            // Configure rendering states
+            GlStateManager.disableLighting();
+            GlStateManager.depthMask(false);
+            GlStateManager.disableDepth();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+
+            int textYOffset = 0;
+            int textWidth = fontRenderer.getStringWidth(text);
+            int halfTextWidth = textWidth / 2;
+
+            // Draw background if enabled
+            if (drawBackground) {
+                drawNametagBackground(halfTextWidth, textYOffset);
+            }
+
+            // Draw text (shadow first, then main text)
+            GlStateManager.enableTexture2D();
+            fontRenderer.drawString(text, -halfTextWidth, textYOffset, 0x21000000); // Shadow color
+            GlStateManager.depthMask(true);
+            fontRenderer.drawString(text, -halfTextWidth, textYOffset, textColor.getRGB());
+
+            // Restore rendering states
+            GlStateManager.enableDepth();
+            GlStateManager.enableBlend();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        int i = 0;
-
-        int j = fontrenderer.getStringWidth(str) / 2;
-        GlStateManager.disableTexture2D();
-        if (worldrenderer != null) {
-            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-            worldrenderer.pos(-j - 1, -1 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos(-j - 1, 8 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos(j + 1, 8 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos(j + 1, -1 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            tessellator.draw();
-        }
-        GlStateManager.enableTexture2D();
-        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
-        GlStateManager.depthMask(true);
-
-        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, color.getRGB());
-
-        GlStateManager.enableDepth();
-        GlStateManager.enableBlend();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
+    }
+
+    private static void drawNametagBackground(int halfTextWidth, int yOffset) {
+        GlStateManager.disableTexture2D();
+
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        {
+            float left = -halfTextWidth - 1;
+            float right = halfTextWidth + 1;
+            float top = -1 + yOffset;
+            float bottom = 8 + yOffset;
+
+            worldRenderer.pos(left, bottom, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            worldRenderer.pos(left, top, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            worldRenderer.pos(right, top, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            worldRenderer.pos(right, bottom, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        }
+        tessellator.draw();
+
+        GlStateManager.enableTexture2D();
     }
     public static int myColor(int r, int g, int b) {
         int argb = 0xFF << 24 | r << 16 | g << 8 | b;
