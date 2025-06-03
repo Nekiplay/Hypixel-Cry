@@ -11,11 +11,10 @@ public class GeneralMiner {
         {
             return true;
         }
-        else if (mc.thePlayer.onGround) {
-            ground_ticks++;
-        }
         else if (!mc.thePlayer.onGround) {
             ground_ticks = 0;
+        } else {
+            ground_ticks++;
         }
         return false;
     }
