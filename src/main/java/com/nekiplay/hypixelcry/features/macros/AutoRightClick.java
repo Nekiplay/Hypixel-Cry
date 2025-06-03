@@ -124,33 +124,45 @@ public class AutoRightClick {
         }
 
         if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.AutoLook)) {
-            List<BlockPos> found = findBlocksNearby(selectedBlocks, new ArrayList<>(openedChests.keySet()), mc.playerController.getBlockReachDistance() + 1);
-            if (!found.isEmpty() && !RotationHandler.getInstance().isEnabled()) {
-                List<Vec3> points = BlockUtils.bestPointsOnBestSide(found.get(0), ghostHand ? selectedBlocks : new ArrayList<>());
-                if (points != null) {
-                    points.removeIf(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1)) >
-                            mc.playerController.getBlockReachDistance() * mc.playerController.getBlockReachDistance());
-                    points.removeIf(point -> {
-                        MovingObjectPosition movingObjectPosition = RaycastUtils.rayTraceToBlocks(
-                                getEyePosition(),
-                                getLookEndPos(point),
-                                ghostHand ? selectedBlocks : new ArrayList<>()
-                        );
-                        return movingObjectPosition == null || movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS;
-                    });
+            float reachDistance = mc.playerController.getBlockReachDistance();
+            float squaredReach = reachDistance * reachDistance;
 
-                    if (!points.isEmpty()) {
-                        Vec3 point = points.get(0);
-                        RotationConfiguration.RotationType rotationType = ghostHand ?
-                                RotationConfiguration.RotationType.SERVER : RotationConfiguration.RotationType.CLIENT;
-                        RotationHandler.getInstance().easeTo(new RotationConfiguration(
-                                new Target(point),
-                                HypixelCry.config.macros.autoRightClick.rotationTime,
-                                rotationType,
-                                null
-                        ));
-                    }
-                }
+            List<BlockPos> foundBlocks = findBlocksNearby(
+                    selectedBlocks,
+                    new ArrayList<>(openedChests.keySet()),
+                    reachDistance + 1
+            );
+
+            if (foundBlocks.isEmpty() || RotationHandler.getInstance().isEnabled()) {
+                return;
+            }
+
+            BlockPos targetBlock = foundBlocks.get(0);
+            List<Block> ghostBlocks = ghostHand ? selectedBlocks : Collections.emptyList();
+            List<Vec3> points = BlockUtils.bestPointsOnBestSide(targetBlock, ghostBlocks);
+
+            if (points == null || points.isEmpty()) {
+                return;
+            }
+
+            // Фильтрация точек
+            Vec3 eyePosition = mc.thePlayer.getPositionEyes(1);
+            points.removeIf(point ->
+                    point.squareDistanceTo(eyePosition) > squaredReach ||
+                            !isPointVisible(point, eyePosition, ghostBlocks)
+            );
+
+            if (!points.isEmpty()) {
+                RotationConfiguration.RotationType rotationType = ghostHand
+                        ? RotationConfiguration.RotationType.SERVER
+                        : RotationConfiguration.RotationType.CLIENT;
+
+                RotationHandler.getInstance().easeTo(new RotationConfiguration(
+                        new Target(points.get(0)),
+                        HypixelCry.config.macros.autoRightClick.rotationTime,
+                        rotationType,
+                        null
+                ));
             }
         }
 
@@ -164,6 +176,15 @@ public class AutoRightClick {
         } else if (isLookingAt(selectedBlocks)) {
             tryOpenChest(mc.objectMouseOver);
         }
+    }
+
+    private boolean isPointVisible(Vec3 point, Vec3 eyePosition, List<Block> ghostBlocks) {
+        MovingObjectPosition result = RaycastUtils.rayTraceToBlocks(
+                eyePosition,
+                getLookEndPos(point),
+                ghostBlocks
+        );
+        return result != null && result.typeOfHit != MovingObjectPosition.MovingObjectType.MISS;
     }
 
     private Vec3 getEyePosition() {
