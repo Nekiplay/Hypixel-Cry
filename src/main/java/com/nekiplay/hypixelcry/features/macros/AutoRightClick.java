@@ -133,36 +133,32 @@ public class AutoRightClick {
                     reachDistance + 1
             );
 
-            if (foundBlocks.isEmpty() || RotationHandler.getInstance().isEnabled()) {
-                return;
-            }
+            if (!foundBlocks.isEmpty() && !RotationHandler.getInstance().isEnabled()) {
+                BlockPos targetBlock = foundBlocks.get(0);
+                List<Block> ghostBlocks = ghostHand ? selectedBlocks : Collections.emptyList();
+                List<Vec3> points = BlockUtils.bestPointsOnBestSide(targetBlock, ghostBlocks);
 
-            BlockPos targetBlock = foundBlocks.get(0);
-            List<Block> ghostBlocks = ghostHand ? selectedBlocks : Collections.emptyList();
-            List<Vec3> points = BlockUtils.bestPointsOnBestSide(targetBlock, ghostBlocks);
+                if (points != null && !points.isEmpty()) {
+                    // Фильтрация точек
+                    Vec3 eyePosition = mc.thePlayer.getPositionEyes(1);
+                    points.removeIf(point ->
+                            point.squareDistanceTo(eyePosition) > squaredReach ||
+                                    !isPointVisible(point, eyePosition, ghostBlocks)
+                    );
 
-            if (points == null || points.isEmpty()) {
-                return;
-            }
+                    if (!points.isEmpty()) {
+                        RotationConfiguration.RotationType rotationType = ghostHand
+                                ? RotationConfiguration.RotationType.SERVER
+                                : RotationConfiguration.RotationType.CLIENT;
 
-            // Фильтрация точек
-            Vec3 eyePosition = mc.thePlayer.getPositionEyes(1);
-            points.removeIf(point ->
-                    point.squareDistanceTo(eyePosition) > squaredReach ||
-                            !isPointVisible(point, eyePosition, ghostBlocks)
-            );
-
-            if (!points.isEmpty()) {
-                RotationConfiguration.RotationType rotationType = ghostHand
-                        ? RotationConfiguration.RotationType.SERVER
-                        : RotationConfiguration.RotationType.CLIENT;
-
-                RotationHandler.getInstance().easeTo(new RotationConfiguration(
-                        new Target(points.get(0)),
-                        HypixelCry.config.macros.autoRightClick.rotationTime,
-                        rotationType,
-                        null
-                ));
+                        RotationHandler.getInstance().easeTo(new RotationConfiguration(
+                                new Target(points.get(0)),
+                                HypixelCry.config.macros.autoRightClick.rotationTime,
+                                rotationType,
+                                null
+                        ));
+                    }
+                }
             }
         }
 
