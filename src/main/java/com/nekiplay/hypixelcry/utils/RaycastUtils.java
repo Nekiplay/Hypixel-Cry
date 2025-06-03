@@ -9,8 +9,19 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.utils.PlayerUtils.getLookEndPos;
 
 public class RaycastUtils {
+
+    private boolean isPointVisible(Vec3 point, Vec3 eyePosition, float distance,  List<Block> ghostBlocks) {
+        MovingObjectPosition result = RaycastUtils.rayTraceToBlocks(
+                eyePosition,
+                getLookEndPos(point, distance),
+                ghostBlocks
+        );
+        return result != null && result.typeOfHit != MovingObjectPosition.MovingObjectType.MISS;
+    }
+
     public static MovingObjectPosition rayTraceToBlocks(Vec3 startVec, Vec3 endVec, List<Block> blocks) {
         return fastRayTrace(startVec, endVec, blocks);
     }

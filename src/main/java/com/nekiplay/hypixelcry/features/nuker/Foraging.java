@@ -2,10 +2,8 @@ package com.nekiplay.hypixelcry.features.nuker;
 
 import com.nekiplay.hypixelcry.HypixelCry;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,6 +29,8 @@ public class Foraging extends GeneralNuker {
 
     public Foraging() {
         instantMiningChecker.addAllowedItem(ItemAxe.class);
+        addAllowedBlock(Blocks.log);
+        addAllowedBlock(Blocks.log2);
     }
 
     @Override
@@ -50,29 +50,34 @@ public class Foraging extends GeneralNuker {
         if (instantMiningChecker.AllowInstantMining()) {
             handleForaging();
         }
+        else {
+            shovelTick = 0;
+        }
+
     }
 
     private void handleForaging() {
         setDistance(5.4, 7.5);
 
-        if (instantMiningChecker.AllowInstantMining()) {
-            if (shovelTick > SHOVEL_COOLDOWN) {
-                processBoostAlgorithm();
-            }
-            shovelTick++;
-        } else {
-            shovelTick = 0;
+        if (shovelTick > SHOVEL_COOLDOWN) {
+            processBoostAlgorithm();
         }
+        shovelTick++;
     }
 
     private void processBoostAlgorithm() {
+        BlockPos pos = getClosestBlock(getBlocks());
         if (boostTicks > BOOST_THRESHOLD) {
             for (int i = 0; i < BOOST_MULTIPLIER; i++) {
-                breakBlock(getClosestBlock(getBlocks()));
+                if (breakBlock(getClosestBlock(getBlocks()))) {
+                    mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
+                }
             }
             boostTicks = 0;
         } else {
-            breakBlock(getClosestBlock(getBlocks()));
+            if (breakBlock(getClosestBlock(getBlocks()))) {
+                mc.theWorld.setBlockState(pos, Blocks.air.getDefaultState());
+            }
             boostTicks++;
         }
     }

@@ -27,6 +27,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.*;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
+import static com.nekiplay.hypixelcry.utils.PlayerUtils.getEyePosition;
+import static com.nekiplay.hypixelcry.utils.PlayerUtils.getLookEndPos;
 
 public class AutoRightClick {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
@@ -165,7 +167,7 @@ public class AutoRightClick {
         if (ghostHand) {
             MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlocks(
                     getEyePosition(),
-                    getLookEndPos(),
+                    getLookEndPos(mc.playerController.getBlockReachDistance(), true),
                     selectedBlocks
             );
             tryOpenChest(mouseOver);
@@ -177,35 +179,10 @@ public class AutoRightClick {
     private boolean isPointVisible(Vec3 point, Vec3 eyePosition, List<Block> ghostBlocks) {
         MovingObjectPosition result = RaycastUtils.rayTraceToBlocks(
                 eyePosition,
-                getLookEndPos(point),
+                getLookEndPos(point, mc.playerController.getBlockReachDistance()),
                 ghostBlocks
         );
         return result != null && result.typeOfHit != MovingObjectPosition.MovingObjectType.MISS;
-    }
-
-    private Vec3 getEyePosition() {
-        return new Vec3(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
-    }
-
-    private Vec3 getLookEndPos(Vec3 target) {
-        float distance = mc.playerController.getBlockReachDistance();
-        Angle angle = AngleUtils.getRotation(target);
-        Vec3 look = AngleUtils.getVectorForRotation(angle.pitch, angle.yaw);
-        return getEyePosition().addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
-    }
-
-    private Vec3 getLookEndPos() {
-        float distance = mc.playerController.getBlockReachDistance();
-        Vec3 look = mc.thePlayer.getLook(1.0f);
-        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.AutoLook)) {
-            RotationHandler rotationHandler = RotationHandler.getInstance();
-            float serverSideYaw = rotationHandler.getServerSideYaw();
-            float serverSidePitch = rotationHandler.getServerSidePitch();
-            if (serverSideYaw != 0 || serverSidePitch != 0) {
-                look = AngleUtils.getVectorForRotation(serverSidePitch, serverSideYaw);
-            }
-        }
-        return getEyePosition().addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
     }
 
     private boolean isLookingAt(List<Block> blocks) {
