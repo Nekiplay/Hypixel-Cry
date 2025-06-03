@@ -34,6 +34,7 @@ public class IslandLocations {
                         "Wilderness",
                         "Unincorporated",
                         "Museum",
+                        "{username}",
                         "{username}'s Museum",
                         "{username}'s Atrium",
                         "{username}'s Weapons Win",
@@ -227,16 +228,12 @@ public class IslandLocations {
      */
     public static boolean isLocationInIsland(String location, IslandType islandType, String playerName) {
         if (location == null) return false;
-
-        String cleanedLocation = location.replaceAll("[^a-zA-Z\\s']", "").trim();
-
         // Получаем локации острова с заменой {username}
         List<String> islandLocations = getLocationsForIsland(islandType, playerName);
 
         // Сравниваем с очищенными версиями локаций (без учёта регистра)
         for (String islandLoc : islandLocations) {
-            String cleanedIslandLoc = islandLoc.replaceAll("[^a-zA-Z\\s']", "").trim();
-            if (cleanedIslandLoc.equalsIgnoreCase(cleanedLocation)) {
+            if (islandLoc.equalsIgnoreCase(location)) {
                 return true;
             }
         }

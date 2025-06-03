@@ -24,11 +24,12 @@ public class IslandTypeChangeChecker {
         if (event.phase == TickEvent.Phase.START) return;
 
         String zone = ApecUtils.removeAllCodes(HypixelCry.dataExtractor.getScoreBoardData().Zone);
+        String cleanedZone = zone.replaceAll("[^a-zA-Z\\s']", "").trim();
         IslandType current = IslandType.current();
 
         if (current != IslandType.Unknown && lastDetected != current) {
             if (HypixelCry.config.misc.debug.enabled && mc.thePlayer != null) {
-                mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Location changed from: " + lastDetected + " to: " + current + ", zone: " + zone));
+                mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Location changed from: " + lastDetected + " to: " + current + ", zone: " + cleanedZone));
             }
             IslandTypeChangeEvent islandTypeChangeEvent = new IslandTypeChangeEvent(lastDetected, current);
             lastDetected = current;
@@ -36,7 +37,7 @@ public class IslandTypeChangeChecker {
         }
         else if (lastDetected != current) {
             if (HypixelCry.config.misc.debug.enabled && mc.thePlayer != null) {
-                mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Location changed from: " + lastDetected + " to: " + current + ", zone: " + zone));
+                mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Location changed from: " + lastDetected + " to: " + current + ", zone: " + cleanedZone));
             }
             lastDetected = current;
         }

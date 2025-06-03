@@ -46,7 +46,8 @@ public enum IslandType {
     }
 
     public static IslandType getByZone(String zone) {
-        return IslandLocations.getIslandByLocation(zone, mc.thePlayer != null ? mc.thePlayer.getName() : "");
+        String cleanedZone = zone.replaceAll("[^a-zA-Z\\s']", "").trim();
+        return IslandLocations.getIslandByLocation(cleanedZone, mc.thePlayer != null ? mc.thePlayer.getName() : "");
     }
 
     public static IslandType current() {

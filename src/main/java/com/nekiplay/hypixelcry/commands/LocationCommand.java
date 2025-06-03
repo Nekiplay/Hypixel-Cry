@@ -3,6 +3,7 @@ package com.nekiplay.hypixelcry.commands;
 import com.nekiplay.hypixelcry.data.island.IslandType;
 import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.utils.ApecUtils;
+import com.nekiplay.hypixelcry.utils.Utils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -38,7 +39,7 @@ public class LocationCommand implements ICommand {
         String cleanedLocation = zone.replaceAll("[^a-zA-Z\\s']", "").trim();
         mc.thePlayer.addChatMessage(new ChatComponentText( HypixelCry.prefix + "Current location: " + IslandType.current()));
         mc.thePlayer.addChatMessage(new ChatComponentText( HypixelCry.prefix + "Current zone: " + cleanedLocation));
-        GuiScreen.setClipboardString(zone);
+        Utils.copyToClipboard(cleanedLocation);
     }
 
     @Override
