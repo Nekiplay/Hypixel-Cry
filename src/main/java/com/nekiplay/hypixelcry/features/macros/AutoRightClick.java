@@ -126,6 +126,11 @@ public class AutoRightClick {
                 List<Vec3> points = BlockUtils.bestPointsOnBestSide(found.get(0), ghostHand ? selectedBlocks : new ArrayList<>());
                 points.sort(Comparator.comparingDouble(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1))));
                 points.removeIf((point) -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1)) > mc.playerController.getBlockReachDistance() * mc.playerController.getBlockReachDistance());
+                points.removeIf((point) -> { MovingObjectPosition movingObjectPosition = RaycastUtils.rayTraceToBlocks(
+                        getEyePosition(),
+                        point,
+                        ghostHand ? selectedBlocks : new ArrayList<>()
+                ); return movingObjectPosition == null || movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS; });
                 if (!points.isEmpty()) {
                     Vec3 point = points.get(0);
                     if (ghostHand) {
