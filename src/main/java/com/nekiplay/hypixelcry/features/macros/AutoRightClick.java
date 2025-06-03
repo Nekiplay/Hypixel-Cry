@@ -130,14 +130,14 @@ public class AutoRightClick {
                 if (points != null) {
                     points.removeIf(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1)) >
                             mc.playerController.getBlockReachDistance() * mc.playerController.getBlockReachDistance());
-                    //points.removeIf(point -> {
-                    //    MovingObjectPosition movingObjectPosition = RaycastUtils.rayTraceToBlocks(
-                    //            getEyePosition(),
-                    //            getLookEndPos(point),
-                    //            ghostHand ? selectedBlocks : new ArrayList<>()
-                    //    );
-                    //    return movingObjectPosition == null || movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS;
-                    //});
+                    points.removeIf(point -> {
+                        MovingObjectPosition movingObjectPosition = RaycastUtils.rayTraceToBlocks(
+                                getEyePosition(),
+                                getLookEndPos(point),
+                                ghostHand ? selectedBlocks : new ArrayList<>()
+                        );
+                        return movingObjectPosition == null || movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS;
+                    });
 
                     if (!points.isEmpty()) {
                         Vec3 point = points.get(0);
@@ -204,13 +204,8 @@ public class AutoRightClick {
         }
 
         BlockPos pos = mouseOver.getBlockPos();
-        Block block = mc.theWorld.getBlockState(pos).getBlock();
-
-        if (block == Blocks.chest || block == Blocks.trapped_chest ||
-                block == Blocks.lever || block == Blocks.skull) {
-            simulateHumanClick(mouseOver);
-            openedChests.put(pos, 0);
-        }
+        simulateHumanClick(mouseOver);
+        openedChests.put(pos, 0);
     }
 
     private void simulateHumanClick(MovingObjectPosition mop) {
