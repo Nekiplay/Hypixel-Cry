@@ -91,12 +91,6 @@ public class AutoRightClick {
                         continue;
                     }
 
-                    // Add distance check before getting block state
-                    double distSq = player.getDistanceSq(checkPos);
-                    if (distSq > radiusSq) {
-                        continue;
-                    }
-
                     Block block = world.getBlockState(checkPos).getBlock();
                     if (blocksToFind.contains(block)) {
                         foundBlocks.add(checkPos);
@@ -105,7 +99,7 @@ public class AutoRightClick {
             }
         }
 
-        foundBlocks.sort(Comparator.comparingDouble(pos -> player.getDistanceSq(pos)));
+        foundBlocks.sort(Comparator.comparingDouble(player::getDistanceSq));
         return foundBlocks;
     }
 
