@@ -18,110 +18,131 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class Foraging extends GeneralNuker {
-    private int shovel_tick = 0;
-    private static BlockPos blockPos;
-    public boolean work = false;
-    private static final ArrayList<BlockPos> broken = new ArrayList<>();
+    private static final int MAX_BROKEN_BLOCKS = 20;
+    private static final int BOOST_THRESHOLD = 13;
+    private static final int BOOST_MULTIPLIER = 4;
+    private static final int SHOVEL_COOLDOWN = 4;
+
+    private int shovelTick = 0;
     private int boostTicks = 0;
+    private boolean isWorking = false;
+
+    private static BlockPos currentBlockPos;
+    private final Map<BlockPos, Integer> brokenBlocks = new LinkedHashMap<>();
     private final GeneralMiner generalMiner = new GeneralMiner();
+
     @Override
     public boolean isBlockToBreak(IBlockState state, BlockPos pos) {
-        if (!broken.contains(pos)) {
-            if (state.getBlock() == Blocks.log || state.getBlock() == Blocks.log2) {
-                return true;
-            }
-        }
-        return false;
+        return !brokenBlocks.containsKey(pos) &&
+                (state.getBlock() == Blocks.log || state.getBlock() == Blocks.log2);
     }
+
     @SubscribeEvent
-    public void TickEvent(TickEvent.ClientTickEvent clientTickEvent) {
-        if (work && mc.thePlayer != null) {
-            if (broken.size() > 20) {
-                broken.clear();
-            }
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        cleanUpOldBrokenBlocks();
 
-            if (generalMiner.AllowInstantMining()) {
-                InventoryPlayer inventory = mc.thePlayer.inventory;
-                ItemStack currentItem = inventory.getCurrentItem();
+        if (!isWorking || mc.thePlayer == null) {
+            return;
+        }
 
-                SetDistance(5.4f, 7.5f);
-
-                if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
-                    BoostAlgorithm();
-                }
-
-                if (currentItem != null && currentItem.getItem() instanceof ItemAxe) {
-                    shovel_tick++;
-                } else {
-                    shovel_tick = 0;
-                }
-            }
+        if (generalMiner.AllowInstantMining()) {
+            handleForaging();
         }
     }
-    private void BoostAlgorithm() {
-        if (boostTicks > 13) {
-            for (int i = 0; i < 4; i++) {
-                BlockPos near = getClosestBlock(getBlocks());
-                breakSand(near);
+
+    private void handleForaging() {
+        InventoryPlayer inventory = mc.thePlayer.inventory;
+        ItemStack currentItem = inventory.getCurrentItem();
+
+        setDistance(5.4, 7.5);
+
+        if (currentItem != null && currentItem.getItem() instanceof ItemAxe) {
+            if (shovelTick > SHOVEL_COOLDOWN) {
+                processBoostAlgorithm();
+            }
+            shovelTick++;
+        } else {
+            shovelTick = 0;
+        }
+    }
+
+    private void processBoostAlgorithm() {
+        if (boostTicks > BOOST_THRESHOLD) {
+            for (int i = 0; i < BOOST_MULTIPLIER; i++) {
+                breakBlock(getClosestBlock(getBlocks()));
             }
             boostTicks = 0;
         } else {
-            BlockPos near = getClosestBlock(getBlocks());
-            breakSand(near);
+            breakBlock(getClosestBlock(getBlocks()));
             boostTicks++;
         }
     }
 
-    private void breakSand(BlockPos pos) {
-        blockPos = pos;
-        if (pos != null) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.DOWN));
-            mc.thePlayer.swingItem();
-
-            broken.add(pos);
+    private void cleanUpOldBrokenBlocks() {
+        Iterator<Map.Entry<BlockPos, Integer>> iterator = brokenBlocks.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<BlockPos, Integer> entry = iterator.next();
+            if (entry.getValue() >= 29) {
+                iterator.remove();
+            } else {
+                entry.setValue(entry.getValue() + 20);
+            }
         }
     }
 
-    private boolean isBadLog(BlockPos pos) {
-        return false;
-    }
-    private void enable() {
-        if (!work) {
-            work = true;
-            broken.clear();
-            mc.thePlayer.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.GREEN + "Foraging nuker enabled"));
-        }
-        else {
-            work = false;
-            blockPos = null;
-            mc.thePlayer.addChatMessage(new ChatComponentText(HypixelCry.prefix + EnumChatFormatting.RED + "Foraging nuker disabled"));
-        }
-    }
-    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (!Keyboard.getEventKeyState() || Keyboard.getEventKey() < 0) {
+    private void breakBlock(BlockPos pos) {
+        if (pos == null) {
             return;
         }
 
-        if (Keyboard.getEventKey() == HypixelCry.config.nukers.foraging.activationBind) {
-            enable();
+        currentBlockPos = pos;
+        mc.thePlayer.sendQueue.addToSendQueue(
+                new C07PacketPlayerDigging(
+                        C07PacketPlayerDigging.Action.START_DESTROY_BLOCK,
+                        pos,
+                        EnumFacing.DOWN
+                )
+        );
+        mc.thePlayer.swingItem();
+        brokenBlocks.put(pos, 0);
+    }
+
+    public void toggle() {
+        isWorking = !isWorking;
+
+        if (isWorking) {
+            brokenBlocks.clear();
+            sendMessage(EnumChatFormatting.GREEN + "Foraging nuker enabled");
+        } else {
+            currentBlockPos = null;
+            sendMessage(EnumChatFormatting.RED + "Foraging nuker disabled");
+        }
+    }
+
+    private void sendMessage(String message) {
+        mc.thePlayer.addChatMessage(
+                new ChatComponentText(HypixelCry.prefix + message)
+        );
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (Keyboard.getEventKeyState() &&
+                Keyboard.getEventKey() == HypixelCry.config.nukers.foraging.activationBind) {
+            toggle();
         }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onMouseInput(InputEvent.MouseInputEvent event) {
-        if (!Mouse.getEventButtonState()) {
-            return;
-        }
-
-        int button = Mouse.getEventButton() - 100;
-        if (button == HypixelCry.config.nukers.foraging.activationBind) {
-            enable();
+        if (Mouse.getEventButtonState() &&
+                Mouse.getEventButton() - 100 == HypixelCry.config.nukers.foraging.activationBind) {
+            toggle();
         }
     }
 }

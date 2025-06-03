@@ -7,50 +7,68 @@ import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class GeneralNuker {
+    private double horizontalDistance = 5.4;
+    private double verticalDistance = 7.5;
+
     public boolean isBlockToBreak(IBlockState blockState, BlockPos pos) {
         return false;
     }
 
-    private double horizontal_distance = 5.4;
-    private double vertical_distance = 7.5;
-    public void SetDistance(double horizontal, double vertical) {
-        horizontal_distance = horizontal;
-        vertical_distance = vertical;
-    }
-    public ArrayList<BlockPos> getBlocks() {
-        ArrayList<BlockPos> temp = new ArrayList<>();
-        double r = horizontal_distance + 1;
-        BlockPos playerPos = mc.thePlayer.getPosition();
-        playerPos = playerPos.add(0, 0, 0);
-        Iterable<BlockPos> blocks = BlockPos.getAllInBox(playerPos.add(r, vertical_distance + 1, r), playerPos.subtract(new Vec3i(r, vertical_distance + 1, r)));
-        for (BlockPos blockPos : blocks) {
-            IBlockState block = mc.theWorld.getBlockState(blockPos);
-            if (block.getBlock() != Blocks.air && isBlockToBreak(block, blockPos)) {
-                temp.add(blockPos);
-            }
-        }
-        return temp;
+    public void setDistance(double horizontal, double vertical) {
+        this.horizontalDistance = horizontal;
+        this.verticalDistance = vertical;
     }
 
-    public BlockPos getClosestBlock(ArrayList<BlockPos> blocks) {
+    public List<BlockPos> getBlocks() {
+        List<BlockPos> blocks = new ArrayList<>();
+        double radius = horizontalDistance + 1;
+        BlockPos playerPos = mc.thePlayer.getPosition();
+
+        Iterable<BlockPos> area = BlockPos.getAllInBox(
+                playerPos.add(radius, verticalDistance + 1, radius),
+                playerPos.subtract(new Vec3i(radius, verticalDistance + 1, radius))
+        );
+
+        for (BlockPos blockPos : area) {
+            IBlockState block = mc.theWorld.getBlockState(blockPos);
+            if (block.getBlock() != Blocks.air && isBlockToBreak(block, blockPos)) {
+                blocks.add(blockPos);
+            }
+        }
+
+        return blocks;
+    }
+
+    public BlockPos getClosestBlock(List<BlockPos> blocks) {
+        if (blocks == null || blocks.isEmpty()) {
+            return null;
+        }
+
         Vec3 playerPosition = mc.thePlayer.getPositionVector();
         double minDistance = Double.MAX_VALUE;
         BlockPos closestBlock = null;
 
         for (BlockPos block : blocks) {
-            double distance = block.distanceSq(playerPosition.xCoord, playerPosition.yCoord, playerPosition.zCoord);
+            double distance = block.distanceSq(
+                    playerPosition.xCoord,
+                    playerPosition.yCoord,
+                    playerPosition.zCoord
+            );
 
-            if (distance < minDistance && distance < horizontal_distance * horizontal_distance) {
+            if (distance < minDistance && distance < horizontalDistance * horizontalDistance) {
                 closestBlock = block;
                 minDistance = distance;
             }
         }
 
-        if (closestBlock == null || closestBlock.getY() > playerPosition.yCoord + vertical_distance || closestBlock.getY() < playerPosition.yCoord - vertical_distance) {
+        if (closestBlock == null ||
+                closestBlock.getY() > playerPosition.yCoord + verticalDistance ||
+                closestBlock.getY() < playerPosition.yCoord - verticalDistance) {
             return null;
         }
 
