@@ -215,7 +215,7 @@ public class BlockUtils {
 
         if (side != null) {
             float[] it = BLOCK_SIDES.get(side);
-            for (int i = 0; i < 80; i++) {
+            for (int i = 0; i < 20; i++) {
                 float x = it[0];
                 float y = it[1];
                 float z = it[2];
@@ -233,7 +233,7 @@ public class BlockUtils {
             }
         } else {
             for (float[] bside : BLOCK_SIDES.values()) {
-                for (int i = 0; i < 80; i++) {
+                for (int i = 0; i < 20; i++) {
                     float x = bside[0];
                     float y = bside[1];
                     float z = bside[2];

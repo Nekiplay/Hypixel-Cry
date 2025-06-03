@@ -30,7 +30,8 @@ import static com.nekiplay.hypixelcry.HypixelCry.mc;
 public class AutoRightClick {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 20 * 60, MAX_REMOVALS_PER_TICK = 20;
+    private static final int CHEST_COOLDOWN = 20 * 60;
+    private static final int MAX_REMOVALS_PER_TICK = 20;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -42,21 +43,25 @@ public class AutoRightClick {
 
     private boolean shouldSkipTick(TickEvent.ClientTickEvent event) {
         return event.phase == TickEvent.Phase.START || mc.theWorld == null ||
-                mc.thePlayer == null || !HypixelCry.config.macros.autoRightClick.enabled || !HypixelCry.config.macros.autoRightClick.allowedIslands.contains(IslandTypeChangeChecker.getLastDetected());
+                mc.thePlayer == null || !HypixelCry.config.macros.autoRightClick.enabled ||
+                !HypixelCry.config.macros.autoRightClick.allowedIslands.contains(IslandTypeChangeChecker.getLastDetected());
     }
 
     private void cleanUpOldChests() {
-        openedChests.entrySet().removeIf(entry -> {
-            if (entry.getValue() >= CHEST_COOLDOWN) return true;
-            entry.setValue(entry.getValue() + MAX_REMOVALS_PER_TICK);
-            return false;
-        });
+        Iterator<Map.Entry<BlockPos, Integer>> iterator = openedChests.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<BlockPos, Integer> entry = iterator.next();
+            if (entry.getValue() >= CHEST_COOLDOWN) {
+                iterator.remove();
+            } else {
+                entry.setValue(entry.getValue() + MAX_REMOVALS_PER_TICK);
+            }
+        }
     }
 
     public static List<BlockPos> findBlocksNearby(List<Block> blocksToFind, List<BlockPos> blackListed, float radius) {
         List<BlockPos> foundBlocks = new ArrayList<>();
 
-        // Проверка на null и пустые списки
         if (mc == null || mc.thePlayer == null || mc.theWorld == null ||
                 blocksToFind == null || blocksToFind.isEmpty()) {
             return foundBlocks;
@@ -65,10 +70,9 @@ public class AutoRightClick {
         EntityPlayer player = mc.thePlayer;
         World world = mc.theWorld;
         BlockPos playerPos = new BlockPos(player.posX, player.posY, player.posZ);
-        int radiusInt = (int) Math.ceil(radius); // Округляем радиус в большую сторону
-        float radiusSq = radius * radius; // Квадрат радиуса для сравнения расстояний
+        int radiusInt = (int) Math.ceil(radius);
+        float radiusSq = radius * radius;
 
-        // Границы поиска с защитой от выхода за пределы мира
         int minX = Math.max(playerPos.getX() - radiusInt, -30000000);
         int maxX = Math.min(playerPos.getX() + radiusInt, 30000000);
         int minY = Math.max(0, playerPos.getY() - radiusInt);
@@ -76,17 +80,20 @@ public class AutoRightClick {
         int minZ = Math.max(playerPos.getZ() - radiusInt, -30000000);
         int maxZ = Math.min(playerPos.getZ() + radiusInt, 30000000);
 
-        // Оптимизация: создаем временный Set для черного списка
         Set<BlockPos> blackListSet = blackListed != null ? new HashSet<>(blackListed) : Collections.emptySet();
 
-        // Поиск в пределах заданных границ
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
-                for (int y = maxY; y >= minY; y--) { // Проверяем сверху вниз (более полезно для игроков)
+                for (int y = maxY; y >= minY; y--) {
                     BlockPos checkPos = new BlockPos(x, y, z);
 
-                    // Проверка на черный список
                     if (blackListSet.contains(checkPos)) {
+                        continue;
+                    }
+
+                    // Add distance check before getting block state
+                    double distSq = player.getDistanceSq(checkPos);
+                    if (distSq > radiusSq) {
                         continue;
                     }
 
@@ -98,9 +105,7 @@ public class AutoRightClick {
             }
         }
 
-        // Сортировка по расстоянию (используем Comparator.comparing для лучшей производительности)
-        foundBlocks.sort(Comparator.comparingDouble(player::getDistanceSq));
-
+        foundBlocks.sort(Comparator.comparingDouble(pos -> player.getDistanceSq(pos)));
         return foundBlocks;
     }
 
@@ -120,23 +125,28 @@ public class AutoRightClick {
             selectedBlocks.add(Blocks.skull);
         }
 
+        if (selectedBlocks.isEmpty()) {
+            return;
+        }
+
         if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.AutoLook)) {
-            List<BlockPos> found = findBlocksNearby(selectedBlocks, new ArrayList<>(openedChests.keySet()), mc.playerController.getBlockReachDistance() + 2);
+            List<BlockPos> found = findBlocksNearby(selectedBlocks, new ArrayList<>(openedChests.keySet()), mc.playerController.getBlockReachDistance() + 1);
             if (!found.isEmpty() && !RotationHandler.getInstance().isEnabled()) {
                 List<Vec3> points = BlockUtils.bestPointsOnBestSide(found.get(0), ghostHand ? selectedBlocks : new ArrayList<>());
-                points.sort(Comparator.comparingDouble(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1))));
-                points.removeIf((point) -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1)) > mc.playerController.getBlockReachDistance() * mc.playerController.getBlockReachDistance());
-                points.removeIf((point) -> { MovingObjectPosition movingObjectPosition = RaycastUtils.rayTraceToBlocks(
-                        getEyePosition(),
-                        point,
-                        ghostHand ? selectedBlocks : new ArrayList<>()
-                ); return movingObjectPosition == null || movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS; });
-                if (!points.isEmpty()) {
-                    Vec3 point = points.get(0);
-                    if (ghostHand) {
-                        RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(point), HypixelCry.config.macros.autoRightClick.rotationTime, RotationConfiguration.RotationType.SERVER, null));
-                    } else {
-                        RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(point), HypixelCry.config.macros.autoRightClick.rotationTime, RotationConfiguration.RotationType.CLIENT, null));
+                if (points != null) {
+                    points.removeIf(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1)) >
+                            mc.playerController.getBlockReachDistance() * mc.playerController.getBlockReachDistance());
+
+                    if (!points.isEmpty()) {
+                        Vec3 point = points.get(0);
+                        RotationConfiguration.RotationType rotationType = ghostHand ?
+                                RotationConfiguration.RotationType.SERVER : RotationConfiguration.RotationType.CLIENT;
+                        RotationHandler.getInstance().easeTo(new RotationConfiguration(
+                                new Target(point),
+                                HypixelCry.config.macros.autoRightClick.rotationTime,
+                                rotationType,
+                                null
+                        ));
                     }
                 }
             }
@@ -165,7 +175,7 @@ public class AutoRightClick {
             RotationHandler rotationHandler = RotationHandler.getInstance();
             float serverSideYaw = rotationHandler.getServerSideYaw();
             float serverSidePitch = rotationHandler.getServerSidePitch();
-            if (serverSideYaw != 0 && serverSidePitch != 0) {
+            if (serverSideYaw != 0 || serverSidePitch != 0) {
                 look = AngleUtils.getVectorForRotation(serverSidePitch, serverSideYaw);
             }
         }
@@ -180,18 +190,33 @@ public class AutoRightClick {
 
     private void tryOpenChest(MovingObjectPosition mouseOver) {
         if (mouseOver == null || mouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK ||
-                openedChests.containsKey(mouseOver.getBlockPos())) return;
-        simulateHumanClick(mouseOver);
-        openedChests.put(mouseOver.getBlockPos(), 0);
+                openedChests.containsKey(mouseOver.getBlockPos())) {
+            return;
+        }
+
+        BlockPos pos = mouseOver.getBlockPos();
+        Block block = mc.theWorld.getBlockState(pos).getBlock();
+
+        if (block == Blocks.chest || block == Blocks.trapped_chest ||
+                block == Blocks.lever || block == Blocks.skull) {
+            simulateHumanClick(mouseOver);
+            openedChests.put(pos, 0);
+        }
     }
 
     private void simulateHumanClick(MovingObjectPosition mop) {
+        if (mop == null || mop.getBlockPos() == null) return;
+
         mc.playerController.onPlayerRightClick(
-                mc.thePlayer, mc.theWorld,
+                mc.thePlayer,
+                mc.theWorld,
                 mc.thePlayer.inventory.getCurrentItem(),
-                mop.getBlockPos(), mop.sideHit, mop.hitVec
+                mop.getBlockPos(),
+                mop.sideHit,
+                mop.hitVec
         );
         mc.thePlayer.swingItem();
+
         if (!shouldSkipAir()) {
             mc.theWorld.setBlockState(mop.getBlockPos(), Blocks.air.getDefaultState());
         }
@@ -212,6 +237,8 @@ public class AutoRightClick {
 
     public boolean shouldSkipAir() {
         IslandType islandType = IslandTypeChangeChecker.getLastDetected();
-        return !HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air) || islandType.equals(IslandType.Catacombs) || islandType.equals(IslandType.Private_Island);
+        return !HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air) ||
+                islandType == IslandType.Catacombs ||
+                islandType == IslandType.Private_Island;
     }
 }
