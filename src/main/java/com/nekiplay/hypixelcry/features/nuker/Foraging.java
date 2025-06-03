@@ -87,7 +87,7 @@ public class Foraging extends GeneralNuker {
         Iterator<Map.Entry<BlockPos, Integer>> iterator = brokenBlocks.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<BlockPos, Integer> entry = iterator.next();
-            if (entry.getValue() >= 29) {
+            if (entry.getValue() >= 20) {
                 iterator.remove();
             } else {
                 entry.setValue(entry.getValue() + 20);
