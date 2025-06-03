@@ -34,5 +34,6 @@ jobs:
             ## 👏 Contributors Hall of Fame
             Special thanks to our amazing contributors who made this release possible:
             - **@Nekiplay** - Core improvements and feature implementations
+            - **@KreedMan** - Features tester
           files: |
             ./build/libs/*.jar
