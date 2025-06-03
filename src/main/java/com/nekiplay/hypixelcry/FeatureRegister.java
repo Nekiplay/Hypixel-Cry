@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry;
 
+import com.nekiplay.hypixelcry.features.nuker.Foraging;
 import com.nekiplay.hypixelcry.features.system.IslandTypeChangeChecker;
 import com.nekiplay.hypixelcry.features.esp.farming.Glowing_Mushroom;
 import com.nekiplay.hypixelcry.features.esp.farming.Treasure_Hunter;
@@ -33,6 +34,9 @@ public class FeatureRegister {
                 new YogESP(),
                 new Dark_Monolith(),
                 new Glowing_Mushroom(),
+
+                /* Nukers */
+                new Foraging(),
 
                 new JungleTemple(),
                 new Treasure_Hunter(),

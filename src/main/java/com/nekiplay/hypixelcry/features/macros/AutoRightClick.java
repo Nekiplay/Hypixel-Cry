@@ -71,7 +71,6 @@ public class AutoRightClick {
         World world = mc.theWorld;
         BlockPos playerPos = new BlockPos(player.posX, player.posY, player.posZ);
         int radiusInt = (int) Math.ceil(radius);
-        float radiusSq = radius * radius;
 
         int minX = Math.max(playerPos.getX() - radiusInt, -30000000);
         int maxX = Math.min(playerPos.getX() + radiusInt, 30000000);

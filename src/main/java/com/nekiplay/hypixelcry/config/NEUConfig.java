@@ -5,6 +5,7 @@ import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.config.neupages.Macros;
 import com.nekiplay.hypixelcry.config.neupages.Misc;
+import com.nekiplay.hypixelcry.config.neupages.Nukers;
 import com.nekiplay.hypixelcry.utils.Utils;
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.Social;
@@ -74,6 +75,13 @@ public class NEUConfig extends Config {
             desc = "Auto and semi-auto features"
     )
     public Macros macros = new Macros();
+
+    @Expose
+    @Category(
+            name = "Nukers",
+            desc = "Options for sub features"
+    )
+    public Nukers nukers = new Nukers();
 
     @Expose
     @Category(
