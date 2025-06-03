@@ -10,6 +10,7 @@ import com.nekiplay.hypixelcry.features.system.RotationHandler;
 import com.nekiplay.hypixelcry.utils.AngleUtils;
 import com.nekiplay.hypixelcry.utils.BlockUtils;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
+import com.nekiplay.hypixelcry.utils.helper.Angle;
 import com.nekiplay.hypixelcry.utils.helper.RotationConfiguration;
 import com.nekiplay.hypixelcry.utils.helper.Target;
 import net.minecraft.block.Block;
@@ -129,6 +130,14 @@ public class AutoRightClick {
                 if (points != null) {
                     points.removeIf(point -> point.squareDistanceTo(mc.thePlayer.getPositionEyes(1)) >
                             mc.playerController.getBlockReachDistance() * mc.playerController.getBlockReachDistance());
+                    //points.removeIf(point -> {
+                    //    MovingObjectPosition movingObjectPosition = RaycastUtils.rayTraceToBlocks(
+                    //            getEyePosition(),
+                    //            getLookEndPos(point),
+                    //            ghostHand ? selectedBlocks : new ArrayList<>()
+                    //    );
+                    //    return movingObjectPosition == null || movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS;
+                    //});
 
                     if (!points.isEmpty()) {
                         Vec3 point = points.get(0);
@@ -159,6 +168,13 @@ public class AutoRightClick {
 
     private Vec3 getEyePosition() {
         return new Vec3(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
+    }
+
+    private Vec3 getLookEndPos(Vec3 target) {
+        float distance = mc.playerController.getBlockReachDistance();
+        Angle angle = AngleUtils.getRotation(target);
+        Vec3 look = AngleUtils.getVectorForRotation(angle.pitch, angle.yaw);
+        return getEyePosition().addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
     }
 
     private Vec3 getLookEndPos() {

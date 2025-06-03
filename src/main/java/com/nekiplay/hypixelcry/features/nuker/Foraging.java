@@ -49,7 +49,7 @@ public class Foraging extends GeneralNuker {
                 InventoryPlayer inventory = mc.thePlayer.inventory;
                 ItemStack currentItem = inventory.getCurrentItem();
 
-                SetDistance(4.5f, 4.5f);
+                SetDistance(5.4f, 7.5f);
 
                 if (currentItem != null && currentItem.getItem() instanceof ItemAxe && shovel_tick > 4) {
                     BoostAlgorithm();
