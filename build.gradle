@@ -1,0 +1,67 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id "fabric-loom" version "1.10-SNAPSHOT"
+    id "maven-publish"
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    maven { url "https://maven.fabricmc.net/" } // Essential for Fabric
+}
+
+configurations {
+    shadowModImpl
+    implementation.extendsFrom shadowModImpl
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_21
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+configurations {
+    shadowModImpl
+    implementation.extendsFrom shadowModImpl
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_21
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1")))
+    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.4:3.9.0")
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowModImpl]
+    relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.deps.moulconfig")
+    archiveClassifier.set("dev-shadow")
+}
+
+remapJar {
+    inputFile.set(shadowJar.archiveFile)
+}
+loom {
+    accessWidenerPath = file("src/main/resources/hypixelcry.accesswidener")
+}
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand "version": project.mod_version, "mc_version": project.minecraft_version, "gh_hash": (System.getenv("GITHUB_SHA") ?: "")
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding("UTF-8")
+}

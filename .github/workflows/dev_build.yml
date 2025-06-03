@@ -2,7 +2,7 @@ name: Development Build
 on: push
 
 env:
-  APP_VERSION: "1.1.0"
+  APP_VERSION: "Fabric 1.21.4 | 1.1.1"
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 21
           distribution: 'adopt'
       - name: Build
         run: ./gradlew build

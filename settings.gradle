@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url "https://maven.fabricmc.net/" } // Fabric Maven
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+include("annotations")
+rootProject.name = "HypixelCry"
