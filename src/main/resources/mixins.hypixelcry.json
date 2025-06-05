@@ -1,23 +1,15 @@
 {
   "required": true,
   "minVersion": "0.6",
-  "compatibilityLevel": "JAVA_8",
-  "package": "com.nekiplay.hypixelcry.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "package": "com.nekiplay.hypixelcry",
   "refmap": "mixins.hypixelcry.refmap.json",
   "mixins": [
-    "client.MinecraftAccessor",
-    "client.MixinNetworkManager",
-    "gui.GuiChestAccessor",
-    "gui.GuiContainerAccessor",
-    "world.MixinWorld"
+    "mixins.ClientConnectionMixin",
+    "mixins.WorldChunkMixin"
   ],
   "client": [
-    "client.MinecraftMixin",
-    "client.PlayerControllerMPMixin",
-    "entity.EntityPlayerSPAccessor",
-    "entity.MixinEntityPlayerSP",
-    "forge.MixinFMLHandShake",
-    "render.MixinModelBiped",
-    "world.MixinChunkProviderClient"
+    "mixins.MinecraftClientMixin",
+    "mixins.MixinGameRenderer"
   ]
 }

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "hypixelcry",
+  "version": "${version}",
+  "name": "Hypixel Cry",
+  "description": "",
+  "authors": [
+    "Neki_play"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Nekiplay/Hypixel-Cry",
+    "issues": "https://github.com/Nekiplay/Hypixel-Cry/issues",
+    "sources": "https://github.com/Nekiplay/Hypixel-Cry"
+  },
+  "license": "GPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.nekiplay.hypixelcry.HypixelCry"
+    ]
+  },
+  "mixins": [
+    "mixins.hypixelcry.json"
+  ],
+  "depends": {
+    "java": ">=21",
+    "minecraft": ">=${mc_version}"
+  }
+}

@@ -1,17 +1,20 @@
 package com.nekiplay.hypixelcry.events.world;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
 
-@Cancelable
-public class BlockUpdateEvent extends Event {
+import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
+
+public class BlockUpdateEvent {
+    private static final BlockUpdateEvent INSTANCE = new BlockUpdateEvent();
+
     public BlockPos pos;
-    public IBlockState oldState;
-    public IBlockState newState;
+    public BlockState oldState, newState;
 
-    public BlockUpdateEvent(BlockPos pos) {
-        this.pos = pos;
+    public static BlockUpdateEvent get(BlockPos pos, BlockState oldState, BlockState newState) {
+        INSTANCE.pos = pos;
+        INSTANCE.oldState = oldState;
+        INSTANCE.newState = newState;
+
+        return INSTANCE;
     }
 }
