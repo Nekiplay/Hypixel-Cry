@@ -1,6 +1,12 @@
 package com.nekiplay.hypixelcry;
 
-
+import org.gradle.api.Plugin;
+import org.gradle.api.Project;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
+import org.gradle.api.tasks.compile.JavaCompile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.ClassReader;
 
 import java.io.File;
@@ -27,7 +33,7 @@ public class Processor implements Plugin<Project> {
             JavaCompile javaCompile = (JavaCompile) task;
             classesDir = javaCompile.getDestinationDirectory().get().getAsFile();
 
-            new InitProcessor().apply(javaCompile);
+            new com.nekiplay.hypixelcry.init.InitProcessor().apply(javaCompile);
         });
     }
 

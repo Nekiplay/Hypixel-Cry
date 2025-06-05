@@ -1,6 +1,5 @@
 package com.nekiplay.hypixelcry.utils.render;
 
-import com.ibm.icu.text.CaseMap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.nekiplay.hypixelcry.annotations.Init;

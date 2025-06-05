@@ -1,9 +1,8 @@
 package com.nekiplay.hypixelcry.features;
 
 import com.nekiplay.hypixelcry.annotations.Init;
-import com.nekiplay.hypixelcry.events.render.WorldRenderEvent;
 import com.nekiplay.hypixelcry.utils.render.RenderHelper;
-import meteordevelopment.orbit.EventHandler;
+
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.util.math.BlockPos;

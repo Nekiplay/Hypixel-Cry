@@ -1,10 +1,12 @@
 plugins {
     `java-gradle-plugin`
     `java-library`
+    `kotlin-dsl`
 }
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 val asmVersion = "9.7"
@@ -12,15 +14,24 @@ val asmVersion = "9.7"
 dependencies {
     implementation("org.ow2.asm:asm:$asmVersion")
     implementation("org.ow2.asm:asm-tree:$asmVersion")
-
     implementation(gradleApi())
+    implementation(gradleKotlinDsl())
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
+    implementation("org.jetbrains:annotations:24.0.1")
 }
 
 gradlePlugin {
     plugins {
-        create("simplePlugin") {
-            id = "de.hysky.skyblocker.annotation-processor"
+        create("annotationProcessor") {
+            id = "com.nekiplay.hypixelcry.annotation-processor"
             implementationClass = "com.nekiplay.hypixelcry.Processor"
         }
     }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    withSourcesJar()
 }

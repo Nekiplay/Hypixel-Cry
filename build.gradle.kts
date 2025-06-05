@@ -1,11 +1,14 @@
 plugins {
     id("fabric-loom") version "1.10-SNAPSHOT"
     id("maven-publish")
-    id("de.hysky.skyblocker.annotation-processor")
+    id("com.nekiplay.hypixelcry.annotation-processor")
     kotlin("jvm")
 }
 
 repositories {
+    flatDir {
+        dirs("libs")
+    }
     mavenCentral()
     gradlePluginPortal()
     maven {
