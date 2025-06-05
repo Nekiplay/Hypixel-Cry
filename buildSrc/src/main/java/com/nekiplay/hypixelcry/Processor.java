@@ -28,7 +28,6 @@ public class Processor implements Plugin<Project> {
             classesDir = javaCompile.getDestinationDirectory().get().getAsFile();
 
             new InitProcessor().apply(javaCompile);
-            new HudProcessor().apply(javaCompile);
         });
     }
 
