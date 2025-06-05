@@ -7,7 +7,7 @@ repositories {
     mavenCentral()
 }
 
-val asmVersion: "9.7"
+val asmVersion = "9.7"
 
 dependencies {
     implementation("org.ow2.asm:asm:$asmVersion")
