@@ -15,12 +15,5 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WorldChunk.class)
 public abstract class WorldChunkMixin {
-    @Shadow
-    @Final
-    World world;
 
-    @Inject(method = "setBlockState", at = @At("TAIL"))
-    private void onSetBlockState(BlockPos pos, BlockState state, boolean moved, CallbackInfoReturnable<BlockState> cir) {
-        if (world.isClient) HypixelCry.EVENT_BUS.post(BlockUpdateEvent.get(pos, cir.getReturnValue(), state));
-    }
 }

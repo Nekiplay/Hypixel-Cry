@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hypixelcry",
-  "version": "${version}",
+  "version": "1.1.0",
   "name": "Hypixel Cry",
   "description": "",
   "authors": [
@@ -13,9 +13,9 @@
     "sources": "https://github.com/Nekiplay/Hypixel-Cry"
   },
   "license": "GPL-3.0",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
-    "main": [
+    "client": [
       "com.nekiplay.hypixelcry.HypixelCry"
     ]
   },
@@ -23,7 +23,9 @@
     "mixins.hypixelcry.json"
   ],
   "depends": {
+    "fabricloader": ">=0.16.10",
+    "fabric-api": ">=0.119.5+1.21.5",
     "java": ">=21",
-    "minecraft": ">=${mc_version}"
+    "minecraft": "~1.21.5"
   }
 }

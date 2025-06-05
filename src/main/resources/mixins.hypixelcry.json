@@ -1,15 +1,15 @@
 {
   "required": true,
-  "minVersion": "0.6",
-  "compatibilityLevel": "JAVA_17",
-  "package": "com.nekiplay.hypixelcry",
-  "refmap": "mixins.hypixelcry.refmap.json",
-  "mixins": [
-    "mixins.ClientConnectionMixin",
-    "mixins.WorldChunkMixin"
-  ],
+  "compatibilityLevel": "JAVA_21",
+  "package": "com.nekiplay.hypixelcry.mixins",
+  "mixins": [],
   "client": [
-    "mixins.MinecraftClientMixin",
-    "mixins.MixinGameRenderer"
-  ]
+    "BeaconBlockEntityRendererInvoker",
+    "FrustumInvoker",
+    "WorldRendererAccessor",
+    "WorldChunkMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
