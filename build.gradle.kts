@@ -1,6 +1,7 @@
 plugins {
     id("fabric-loom") version "1.10-SNAPSHOT"
     id("maven-publish")
+    id("de.hysky.skyblocker.annotation-processor")
     kotlin("jvm")
 }
 
