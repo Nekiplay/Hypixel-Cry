@@ -1,16 +1,19 @@
 plugins {
     `java-gradle-plugin`
+    `java-library`
 }
 
 repositories {
     mavenCentral()
 }
 
-val asmVersion: String by project
+val asmVersion: "9.7"
 
 dependencies {
     implementation("org.ow2.asm:asm:$asmVersion")
     implementation("org.ow2.asm:asm-tree:$asmVersion")
+
+    implementation(gradleApi())
 }
 
 gradlePlugin {
