@@ -2,7 +2,7 @@ name: Development Build
 on: push
 
 env:
-  APP_VERSION: "Fabric 1.21.4 | 1.1.1"
+  APP_VERSION: "1.1.1"
 
 jobs:
   build:
