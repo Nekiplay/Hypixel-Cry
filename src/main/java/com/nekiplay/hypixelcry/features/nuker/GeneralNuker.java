@@ -124,49 +124,16 @@ public class GeneralNuker {
             return false;
         }
 
-        List<Vec3> points = BlockUtils.bestPointsOnBestSide(pos, allowedBlocks);
-
-        float squaredReach = (float) (horizontalDistance * horizontalDistance);
-
-        if (points != null && !points.isEmpty()) {
-            // Фильтрация точек
-            Vec3 eyePosition = mc.thePlayer.getPositionEyes(1);
-            points.removeIf(point ->
-                    point.squareDistanceTo(eyePosition) > squaredReach ||
-                            (!isPointVisible(point, eyePosition, (float) horizontalDistance, allowedBlocks) && !isPointVisible(point, eyePosition, (float) verticalDistance, allowedBlocks))
-            );
-
-            if (!points.isEmpty()) {
-                RotationConfiguration.RotationType rotationType = RotationConfiguration.RotationType.SERVER;
-
-                RotationHandler.getInstance().easeTo(new RotationConfiguration(
-                        new Target(points.get(0)),
-                        100,
-                        rotationType,
-                        null
-                ));
-            }
-        }
-
-        MovingObjectPosition mouseOver = RaycastUtils.rayTraceToBlocks(
-                getEyePosition(),
-                getLookEndPos(squaredReach, true),
-                allowedBlocks
+        currentBlockPos = pos;
+        mc.thePlayer.sendQueue.addToSendQueue(
+                new C07PacketPlayerDigging(
+                        C07PacketPlayerDigging.Action.START_DESTROY_BLOCK,
+                        pos,
+                        EnumFacing.DOWN
+                )
         );
-
-        if (mouseOver != null && mouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.MISS) {
-            currentBlockPos = pos;
-            mc.thePlayer.sendQueue.addToSendQueue(
-                    new C07PacketPlayerDigging(
-                            C07PacketPlayerDigging.Action.START_DESTROY_BLOCK,
-                            pos,
-                            EnumFacing.DOWN
-                    )
-            );
-            mc.thePlayer.swingItem();
-            brokenBlocks.put(pos, 0);
-            return true;
-        }
-        return false;
+        mc.thePlayer.swingItem();
+        brokenBlocks.put(pos, 0);
+        return true;
     }
 }
