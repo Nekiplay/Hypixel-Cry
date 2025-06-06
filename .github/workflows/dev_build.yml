@@ -27,9 +27,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.APP_VERSION }}
-          name: Hypixel Cry Fabric ${{ env.MC } v${{ env.APP_VERSION }}
+          name: Hypixel Cry Fabric ${{ env.MC }} v${{ env.APP_VERSION }}
           body: |
-            # 🌟 Hypixel Cry ${{ env.APP_VERSION }} 🌟
+            # 🌟 Hypixel Cry Fabric ${{ env.MC }} v${{ env.APP_VERSION }} 🌟
 
             ![Downloads](https://img.shields.io/github/downloads/Nekiplay/Hypixel-Cry/v${{ env.APP_VERSION }}/total) ![Version](https://img.shields.io/badge/version-${{ env.APP_VERSION }}-blue) ![Platform](https://img.shields.io/badge/platform-Windows%20|%20Linux-orange)
             ## 👏 Contributors Hall of Fame
