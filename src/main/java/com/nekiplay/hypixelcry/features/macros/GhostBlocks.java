@@ -51,8 +51,8 @@ public class GhostBlocks {
                     BlockState state = Blocks.AIR.getDefaultState();
                     mc.world.setBlockState(pos, state);
 
+                    mc.worldRenderer.updateBlock(mc.world, pos, mc.world.getBlockState(pos), state, 0);
                     mc.world.updateNeighbors(pos, Blocks.AIR);
-                    mc.worldRenderer.updateBlock(mc.world, pos, null, state, 0);
 
                     mc.player.swingHand(Hand.MAIN_HAND);
                 }

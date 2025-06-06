@@ -83,18 +83,15 @@ public class Utils {
         return (!serverAddress.isEmpty() && serverAddress.equalsIgnoreCase(ALTERNATE_HYPIXEL_ADDRESS)) || serverAddress.contains("hypixel.net") || serverAddress.contains("hypixel.io") || serverBrand.contains("Hypixel BungeeCord");
     }
 
-    public static boolean openUrl(String url) {
+    public static void openUrl(String url) {
         try {
             Desktop desk = Desktop.getDesktop();
             desk.browse(new URI(url));
-            return true;
         } catch (UnsupportedOperationException | IOException | URISyntaxException ignored) {
             Runtime runtime = Runtime.getRuntime();
             try {
                 runtime.exec("xdg-open " + url);
-                return true;
             } catch (IOException e) {
-                return false;
             }
         }
     }
