@@ -151,8 +151,7 @@ public class AutoRightClick {
                 Hand.MAIN_HAND,
                 mop
         );
-        if (success == ActionResult.PASS) {
-            assert mc.player != null;
+        assert mc.player != null;
             mc.player.swingHand(Hand.MAIN_HAND);
 
             if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air)) {
@@ -165,6 +164,5 @@ public class AutoRightClick {
                 mc.world.updateNeighbors(pos, Blocks.AIR);
                 mc.worldRenderer.updateBlock(mc.world, pos, null, state, 0);
             }
-        }
     }
 }
