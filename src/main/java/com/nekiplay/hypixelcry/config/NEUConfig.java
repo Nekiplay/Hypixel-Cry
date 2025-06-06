@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.config;
 
+import com.google.gson.annotations.Expose;
 import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.config.neupages.Macros;
@@ -63,12 +64,14 @@ public class NEUConfig extends Config {
             name = "Macros",
             desc = "Auto and semi-auto features"
     )
+    @Expose
     public Macros macros = new Macros();
 
     @Category(
             name = "ESP",
             desc = "Visual features"
     )
+    @Expose
     public ESP esp = new ESP();
 
 }
