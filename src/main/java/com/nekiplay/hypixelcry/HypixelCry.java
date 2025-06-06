@@ -19,6 +19,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
@@ -62,7 +63,7 @@ public class HypixelCry implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        neuDir = new File("hypixelcry");
+        neuDir = FabricLoader.getInstance().getConfigDir().resolve("hypixelcry").toFile();
         neuDir.mkdirs();
 
         configFile = new File(neuDir, "config.json");
