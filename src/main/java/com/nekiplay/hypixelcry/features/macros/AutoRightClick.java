@@ -27,7 +27,7 @@ import static com.nekiplay.hypixelcry.utils.PlayerUtils.getLookEndPos;
 public class AutoRightClick {
     private static final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private static int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 20 * 60;
+    private static final int CHEST_COOLDOWN = 20 * 20;
     private static final int MAX_REMOVALS_PER_TICK = 20;
 
     @Init
