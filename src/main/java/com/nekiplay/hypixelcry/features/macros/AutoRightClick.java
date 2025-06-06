@@ -145,17 +145,20 @@ public class AutoRightClick {
     private static void simulateHumanClick(BlockHitResult mop) {
         if (mop == null || mop.getBlockPos() == null) return;
 
-        ActionResult success = Objects.requireNonNull(mc.interactionManager).interactBlock(
+        assert mc.interactionManager != null;
+        ActionResult success = mc.interactionManager.interactBlock(
                 mc.player,
                 Hand.MAIN_HAND,
                 mop
         );
-        Objects.requireNonNull(mc.player).swingHand(Hand.MAIN_HAND);
+        assert mc.player != null;
+        mc.player.swingHand(Hand.MAIN_HAND);
         BlockPos pos = mop.getBlockPos();
         if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air)) {
             BlockState state = Blocks.AIR.getDefaultState();
 
-            Objects.requireNonNull(mc.world).setBlockState(pos, state);
+            assert mc.world != null;
+            mc.world.setBlockState(pos, state);
 
             mc.world.updateNeighbors(pos, Blocks.AIR);
             mc.worldRenderer.updateBlock(mc.world, pos, null, state, 0);

@@ -10,33 +10,33 @@ import java.util.EnumSet;
 
 public enum Location implements StringIdentifiable {
     PRIVATE_ISLAND("dynamic"),
-    GARDEN("garden"),
-    HUB("hub"),
-    THE_FARMING_ISLAND("farming_1"),
-    THE_PARK("foraging_1"),
+    GARDEN("garden", "Garden"),
+    HUB("hub", "Hub"),
+    THE_FARMING_ISLAND("farming_1", "The Farming Island"),
+    THE_PARK("foraging_1", "The Park"),
     SPIDERS_DEN("combat_1", "Spider's Den"),
-    BLAZING_FORTRESS("combat_2"),
-    THE_END("combat_3"),
-    CRIMSON_ISLE("crimson_isle"),
-    GOLD_MINE("mining_1"),
-    DEEP_CAVERNS("mining_2"),
-    DWARVEN_MINES("mining_3"),
-    BACKWATER_BAYOU("fishing_1"),
-    DUNGEON_HUB("dungeon_hub"),
+    BLAZING_FORTRESS("combat_2", "Blazing Fortress"),
+    THE_END("combat_3", "The End"),
+    CRIMSON_ISLE("crimson_isle", "Crimson Isle"),
+    GOLD_MINE("mining_1", "Gold Mine"),
+    DEEP_CAVERNS("mining_2", "Deep Caverns"),
+    DWARVEN_MINES("mining_3", "Dwarven Mines"),
+    BACKWATER_BAYOU("fishing_1", "Backwater Bayou"),
+    DUNGEON_HUB("dungeon_hub", "Dungeon Hub"),
     WINTER_ISLAND("winter", "Jerry's Workshop"),
-    THE_RIFT("rift"),
-    DARK_AUCTION("dark_auction"),
-    CRYSTAL_HOLLOWS("crystal_hollows"),
+    THE_RIFT("rift", "The Rift"),
+    DARK_AUCTION("dark_auction", "Dark Auction"),
+    CRYSTAL_HOLLOWS("crystal_hollows", "Crystal Hollows"),
     DUNGEON("dungeon", "Dungeons"),
     KUUDRAS_HOLLOW("kuudra", "Kuudra's Hollow"),
     /**
      * The freezing cold Glacite Mineshafts! *brr... so cold... :(*
      */
-    GLACITE_MINESHAFT("mineshaft"),
+    GLACITE_MINESHAFT("mineshaft", "Glacite Mineshaft"),
     /**
      * <p>Goodbye 1.8 hello 1.21 (and foraging 50 for all)!</p>
      */
-    GALATEA("foraging_2"),
+    GALATEA("foraging_2", "Galetea"),
     /**
      * Unknown Skyblock location
      */

@@ -26,6 +26,9 @@ repositories {
     maven { url = uri("https://maven.fabricmc.net/") }
     maven { url = uri("https://maven.notenoughupdates.org/releases/") }
     maven { url = uri("https://repo.codemc.io/repository/maven-public/") }
+    maven {
+        url = uri("https://maven.azureaaron.net/releases")
+    }
 }
 
 java {
@@ -55,8 +58,11 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
 
     include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0")!!)
+    // HM API (Hypixel Mod API Library)
+    include(modImplementation("net.azureaaron:hm-api:${property("hm_api_version")}")!!)
     shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0");
     include(implementation("meteordevelopment:orbit:${property("orbit_version")}")!!)
+
 
     // Occlusion Culling
     include(implementation("com.logisticscraft:occlusionculling:${property("occlusionculling_version")}")!!)

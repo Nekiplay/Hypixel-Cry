@@ -56,7 +56,6 @@ public class GhostBlocks {
 
                     mc.player.swingHand(Hand.MAIN_HAND);
                 }
-
             }
         }
     }

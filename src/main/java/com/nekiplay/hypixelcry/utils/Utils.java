@@ -1,7 +1,20 @@
 package com.nekiplay.hypixelcry.utils;
 
+import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.events.SkyblockEvents;
+import com.nekiplay.hypixelcry.utils.scheduler.Scheduler;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.azureaaron.hmapi.data.rank.PackageRank;
+import net.azureaaron.hmapi.data.rank.RankType;
+import net.azureaaron.hmapi.data.server.Environment;
+import net.azureaaron.hmapi.events.HypixelPacketEvents;
+import net.azureaaron.hmapi.network.HypixelNetworking;
+import net.azureaaron.hmapi.network.packet.s2c.ErrorS2CPacket;
+import net.azureaaron.hmapi.network.packet.s2c.HelloS2CPacket;
+import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
+import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
+import net.azureaaron.hmapi.network.packet.v1.s2c.PlayerInfoS2CPacket;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -9,6 +22,7 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.scoreboard.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -28,6 +42,19 @@ public class Utils {
 
     private static boolean isOnHypixel = false;
     private static boolean isOnSkyblock = false;
+
+    @SuppressWarnings("JavadocDeclaration")
+    @NotNull
+    private static Environment environment = Environment.PRODUCTION;
+
+    @Init
+    public static void init() {
+        //Register Mod API stuff
+        HypixelNetworking.registerToEvents(Util.make(new Object2IntOpenHashMap<>(), map -> map.put(LocationUpdateS2CPacket.ID, 1)));
+        HypixelPacketEvents.HELLO.register(Utils::onPacket);
+        HypixelPacketEvents.LOCATION_UPDATE.register(Utils::onPacket);
+        HypixelPacketEvents.PLAYER_INFO.register(Utils::onPacket);
+    }
 
     /**
      * Updates {@link #isOnSkyblock} if in a development environment and {@link #isOnHypixel} in all environments.
@@ -137,6 +164,25 @@ public class Utils {
         return profile.endsWith("Ⓑ");
     }
 
+    @NotNull
+    private static RankType rank = PackageRank.NONE;
+
+    @NotNull
+    private static String server = "";
+    @NotNull
+    private static String gameType = "";
+    @NotNull
+    private static String locationRaw = "";
+    @NotNull
+    private static String map = "";
+    @NotNull
+    public static double purse = 0;
+
+    @NotNull
+    private static int profileIdRequest = 0;
+
+    private static boolean firstProfileUpdate = true;
+
 
     @NotNull
     public static Area getArea() {
@@ -236,5 +282,67 @@ public class Utils {
         area = Area.from(areaName);
 
         if (!oldArea.equals(area)) SkyblockEvents.AREA_CHANGE.invoker().onSkyblockAreaChange(area);
+    }
+
+    private static void tickProfileId() {
+        profileIdRequest++;
+
+        Scheduler.INSTANCE.schedule(new Runnable() {
+            private final int requestId = profileIdRequest;
+
+            @Override
+            public void run() {
+                //if (requestId == profileIdRequest) MessageScheduler.INSTANCE.sendMessageAfterCooldown("/profileid", true);
+            }
+        }, 20 * 8); //8 seconds
+    }
+
+    private static void onPacket(HypixelS2CPacket packet) {
+        switch (packet) {
+            case HelloS2CPacket(Environment environment) -> {
+                Utils.environment = environment;
+
+                //Request the player's rank information
+                HypixelNetworking.sendPlayerInfoC2SPacket(1);
+            }
+
+            case LocationUpdateS2CPacket(var serverName, var serverType, var _lobbyName, var mode, var map) -> {
+                Utils.server = serverName;
+                String previousServerType = Utils.gameType;
+                Utils.gameType = serverType.orElse("");
+                Utils.locationRaw = mode.orElse("");
+                Utils.location = Location.from(locationRaw);
+                Utils.map = map.orElse("");
+
+                SkyblockEvents.LOCATION_CHANGE.invoker().onSkyblockLocationChange(location);
+
+                if (Utils.gameType.equals("SKYBLOCK")) {
+                    isOnSkyblock = true;
+                    tickProfileId();
+
+                    if (!previousServerType.equals("SKYBLOCK")) SkyblockEvents.JOIN.invoker().onSkyblockJoin();
+                } else if (previousServerType.equals("SKYBLOCK")) {
+                    isOnSkyblock = false;
+                    SkyblockEvents.LEAVE.invoker().onSkyblockLeave();
+                }
+            }
+
+            case ErrorS2CPacket(var id, var error) when id.equals(LocationUpdateS2CPacket.ID) -> {
+                server = "";
+                gameType = "";
+                locationRaw = "";
+                location = Location.UNKNOWN;
+                map = "";
+
+                ClientPlayerEntity player = MinecraftClient.getInstance().player;
+                LOGGER.error("[Skyblocker] Failed to update your current location! Some features of the mod may not work correctly :( - Error: {}", error);
+            }
+
+            case PlayerInfoS2CPacket(var playerRank, var packageRank, var monthlyPackageRank, var _prefix) -> {
+                rank = RankType.getEffectiveRank(playerRank, packageRank, monthlyPackageRank);
+            }
+
+            default -> {} //Do Nothing
+        }
     }
 }

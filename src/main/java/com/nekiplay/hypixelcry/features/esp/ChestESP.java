@@ -25,7 +25,7 @@ public class ChestESP {
     @Init
     public static void init() {
         WorldRenderEvents.AFTER_TRANSLUCENT.register(ChestESP::render);
-        Scheduler.INSTANCE.scheduleCyclic(ChestESP::onTick, 1);
+        Scheduler.INSTANCE.scheduleCyclic(ChestESP::onTick, 2);
     }
 
     public static void onTick() {
