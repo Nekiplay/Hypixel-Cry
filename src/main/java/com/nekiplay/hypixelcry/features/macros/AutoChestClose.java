@@ -24,6 +24,7 @@ public class AutoChestClose {
             Text containerName = screen.getTitle();
 
             String noColor = StringUtils.removeAllCodes(containerName.getString());
+            mc.player.sendMessage(Text.of(noColor), false);
             if (HypixelCry.config.macros.dungeons.autoCloseChests.enable && (noColor.isEmpty() || noColor.equalsIgnoreCase("chest"))) {
                 mc.player.closeHandledScreen();
             }
