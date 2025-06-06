@@ -54,8 +54,8 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
 
-    include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.8.0")!!)
-    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.8.0");
+    include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0")!!)
+    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0");
     include(implementation("meteordevelopment:orbit:${property("orbit_version")}")!!)
 
     // Occlusion Culling

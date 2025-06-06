@@ -3,6 +3,7 @@ on: push
 
 env:
   APP_VERSION: "1.1.1"
+  MC: "1.21.5"
 
 jobs:
   build:
@@ -26,7 +27,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.APP_VERSION }}
-          name: Hypixel Cry ${{ env.APP_VERSION }}
+          name: Hypixel Cry Fabric ${{ env.MC } v${{ env.APP_VERSION }}
           body: |
             # 🌟 Hypixel Cry ${{ env.APP_VERSION }} 🌟
 

@@ -4,9 +4,6 @@ import com.nekiplay.hypixelcry.utils.helper.Angle;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Vector3f;
-
-import javax.swing.text.html.parser.Entity;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
@@ -41,7 +38,7 @@ public class AngleUtils {
     public static float get360RotationYaw() {
         if (mc.player == null)
             return 0;
-        return get360RotationYaw(mc.player.headYaw);
+        return get360RotationYaw(mc.player.getYaw());
     }
 
     public static float clockwiseDifference(float initialYaw360, float targetYaw360) {
@@ -66,16 +63,16 @@ public class AngleUtils {
 
     public static float getActualYawFrom360(float yaw360) {
         float currentYaw = yaw360;
-        if (mc.player.headYaw > yaw360) {
-            while (mc.player.headYaw - currentYaw < 180 || mc.player.headYaw - currentYaw > 0) {
-                if (Math.abs(currentYaw + 360 - mc.player.headYaw) < Math.abs(currentYaw - mc.player.headYaw))
+        if (mc.player.getYaw() > yaw360) {
+            while (mc.player.getYaw() - currentYaw < 180 || mc.player.getYaw() - currentYaw > 0) {
+                if (Math.abs(currentYaw + 360 - mc.player.getYaw()) < Math.abs(currentYaw - mc.player.getYaw()))
                     currentYaw = currentYaw + 360;
                 else break;
             }
         }
-        if (mc.player.headYaw < yaw360) {
-            while (currentYaw - mc.player.headYaw > 180 || mc.player.headYaw - currentYaw < 0) {
-                if (Math.abs(currentYaw - 360 - mc.player.headYaw) < Math.abs(currentYaw - mc.player.headYaw))
+        if (mc.player.getYaw() < yaw360) {
+            while (currentYaw - mc.player.getYaw() > 180 || mc.player.getYaw() - currentYaw < 0) {
+                if (Math.abs(currentYaw - 360 - mc.player.getYaw()) < Math.abs(currentYaw - mc.player.getYaw()))
                     currentYaw = currentYaw - 360;
                 else break;
             }

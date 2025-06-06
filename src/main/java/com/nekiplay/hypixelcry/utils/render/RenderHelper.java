@@ -308,6 +308,32 @@ public class RenderHelper {
     }
 
     /**
+     * Renders text in the world space.
+     *
+     * @param throughWalls whether the text should be able to be seen through walls or not.
+     */
+    public static void renderText(WorldRenderContext context, OrderedText text, Vec3d pos, int color, float scale, float yOffset, boolean throughWalls) {
+        Matrix4f positionMatrix = new Matrix4f();
+        Camera camera = context.camera();
+        Vec3d cameraPos = camera.getPos();
+        TextRenderer textRenderer = CLIENT.textRenderer;
+
+        scale *= 0.025f;
+
+        positionMatrix
+                .translate((float) (pos.getX() - cameraPos.getX()), (float) (pos.getY() - cameraPos.getY()), (float) (pos.getZ() - cameraPos.getZ()))
+                .rotate(camera.getRotation())
+                .scale(scale, -scale, scale);
+
+        float xOffset = -textRenderer.getWidth(text) / 2f;
+
+        VertexConsumerProvider.Immediate consumers = VertexConsumerProvider.immediate(ALLOCATOR);
+
+        textRenderer.draw(text, xOffset, yOffset, color, false, positionMatrix, consumers, throughWalls ? TextRenderer.TextLayerType.SEE_THROUGH : TextRenderer.TextLayerType.NORMAL, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+        consumers.draw();
+    }
+
+    /**
      * Renders a cylinder without the top or bottom faces.
      *
      * @param color      The position that the cylinder will be centred around.

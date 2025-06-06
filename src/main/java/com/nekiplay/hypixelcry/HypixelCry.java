@@ -1,11 +1,18 @@
 package com.nekiplay.hypixelcry;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.config.NEUConfig;
+import com.nekiplay.hypixelcry.utils.ConfigUtil;
 import com.nekiplay.hypixelcry.utils.scheduler.Scheduler;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
 import io.github.notenoughupdates.moulconfig.managed.ManagedConfig;
+import io.github.notenoughupdates.moulconfig.observer.PropertyTypeAdapterFactory;
+import io.github.notenoughupdates.moulconfig.processor.BuiltinMoulConfigGuis;
+import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;
+import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
 import meteordevelopment.orbit.EventBus;
 import meteordevelopment.orbit.IEventBus;
 import net.fabricmc.api.ClientModInitializer;
@@ -23,7 +30,16 @@ public class HypixelCry implements ClientModInitializer {
     public static final String MOD_ID = "hypixelcry";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final IEventBus EVENT_BUS = new EventBus();
-    public static ManagedConfig<NEUConfig> config;
+
+    //public static ManagedConfig<NEUConfig> config;
+
+    public static NEUConfig config;
+    private static File configFile;
+    private static File neuDir;
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation()
+            .registerTypeAdapterFactory(new PropertyTypeAdapterFactory()).create();
+    public static MoulConfigProcessor<NEUConfig> processor = null;
+
     public static MinecraftClient mc = MinecraftClient.getInstance();
     private static HypixelCry INSTANCE;
 
@@ -39,17 +55,43 @@ public class HypixelCry implements ClientModInitializer {
         return INSTANCE;
     }
 
+    public static void saveConfig() {
+        ConfigUtil.saveConfig(config, configFile, gson);
+    }
+
     @Override
     public void onInitializeClient() {
 
-        config = ManagedConfig.create(new File("config/hypixelcry/config.json"), NEUConfig.class);
-        Runtime.getRuntime().addShutdownHook(new Thread(config::saveToFile));
+        neuDir = new File("hypixelcry");
+        neuDir.mkdirs();
+
+        configFile = new File(neuDir, "config.json");
+
+        if (configFile.exists()) {
+            config = ConfigUtil.loadConfig(NEUConfig.class, configFile, gson);
+        }
+
+        if (config == null) {
+            config = new NEUConfig();
+            saveConfig();
+        }
+
+        processor = new MoulConfigProcessor<>(config);
+        BuiltinMoulConfigGuis.addProcessors(processor);
+        ConfigProcessorDriver driver = new ConfigProcessorDriver(processor);
+        driver.checkExpose = false;
+        driver.warnForPrivateFields = false;
+        driver.processConfig(config);
+
+
+        Runtime.getRuntime().addShutdownHook(new Thread(HypixelCry::saveConfig));
+
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("cry")
                     .executes(context -> {
                         MinecraftClient.getInstance().send(() -> {
-                            MoulConfigEditor<NEUConfig> editor = config.getEditor();
+                            MoulConfigEditor<NEUConfig> editor = new MoulConfigEditor<>(HypixelCry.processor);
                             IMinecraft.instance.openWrappedScreen(editor);
                         });
                         return 0;
