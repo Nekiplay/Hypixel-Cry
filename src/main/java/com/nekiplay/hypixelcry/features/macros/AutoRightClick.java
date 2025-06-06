@@ -39,7 +39,7 @@ public class AutoRightClick {
                 mc.player == null || !HypixelCry.config.macros.autoRightClick.enabled;
     }
 
-    public static ActionResult onBlockUpdate(BlockPos pos, BlockState old, BlockState current) {
+    private static ActionResult onBlockUpdate(BlockPos pos, BlockState old, BlockState current) {
         List<Block> selectedBlocks = getAllowedBlocks();
         if (openedChests.containsKey(pos) && selectedBlocks.contains(current.getBlock())) {
             return ActionResult.FAIL;
@@ -49,7 +49,7 @@ public class AutoRightClick {
         }
     }
 
-    public static void onTick() {
+    private static void onTick() {
         if (shouldSkipTick()) return;
         if (++tickCounter % MAX_REMOVALS_PER_TICK == 0) {
             cleanUpOldChests();
@@ -72,7 +72,7 @@ public class AutoRightClick {
         }
     }
 
-    public static List<Block> getAllowedBlocks() {
+    private static List<Block> getAllowedBlocks() {
         List<Block> selectedBlocks = new ArrayList<>();
         List<AutoRightClickBlocks> blocks = HypixelCry.config.macros.autoRightClick.blocks;
         if (blocks.contains(AutoRightClickBlocks.Chest)) {

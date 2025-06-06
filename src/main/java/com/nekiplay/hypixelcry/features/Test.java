@@ -35,7 +35,7 @@ public class Test {
         }
     }
 
-    public static void render(WorldRenderContext context) {
+    private static void render(WorldRenderContext context) {
 
         float[] colorComponents = new float[]{ 1.0f, 0.0f, 0.0f }; // Красный цвет (R, G, B)
         float alpha = 0.5f; // Прозрачность
