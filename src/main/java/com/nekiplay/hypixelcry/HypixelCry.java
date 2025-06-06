@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.config.NEUConfig;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
+import com.nekiplay.hypixelcry.utils.Utils;
 import com.nekiplay.hypixelcry.utils.scheduler.Scheduler;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
@@ -30,9 +31,6 @@ import java.io.File;
 public class HypixelCry implements ClientModInitializer {
     public static final String MOD_ID = "hypixelcry";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static final IEventBus EVENT_BUS = new EventBus();
-
-    //public static ManagedConfig<NEUConfig> config;
 
     public static NEUConfig config;
     private static File configFile;
@@ -102,7 +100,7 @@ public class HypixelCry implements ClientModInitializer {
 
         init();
 
-        //Scheduler.INSTANCE.scheduleCyclic(Utils::update, 20);
+        Scheduler.INSTANCE.scheduleCyclic(Utils::update, 20);
 
         LOGGER.info("Hello Fabric world!");
     }

@@ -1,18 +1,30 @@
 package com.nekiplay.hypixelcry.features;
 
 import com.nekiplay.hypixelcry.annotations.Init;
+import com.nekiplay.hypixelcry.events.SkyblockEvents;
+import com.nekiplay.hypixelcry.utils.Location;
 import com.nekiplay.hypixelcry.utils.render.RenderHelper;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+
+import static com.nekiplay.hypixelcry.HypixelCry.mc;
 
 public class Test {
 
     @Init
     public static void init() {
         WorldRenderEvents.AFTER_TRANSLUCENT.register(Test::render);
+        SkyblockEvents.LOCATION_CHANGE.register(Test::locationChange);
+    }
+
+    private static void locationChange(Location location) {
+        if (mc.player != null) {
+            mc.player.sendMessage(Text.of(location.toString()), false);
+        }
     }
 
     public static void render(WorldRenderContext context) {
