@@ -5,6 +5,7 @@ import com.nekiplay.hypixelcry.utils.render.RenderHelper;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 
 public class Test {
@@ -15,6 +16,7 @@ public class Test {
     }
 
     public static void render(WorldRenderContext context) {
+
         float[] colorComponents = new float[]{ 1.0f, 0.0f, 0.0f }; // Красный цвет (R, G, B)
         float alpha = 0.5f; // Прозрачность
         float lineWidth = 2.0f; // Толщина линии

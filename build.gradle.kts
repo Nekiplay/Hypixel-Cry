@@ -1,8 +1,12 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id("fabric-loom") version "1.10-SNAPSHOT"
-    id("maven-publish")
+    java
+    id("fabric-loom") version "1.10.1"
+    id("org.jetbrains.kotlin.jvm") version "2.1.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
     id("com.nekiplay.hypixelcry.annotation-processor")
-    kotlin("jvm")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 repositories {
@@ -21,15 +25,13 @@ repositories {
     }
     maven { url = uri("https://maven.fabricmc.net/") }
     maven { url = uri("https://maven.notenoughupdates.org/releases/") }
-    maven { url = uri("https://repo.codemc.io/repository/maven-public/") } // For Occlusion Culling library
-}
-
-configurations.all {
-    // Check for snapshots more frequently than Gradle's default of 1 day. 0 = every build.
-    resolutionStrategy.cacheChangingModulesFor(0, "seconds")
+    maven { url = uri("https://repo.codemc.io/repository/maven-public/") }
 }
 
 java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
 
 base {
@@ -39,59 +41,51 @@ base {
 version = project.property("mod_version") as String
 group = project.property("maven_group") as String
 
-configurations {
-    create("shadowModImpl")
-    getByName("modImplementation").extendsFrom(getByName("shadowModImpl"))
-
-    create("library")
-    getByName("implementation").extendsFrom(getByName("library"))
+val shadowModImpl by configurations.creating {
+    configurations.modImplementation.get().extendsFrom(this)
 }
+
+
 
 dependencies {
     minecraft("com.mojang:minecraft:${property("minecraft_version")}")
-    mappings(loom.layered {
-        //Using Mojmap breaks runClient, so uncomment only for snapshots when temp mappings are needed
-        //officialMojangMappings()
-        mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
-    })
+    mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
     modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
-
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
+    modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
 
-    "shadowModImpl"("org.notenoughupdates.moulconfig:modern:3.5.0")
+    include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.8.0")!!)
+    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.8.0");
+    include(implementation("meteordevelopment:orbit:${property("orbit_version")}")!!)
 
-    "library"("meteordevelopment:orbit:${property("orbit_version")}")
-    implementation(kotlin("stdlib-jdk8"))
-
-    // Occlusion Culling (https://github.com/LogisticsCraft/OcclusionCulling)
+    // Occlusion Culling
     include(implementation("com.logisticscraft:occlusionculling:${property("occlusionculling_version")}")!!)
 }
 
-tasks.register<Jar>("shadowJar") {
-    from(sourceSets.main.get().output)
-    from({
-        configurations.getByName("shadowModImpl").map { if (it.isDirectory) it else zipTree(it) }
-    })
-    archiveClassifier.set("shadow")
+tasks {
+    shadowJar {
+        from(sourceSets.main.get().output)
+        configurations = listOf(shadowModImpl)
+        archiveClassifier.set("shadow")
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
+        //relocate("io.github.notenoughupdates.moulconfig", "com.nekiplay.hypixelcry.moulconfig")
+        mergeServiceFiles()
+    }
 
-tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
-    dependsOn(tasks.named("shadowJar"))
-    input.set(tasks.named<Jar>("shadowJar").get().archiveFile)
+    remapJar {
+        dependsOn(shadowJar)
+        inputFile.set(shadowJar.get().archiveFile)
+    }
 }
 
 loom {
+    clientOnlyMinecraftJar()
     accessWidenerPath.set(file("src/main/resources/hypixelcry.accesswidener"))
-    mixin {
-        useLegacyMixinAp = false
-    }
+    mixin.useLegacyMixinAp.set(false)
 }
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
-}
-kotlin {
-    jvmToolchain(21)
+    sourceCompatibility = "21"
+    targetCompatibility = "21"
 }
