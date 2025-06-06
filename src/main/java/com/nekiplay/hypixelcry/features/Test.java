@@ -2,6 +2,7 @@ package com.nekiplay.hypixelcry.features;
 
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.events.SkyblockEvents;
+import com.nekiplay.hypixelcry.utils.Area;
 import com.nekiplay.hypixelcry.utils.Location;
 import com.nekiplay.hypixelcry.utils.render.RenderHelper;
 
@@ -19,11 +20,18 @@ public class Test {
     public static void init() {
         WorldRenderEvents.AFTER_TRANSLUCENT.register(Test::render);
         SkyblockEvents.LOCATION_CHANGE.register(Test::locationChange);
+        SkyblockEvents.AREA_CHANGE.register(Test::areaChange);
+    }
+
+    private static void areaChange(Area area) {
+        if (mc.player != null) {
+            mc.player.sendMessage(Text.of("New area: " + area.toString()), false);
+        }
     }
 
     private static void locationChange(Location location) {
         if (mc.player != null) {
-            mc.player.sendMessage(Text.of(location.toString()), false);
+            mc.player.sendMessage(Text.of("New location: " + location.toString()), false);
         }
     }
 
