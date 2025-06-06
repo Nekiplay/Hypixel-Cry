@@ -33,7 +33,7 @@ import static com.nekiplay.hypixelcry.utils.PlayerUtils.getLookEndPos;
 public class AutoRightClick {
     private final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 20 * 60;
+    private static final int CHEST_COOLDOWN = 20 * 5;
     private static final int MAX_REMOVALS_PER_TICK = 20;
 
     @SubscribeEvent
@@ -57,7 +57,7 @@ public class AutoRightClick {
             if (entry.getValue() >= CHEST_COOLDOWN) {
                 iterator.remove();
             } else {
-                entry.setValue(entry.getValue() + MAX_REMOVALS_PER_TICK);
+                entry.setValue(entry.getValue() + 1);
             }
         }
     }
