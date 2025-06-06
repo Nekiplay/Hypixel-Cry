@@ -4,9 +4,9 @@ import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.events.KeyEvent;
 import com.nekiplay.hypixelcry.events.MouseButtonEvent;
+import com.nekiplay.hypixelcry.mixins.MinecraftClientAccessor;
 import com.nekiplay.hypixelcry.utils.misc.input.KeyAction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -43,13 +43,20 @@ public class GhostBlocks {
         if (mouseOver instanceof BlockHitResult blockHitResult) {
             BlockPos pos = blockHitResult.getBlockPos();
             if (pos != null) {
-                BlockState state = Blocks.AIR.getDefaultState();
-                mc.world.setBlockState(pos, state);
+                Block block = mc.world.getBlockState(pos).getBlock();
 
-                mc.world.updateNeighbors(pos, Blocks.AIR);
-                mc.worldRenderer.updateBlock(mc.world, pos, null, state, 0);
+                if (block instanceof ChestBlock || block instanceof SkullBlock || block instanceof LeverBlock) {
+                    ((MinecraftClientAccessor)mc).doItemUse();
+                } else {
+                    BlockState state = Blocks.AIR.getDefaultState();
+                    mc.world.setBlockState(pos, state);
 
-                mc.player.swingHand(Hand.MAIN_HAND);
+                    mc.world.updateNeighbors(pos, Blocks.AIR);
+                    mc.worldRenderer.updateBlock(mc.world, pos, null, state, 0);
+
+                    mc.player.swingHand(Hand.MAIN_HAND);
+                }
+
             }
         }
     }

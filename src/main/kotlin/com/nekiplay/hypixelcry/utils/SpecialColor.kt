@@ -5,17 +5,23 @@ import java.awt.Color
 object SpecialColor {
     private const val MIN_CHROMA_SECS = 1
     private const val MAX_CHROMA_SECS = 60
-    private val startTime = SimpleTimeMark.now()
+    private val startTime = System.currentTimeMillis()
 
     @JvmStatic
     fun String.toSpecialColor() = Color(toSpecialColorInt(), true)
 
     @JvmStatic
     fun String.toSpecialColorInt(): Int {
-        val (chroma, alpha, red, green, blue) = decompose(this)
+        val components = decompose(this)
+        val chroma = components.getOrElse(0) { 0 }
+        val alpha = components.getOrElse(1) { 255 }
+        val red = components.getOrElse(2) { 0 }
+        val green = components.getOrElse(3) { 0 }
+        val blue = components.getOrElse(4) { 0 }
+
         val (hue, sat, bri) = Color.RGBtoHSB(red, green, blue, null)
 
-        val adjustedHue = if (chroma > 0) (hue + (startTime.passedSince().inWholeMilliseconds / 1000f / chromaSpeed(chroma) % 1)).let {
+        val adjustedHue = if (chroma > 0) (hue + ((System.currentTimeMillis() - startTime) / 1000f / chromaSpeed(chroma) % 1)).let {
             if (it < 0) it + 1f else it
         } else hue
 
@@ -25,15 +31,14 @@ object SpecialColor {
     @JvmStatic
     fun String.toSpecialColorIntNoAlpha(): Int {
         val components = decompose(this)
-        val (chroma, red, green, blue) = when (components.size) {
-            4 -> components // chroma:r:g:b
-            5 -> components.take(4) // chroma:alpha:r:g:b -> игнорируем alpha
-            else -> intArrayOf(0, 0, 0, 0) // default
-        }
+        val chroma = components.getOrElse(0) { 0 }
+        val red = components.getOrElse(if (components.size == 4) 1 else 2) { 0 }
+        val green = components.getOrElse(if (components.size == 4) 2 else 3) { 0 }
+        val blue = components.getOrElse(if (components.size == 4) 3 else 4) { 0 }
 
         val (hue, sat, bri) = Color.RGBtoHSB(red, green, blue, null)
 
-        val adjustedHue = if (chroma > 0) (hue + (startTime.passedSince().inWholeMilliseconds / 1000f / chromaSpeed(chroma) % 1)).let {
+        val adjustedHue = if (chroma > 0) (hue + ((System.currentTimeMillis() - startTime) / 1000f / chromaSpeed(chroma) % 1)).let {
             if (it < 0) it + 1f else it
         } else hue
 
@@ -42,10 +47,6 @@ object SpecialColor {
 
     @JvmStatic
     fun String.toSpecialColorFloatArray(): FloatArray {
-        if (this == "255:0:0:255") {
-            return floatArrayOf(1.0f, 0.0f, 0.0f, 1.0f)
-        }
-
         val colorInt = toSpecialColor()
         return floatArrayOf(
             colorInt.red / 255f,

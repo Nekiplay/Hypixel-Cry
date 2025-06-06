@@ -4,6 +4,7 @@
   "package": "com.nekiplay.hypixelcry.mixins",
   "mixins": [
     "KeyboardMixin",
+    "MinecraftClientAccessor",
     "MouseMixin",
     "entity.ClientPlayerEntityMixin",
     "entity.PlayerEntityRendererMixin"

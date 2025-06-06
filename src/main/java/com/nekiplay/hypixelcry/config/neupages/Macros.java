@@ -59,4 +59,22 @@ public class Macros {
         @Expose
         public int range = 8;
     }
+
+    @Category(name = "Dungeons", desc = "Macros in dungeons")
+    @Expose
+    public Dungeons dungeons = new Dungeons();
+
+    public static class Dungeons {
+        @Accordion
+        @ConfigOption(name = "Auto chest close", desc = "Auto close dungeon chests")
+        @Expose
+        public Auto_Close_Chests autoCloseChests = new Auto_Close_Chests();
+
+        public static class Auto_Close_Chests {
+            @ConfigOption(name = "Auto close chests", desc = "Auto close dungeon chests?")
+            @ConfigEditorBoolean()
+            @Expose
+            public boolean enable = true;
+        }
+    }
 }
