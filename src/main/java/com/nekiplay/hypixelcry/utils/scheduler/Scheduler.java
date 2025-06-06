@@ -54,7 +54,7 @@ public class Scheduler {
      */
     public void schedule(Runnable task, int delay, boolean multithreaded) {
         if (!RenderSystem.isOnRenderThread() && MinecraftClient.getInstance() != null) {
-            LOGGER.warn("[Skyblocker Scheduler] Called the scheduler from the {} class on the {} thread. This will be unsupported in the future.", StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE).getCallerClass().getName(), Thread.currentThread().getName());
+            LOGGER.warn("[Skyblocker Scheduler] Called the scheduler from the {} class on the {} thread. This will be unsupported in the future.", StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getName(), Thread.currentThread().getName());
             MinecraftClient.getInstance().send(() -> schedule(task, delay, multithreaded));
 
             return;
