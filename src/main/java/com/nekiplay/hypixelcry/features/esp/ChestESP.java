@@ -76,10 +76,10 @@ public class ChestESP {
                 RenderHelper.renderOutline(context, pos, colorComponents, lineWidth, throughWalls);
             }
             if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
-                RenderHelper.renderText(context, Text.of("Chest").asOrderedText(), pos.toCenterPos().add(0, 1, 0), SpecialColor.toSpecialColorInt(HypixelCry.config.esp.chestEsp.colour), 1, 0.5f, throughWalls);
+                RenderHelper.renderText(context, Text.of("Chest").asOrderedText(), pos.toCenterPos().add(0, 1, 0), SpecialColor.toSpecialColorIntNoAlpha(HypixelCry.config.esp.chestEsp.colour), 1, 0.5f, throughWalls);
             }
             if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                RenderHelper.renderLineFromCursor(context, pos.toCenterPos(), colorComponents, 1, 0.8f);
+                RenderHelper.renderLineFromCursor(context, pos.toCenterPos(), colorComponents, 1, 9.5f);
             }
         }
     }

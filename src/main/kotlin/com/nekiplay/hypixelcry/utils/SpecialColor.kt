@@ -23,6 +23,24 @@ object SpecialColor {
     }
 
     @JvmStatic
+    fun String.toSpecialColorIntNoAlpha(): Int {
+        val components = decompose(this)
+        val (chroma, red, green, blue) = when (components.size) {
+            4 -> components // chroma:r:g:b
+            5 -> components.take(4) // chroma:alpha:r:g:b -> игнорируем alpha
+            else -> intArrayOf(0, 0, 0, 0) // default
+        }
+
+        val (hue, sat, bri) = Color.RGBtoHSB(red, green, blue, null)
+
+        val adjustedHue = if (chroma > 0) (hue + (startTime.passedSince().inWholeMilliseconds / 1000f / chromaSpeed(chroma) % 1)).let {
+            if (it < 0) it + 1f else it
+        } else hue
+
+        return Color.HSBtoRGB(adjustedHue, sat, bri)
+    }
+
+    @JvmStatic
     fun String.toSpecialColorFloatArray(): FloatArray {
         if (this == "255:0:0:255") {
             return floatArrayOf(1.0f, 0.0f, 0.0f, 1.0f)
