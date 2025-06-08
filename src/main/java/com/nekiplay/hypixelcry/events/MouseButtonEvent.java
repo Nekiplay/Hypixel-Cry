@@ -21,8 +21,8 @@ public class MouseButtonEvent {
             }
     );
 
-    private int button;
-    private KeyAction action;
+    private final int button;
+    private final KeyAction action;
 
     public MouseButtonEvent(int button, KeyAction action) {
         this.button = button;

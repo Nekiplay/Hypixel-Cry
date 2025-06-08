@@ -53,16 +53,14 @@ val shadowModImpl by configurations.creating {
 dependencies {
     minecraft("com.mojang:minecraft:${property("minecraft_version")}")
     mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
+
     modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
 
-    include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0")!!)
-    // HM API (Hypixel Mod API Library)
-    include(modImplementation("net.azureaaron:hm-api:${property("hm_api_version")}")!!)
-    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0");
-    include(implementation("meteordevelopment:orbit:${property("orbit_version")}")!!)
-
+    include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0")!!) // Click GUI
+    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0") // Click GUI
+    include(modImplementation("net.azureaaron:hm-api:${property("hm_api_version")}")!!)  // HM API (Hypixel Mod API Library)
 
     // Occlusion Culling
     include(implementation("com.logisticscraft:occlusionculling:${property("occlusionculling_version")}")!!)
