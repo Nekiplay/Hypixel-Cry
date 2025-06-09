@@ -59,7 +59,7 @@ public final class OnlyRenderProcess implements ICustomGoalProcess, Helper {
             case GOAL_SET:
                 return new PathingCommand(this.goal, PathingCommandType.CANCEL_AND_SET_GOAL);
             case PATH_REQUESTED:
-                PathingCommand result = new PathingCommand(this.goal, PathingCommandType.FORCE_REVALIDATE_GOAL_AND_PATH);
+                PathingCommand result = new PathingCommand(this.goal, PathingCommandType.REVALIDATE_GOAL_AND_PATH);
                 state = State.EXECUTING;
                 return result;
             case EXECUTING:

@@ -108,7 +108,6 @@ public class PathFinder {
 
     private static void recalculatePath(PathData pathData) {
         PATH_FINDER_EXECUTOR.submit(() -> {
-            pathData.process.setState(OnlyRenderProcess.State.NONE);
             pathData.process.setGoal(new GoalBlock(pathData.end));
             pathData.process.path();
 
@@ -196,7 +195,7 @@ public class PathFinder {
                     prevPos.toCenterPos(),
                     currentPos.toCenterPos()
             };
-            RenderHelper.renderLinesFromPoints(context, points, pathData.color, pathData.color[3], 3f, false);
+            RenderHelper.renderLinesFromPoints(context, points, pathData.color, pathData.color[3], 3f, true);
             prevPos = currentPos;
         }
     }
