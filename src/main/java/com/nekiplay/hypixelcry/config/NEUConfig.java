@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.config.neupages.ESP;
 import com.nekiplay.hypixelcry.config.neupages.Macros;
+import com.nekiplay.hypixelcry.config.neupages.Misc;
 import com.nekiplay.hypixelcry.utils.Utils;
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.Social;
@@ -73,5 +74,12 @@ public class NEUConfig extends Config {
     )
     @Expose
     public ESP esp = new ESP();
+
+    @Category(
+            name = "Misc",
+            desc = "Other features"
+    )
+    @Expose
+    public Misc misc = new Misc();
 
 }

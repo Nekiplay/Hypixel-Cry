@@ -1,5 +1,6 @@
 package com.nekiplay.hypixelcry.features;
 
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.events.SkyblockEvents;
 import com.nekiplay.hypixelcry.utils.Area;
@@ -24,13 +25,13 @@ public class Test {
     }
 
     private static void areaChange(Area area) {
-        if (mc.player != null) {
+        if (mc.player != null && HypixelCry.config.misc.debug.enabled) {
             mc.player.sendMessage(Text.of("New area: " + area.toString()), false);
         }
     }
 
     private static void locationChange(Location location) {
-        if (mc.player != null) {
+        if (mc.player != null && HypixelCry.config.misc.debug.enabled) {
             mc.player.sendMessage(Text.of("New location: " + location.toString()), false);
         }
     }
