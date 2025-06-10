@@ -19,7 +19,6 @@ public class Test {
 
     @Init
     public static void init() {
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(Test::render);
         SkyblockEvents.LOCATION_CHANGE.register(Test::locationChange);
         SkyblockEvents.AREA_CHANGE.register(Test::areaChange);
     }
@@ -34,17 +33,5 @@ public class Test {
         if (mc.player != null && HypixelCry.config.misc.debug.enabled) {
             mc.player.sendMessage(Text.of("New location: " + location.toString()), false);
         }
-    }
-
-    private static void render(WorldRenderContext context) {
-
-        float[] colorComponents = new float[]{ 1.0f, 0.0f, 0.0f }; // Красный цвет (R, G, B)
-        float alpha = 0.5f; // Прозрачность
-        float lineWidth = 2.0f; // Толщина линии
-        boolean throughWalls = true; // Рендерить через стены
-
-        // Рендерим заполненный блок и его контур
-        RenderHelper.renderFilled(context, new BlockPos(0, 0, 0), colorComponents, alpha, throughWalls);
-        RenderHelper.renderOutline(context, new BlockPos(0, 0, 0), colorComponents, lineWidth, throughWalls);
     }
 }

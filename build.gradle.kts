@@ -64,8 +64,6 @@ dependencies {
 
     // Occlusion Culling
     include(implementation("com.logisticscraft:occlusionculling:${property("occlusionculling_version")}")!!)
-
-    modImplementation(files("libs\\baritone-unoptimized-fabric-1.11.1-6.jar")) // Baritone
 }
 
 tasks {
