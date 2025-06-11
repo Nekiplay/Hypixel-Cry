@@ -5,6 +5,7 @@
   "mixins": [
     "KeyboardMixin",
     "MinecraftClientAccessor",
+    "MixinClientLoginNetworkHandlerMixin",
     "MouseMixin",
     "entity.ClientPlayerEntityMixin",
     "entity.PlayerEntityRendererMixin"
