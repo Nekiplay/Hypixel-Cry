@@ -3,7 +3,6 @@ package com.nekiplay.hypixelcry.features.macros;
 import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.events.SkyblockEvents;
-import com.nekiplay.hypixelcry.features.Test;
 import com.nekiplay.hypixelcry.utils.Location;
 import com.nekiplay.hypixelcry.utils.StringUtils;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
