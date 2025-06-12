@@ -52,12 +52,15 @@ public class DarkMonolithESP {
     }
 
     private static BlockPos findEggInWorld() {
-        return Arrays.stream(MONOLITH_LOCATIONS)
-                .filter(Objects.requireNonNull(mc.world)::isPosLoaded)
-                .map(DarkMonolithESP::findEggNearPosition)
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
+        if (mc.world != null) {
+            return Arrays.stream(MONOLITH_LOCATIONS)
+                    .filter(mc.world::isPosLoaded)
+                    .map(DarkMonolithESP::findEggNearPosition)
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
     }
 
     private static BlockPos findEggNearPosition(BlockPos center) {
@@ -66,7 +69,8 @@ public class DarkMonolithESP {
         BlockPos maxPos = center.add(searchRadius, searchRadius, searchRadius);
 
         for (BlockPos pos : BlockPos.iterate(minPos, maxPos)) {
-            BlockState state = Objects.requireNonNull(mc.world).getBlockState(pos);
+            assert mc.world != null;
+            BlockState state = mc.world.getBlockState(pos);
             if (state.getBlock() == Blocks.DRAGON_EGG) {
                 return pos;
             }
