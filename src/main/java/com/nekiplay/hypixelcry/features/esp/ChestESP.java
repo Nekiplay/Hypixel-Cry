@@ -79,7 +79,7 @@ public class ChestESP {
                 RenderHelper.renderText(context, Text.of("Chest").asOrderedText(), pos.toCenterPos().add(0, 1, 0), SpecialColor.toSpecialColorIntNoAlpha(HypixelCry.config.esp.chestEsp.colour), 1, 0.5f, throughWalls);
             }
             if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-                RenderHelper.renderLineFromCursor(context, pos.toCenterPos(), colorComponents, 1, 9.5f);
+                RenderHelper.renderLineFromCursor(context, pos.toCenterPos(), colorComponents, 1, lineWidth);
             }
         }
     }

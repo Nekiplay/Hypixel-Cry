@@ -89,15 +89,15 @@ public class DarkMonolithESP {
         float lineWidth = 1.5f; // Толщина линии
         boolean throughWalls = true; // Рендерить через стены
 
-        if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
+        if (HypixelCry.config.esp.dwarvenMines.darkMonolith.features.contains(ESPFeatures.Box)) {
             RenderHelper.renderFilled(context, eggPosition, colorComponents, alpha, throughWalls);
             RenderHelper.renderOutline(context, eggPosition, colorComponents, lineWidth, throughWalls);
         }
-        if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Text)) {
+        if (HypixelCry.config.esp.dwarvenMines.darkMonolith.features.contains(ESPFeatures.Text)) {
             RenderHelper.renderText(context, Text.of("Monolith").asOrderedText(), eggPosition.toCenterPos().add(0, 1, 0), colorComponentsNoAlpha, 1, 0.5f, throughWalls);
         }
-        if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Tracer)) {
-            RenderHelper.renderLineFromCursor(context, eggPosition.toCenterPos(), colorComponents, 1, 9.5f);
+        if (HypixelCry.config.esp.dwarvenMines.darkMonolith.features.contains(ESPFeatures.Tracer)) {
+            RenderHelper.renderLineFromCursor(context, eggPosition.toCenterPos(), colorComponents, 1, lineWidth);
         }
     }
 }
