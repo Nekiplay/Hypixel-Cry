@@ -66,7 +66,7 @@ public class ChestESP {
 
 
         float alpha = colorComponents[3];
-        float lineWidth = 2.0f; // Толщина линии
+        float lineWidth = 1.5f; // Толщина линии
         boolean throughWalls = true; // Рендерить через стены
 
         for (BlockPos pos : chestLocations) {

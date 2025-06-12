@@ -42,4 +42,39 @@ public class ESP {
         @ConfigEditorDraggableList(requireNonEmpty = false)
         public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
     }
+
+    @Category(name = "Dwarven Mines", desc = "Render features in dwarven mines")
+    @Expose
+    public Dwarven_Mines dwarvenMines = new Dwarven_Mines();
+
+    public static class Dwarven_Mines {
+        @Accordion
+        @ConfigOption(
+                name = "Dark Monolith",
+                desc = ""
+        )
+        @Expose
+        public Dark_Monolith darkMonolith = new Dark_Monolith();
+
+        public static class Dark_Monolith {
+            @ConfigOption(
+                    name = "Enable",
+                    desc = "Enable Dark Monolith ESP?"
+            )
+            @ConfigEditorBoolean
+            @Expose
+            public boolean enabled = false;
+
+            @ConfigOption(name = "Color", desc = "ESP color")
+            @ConfigEditorColour
+            @Expose
+            public String colour = "0:255:131:0:255";
+
+            @ConfigOption(name = "Features", desc = "Render features")
+            @Expose
+            @ConfigEditorDraggableList(requireNonEmpty = false)
+            public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
+        }
+    }
+
 }

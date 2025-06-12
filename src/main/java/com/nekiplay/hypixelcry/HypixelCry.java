@@ -97,8 +97,6 @@ public class HypixelCry implements ClientModInitializer {
         init();
 
         Scheduler.INSTANCE.scheduleCyclic(Utils::update, 20);
-
-        LOGGER.info("Hello Fabric world!");
     }
 
     /**
