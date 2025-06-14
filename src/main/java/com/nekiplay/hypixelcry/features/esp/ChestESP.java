@@ -63,14 +63,11 @@ public class ChestESP {
 
         float[] colorComponents = SpecialColor.toSpecialColorFloatArray(HypixelCry.config.esp.chestEsp.colour);
 
-
-
         float alpha = colorComponents[3];
-        float lineWidth = 1.5f; // Толщина линии
-        boolean throughWalls = true; // Рендерить через стены
+        float lineWidth = 1.5f;
+        boolean throughWalls = true;
 
         for (BlockPos pos : chestLocations) {
-
             if (HypixelCry.config.esp.chestEsp.features.contains(ESPFeatures.Box)) {
                 RenderHelper.renderFilled(context, pos, colorComponents, alpha, throughWalls);
                 RenderHelper.renderOutline(context, pos, colorComponents, lineWidth, throughWalls);

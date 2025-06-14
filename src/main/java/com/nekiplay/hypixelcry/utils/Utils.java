@@ -26,6 +26,8 @@ import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -46,6 +48,18 @@ public class Utils {
     @SuppressWarnings("JavadocDeclaration")
     @NotNull
     private static Environment environment = Environment.PRODUCTION;
+
+    public static boolean copyToClipboard(String text) {
+        try {
+            StringSelection selection = new StringSelection(text);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, null);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Ошибка при копировании в буфер обмена: " + e.getMessage());
+            return false;
+        }
+    }
 
     @Init
     public static void init() {
