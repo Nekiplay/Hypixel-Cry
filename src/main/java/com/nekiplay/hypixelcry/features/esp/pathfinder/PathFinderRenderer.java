@@ -72,23 +72,8 @@ public class PathFinderRenderer {
         int chunkZ = chunk.getPos().z;
 
         for (PathData pathData : PATHS.values()) {
-            int endChunkX = pathData.end.getX() >> 4;
-            int endChunkZ = pathData.end.getZ() >> 4;
-
-            boolean isNearEndpoint = Math.abs(chunkX - endChunkX) <= ENDPOINT_CHUNK_CHECK_RADIUS &&
-                    Math.abs(chunkZ - endChunkZ) <= ENDPOINT_CHUNK_CHECK_RADIUS;
-
-            boolean endpointNowLoaded = clientWorld.isPosLoaded(pathData.end);
-
-            if (isNearEndpoint || endpointNowLoaded) {
-                pathData.endpointChunksUpdated = true;
-                pathData.needsUpdate = true;
-
-                BlockPos currentPos = mc.player.getBlockPos();
-                if (currentPos.getSquaredDistance(pathData.end) < (32 * 32)) {
-                    recalculatePath(currentPos, pathData);
-                }
-            }
+            pathData.endpointChunksUpdated = true;
+            pathData.needsUpdate = true;
         }
     }
 
