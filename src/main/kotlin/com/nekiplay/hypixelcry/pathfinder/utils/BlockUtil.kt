@@ -3,102 +3,12 @@ package com.nekiplay.hypixelcry.pathfinder.utils
 import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementHelper
 import net.minecraft.block.*
-import net.minecraft.block.enums.BlockHalf
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
-import net.minecraft.world.World
-import kotlin.math.abs
 
 object BlockUtil {
-    fun canWalkOnBlock(world: World, pos: BlockPos): Boolean {
-        val blockState = world.getBlockState(pos)
-        val blockAboveState = world.getBlockState(pos.up())
-
-        val block = blockState.getBlock()
-        val blockAbove = blockAboveState.getBlock()
-        return blockState.isSolidBlock(world, pos) && !blockState.isLiquid && blockAbove === Blocks.AIR
-    }
-
-    fun neighbourGenerator(
-        mainBlock: BlockPos,
-        xD1: Int, xD2: Int,
-        yD1: Int, yD2: Int,
-        zD1: Int, zD2: Int
-    ): MutableList<BlockPos?> {
-        val neighbours: MutableList<BlockPos?> = ArrayList<BlockPos?>()
-        for (x in xD1..xD2) {
-            for (y in yD1..yD2) {
-                for (z in zD1..zD2) {
-                    neighbours.add(mainBlock.add(x, y, z))
-                }
-            }
-        }
-        return neighbours
-    }
-
-    fun isStairSlab(world: World, block: BlockPos?): Boolean {
-        val state = world.getBlockState(block)
-        return state.getBlock() is StairsBlock ||
-                state.getBlock() is SlabBlock
-    }
-
-    fun getDirectionToWalkOnStairs(state: BlockState): Direction? {
-        if (state.getBlock() is StairsBlock) {
-            val facing = state.get<Direction?>(StairsBlock.FACING)
-            val half = state.get<BlockHalf?>(StairsBlock.HALF)
-
-            if (half == BlockHalf.TOP) {
-                return Direction.UP
-            } else {
-                return facing
-            }
-        }
-        return Direction.UP
-    }
-
-    fun getPlayerDirectionToBeAbleToWalkOnBlock(startPos: BlockPos, endPos: BlockPos): Direction {
-        val deltaX = endPos.getX() - startPos.getX()
-        val deltaZ = endPos.getZ() - startPos.getZ()
-
-        if (abs(deltaX) > abs(deltaZ)) {
-            return if (deltaX > 0) Direction.EAST else Direction.WEST
-        } else {
-            return if (deltaZ > 0) Direction.SOUTH else Direction.NORTH
-        }
-    }
-
-    fun canWalkOn(ctx: CalculationContext, startPos: BlockPos, endPos: BlockPos): Boolean {
-        val world = world ?: return false
-        val startState = world.getBlockState(startPos)
-        val endState = world.getBlockState(endPos)
-
-        // Check if end position is not solid
-        if (!endState.isSolidBlock(world, endPos)) {
-            return endPos.y - startPos.y <= 1
-        }
-
-        // Get collision shapes
-        val sourceShape = startState.getCollisionShape(world, startPos)
-        val destShape = endState.getCollisionShape(world, endPos)
-
-        val sourceMaxY = if (sourceShape.isEmpty) 0.0 else sourceShape.boundingBox.maxY
-        val destMaxY = if (destShape.isEmpty) 0.0 else destShape.boundingBox.maxY
-
-        // Special case for stairs
-        if (endState.block is StairsBlock && (destMaxY - sourceMaxY) > 1.0) {
-            return MovementHelper.isValidStair(
-                endState,
-                endPos.x - startPos.x,
-                endPos.z - startPos.z
-            )
-        }
-
-        // Default case
-        return (destMaxY - sourceMaxY) <= 0.5
-    }
-
     fun bresenham(ctx: CalculationContext, start: BlockPos, end: BlockPos): Boolean {
         return bresenham(
             ctx,

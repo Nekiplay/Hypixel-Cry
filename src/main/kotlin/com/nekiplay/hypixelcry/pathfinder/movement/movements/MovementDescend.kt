@@ -5,7 +5,6 @@ import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext
 import com.nekiplay.hypixelcry.pathfinder.movement.Movement
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementHelper
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementResult
-import com.nekiplay.hypixelcry.pathfinder.utils.world
 import net.minecraft.block.BlockState
 import net.minecraft.util.math.BlockPos
 
@@ -59,7 +58,7 @@ class MovementDescend(mm: HypixelCry, from: BlockPos, to: BlockPos) : Movement(m
                     destState
                 ) || MovementHelper.isLadder(destState)
             ) {
-                freeFallCost(ctx, x, y, z, destX, destZ, destState, res)
+                freeFallCost(ctx, y, destX, destZ, destState, res)
                 return
             }
 
@@ -87,9 +86,7 @@ class MovementDescend(mm: HypixelCry, from: BlockPos, to: BlockPos) : Movement(m
 
         fun freeFallCost(
             ctx: CalculationContext,
-            x: Int,
             y: Int,
-            z: Int,
             destX: Int,
             destZ: Int,
             destState: BlockState?,
@@ -106,7 +103,7 @@ class MovementDescend(mm: HypixelCry, from: BlockPos, to: BlockPos) : Movement(m
                 val newY = y - fellSoFar
                 if (newY < 0) return
 
-                val blockOnto = world?.getBlockState(BlockPos(destX, newY, destZ))
+                val blockOnto = ctx.world?.getBlockState(BlockPos(destX, newY, destZ))
                 val unprotectedFallHeight = fellSoFar - (y - effStartHeight) // basic math
                 val costUpUntilThisBlock =
                     ctx.cost.WALK_OFF_ONE_BLOCK_COST + ctx.cost.N_BLOCK_FALL_COST[unprotectedFallHeight] + cost

@@ -5,7 +5,6 @@ import com.nekiplay.hypixelcry.pathfinder.movement.CalculationContext
 import com.nekiplay.hypixelcry.pathfinder.movement.Movement
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementHelper
 import com.nekiplay.hypixelcry.pathfinder.movement.MovementResult
-import com.nekiplay.hypixelcry.pathfinder.utils.world
 import net.minecraft.util.math.BlockPos
 
 class MovementTraverse(mm: HypixelCry, from: BlockPos, to: BlockPos) : Movement(mm, from, to) {

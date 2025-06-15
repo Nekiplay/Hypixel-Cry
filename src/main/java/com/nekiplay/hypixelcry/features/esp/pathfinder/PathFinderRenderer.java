@@ -25,10 +25,9 @@ import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 import static com.nekiplay.hypixelcry.HypixelCry.mc;
-import static net.minecraft.Bootstrap.println;
 
 public class PathFinderRenderer {
-    private static final ExecutorService PATH_FINDER_EXECUTOR = Executors.newFixedThreadPool(6);
+    private static final ExecutorService PATH_FINDER_EXECUTOR = Executors.newFixedThreadPool(12);
     private static final Map<String, PathData> PATHS = new ConcurrentHashMap<>();
     private static final Queue<PathResult> PATH_RESULTS = new ConcurrentLinkedQueue<>();
     private static final double RECALCULATION_DISTANCE = 9.0;
@@ -72,18 +71,25 @@ public class PathFinderRenderer {
         int chunkX = chunk.getPos().x;
         int chunkZ = chunk.getPos().z;
 
-        // Check if any loaded chunk is near any path endpoint
-        PATHS.forEach((id, pathData) -> {
+        for (PathData pathData : PATHS.values()) {
             int endChunkX = pathData.end.getX() >> 4;
             int endChunkZ = pathData.end.getZ() >> 4;
 
-            // If loaded chunk is within radius of endpoint chunk
-            if (Math.abs(chunkX - endChunkX) <= ENDPOINT_CHUNK_CHECK_RADIUS &&
-                    Math.abs(chunkZ - endChunkZ) <= ENDPOINT_CHUNK_CHECK_RADIUS) {
+            boolean isNearEndpoint = Math.abs(chunkX - endChunkX) <= ENDPOINT_CHUNK_CHECK_RADIUS &&
+                    Math.abs(chunkZ - endChunkZ) <= ENDPOINT_CHUNK_CHECK_RADIUS;
+
+            boolean endpointNowLoaded = clientWorld.isPosLoaded(pathData.end);
+
+            if (isNearEndpoint || endpointNowLoaded) {
                 pathData.endpointChunksUpdated = true;
                 pathData.needsUpdate = true;
+
+                BlockPos currentPos = mc.player.getBlockPos();
+                if (currentPos.getSquaredDistance(pathData.end) < (32 * 32)) {
+                    recalculatePath(currentPos, pathData);
+                }
             }
-        });
+        }
     }
 
     private static void onClientTick() {
@@ -142,7 +148,6 @@ public class PathFinderRenderer {
                     new Goal(targetPos.getX(), targetPos.getY(), targetPos.getZ(), ctx),
                     ctx
             );
-            println("Path to: " + targetPos.toShortString());
 
             Optional.ofNullable(finder.calculatePath())
                     .map(Path::getSmoothedPath)
@@ -162,10 +167,6 @@ public class PathFinderRenderer {
     }
 
     private static BlockPos getNearestLoadedPos(CalculationContext ctx, BlockPos target) {
-        if (ctx.getWorld() == null || mc.player == null) {
-            return mc.player.getBlockPos();
-        }
-
         if (ctx.getWorld().isPosLoaded(target)) {
             return target;
         }
@@ -202,16 +203,39 @@ public class PathFinderRenderer {
     }
 
     private static boolean shouldRecalculatePath(BlockPos currentPos, PathData pathData) {
-        if (pathData.needsUpdate || pathData.blocks.isEmpty()) return true;
-        if (pathData.endpointChunksUpdated) return true;
+        if (pathData.needsUpdate || pathData.blocks.isEmpty()) {
+            return true;
+        }
+
+        if (pathData.endpointChunksUpdated) {
+            return true;
+        }
 
         BlockPos endPos = pathData.blocks.getLast();
-        if (currentPos.getSquaredDistance(endPos) < RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) return true;
+        double distanceToEnd = currentPos.getSquaredDistance(endPos);
+        if (distanceToEnd < RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) {
+            return true;
+        }
+
+        if (!isPathToLoadedArea(currentPos, pathData)) {
+            return true;
+        }
 
         BlockPos nearest = findNearestPathPoint(currentPos, pathData.blocks);
-        if (nearest == null || currentPos.getSquaredDistance(nearest) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) return true;
+        return nearest == null || currentPos.getSquaredDistance(nearest) > RECALCULATION_DISTANCE * RECALCULATION_DISTANCE;
+    }
 
-        return pathData.chunksUpdated && isPotentialBetterPathAvailable(currentPos, pathData);
+    private static boolean isPathToLoadedArea(BlockPos playerPos, PathData pathData) {
+        if (mc.world == null) return false;
+
+        int checkLength = Math.min(5, pathData.blocks.size());
+        for (int i = pathData.blocks.size() - 1; i >= pathData.blocks.size() - checkLength; i--) {
+            BlockPos pathPos = pathData.blocks.get(i);
+            if (!mc.world.isPosLoaded(pathPos)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static BlockPos findNearestPathPoint(BlockPos playerPos, List<BlockPos> path) {
@@ -253,20 +277,6 @@ public class PathFinderRenderer {
         if (nearestIndex > 0) {
             pathData.remainingPath = pathData.remainingPath.subList(nearestIndex, pathData.remainingPath.size());
         }
-    }
-
-    private static boolean isPotentialBetterPathAvailable(BlockPos playerPos, PathData pathData) {
-        if (pathData.blocks.isEmpty() || !Objects.requireNonNull(mc.world).isPosLoaded(pathData.end)) return false;
-
-        BlockPos currentPathEnd = pathData.blocks.getLast();
-        double currentDistance = currentPathEnd.getSquaredDistance(pathData.end);
-
-        return IntStream.rangeClosed(-3, 3)
-                .anyMatch(x -> IntStream.rangeClosed(-3, 3)
-                        .anyMatch(z -> {
-                            BlockPos testPos = playerPos.add(x*16, 0, z*16);
-                            return mc.world.isPosLoaded(testPos) && testPos.getSquaredDistance(pathData.end) < currentDistance;
-                        }));
     }
 
     private static void onRenderWorldLast(WorldRenderContext context) {
