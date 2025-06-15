@@ -3,6 +3,7 @@
   "compatibilityLevel": "JAVA_21",
   "package": "com.nekiplay.hypixelcry.mixins",
   "mixins": [
+    "ClientChunkManagerMixin",
     "KeyboardMixin",
     "MinecraftClientAccessor",
     "MixinClientLoginNetworkHandlerMixin",

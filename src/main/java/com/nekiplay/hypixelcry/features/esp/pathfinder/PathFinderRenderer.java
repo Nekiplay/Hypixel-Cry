@@ -33,6 +33,7 @@ public class PathFinderRenderer {
     private static final Queue<PathResult> PATH_RESULTS = new ConcurrentLinkedQueue<>();
     private static final double RECALCULATION_DISTANCE = 9.0;
     private static final int CHUNK_UPDATE_RADIUS = 1;
+    private static final int ENDPOINT_CHUNK_CHECK_RADIUS = 2; // Radius to check around endpoint for chunk loads
 
     public static class PathData {
         public final BlockPos end;
@@ -46,6 +47,7 @@ public class PathFinderRenderer {
         public int lastChunkX = Integer.MIN_VALUE;
         public int lastChunkZ = Integer.MIN_VALUE;
         public boolean chunksUpdated = false;
+        public boolean endpointChunksUpdated = false;
 
         public PathData(BlockPos end, float[] color, String endText) {
             this.end = end;
@@ -65,6 +67,23 @@ public class PathFinderRenderer {
     }
 
     private static void chunkLoad(ClientWorld clientWorld, Chunk chunk) {
+        if (mc.player == null || mc.world == null) return;
+
+        int chunkX = chunk.getPos().x;
+        int chunkZ = chunk.getPos().z;
+
+        // Check if any loaded chunk is near any path endpoint
+        PATHS.forEach((id, pathData) -> {
+            int endChunkX = pathData.end.getX() >> 4;
+            int endChunkZ = pathData.end.getZ() >> 4;
+
+            // If loaded chunk is within radius of endpoint chunk
+            if (Math.abs(chunkX - endChunkX) <= ENDPOINT_CHUNK_CHECK_RADIUS &&
+                    Math.abs(chunkZ - endChunkZ) <= ENDPOINT_CHUNK_CHECK_RADIUS) {
+                pathData.endpointChunksUpdated = true;
+                pathData.needsUpdate = true;
+            }
+        });
     }
 
     private static void onClientTick() {
@@ -86,6 +105,7 @@ public class PathFinderRenderer {
                 data.furthestReachedIndex = 0;
                 data.currentVisibleFromIndex = 0;
                 data.chunksUpdated = false;
+                data.endpointChunksUpdated = false;
                 data.needsUpdate = false;
             });
         }
@@ -142,46 +162,38 @@ public class PathFinderRenderer {
     }
 
     private static BlockPos getNearestLoadedPos(CalculationContext ctx, BlockPos target) {
-        // Проверка на null и загруженность цели
         if (ctx.getWorld() == null || mc.player == null) {
             return mc.player.getBlockPos();
         }
 
-        // Если цель загружена - возвращаем её сразу
         if (ctx.getWorld().isPosLoaded(target)) {
             return target;
         }
 
         BlockPos playerPos = mc.player.getBlockPos();
-        BlockPos farthestLoaded = playerPos; // Начинаем с позиции игрока
+        BlockPos farthestLoaded = playerPos;
 
-        // Вектор направления к цели
         int dx = target.getX() - playerPos.getX();
         int dz = target.getZ() - playerPos.getZ();
         double length = Math.sqrt(dx * dx + dz * dz);
 
         if (length <= 0) {
-            return playerPos; // Если цель совпадает с игроком
+            return playerPos;
         }
 
-        // Нормализованное направление с шагом 1 блок (для точности)
         double stepX = dx / length;
         double stepZ = dz / length;
 
-        // Максимальное расстояние поиска (чанки * 16 блоков)
-        int maxDistance = 16 * 16; // 256 блоков (16 чанков)
+        int maxDistance = 16 * 16;
 
-        // Ищем с шагом в 1 блок для максимальной точности
         for (int i = 1; i <= maxDistance; i++) {
             int checkX = playerPos.getX() + (int)(stepX * i);
             int checkZ = playerPos.getZ() + (int)(stepZ * i);
             BlockPos checkPos = new BlockPos(checkX, playerPos.getY(), checkZ);
 
-            // Проверяем загруженность
             if (ctx.getWorld().isPosLoaded(checkPos)) {
                 farthestLoaded = checkPos;
             } else {
-                // Прекращаем поиск при первом незагруженном блоке
                 break;
             }
         }
@@ -191,6 +203,7 @@ public class PathFinderRenderer {
 
     private static boolean shouldRecalculatePath(BlockPos currentPos, PathData pathData) {
         if (pathData.needsUpdate || pathData.blocks.isEmpty()) return true;
+        if (pathData.endpointChunksUpdated) return true;
 
         BlockPos endPos = pathData.blocks.getLast();
         if (currentPos.getSquaredDistance(endPos) < RECALCULATION_DISTANCE * RECALCULATION_DISTANCE) return true;
@@ -311,7 +324,6 @@ public class PathFinderRenderer {
         RenderHelper.renderText(context, Text.of(pathData.endText).asOrderedText(), endPos.toCenterPos().add(0, 1, 0), color, 1, 0.5f, true);
         RenderHelper.renderText(context, Text.of("End").asOrderedText(), endPos.toCenterPos().add(0, 1.2, 0), color, 1, 1.5f, true);
     }
-
 
     // API methods
     public static void addOrUpdatePath(String id, BlockPos end, float[] color, String endText) {
