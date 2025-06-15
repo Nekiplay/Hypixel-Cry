@@ -3,6 +3,7 @@ package com.nekiplay.hypixelcry.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.features.esp.pathfinder.PathFinderRenderer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -32,7 +33,7 @@ public class PathFinderCommand {
                                                         .executes(context -> {
                                                             BlockPos targetPos = getBlockPosFromContext(context);
                                                             PathFinderRenderer.addOrUpdatePath(CUSTOM_PATH_ID, targetPos, DEFAULT_COLOR, CUSTOM_PATH_ID);
-                                                            sendFeedback(context, "§aSet path to position: " + targetPos.toShortString());
+                                                            sendFeedback(context, HypixelCry.PREFIX + "§aSet path to position: " + targetPos.toShortString());
                                                             return 1;
                                                         })
                                                 )
@@ -43,9 +44,9 @@ public class PathFinderCommand {
                                 .executes(context -> {
                                     if (PathFinderRenderer.hasPath(CUSTOM_PATH_ID)) {
                                         PathFinderRenderer.removePath(CUSTOM_PATH_ID);
-                                        sendFeedback(context, "§aCleared custom path");
+                                        sendFeedback(context, HypixelCry.PREFIX + "§aCleared custom path");
                                     } else {
-                                        sendFeedback(context, "§cNo custom path to clear");
+                                        sendFeedback(context, HypixelCry.PREFIX + "§cNo custom path to clear");
                                     }
                                     return 1;
                                 })

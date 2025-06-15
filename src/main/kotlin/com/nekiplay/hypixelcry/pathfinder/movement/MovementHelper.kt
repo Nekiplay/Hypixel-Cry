@@ -6,6 +6,7 @@ import net.minecraft.block.CarpetBlock
 import net.minecraft.block.CauldronBlock
 import net.minecraft.block.DoorBlock
 import net.minecraft.block.FenceGateBlock
+import net.minecraft.block.FlowerBlock
 import net.minecraft.block.FluidBlock
 import net.minecraft.block.LadderBlock
 import net.minecraft.block.SkullBlock
@@ -41,6 +42,7 @@ object MovementHelper {
         val block = state?.block
         return when (block) {
             Blocks.AIR -> true
+            is FlowerBlock -> true
             Blocks.FIRE, Blocks.TRIPWIRE, Blocks.COBWEB, Blocks.END_PORTAL, Blocks.COCOA, is SkullBlock, is TrapdoorBlock -> false
             is DoorBlock, is FenceGateBlock -> {
                 // TODO this assumes that all doors in all mods are openable
@@ -63,7 +65,6 @@ object MovementHelper {
             Blocks.LADDER -> false
             else -> {
                 try {
-                    // Updated method call for Fabric 1.21.5
                     block == Blocks.AIR
                 } catch (exception: Throwable) {
                     println("The block ${state?.block?.translationKey} requires a special case due to the exception ${exception.message}")
