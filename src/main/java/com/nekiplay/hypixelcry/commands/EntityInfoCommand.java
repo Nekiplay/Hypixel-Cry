@@ -90,13 +90,11 @@ public class EntityInfoCommand {
                 GameProfile profile = playerEntity.getGameProfile();
                 if (profile != null) {
                     Collection<Property> textures = profile.getProperties().get("textures");
-                    if (textures != null) {
-                        for (Property entry : textures) {
-                            if (entry != null && entry.value() != null) {
-                                String playerName = playerEntity.getName().getString();
-                                source.sendFeedback(Text.literal(HypixelCry.PREFIX + "[" + playerName + "] [Skin id] " + entry.value()));
-                                copy.append("[").append(playerName).append("] [Skin id] ").append(entry.value()).append("\n");
-                            }
+                    for (Property entry : textures) {
+                        if (entry != null && entry.value() != null) {
+                            String playerName = playerEntity.getName().getString();
+                            source.sendFeedback(Text.literal(HypixelCry.PREFIX + "[" + playerName + "] [Skin id] " + entry.value()));
+                            copy.append("[").append(playerName).append("] [Skin id] ").append(entry.value()).append("\n");
                         }
                     }
                 }

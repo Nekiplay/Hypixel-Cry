@@ -76,5 +76,29 @@ public class ESP {
             public List<ESPFeatures> features = new ArrayList<>(Collections.singletonList(ESPFeatures.Box));
         }
     }
+    @Accordion
+    @ConfigOption(
+            name = "PathFinder",
+            desc = ""
+    )
+    @Expose
+    public PathFinderESP pathFinderESP = new PathFinderESP();
 
+    public static class PathFinderESP {
+        @ConfigOption(
+                name = "Enable",
+                desc = "Enable render PathFinder?"
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean enabled = true;
+
+        @ConfigOption(
+                name = "Enable",
+                desc = "Enable render sub points?"
+        )
+        @ConfigEditorBoolean
+        @Expose
+        public boolean enableSubPoints = false;
+    }
 }
