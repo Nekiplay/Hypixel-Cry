@@ -288,6 +288,10 @@ public class PathFinderRenderer {
                     currentPos.toCenterPos()
             };
             RenderHelper.renderLinesFromPoints(context, points, pathData.color, pathData.color[3], 3f, true);
+            if (HypixelCry.config.esp.pathFinderESP.enableSubPoints) {
+                RenderHelper.renderFilled(context, currentPos, pathData.color, pathData.color[3], true);
+                RenderHelper.renderOutline(context, currentPos, pathData.color, 1f, true);
+            }
             prevPos = currentPos;
         }
     }
