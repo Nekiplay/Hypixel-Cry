@@ -58,8 +58,8 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
 
-    include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0")!!) // Click GUI
-    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.10.0") // Click GUI
+    include(modImplementation("org.notenoughupdates.moulconfig:modern-1.21.5:3.11.0")!!) // Click GUI
+    shadowModImpl("org.notenoughupdates.moulconfig:modern-1.21.5:3.11.0") // Click GUI
     include(modImplementation("net.azureaaron:hm-api:${property("hm_api_version")}")!!)  // HM API (Hypixel Mod API Library)
 
     // Occlusion Culling
