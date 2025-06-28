@@ -9,18 +9,14 @@
 # Features
 ### Commands:
 - /cry - Open settings menu
+- /path - Set pathfinder
 
-### QoL:
+### Macros:
+- Auto right click (Chests, Leavers, Skulls)
 - Auto close chests in dungeons
-
-### Nuker's:
-- Crop
-- Sand
-- Ore
-- Foraging
-- Mithril
 
 ### ESP:
 - Dark Monolith in Dwarden Mines
 - Glowing Mushroom
 - Treasure Hunter
+

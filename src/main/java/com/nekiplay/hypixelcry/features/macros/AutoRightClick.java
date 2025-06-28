@@ -41,9 +41,9 @@ public class AutoRightClick {
                 mc.player == null || !HypixelCry.config.macros.autoRightClick.enabled;
     }
 
-    private static ActionResult onBlockUpdate(BlockPos pos, BlockState old, BlockState current) {
+    private static ActionResult onBlockUpdate(BlockUpdateEvent event) {
         List<Block> selectedBlocks = getAllowedBlocks();
-        if (openedChests.containsKey(pos) && selectedBlocks.contains(current.getBlock())) {
+        if (openedChests.containsKey(event.getBlockPos()) && selectedBlocks.contains(event.getNew().getBlock())) {
             return ActionResult.FAIL;
         }
         else {
