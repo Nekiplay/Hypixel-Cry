@@ -5,7 +5,7 @@ import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickBlocks;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickOpenFeatures;
 import com.nekiplay.hypixelcry.events.SkyblockEvents;
-import com.nekiplay.hypixelcry.events.world.BlockUpdateCallback;
+import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.utils.Location;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
 import com.nekiplay.hypixelcry.utils.scheduler.Scheduler;
@@ -33,7 +33,7 @@ public class AutoRightClick {
     @Init
     public static void init() {
         Scheduler.INSTANCE.scheduleCyclic(AutoRightClick::onTick, 1);
-        BlockUpdateCallback.EVENT.register(AutoRightClick::onBlockUpdate);
+        BlockUpdateEvent.EVENT.register(AutoRightClick::onBlockUpdate);
     }
 
     private static boolean shouldSkipTick() {
