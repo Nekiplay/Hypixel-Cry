@@ -4,11 +4,11 @@ import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickBlocks;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickOpenFeatures;
-import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
+import com.nekiplay.hypixelcry.events.SkyblockEvents;
+import com.nekiplay.hypixelcry.events.world.BlockUpdateCallback;
+import com.nekiplay.hypixelcry.utils.Location;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
 import com.nekiplay.hypixelcry.utils.scheduler.Scheduler;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -25,154 +25,146 @@ import static com.nekiplay.hypixelcry.utils.PlayerUtils.getEyePosition;
 import static com.nekiplay.hypixelcry.utils.PlayerUtils.getLookEndPos;
 
 public class AutoRightClick {
-    private static final Object2IntMap<BlockPos> openedChests = new Object2IntOpenHashMap<>();
+    private static final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private static int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 100;
+    private static final int CHEST_COOLDOWN = 20 * 20;
     private static final int MAX_REMOVALS_PER_TICK = 20;
-    private static final Set<Block> CHEST_BLOCKS = Set.of(Blocks.CHEST, Blocks.TRAPPED_CHEST);
-    private static final Set<Block> SKULL_BLOCKS = Set.of(Blocks.PLAYER_HEAD, Blocks.PLAYER_WALL_HEAD);
-
-    // Cached config values
-    private static boolean enabled;
-    private static List<AutoRightClickBlocks> configuredBlocks;
-    private static List<AutoRightClickOpenFeatures> configuredFeatures;
-    private static float range;
 
     @Init
     public static void init() {
         Scheduler.INSTANCE.scheduleCyclic(AutoRightClick::onTick, 1);
-        BlockUpdateEvent.EVENT.register(AutoRightClick::onBlockUpdate);
-    }
-
-    private static void updateConfigCache() {
-        enabled = HypixelCry.config.macros.autoRightClick.enabled;
-        configuredBlocks = HypixelCry.config.macros.autoRightClick.blocks;
-        configuredFeatures = HypixelCry.config.macros.autoRightClick.features;
-        range = HypixelCry.config.macros.autoRightClick.range;
+        BlockUpdateCallback.EVENT.register(AutoRightClick::onBlockUpdate);
     }
 
     private static boolean shouldSkipTick() {
-        return mc.world == null || mc.player == null || !enabled;
+        return mc.world == null ||
+                mc.player == null || !HypixelCry.config.macros.autoRightClick.enabled;
     }
 
-    private static ActionResult onBlockUpdate(BlockUpdateEvent event) {
-        Block newBlock = event.getNew().getBlock();
-        return (CHEST_BLOCKS.contains(newBlock) && openedChests.containsKey(event.getBlockPos()))
-                ? ActionResult.FAIL
-                : ActionResult.PASS;
+    private static ActionResult onBlockUpdate(BlockPos pos, BlockState old, BlockState current) {
+        List<Block> selectedBlocks = getAllowedBlocks();
+        if (openedChests.containsKey(pos) && selectedBlocks.contains(current.getBlock())) {
+            return ActionResult.FAIL;
+        }
+        else {
+            return ActionResult.PASS;
+        }
     }
 
     private static void onTick() {
-        updateConfigCache();
         if (shouldSkipTick()) return;
-
         if (++tickCounter % MAX_REMOVALS_PER_TICK == 0) {
             cleanUpOldChests();
             if (openedChests.isEmpty()) {
                 tickCounter = 0;
             }
         }
-
-        if (mc.currentScreen == null) {
-            handleChestOpening();
-        }
+        if (mc.currentScreen == null) handleChestOpening();
     }
 
     private static void cleanUpOldChests() {
-        openedChests.object2IntEntrySet().removeIf(entry -> {
-            if (entry.getIntValue() >= CHEST_COOLDOWN) {
-                return true;
+        Iterator<Map.Entry<BlockPos, Integer>> iterator = openedChests.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<BlockPos, Integer> entry = iterator.next();
+            if (entry.getValue() >= CHEST_COOLDOWN) {
+                iterator.remove();
+            } else {
+                entry.setValue(entry.getValue() + 1);
             }
-            entry.setValue(entry.getIntValue() + 1);
-            return false;
-        });
+        }
     }
 
-    private static Set<Block> getAllowedBlocks() {
-        if (configuredBlocks.isEmpty()) return Collections.emptySet();
-
-        Set<Block> selectedBlocks = new HashSet<>(4); // Small initial capacity
-        if (configuredBlocks.contains(AutoRightClickBlocks.Chest)) {
-            selectedBlocks.addAll(CHEST_BLOCKS);
+    private static List<Block> getAllowedBlocks() {
+        List<Block> selectedBlocks = new ArrayList<>();
+        List<AutoRightClickBlocks> blocks = HypixelCry.config.macros.autoRightClick.blocks;
+        if (blocks.contains(AutoRightClickBlocks.Chest)) {
+            selectedBlocks.add(Blocks.CHEST);
+            selectedBlocks.add(Blocks.TRAPPED_CHEST);
         }
-        if (configuredBlocks.contains(AutoRightClickBlocks.Lever)) {
+        if (blocks.contains(AutoRightClickBlocks.Lever)) {
             selectedBlocks.add(Blocks.LEVER);
         }
-        if (configuredBlocks.contains(AutoRightClickBlocks.Skull)) {
-            selectedBlocks.addAll(SKULL_BLOCKS);
+        if (blocks.contains(AutoRightClickBlocks.Skull)) {
+            selectedBlocks.add(Blocks.PLAYER_HEAD);
+            selectedBlocks.add(Blocks.PLAYER_WALL_HEAD);
+
+            selectedBlocks.add(Blocks.WITHER_SKELETON_SKULL);
+            selectedBlocks.add(Blocks.WITHER_SKELETON_WALL_SKULL);
+
+            selectedBlocks.add(Blocks.SKELETON_SKULL);
+            selectedBlocks.add(Blocks.SKELETON_WALL_SKULL);
+
+            selectedBlocks.add(Blocks.CREEPER_HEAD);
+            selectedBlocks.add(Blocks.CREEPER_WALL_HEAD);
+
+            selectedBlocks.add(Blocks.ZOMBIE_HEAD);
+            selectedBlocks.add(Blocks.ZOMBIE_WALL_HEAD);
         }
         return selectedBlocks;
     }
 
     private static void handleChestOpening() {
-        if (configuredBlocks.isEmpty()) return;
+        boolean ghostHand = HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.GhostHand);
 
-        boolean ghostHand = configuredFeatures.contains(AutoRightClickOpenFeatures.GhostHand);
-        Set<Block> selectedBlocks = getAllowedBlocks();
-        if (selectedBlocks.isEmpty()) return;
+        List<Block> selectedBlocks = getAllowedBlocks();
 
-        BlockHitResult blockHitResult = ghostHand
-                ? getGhostHandTarget(selectedBlocks)
-                : getNormalTarget(selectedBlocks);
-
-        if (blockHitResult != null) {
+        if (selectedBlocks.isEmpty()) {
+            return;
+        }
+        if (ghostHand) {
+            HitResult mouseOver = RaycastUtils.rayTraceToBlocks(
+                    getEyePosition(),
+                    getLookEndPos(HypixelCry.config.macros.autoRightClick.range),
+                    selectedBlocks
+            );
+            if (mouseOver instanceof BlockHitResult blockHitResult) {
+                tryOpenChest(blockHitResult);
+            }
+        } else if (isLookingAt(selectedBlocks) && mc.crosshairTarget instanceof BlockHitResult blockHitResult) {
             tryOpenChest(blockHitResult);
         }
     }
 
-    private static BlockHitResult getGhostHandTarget(Set<Block> blocks) {
-        HitResult mouseOver = RaycastUtils.rayTraceToBlocks(
-                getEyePosition(),
-                getLookEndPos(range),
-                new ArrayList<>(blocks)
-        );
-        return mouseOver instanceof BlockHitResult ? (BlockHitResult) mouseOver : null;
-    }
 
-    private static BlockHitResult getNormalTarget(Set<Block> blocks) {
-        if (mc.crosshairTarget == null || mc.crosshairTarget.getType() != HitResult.Type.BLOCK) {
-            return null;
+    private static boolean isLookingAt(List<Block> blocks) {
+        boolean allowCheck = mc.crosshairTarget != null &&
+                mc.crosshairTarget.getType() == HitResult.Type.BLOCK;
+        if (allowCheck && mc.crosshairTarget instanceof BlockHitResult blockHitResult) {
+            assert mc.world != null;
+            return blocks.contains(mc.world.getBlockState(blockHitResult.getBlockPos()).getBlock());
         }
-        BlockHitResult blockHitResult = (BlockHitResult) mc.crosshairTarget;
-        return isLookingAt(blocks, blockHitResult) ? blockHitResult : null;
-    }
-
-    private static boolean isLookingAt(Set<Block> blocks, BlockHitResult blockHitResult) {
-        if (mc.world == null) return false;
-        BlockState state = mc.world.getBlockState(blockHitResult.getBlockPos());
-        return blocks.contains(state.getBlock());
+        return false;
     }
 
     private static void tryOpenChest(BlockHitResult mouseOver) {
-        if (mouseOver == null
-                || mouseOver.getType() != HitResult.Type.BLOCK
-                || mouseOver.getBlockPos() == null
-                || openedChests.containsKey(mouseOver.getBlockPos())) {
+        if (mouseOver == null || mouseOver.getType() != HitResult.Type.BLOCK || openedChests.containsKey(mouseOver.getBlockPos())) {
             return;
         }
         simulateHumanClick(mouseOver);
+
     }
 
     private static void simulateHumanClick(BlockHitResult mop) {
-        if (mc.interactionManager == null || mc.player == null) return;
+        if (mop == null || mop.getBlockPos() == null) return;
 
-        ActionResult actionResult = mc.interactionManager.interactBlock(mc.player, Hand.MAIN_HAND, mop);
-        openedChests.put(mop.getBlockPos(), 0);
+        assert mc.interactionManager != null;
+        ActionResult success = mc.interactionManager.interactBlock(
+                mc.player,
+                Hand.MAIN_HAND,
+                mop
+        );
+        assert mc.player != null;
+        mc.player.swingHand(Hand.MAIN_HAND);
+        BlockPos pos = mop.getBlockPos();
+        if (HypixelCry.config.macros.autoRightClick.features.contains(AutoRightClickOpenFeatures.Air)) {
+            BlockState state = Blocks.AIR.getDefaultState();
 
-        if (actionResult instanceof ActionResult.Success) {
-            mc.player.swingHand(Hand.MAIN_HAND);
-            if (configuredFeatures.contains(AutoRightClickOpenFeatures.Air)) {
-                updateBlockToAir(mop.getBlockPos());
-            }
+            assert mc.world != null;
+            mc.world.setBlockState(pos, state);
+
+            mc.worldRenderer.updateBlock(mc.world, pos, mc.world.getBlockState(pos), state, 0);
+            mc.world.updateNeighbors(pos, Blocks.AIR);
         }
-    }
-
-    private static void updateBlockToAir(BlockPos pos) {
-        if (mc.world == null) return;
-
-        BlockState airState = Blocks.AIR.getDefaultState();
-        mc.world.setBlockState(pos, airState);
-        mc.worldRenderer.updateBlock(mc.world, pos, mc.world.getBlockState(pos), airState, 0);
-        mc.world.updateNeighbors(pos, Blocks.AIR);
+        openedChests.put(mop.getBlockPos(), 0);
     }
 }
