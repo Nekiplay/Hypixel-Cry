@@ -4,7 +4,6 @@ import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickBlocks;
 import com.nekiplay.hypixelcry.config.enums.AutoRightClickOpenFeatures;
-import com.nekiplay.hypixelcry.events.SkyblockEvents;
 import com.nekiplay.hypixelcry.events.world.BlockUpdateEvent;
 import com.nekiplay.hypixelcry.utils.Location;
 import com.nekiplay.hypixelcry.utils.RaycastUtils;
@@ -27,18 +26,23 @@ import static com.nekiplay.hypixelcry.utils.PlayerUtils.getLookEndPos;
 public class AutoRightClick {
     private static final Map<BlockPos, Integer> openedChests = new LinkedHashMap<>();
     private static int tickCounter = 0;
-    private static final int CHEST_COOLDOWN = 20 * 20;
+    private static final int CHEST_COOLDOWN = 20 * 5;
     private static final int MAX_REMOVALS_PER_TICK = 20;
 
     @Init
     public static void init() {
         Scheduler.INSTANCE.scheduleCyclic(AutoRightClick::onTick, 1);
         BlockUpdateEvent.EVENT.register(AutoRightClick::onBlockUpdate);
+        kyblockEvents.LOCATION_CHANGE.register(AutoRightClick::handleLocationChange);
     }
 
     private static boolean shouldSkipTick() {
         return mc.world == null ||
                 mc.player == null || !HypixelCry.config.macros.autoRightClick.enabled;
+    }
+
+    private static void handleLocationChange(Location location) {
+        openedChests.clear();
     }
 
     private static ActionResult onBlockUpdate(BlockUpdateEvent event) {
