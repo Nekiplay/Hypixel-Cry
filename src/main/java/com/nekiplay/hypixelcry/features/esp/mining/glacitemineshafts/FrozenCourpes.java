@@ -1,12 +1,9 @@
 package com.nekiplay.hypixelcry.features.esp.mining.glacitemineshafts;
 
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.serialization.Codec;
 import com.nekiplay.hypixelcry.HypixelCry;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.config.enums.ESPFeatures;
 import com.nekiplay.hypixelcry.events.SkyblockEvents;
-import com.nekiplay.hypixelcry.features.esp.mining.dwarvenmines.DarkMonolithESP;
 import com.nekiplay.hypixelcry.features.esp.pathfinder.PathFinderRenderer;
 import com.nekiplay.hypixelcry.utils.ItemUtils;
 import com.nekiplay.hypixelcry.utils.Location;
@@ -51,7 +48,7 @@ public class FrozenCourpes {
         SkyblockEvents.LOCATION_CHANGE.register(FrozenCourpes::handleLocationChange);
         WorldRenderEvents.AFTER_TRANSLUCENT.register(FrozenCourpes::render);
         ClientReceiveMessageEvents.GAME.register(FrozenCourpes::onChatMessage);
-        Scheduler.INSTANCE.scheduleCyclic(FrozenCourpes::onTick, 5);
+        Scheduler.INSTANCE.scheduleCyclic(FrozenCourpes::onTick, 2);
         config.esp.glaciteMineshafts.frozenCourpes.enabledPathFinder.whenChanged((old, current) -> {
             if (!current) {
                 clearPathFinder();

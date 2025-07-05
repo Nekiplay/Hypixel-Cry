@@ -16,6 +16,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import com.nekiplay.hypixelcry.events.SkyblockEvents;
 
 import java.util.*;
 
@@ -33,7 +34,7 @@ public class AutoRightClick {
     public static void init() {
         Scheduler.INSTANCE.scheduleCyclic(AutoRightClick::onTick, 1);
         BlockUpdateEvent.EVENT.register(AutoRightClick::onBlockUpdate);
-        kyblockEvents.LOCATION_CHANGE.register(AutoRightClick::handleLocationChange);
+        SkyblockEvents.LOCATION_CHANGE.register(AutoRightClick::handleLocationChange);
     }
 
     private static boolean shouldSkipTick() {

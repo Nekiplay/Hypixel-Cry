@@ -26,7 +26,7 @@ public class DarkMonolithESP {
     @Init
     public static void init() {
         WorldRenderEvents.AFTER_TRANSLUCENT.register(DarkMonolithESP::render);
-        Scheduler.INSTANCE.scheduleCyclic(DarkMonolithESP::onTick, 5);
+        Scheduler.INSTANCE.scheduleCyclic(DarkMonolithESP::onTick, 2);
     }
 
     private static final BlockPos[] MONOLITH_LOCATIONS  = {
