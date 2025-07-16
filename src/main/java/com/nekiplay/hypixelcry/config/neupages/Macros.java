@@ -77,4 +77,51 @@ public class Macros {
             public boolean enable = true;
         }
     }
+
+    @Category(name = "Items", desc = "")
+    @Expose
+    public Items items = new Items();
+
+    public static class Items {
+        @Accordion
+        @ConfigOption(name = "Aspect Of The Teleports", desc = "")
+        @Expose
+        public Aspect_Of_The_Teleports aspectOfTheTeleports = new Aspect_Of_The_Teleports();
+
+        public static class Aspect_Of_The_Teleports {
+            @ConfigOption(name = "Key binding", desc = "Activation key bind")
+            @ConfigEditorKeybind(defaultKey = GLFW.GLFW_KEY_UNKNOWN)
+            @Expose
+            public int keybind = -1;
+
+            @ConfigOption(name = "Delay", desc = "Repeat delay")
+            @ConfigEditorSlider(minValue = 0, maxValue = 10, minStep = 1)
+            @Expose
+            public int delay = 2;
+        }
+
+        @Accordion
+        @ConfigOption(name = "Healing Wands", desc = "")
+        @Expose
+        public Healing_Wands healingWands = new Healing_Wands();
+
+        public static class Healing_Wands {
+            @ConfigOption(name = "Key binding", desc = "Activation key bind")
+            @ConfigEditorKeybind(defaultKey = GLFW.GLFW_KEY_UNKNOWN)
+            @Expose
+            public int keybind = -1;
+        }
+
+        @Accordion
+        @ConfigOption(name = "Rogue Sword", desc = "")
+        @Expose
+        public Rogue_Sword rogueSword = new Rogue_Sword();
+
+        public static class Rogue_Sword {
+            @ConfigOption(name = "Key binding", desc = "Activation key bind")
+            @ConfigEditorKeybind(defaultKey = GLFW.GLFW_KEY_UNKNOWN)
+            @Expose
+            public int keybind = -1;
+        }
+    }
 }

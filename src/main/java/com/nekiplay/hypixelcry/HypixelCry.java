@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nekiplay.hypixelcry.annotations.Init;
 import com.nekiplay.hypixelcry.config.NEUConfig;
+import com.nekiplay.hypixelcry.features.modules.ModuleManager;
 import com.nekiplay.hypixelcry.utils.ConfigUtil;
 import com.nekiplay.hypixelcry.utils.Utils;
 import com.nekiplay.hypixelcry.utils.scheduler.Scheduler;
@@ -98,6 +99,8 @@ public class HypixelCry implements ClientModInitializer {
         });
 
         init();
+
+        ModuleManager.INSTANCE.registerInbuilt();
 
         Scheduler.INSTANCE.scheduleCyclic(Utils::update, 20);
     }
